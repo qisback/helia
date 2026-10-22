@@ -1,0 +1,1 @@
+--8<-- "docs/research/imaging-methods.md"

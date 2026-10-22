@@ -1,0 +1,2040 @@
+{
+ "app": "helia",
+ "meta": {
+  "os": "Linux-6.1.0-52-arm64-aarch64-with-glibc2.36",
+  "arch": "aarch64",
+  "cores": 8,
+  "cpu": "Neoverse-N1 (8 cores, 1 thread each)",
+  "ram_gb": 15.2,
+  "label": "arm64 8-core",
+  "commit": "f318da8",
+  "bin": "helia/target/release/helia",
+  "date": "-",
+  "version": "helia 0.6.0",
+  "reps": 3,
+  "gpu_index": null
+ },
+ "cases": {
+  "ha-720x540-avi": "720x540 8-bit Bayer AVI, 1000 frames",
+  "ha-1080-ser16": "1920x1080 16-bit SER, 100 frames",
+  "ha-1080-ser8": "1920x1080 8-bit SER, 631 frames",
+  "cak-mono-avi": "1936x1088 8-bit mono AVI, 498 frames",
+  "white-bayer-avi": "1920x1080 8-bit AVI, 630 frames",
+  "cak-bayer-avi": "1920x1080 8-bit Bayer AVI, 2713 frames"
+ },
+ "runs": [
+  {
+   "ok": true,
+   "wall": 6.217,
+   "rss_mb": 157,
+   "cpu_s": 37.6,
+   "other_cores": 0.0,
+   "loaded": false,
+   "busy_limit": 0.5,
+   "vram_mb": null,
+   "stages": {
+    "open": 0.6,
+    "scoring frames": 1.02,
+    "building reference": 0.05,
+    "aligning frames": 0.77,
+    "measuring alignment points": 2.95,
+    "stacking": 0.45,
+    "finishing": 0.01,
+    "write": 0.0,
+    "total": 6.16
+   },
+   "busy": {
+    "decode": [
+     1.29,
+     0.16
+    ],
+    "debayer": [
+     2.78,
+     0.35
+    ],
+    "quality": [
+     2.93,
+     0.37
+    ],
+    "global align": [
+     5.42,
+     0.68
+    ],
+    "AP align": [
+     21.87,
+     2.73
+    ],
+    "stack": [
+     1.47,
+     0.18
+    ],
+    "finish": [
+     0.01,
+     0.0
+    ]
+   },
+   "frames": 1000,
+   "kept": 250,
+   "tail": null,
+   "group": "captures",
+   "case": "ha-720x540-avi",
+   "mode": "cpu",
+   "threads": 0,
+   "rep": 0,
+   "load1_before": 15.16,
+   "bytes": 389202432
+  },
+  {
+   "ok": true,
+   "wall": 5.703,
+   "rss_mb": 160,
+   "cpu_s": 37.26,
+   "other_cores": 0.05,
+   "loaded": false,
+   "busy_limit": 0.5,
+   "vram_mb": null,
+   "stages": {
+    "open": 0.3,
+    "scoring frames": 0.99,
+    "building reference": 0.05,
+    "aligning frames": 0.74,
+    "measuring alignment points": 2.84,
+    "stacking": 0.47,
+    "finishing": 0.01,
+    "write": 0.01,
+    "total": 5.68
+   },
+   "busy": {
+    "decode": [
+     1.24,
+     0.16
+    ],
+    "debayer": [
+     2.64,
+     0.33
+    ],
+    "quality": [
+     3.17,
+     0.4
+    ],
+    "global align": [
+     5.32,
+     0.66
+    ],
+    "AP align": [
+     21.67,
+     2.71
+    ],
+    "stack": [
+     1.53,
+     0.19
+    ],
+    "finish": [
+     0.01,
+     0.0
+    ]
+   },
+   "frames": 1000,
+   "kept": 250,
+   "tail": null,
+   "group": "captures",
+   "case": "ha-720x540-avi",
+   "mode": "cpu",
+   "threads": 0,
+   "rep": 1,
+   "load1_before": 15.16,
+   "bytes": 389202432
+  },
+  {
+   "ok": true,
+   "wall": 5.835,
+   "rss_mb": 157,
+   "cpu_s": 37.4,
+   "other_cores": 0.03,
+   "loaded": false,
+   "busy_limit": 0.5,
+   "vram_mb": null,
+   "stages": {
+    "open": 0.28,
+    "scoring frames": 1.08,
+    "building reference": 0.05,
+    "aligning frames": 0.76,
+    "measuring alignment points": 2.85,
+    "stacking": 0.49,
+    "finishing": 0.01,
+    "write": 0.01,
+    "total": 5.81
+   },
+   "busy": {
+    "decode": [
+     1.24,
+     0.15
+    ],
+    "debayer": [
+     2.79,
+     0.35
+    ],
+    "quality": [
+     2.5,
+     0.31
+    ],
+    "global align": [
+     5.38,
+     0.67
+    ],
+    "AP align": [
+     21.63,
+     2.7
+    ],
+    "stack": [
+     1.57,
+     0.2
+    ],
+    "finish": [
+     0.01,
+     0.0
+    ]
+   },
+   "frames": 1000,
+   "kept": 250,
+   "tail": null,
+   "group": "captures",
+   "case": "ha-720x540-avi",
+   "mode": "cpu",
+   "threads": 0,
+   "rep": 2,
+   "load1_before": 15.16,
+   "bytes": 389202432
+  },
+  {
+   "ok": true,
+   "wall": 3.585,
+   "rss_mb": 773,
+   "cpu_s": 18.35,
+   "other_cores": 0.01,
+   "loaded": false,
+   "busy_limit": 0.5,
+   "vram_mb": null,
+   "stages": {
+    "open": 0.02,
+    "scoring frames": 0.59,
+    "building reference": 0.19,
+    "aligning frames": 0.43,
+    "measuring alignment points": 1.41,
+    "stacking": 0.25,
+    "finishing": 0.05,
+    "write": 0.03,
+    "total": 3.5
+   },
+   "busy": {
+    "decode": [
+     2.24,
+     0.28
+    ],
+    "debayer": [
+     1.31,
+     0.16
+    ],
+    "quality": [
+     0.94,
+     0.12
+    ],
+    "global align": [
+     3.09,
+     0.39
+    ],
+    "AP align": [
+     9.83,
+     1.23
+    ],
+    "stack": [
+     0.54,
+     0.07
+    ],
+    "finish": [
+     0.02,
+     0.0
+    ]
+   },
+   "frames": 100,
+   "kept": 25,
+   "tail": null,
+   "group": "captures",
+   "case": "ha-1080-ser16",
+   "mode": "cpu",
+   "threads": 0,
+   "rep": 0,
+   "load1_before": 6.6,
+   "bytes": 414720978
+  },
+  {
+   "ok": true,
+   "wall": 3.456,
+   "rss_mb": 769,
+   "cpu_s": 17.87,
+   "other_cores": 0.03,
+   "loaded": false,
+   "busy_limit": 0.5,
+   "vram_mb": null,
+   "stages": {
+    "open": 0.01,
+    "scoring frames": 0.43,
+    "building reference": 0.26,
+    "aligning frames": 0.44,
+    "measuring alignment points": 1.45,
+    "stacking": 0.22,
+    "finishing": 0.05,
+    "write": 0.03,
+    "total": 3.37
+   },
+   "busy": {
+    "decode": [
+     0.92,
+     0.12
+    ],
+    "debayer": [
+     1.27,
+     0.16
+    ],
+    "quality": [
+     0.92,
+     0.12
+    ],
+    "global align": [
+     3.19,
+     0.4
+    ],
+    "AP align": [
+     10.02,
+     1.25
+    ],
+    "stack": [
+     0.53,
+     0.07
+    ],
+    "finish": [
+     0.02,
+     0.0
+    ]
+   },
+   "frames": 100,
+   "kept": 25,
+   "tail": null,
+   "group": "captures",
+   "case": "ha-1080-ser16",
+   "mode": "cpu",
+   "threads": 0,
+   "rep": 1,
+   "load1_before": 6.6,
+   "bytes": 414720978
+  },
+  {
+   "ok": true,
+   "wall": 3.392,
+   "rss_mb": 769,
+   "cpu_s": 17.86,
+   "other_cores": 0.03,
+   "loaded": false,
+   "busy_limit": 0.5,
+   "vram_mb": null,
+   "stages": {
+    "open": 0.01,
+    "scoring frames": 0.42,
+    "building reference": 0.22,
+    "aligning frames": 0.41,
+    "measuring alignment points": 1.45,
+    "stacking": 0.22,
+    "finishing": 0.05,
+    "write": 0.04,
+    "total": 3.31
+   },
+   "busy": {
+    "decode": [
+     0.82,
+     0.1
+    ],
+    "debayer": [
+     1.23,
+     0.15
+    ],
+    "quality": [
+     1.0,
+     0.12
+    ],
+    "global align": [
+     3.08,
+     0.38
+    ],
+    "AP align": [
+     10.21,
+     1.28
+    ],
+    "stack": [
+     0.52,
+     0.07
+    ],
+    "finish": [
+     0.02,
+     0.0
+    ]
+   },
+   "frames": 100,
+   "kept": 25,
+   "tail": null,
+   "group": "captures",
+   "case": "ha-1080-ser16",
+   "mode": "cpu",
+   "threads": 0,
+   "rep": 2,
+   "load1_before": 6.6,
+   "bytes": 414720978
+  },
+  {
+   "ok": true,
+   "wall": 15.258,
+   "rss_mb": 758,
+   "cpu_s": 102.39,
+   "other_cores": 0.02,
+   "loaded": false,
+   "busy_limit": 0.5,
+   "vram_mb": null,
+   "stages": {
+    "open": 0.06,
+    "scoring frames": 2.44,
+    "building reference": 0.2,
+    "aligning frames": 2.41,
+    "measuring alignment points": 8.16,
+    "stacking": 1.0,
+    "finishing": 0.05,
+    "write": 0.03,
+    "total": 15.18
+   },
+   "busy": {
+    "decode": [
+     6.64,
+     0.83
+    ],
+    "debayer": [
+     7.17,
+     0.9
+    ],
+    "quality": [
+     5.57,
+     0.7
+    ],
+    "global align": [
+     18.39,
+     2.3
+    ],
+    "AP align": [
+     61.08,
+     7.63
+    ],
+    "stack": [
+     3.19,
+     0.4
+    ],
+    "finish": [
+     0.02,
+     0.0
+    ]
+   },
+   "frames": 631,
+   "kept": 158,
+   "tail": null,
+   "group": "captures",
+   "case": "ha-1080-ser8",
+   "mode": "cpu",
+   "threads": 0,
+   "rep": 0,
+   "load1_before": 6.02,
+   "bytes": 1308441778
+  },
+  {
+   "ok": true,
+   "wall": 14.927,
+   "rss_mb": 760,
+   "cpu_s": 103.76,
+   "other_cores": 0.01,
+   "loaded": false,
+   "busy_limit": 0.5,
+   "vram_mb": null,
+   "stages": {
+    "open": 0.04,
+    "scoring frames": 1.91,
+    "building reference": 0.19,
+    "aligning frames": 2.38,
+    "measuring alignment points": 8.45,
+    "stacking": 1.01,
+    "finishing": 0.05,
+    "write": 0.03,
+    "total": 14.86
+   },
+   "busy": {
+    "decode": [
+     3.36,
+     0.42
+    ],
+    "debayer": [
+     7.14,
+     0.89
+    ],
+    "quality": [
+     5.38,
+     0.67
+    ],
+    "global align": [
+     18.4,
+     2.3
+    ],
+    "AP align": [
+     64.4,
+     8.05
+    ],
+    "stack": [
+     3.22,
+     0.4
+    ],
+    "finish": [
+     0.02,
+     0.0
+    ]
+   },
+   "frames": 631,
+   "kept": 158,
+   "tail": null,
+   "group": "captures",
+   "case": "ha-1080-ser8",
+   "mode": "cpu",
+   "threads": 0,
+   "rep": 1,
+   "load1_before": 6.02,
+   "bytes": 1308441778
+  },
+  {
+   "ok": true,
+   "wall": 14.676,
+   "rss_mb": 760,
+   "cpu_s": 101.87,
+   "other_cores": 0.03,
+   "loaded": false,
+   "busy_limit": 0.5,
+   "vram_mb": null,
+   "stages": {
+    "open": 0.04,
+    "scoring frames": 1.95,
+    "building reference": 0.19,
+    "aligning frames": 2.36,
+    "measuring alignment points": 8.24,
+    "stacking": 0.96,
+    "finishing": 0.05,
+    "write": 0.03,
+    "total": 14.6
+   },
+   "busy": {
+    "decode": [
+     3.23,
+     0.4
+    ],
+    "debayer": [
+     6.96,
+     0.87
+    ],
+    "quality": [
+     5.64,
+     0.7
+    ],
+    "global align": [
+     18.21,
+     2.28
+    ],
+    "AP align": [
+     62.8,
+     7.85
+    ],
+    "stack": [
+     3.09,
+     0.39
+    ],
+    "finish": [
+     0.02,
+     0.0
+    ]
+   },
+   "frames": 631,
+   "kept": 158,
+   "tail": null,
+   "group": "captures",
+   "case": "ha-1080-ser8",
+   "mode": "cpu",
+   "threads": 0,
+   "rep": 2,
+   "load1_before": 6.02,
+   "bytes": 1308441778
+  },
+  {
+   "ok": true,
+   "wall": 20.0,
+   "rss_mb": 792,
+   "cpu_s": 138.9,
+   "other_cores": 0.01,
+   "loaded": false,
+   "busy_limit": 0.5,
+   "vram_mb": null,
+   "stages": {
+    "open": 0.75,
+    "scoring frames": 1.1,
+    "building reference": 0.24,
+    "aligning frames": 3.53,
+    "measuring alignment points": 12.63,
+    "stacking": 1.18,
+    "finishing": 0.06,
+    "write": 0.03,
+    "total": 19.94
+   },
+   "busy": {
+    "decode": [
+     4.47,
+     0.56
+    ],
+    "debayer": [
+     0.0,
+     0.0
+    ],
+    "quality": [
+     3.77,
+     0.47
+    ],
+    "global align": [
+     27.37,
+     3.42
+    ],
+    "AP align": [
+     95.9,
+     11.99
+    ],
+    "stack": [
+     5.92,
+     0.74
+    ],
+    "finish": [
+     0.03,
+     0.0
+    ]
+   },
+   "frames": 498,
+   "kept": 149,
+   "tail": null,
+   "group": "captures",
+   "case": "cak-mono-avi",
+   "mode": "cpu",
+   "threads": 0,
+   "rep": 0,
+   "load1_before": 6.19,
+   "bytes": 1049300480
+  },
+  {
+   "ok": true,
+   "wall": 19.255,
+   "rss_mb": 790,
+   "cpu_s": 138.66,
+   "other_cores": 0.01,
+   "loaded": false,
+   "busy_limit": 0.5,
+   "vram_mb": null,
+   "stages": {
+    "open": 0.17,
+    "scoring frames": 0.89,
+    "building reference": 0.24,
+    "aligning frames": 3.56,
+    "measuring alignment points": 12.61,
+    "stacking": 1.19,
+    "finishing": 0.05,
+    "write": 0.04,
+    "total": 19.18
+   },
+   "busy": {
+    "decode": [
+     3.12,
+     0.39
+    ],
+    "debayer": [
+     0.0,
+     0.0
+    ],
+    "quality": [
+     3.83,
+     0.48
+    ],
+    "global align": [
+     27.5,
+     3.44
+    ],
+    "AP align": [
+     95.85,
+     11.98
+    ],
+    "stack": [
+     5.94,
+     0.74
+    ],
+    "finish": [
+     0.03,
+     0.0
+    ]
+   },
+   "frames": 498,
+   "kept": 149,
+   "tail": null,
+   "group": "captures",
+   "case": "cak-mono-avi",
+   "mode": "cpu",
+   "threads": 0,
+   "rep": 1,
+   "load1_before": 6.19,
+   "bytes": 1049300480
+  },
+  {
+   "ok": true,
+   "wall": 19.376,
+   "rss_mb": 790,
+   "cpu_s": 140.06,
+   "other_cores": 0.0,
+   "loaded": false,
+   "busy_limit": 0.5,
+   "vram_mb": null,
+   "stages": {
+    "open": 0.17,
+    "scoring frames": 0.96,
+    "building reference": 0.25,
+    "aligning frames": 3.54,
+    "measuring alignment points": 12.69,
+    "stacking": 1.2,
+    "finishing": 0.05,
+    "write": 0.03,
+    "total": 19.31
+   },
+   "busy": {
+    "decode": [
+     3.15,
+     0.39
+    ],
+    "debayer": [
+     0.0,
+     0.0
+    ],
+    "quality": [
+     3.93,
+     0.49
+    ],
+    "global align": [
+     27.46,
+     3.43
+    ],
+    "AP align": [
+     97.4,
+     12.17
+    ],
+    "stack": [
+     5.91,
+     0.74
+    ],
+    "finish": [
+     0.03,
+     0.0
+    ]
+   },
+   "frames": 498,
+   "kept": 149,
+   "tail": null,
+   "group": "captures",
+   "case": "cak-mono-avi",
+   "mode": "cpu",
+   "threads": 0,
+   "rep": 2,
+   "load1_before": 6.19,
+   "bytes": 1049300480
+  },
+  {
+   "ok": true,
+   "wall": 86.528,
+   "rss_mb": 159,
+   "cpu_s": 86.5,
+   "other_cores": 0.02,
+   "loaded": false,
+   "busy_limit": 0.5,
+   "vram_mb": null,
+   "stages": {
+    "open": 0.04,
+    "scoring frames": 8.06,
+    "building reference": 0.39,
+    "aligning frames": 16.79,
+    "measuring alignment points": 52.23,
+    "stacking": 6.35,
+    "finishing": 0.05,
+    "write": 0.05,
+    "total": 86.46
+   },
+   "busy": {
+    "decode": [
+     2.52,
+     2.52
+    ],
+    "debayer": [
+     5.9,
+     5.9
+    ],
+    "quality": [
+     3.44,
+     3.44
+    ],
+    "global align": [
+     17.14,
+     17.14
+    ],
+    "AP align": [
+     52.22,
+     52.22
+    ],
+    "stack": [
+     4.19,
+     4.19
+    ],
+    "finish": [
+     0.02,
+     0.02
+    ]
+   },
+   "frames": 631,
+   "kept": 158,
+   "tail": null,
+   "group": "threads",
+   "case": "ha-1080-ser8",
+   "mode": "cpu",
+   "threads": 1,
+   "rep": 0,
+   "load1_before": 6.03,
+   "bytes": 1308441778
+  },
+  {
+   "ok": true,
+   "wall": 87.409,
+   "rss_mb": 159,
+   "cpu_s": 87.38,
+   "other_cores": 1.49,
+   "loaded": true,
+   "busy_limit": 0.5,
+   "vram_mb": null,
+   "stages": {
+    "open": 0.04,
+    "scoring frames": 8.33,
+    "building reference": 0.4,
+    "aligning frames": 16.98,
+    "measuring alignment points": 52.46,
+    "stacking": 6.49,
+    "finishing": 0.05,
+    "write": 0.04,
+    "total": 87.34
+   },
+   "busy": {
+    "decode": [
+     2.63,
+     2.63
+    ],
+    "debayer": [
+     5.94,
+     5.94
+    ],
+    "quality": [
+     3.59,
+     3.59
+    ],
+    "global align": [
+     17.35,
+     17.35
+    ],
+    "AP align": [
+     52.45,
+     52.45
+    ],
+    "stack": [
+     4.27,
+     4.27
+    ],
+    "finish": [
+     0.02,
+     0.02
+    ]
+   },
+   "frames": 631,
+   "kept": 158,
+   "tail": null,
+   "group": "threads",
+   "case": "ha-1080-ser8",
+   "mode": "cpu",
+   "threads": 1,
+   "rep": 1,
+   "load1_before": 6.03,
+   "bytes": 1308441778
+  },
+  {
+   "ok": true,
+   "wall": 88.634,
+   "rss_mb": 159,
+   "cpu_s": 88.39,
+   "other_cores": 4.26,
+   "loaded": true,
+   "busy_limit": 0.5,
+   "vram_mb": null,
+   "stages": {
+    "open": 0.04,
+    "scoring frames": 8.75,
+    "building reference": 0.39,
+    "aligning frames": 17.04,
+    "measuring alignment points": 53.24,
+    "stacking": 6.41,
+    "finishing": 0.05,
+    "write": 0.04,
+    "total": 88.57
+   },
+   "busy": {
+    "decode": [
+     2.94,
+     2.94
+    ],
+    "debayer": [
+     6.02,
+     6.02
+    ],
+    "quality": [
+     3.62,
+     3.62
+    ],
+    "global align": [
+     17.39,
+     17.39
+    ],
+    "AP align": [
+     53.24,
+     53.24
+    ],
+    "stack": [
+     4.23,
+     4.23
+    ],
+    "finish": [
+     0.02,
+     0.02
+    ]
+   },
+   "frames": 631,
+   "kept": 158,
+   "tail": null,
+   "group": "threads",
+   "case": "ha-1080-ser8",
+   "mode": "cpu",
+   "threads": 1,
+   "rep": 2,
+   "load1_before": 6.03,
+   "bytes": 1308441778
+  },
+  {
+   "ok": true,
+   "wall": 87.581,
+   "rss_mb": 159,
+   "cpu_s": 87.56,
+   "other_cores": 0.02,
+   "loaded": false,
+   "busy_limit": 0.5,
+   "vram_mb": null,
+   "stages": {
+    "open": 0.04,
+    "scoring frames": 8.22,
+    "building reference": 0.39,
+    "aligning frames": 17.05,
+    "measuring alignment points": 52.66,
+    "stacking": 6.5,
+    "finishing": 0.05,
+    "write": 0.04,
+    "total": 87.51
+   },
+   "busy": {
+    "decode": [
+     2.6,
+     2.6
+    ],
+    "debayer": [
+     5.89,
+     5.89
+    ],
+    "quality": [
+     3.55,
+     3.55
+    ],
+    "global align": [
+     17.4,
+     17.4
+    ],
+    "AP align": [
+     52.66,
+     52.66
+    ],
+    "stack": [
+     4.3,
+     4.3
+    ],
+    "finish": [
+     0.02,
+     0.02
+    ]
+   },
+   "frames": 631,
+   "kept": 158,
+   "tail": null,
+   "group": "threads",
+   "case": "ha-1080-ser8",
+   "mode": "cpu",
+   "threads": 1,
+   "rep": 3,
+   "load1_before": 6.03,
+   "bytes": 1308441778
+  },
+  {
+   "ok": true,
+   "wall": 87.263,
+   "rss_mb": 159,
+   "cpu_s": 87.25,
+   "other_cores": 0.02,
+   "loaded": false,
+   "busy_limit": 0.5,
+   "vram_mb": null,
+   "stages": {
+    "open": 0.04,
+    "scoring frames": 8.14,
+    "building reference": 0.39,
+    "aligning frames": 17.04,
+    "measuring alignment points": 52.54,
+    "stacking": 6.41,
+    "finishing": 0.05,
+    "write": 0.04,
+    "total": 87.2
+   },
+   "busy": {
+    "decode": [
+     2.54,
+     2.54
+    ],
+    "debayer": [
+     5.87,
+     5.87
+    ],
+    "quality": [
+     3.5,
+     3.5
+    ],
+    "global align": [
+     17.4,
+     17.4
+    ],
+    "AP align": [
+     52.54,
+     52.54
+    ],
+    "stack": [
+     4.23,
+     4.23
+    ],
+    "finish": [
+     0.02,
+     0.02
+    ]
+   },
+   "frames": 631,
+   "kept": 158,
+   "tail": null,
+   "group": "threads",
+   "case": "ha-1080-ser8",
+   "mode": "cpu",
+   "threads": 1,
+   "rep": 4,
+   "load1_before": 6.03,
+   "bytes": 1308441778
+  },
+  {
+   "ok": true,
+   "wall": 44.585,
+   "rss_mb": 235,
+   "cpu_s": 86.6,
+   "other_cores": 0.03,
+   "loaded": false,
+   "busy_limit": 0.5,
+   "vram_mb": null,
+   "stages": {
+    "open": 0.04,
+    "scoring frames": 4.13,
+    "building reference": 0.27,
+    "aligning frames": 8.65,
+    "measuring alignment points": 26.3,
+    "stacking": 3.34,
+    "finishing": 0.05,
+    "write": 0.04,
+    "total": 44.52
+   },
+   "busy": {
+    "decode": [
+     2.72,
+     1.36
+    ],
+    "debayer": [
+     6.1,
+     3.05
+    ],
+    "quality": [
+     3.46,
+     1.73
+    ],
+    "global align": [
+     17.37,
+     8.69
+    ],
+    "AP align": [
+     51.5,
+     25.75
+    ],
+    "stack": [
+     3.44,
+     1.72
+    ],
+    "finish": [
+     0.02,
+     0.01
+    ]
+   },
+   "frames": 631,
+   "kept": 158,
+   "tail": null,
+   "group": "threads",
+   "case": "ha-1080-ser8",
+   "mode": "cpu",
+   "threads": 2,
+   "rep": 0,
+   "load1_before": 1.21,
+   "bytes": 1308441778
+  },
+  {
+   "ok": true,
+   "wall": 44.729,
+   "rss_mb": 234,
+   "cpu_s": 86.53,
+   "other_cores": 0.03,
+   "loaded": false,
+   "busy_limit": 0.5,
+   "vram_mb": null,
+   "stages": {
+    "open": 0.04,
+    "scoring frames": 3.93,
+    "building reference": 0.25,
+    "aligning frames": 8.69,
+    "measuring alignment points": 26.6,
+    "stacking": 3.35,
+    "finishing": 0.05,
+    "write": 0.04,
+    "total": 44.66
+   },
+   "busy": {
+    "decode": [
+     2.67,
+     1.33
+    ],
+    "debayer": [
+     6.06,
+     3.03
+    ],
+    "quality": [
+     3.27,
+     1.63
+    ],
+    "global align": [
+     17.4,
+     8.7
+    ],
+    "AP align": [
+     51.7,
+     25.85
+    ],
+    "stack": [
+     3.46,
+     1.73
+    ],
+    "finish": [
+     0.02,
+     0.01
+    ]
+   },
+   "frames": 631,
+   "kept": 158,
+   "tail": null,
+   "group": "threads",
+   "case": "ha-1080-ser8",
+   "mode": "cpu",
+   "threads": 2,
+   "rep": 1,
+   "load1_before": 1.21,
+   "bytes": 1308441778
+  },
+  {
+   "ok": true,
+   "wall": 45.057,
+   "rss_mb": 244,
+   "cpu_s": 86.95,
+   "other_cores": 0.64,
+   "loaded": true,
+   "busy_limit": 0.5,
+   "vram_mb": null,
+   "stages": {
+    "open": 0.04,
+    "scoring frames": 4.08,
+    "building reference": 0.26,
+    "aligning frames": 8.66,
+    "measuring alignment points": 26.51,
+    "stacking": 3.56,
+    "finishing": 0.05,
+    "write": 0.04,
+    "total": 44.98
+   },
+   "busy": {
+    "decode": [
+     2.74,
+     1.37
+    ],
+    "debayer": [
+     6.14,
+     3.07
+    ],
+    "quality": [
+     3.44,
+     1.72
+    ],
+    "global align": [
+     17.36,
+     8.68
+    ],
+    "AP align": [
+     51.74,
+     25.87
+    ],
+    "stack": [
+     3.57,
+     1.79
+    ],
+    "finish": [
+     0.02,
+     0.01
+    ]
+   },
+   "frames": 631,
+   "kept": 158,
+   "tail": null,
+   "group": "threads",
+   "case": "ha-1080-ser8",
+   "mode": "cpu",
+   "threads": 2,
+   "rep": 2,
+   "load1_before": 1.21,
+   "bytes": 1308441778
+  },
+  {
+   "ok": true,
+   "wall": 45.462,
+   "rss_mb": 234,
+   "cpu_s": 87.6,
+   "other_cores": 0.04,
+   "loaded": false,
+   "busy_limit": 0.5,
+   "vram_mb": null,
+   "stages": {
+    "open": 0.05,
+    "scoring frames": 4.7,
+    "building reference": 0.26,
+    "aligning frames": 8.72,
+    "measuring alignment points": 26.46,
+    "stacking": 3.35,
+    "finishing": 0.05,
+    "write": 0.04,
+    "total": 45.38
+   },
+   "busy": {
+    "decode": [
+     3.32,
+     1.66
+    ],
+    "debayer": [
+     6.32,
+     3.16
+    ],
+    "quality": [
+     3.63,
+     1.81
+    ],
+    "global align": [
+     17.47,
+     8.74
+    ],
+    "AP align": [
+     51.75,
+     25.88
+    ],
+    "stack": [
+     3.45,
+     1.72
+    ],
+    "finish": [
+     0.02,
+     0.01
+    ]
+   },
+   "frames": 631,
+   "kept": 158,
+   "tail": null,
+   "group": "threads",
+   "case": "ha-1080-ser8",
+   "mode": "cpu",
+   "threads": 2,
+   "rep": 3,
+   "load1_before": 1.21,
+   "bytes": 1308441778
+  },
+  {
+   "ok": true,
+   "wall": 25.035,
+   "rss_mb": 416,
+   "cpu_s": 93.82,
+   "other_cores": 0.04,
+   "loaded": false,
+   "busy_limit": 0.5,
+   "vram_mb": null,
+   "stages": {
+    "open": 0.04,
+    "scoring frames": 2.22,
+    "building reference": 0.19,
+    "aligning frames": 4.46,
+    "measuring alignment points": 15.12,
+    "stacking": 1.76,
+    "finishing": 0.05,
+    "write": 0.04,
+    "total": 24.96
+   },
+   "busy": {
+    "decode": [
+     2.85,
+     0.71
+    ],
+    "debayer": [
+     6.18,
+     1.55
+    ],
+    "quality": [
+     3.76,
+     0.94
+    ],
+    "global align": [
+     17.58,
+     4.39
+    ],
+    "AP align": [
+     58.18,
+     14.54
+    ],
+    "stack": [
+     3.16,
+     0.79
+    ],
+    "finish": [
+     0.02,
+     0.01
+    ]
+   },
+   "frames": 631,
+   "kept": 158,
+   "tail": null,
+   "group": "threads",
+   "case": "ha-1080-ser8",
+   "mode": "cpu",
+   "threads": 4,
+   "rep": 0,
+   "load1_before": 5.53,
+   "bytes": 1308441778
+  },
+  {
+   "ok": true,
+   "wall": 25.095,
+   "rss_mb": 414,
+   "cpu_s": 93.83,
+   "other_cores": 0.05,
+   "loaded": false,
+   "busy_limit": 0.5,
+   "vram_mb": null,
+   "stages": {
+    "open": 0.04,
+    "scoring frames": 2.28,
+    "building reference": 0.19,
+    "aligning frames": 4.48,
+    "measuring alignment points": 15.04,
+    "stacking": 1.79,
+    "finishing": 0.05,
+    "write": 0.04,
+    "total": 25.02
+   },
+   "busy": {
+    "decode": [
+     2.9,
+     0.72
+    ],
+    "debayer": [
+     6.25,
+     1.56
+    ],
+    "quality": [
+     3.8,
+     0.95
+    ],
+    "global align": [
+     17.61,
+     4.4
+    ],
+    "AP align": [
+     57.92,
+     14.48
+    ],
+    "stack": [
+     3.2,
+     0.8
+    ],
+    "finish": [
+     0.02,
+     0.01
+    ]
+   },
+   "frames": 631,
+   "kept": 158,
+   "tail": null,
+   "group": "threads",
+   "case": "ha-1080-ser8",
+   "mode": "cpu",
+   "threads": 4,
+   "rep": 1,
+   "load1_before": 5.53,
+   "bytes": 1308441778
+  },
+  {
+   "ok": true,
+   "wall": 25.134,
+   "rss_mb": 414,
+   "cpu_s": 94.17,
+   "other_cores": 0.04,
+   "loaded": false,
+   "busy_limit": 0.5,
+   "vram_mb": null,
+   "stages": {
+    "open": 0.04,
+    "scoring frames": 2.23,
+    "building reference": 0.19,
+    "aligning frames": 4.44,
+    "measuring alignment points": 15.17,
+    "stacking": 1.8,
+    "finishing": 0.05,
+    "write": 0.03,
+    "total": 25.06
+   },
+   "busy": {
+    "decode": [
+     2.88,
+     0.72
+    ],
+    "debayer": [
+     6.21,
+     1.55
+    ],
+    "quality": [
+     3.79,
+     0.95
+    ],
+    "global align": [
+     17.6,
+     4.4
+    ],
+    "AP align": [
+     58.36,
+     14.59
+    ],
+    "stack": [
+     3.21,
+     0.8
+    ],
+    "finish": [
+     0.02,
+     0.01
+    ]
+   },
+   "frames": 631,
+   "kept": 158,
+   "tail": null,
+   "group": "threads",
+   "case": "ha-1080-ser8",
+   "mode": "cpu",
+   "threads": 4,
+   "rep": 2,
+   "load1_before": 5.53,
+   "bytes": 1308441778
+  },
+  {
+   "ok": true,
+   "wall": 15.039,
+   "rss_mb": 758,
+   "cpu_s": 101.34,
+   "other_cores": 0.03,
+   "loaded": false,
+   "busy_limit": 0.5,
+   "vram_mb": null,
+   "stages": {
+    "open": 0.04,
+    "scoring frames": 2.05,
+    "building reference": 0.19,
+    "aligning frames": 2.38,
+    "measuring alignment points": 8.42,
+    "stacking": 0.99,
+    "finishing": 0.05,
+    "write": 0.04,
+    "total": 14.95
+   },
+   "busy": {
+    "decode": [
+     3.28,
+     0.41
+    ],
+    "debayer": [
+     6.98,
+     0.87
+    ],
+    "quality": [
+     5.53,
+     0.69
+    ],
+    "global align": [
+     18.25,
+     2.28
+    ],
+    "AP align": [
+     62.59,
+     7.82
+    ],
+    "stack": [
+     3.19,
+     0.4
+    ],
+    "finish": [
+     0.02,
+     0.0
+    ]
+   },
+   "frames": 631,
+   "kept": 158,
+   "tail": null,
+   "group": "threads",
+   "case": "ha-1080-ser8",
+   "mode": "cpu",
+   "threads": 8,
+   "rep": 0,
+   "load1_before": 3.85,
+   "bytes": 1308441778
+  },
+  {
+   "ok": true,
+   "wall": 15.215,
+   "rss_mb": 757,
+   "cpu_s": 104.11,
+   "other_cores": 0.02,
+   "loaded": false,
+   "busy_limit": 0.5,
+   "vram_mb": null,
+   "stages": {
+    "open": 0.04,
+    "scoring frames": 1.89,
+    "building reference": 0.19,
+    "aligning frames": 2.36,
+    "measuring alignment points": 8.78,
+    "stacking": 1.0,
+    "finishing": 0.05,
+    "write": 0.03,
+    "total": 15.14
+   },
+   "busy": {
+    "decode": [
+     3.25,
+     0.41
+    ],
+    "debayer": [
+     6.85,
+     0.86
+    ],
+    "quality": [
+     5.39,
+     0.67
+    ],
+    "global align": [
+     18.3,
+     2.29
+    ],
+    "AP align": [
+     66.58,
+     8.32
+    ],
+    "stack": [
+     3.19,
+     0.4
+    ],
+    "finish": [
+     0.02,
+     0.0
+    ]
+   },
+   "frames": 631,
+   "kept": 158,
+   "tail": null,
+   "group": "threads",
+   "case": "ha-1080-ser8",
+   "mode": "cpu",
+   "threads": 8,
+   "rep": 1,
+   "load1_before": 3.85,
+   "bytes": 1308441778
+  },
+  {
+   "ok": true,
+   "wall": 14.915,
+   "rss_mb": 760,
+   "cpu_s": 101.18,
+   "other_cores": 0.02,
+   "loaded": false,
+   "busy_limit": 0.5,
+   "vram_mb": null,
+   "stages": {
+    "open": 0.04,
+    "scoring frames": 1.99,
+    "building reference": 0.21,
+    "aligning frames": 2.4,
+    "measuring alignment points": 8.23,
+    "stacking": 1.03,
+    "finishing": 0.05,
+    "write": 0.03,
+    "total": 14.84
+   },
+   "busy": {
+    "decode": [
+     3.33,
+     0.42
+    ],
+    "debayer": [
+     6.97,
+     0.87
+    ],
+    "quality": [
+     5.67,
+     0.71
+    ],
+    "global align": [
+     18.5,
+     2.31
+    ],
+    "AP align": [
+     61.03,
+     7.63
+    ],
+    "stack": [
+     3.23,
+     0.4
+    ],
+    "finish": [
+     0.02,
+     0.0
+    ]
+   },
+   "frames": 631,
+   "kept": 158,
+   "tail": null,
+   "group": "threads",
+   "case": "ha-1080-ser8",
+   "mode": "cpu",
+   "threads": 8,
+   "rep": 2,
+   "load1_before": 3.85,
+   "bytes": 1308441778
+  },
+  {
+   "ok": true,
+   "wall": 4.798,
+   "rss_mb": 752,
+   "cpu_s": 27.5,
+   "other_cores": 0.02,
+   "loaded": false,
+   "busy_limit": 0.5,
+   "vram_mb": null,
+   "stages": {
+    "open": 0.07,
+    "scoring frames": 0.8,
+    "building reference": 0.2,
+    "aligning frames": 0.61,
+    "measuring alignment points": 2.12,
+    "stacking": 0.3,
+    "finishing": 0.05,
+    "write": 0.03,
+    "total": 4.72
+   },
+   "busy": {
+    "decode": [
+     2.41,
+     0.3
+    ],
+    "debayer": [
+     2.06,
+     0.26
+    ],
+    "quality": [
+     1.4,
+     0.17
+    ],
+    "global align": [
+     4.74,
+     0.59
+    ],
+    "AP align": [
+     15.82,
+     1.98
+    ],
+    "stack": [
+     0.85,
+     0.11
+    ],
+    "finish": [
+     0.02,
+     0.0
+    ]
+   },
+   "frames": 157,
+   "kept": 39,
+   "tail": null,
+   "group": "frames",
+   "case": "ha-1080-ser8@157",
+   "mode": "cpu",
+   "threads": 0,
+   "rep": 0,
+   "load1_before": 4.93,
+   "bytes": 325555378
+  },
+  {
+   "ok": true,
+   "wall": 4.603,
+   "rss_mb": 753,
+   "cpu_s": 27.15,
+   "other_cores": 0.02,
+   "loaded": false,
+   "busy_limit": 0.5,
+   "vram_mb": null,
+   "stages": {
+    "open": 0.04,
+    "scoring frames": 0.61,
+    "building reference": 0.2,
+    "aligning frames": 0.62,
+    "measuring alignment points": 2.16,
+    "stacking": 0.3,
+    "finishing": 0.05,
+    "write": 0.03,
+    "total": 4.52
+   },
+   "busy": {
+    "decode": [
+     1.04,
+     0.13
+    ],
+    "debayer": [
+     2.12,
+     0.27
+    ],
+    "quality": [
+     1.48,
+     0.18
+    ],
+    "global align": [
+     4.8,
+     0.6
+    ],
+    "AP align": [
+     16.27,
+     2.03
+    ],
+    "stack": [
+     0.8,
+     0.1
+    ],
+    "finish": [
+     0.02,
+     0.0
+    ]
+   },
+   "frames": 157,
+   "kept": 39,
+   "tail": null,
+   "group": "frames",
+   "case": "ha-1080-ser8@157",
+   "mode": "cpu",
+   "threads": 0,
+   "rep": 1,
+   "load1_before": 4.93,
+   "bytes": 325555378
+  },
+  {
+   "ok": true,
+   "wall": 4.483,
+   "rss_mb": 757,
+   "cpu_s": 26.14,
+   "other_cores": 0.04,
+   "loaded": false,
+   "busy_limit": 0.5,
+   "vram_mb": null,
+   "stages": {
+    "open": 0.04,
+    "scoring frames": 0.58,
+    "building reference": 0.19,
+    "aligning frames": 0.67,
+    "measuring alignment points": 2.0,
+    "stacking": 0.29,
+    "finishing": 0.05,
+    "write": 0.03,
+    "total": 4.4
+   },
+   "busy": {
+    "decode": [
+     0.97,
+     0.12
+    ],
+    "debayer": [
+     2.11,
+     0.26
+    ],
+    "quality": [
+     1.39,
+     0.17
+    ],
+    "global align": [
+     4.81,
+     0.6
+    ],
+    "AP align": [
+     14.79,
+     1.85
+    ],
+    "stack": [
+     0.82,
+     0.1
+    ],
+    "finish": [
+     0.02,
+     0.0
+    ]
+   },
+   "frames": 157,
+   "kept": 39,
+   "tail": null,
+   "group": "frames",
+   "case": "ha-1080-ser8@157",
+   "mode": "cpu",
+   "threads": 0,
+   "rep": 2,
+   "load1_before": 4.93,
+   "bytes": 325555378
+  },
+  {
+   "ok": true,
+   "wall": 8.436,
+   "rss_mb": 753,
+   "cpu_s": 53.53,
+   "other_cores": 0.04,
+   "loaded": false,
+   "busy_limit": 0.5,
+   "vram_mb": null,
+   "stages": {
+    "open": 0.06,
+    "scoring frames": 1.35,
+    "building reference": 0.19,
+    "aligning frames": 1.23,
+    "measuring alignment points": 4.28,
+    "stacking": 0.52,
+    "finishing": 0.06,
+    "write": 0.03,
+    "total": 8.36
+   },
+   "busy": {
+    "decode": [
+     4.0,
+     0.5
+    ],
+    "debayer": [
+     3.65,
+     0.46
+    ],
+    "quality": [
+     2.82,
+     0.35
+    ],
+    "global align": [
+     9.36,
+     1.17
+    ],
+    "AP align": [
+     32.33,
+     4.04
+    ],
+    "stack": [
+     1.58,
+     0.2
+    ],
+    "finish": [
+     0.02,
+     0.0
+    ]
+   },
+   "frames": 315,
+   "kept": 79,
+   "tail": null,
+   "group": "frames",
+   "case": "ha-1080-ser8@315",
+   "mode": "cpu",
+   "threads": 0,
+   "rep": 0,
+   "load1_before": 4.43,
+   "bytes": 653184178
+  },
+  {
+   "ok": true,
+   "wall": 7.964,
+   "rss_mb": 755,
+   "cpu_s": 51.51,
+   "other_cores": 0.03,
+   "loaded": false,
+   "busy_limit": 0.5,
+   "vram_mb": null,
+   "stages": {
+    "open": 0.04,
+    "scoring frames": 1.08,
+    "building reference": 0.2,
+    "aligning frames": 1.26,
+    "measuring alignment points": 4.08,
+    "stacking": 0.52,
+    "finishing": 0.06,
+    "write": 0.03,
+    "total": 7.88
+   },
+   "busy": {
+    "decode": [
+     1.85,
+     0.23
+    ],
+    "debayer": [
+     3.81,
+     0.48
+    ],
+    "quality": [
+     2.84,
+     0.35
+    ],
+    "global align": [
+     9.45,
+     1.18
+    ],
+    "AP align": [
+     30.47,
+     3.81
+    ],
+    "stack": [
+     1.57,
+     0.2
+    ],
+    "finish": [
+     0.02,
+     0.0
+    ]
+   },
+   "frames": 315,
+   "kept": 79,
+   "tail": null,
+   "group": "frames",
+   "case": "ha-1080-ser8@315",
+   "mode": "cpu",
+   "threads": 0,
+   "rep": 1,
+   "load1_before": 4.43,
+   "bytes": 653184178
+  },
+  {
+   "ok": true,
+   "wall": 8.173,
+   "rss_mb": 752,
+   "cpu_s": 53.28,
+   "other_cores": 0.03,
+   "loaded": false,
+   "busy_limit": 0.5,
+   "vram_mb": null,
+   "stages": {
+    "open": 0.04,
+    "scoring frames": 1.11,
+    "building reference": 0.19,
+    "aligning frames": 1.18,
+    "measuring alignment points": 4.32,
+    "stacking": 0.55,
+    "finishing": 0.06,
+    "write": 0.03,
+    "total": 8.09
+   },
+   "busy": {
+    "decode": [
+     1.88,
+     0.23
+    ],
+    "debayer": [
+     3.87,
+     0.48
+    ],
+    "quality": [
+     2.93,
+     0.37
+    ],
+    "global align": [
+     9.25,
+     1.16
+    ],
+    "AP align": [
+     32.83,
+     4.1
+    ],
+    "stack": [
+     1.67,
+     0.21
+    ],
+    "finish": [
+     0.02,
+     0.0
+    ]
+   },
+   "frames": 315,
+   "kept": 79,
+   "tail": null,
+   "group": "frames",
+   "case": "ha-1080-ser8@315",
+   "mode": "cpu",
+   "threads": 0,
+   "rep": 2,
+   "load1_before": 4.43,
+   "bytes": 653184178
+  }
+ ]
+}

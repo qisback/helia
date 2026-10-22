@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200" role="img" aria-labelledby="title desc">
+  <title id="title">HELIA solar lucky-imaging logo</title>
+  <desc id="desc">A stylised golden Sun behind a sequence of monochrome solar frames, enclosed by orbital arcs, above the HELIA wordmark.</desc>
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffb51b"/>
+      <stop offset=".48" stop-color="#ff7a00"/>
+      <stop offset="1" stop-color="#ffd95a"/>
+    </linearGradient>
+    <linearGradient id="silver" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset=".55" stop-color="#c9cdd2"/>
+      <stop offset="1" stop-color="#747b84"/>
+    </linearGradient>
+    <radialGradient id="sunFill" cx=".42" cy=".38" r=".72">
+      <stop offset="0" stop-color="#ffcf48"/>
+      <stop offset=".55" stop-color="#ff8a08"/>
+      <stop offset=".83" stop-color="#e95000"/>
+      <stop offset="1" stop-color="#7c2500"/>
+    </radialGradient>
+    <radialGradient id="monoFill" cx=".42" cy=".35" r=".75">
+      <stop offset="0" stop-color="#bfc5cc"/>
+      <stop offset=".6" stop-color="#606872"/>
+      <stop offset="1" stop-color="#11151a"/>
+    </radialGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="13" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <clipPath id="sunClip"><circle cx="650" cy="420" r="300"/></clipPath>
+    <clipPath id="frameClip"><path d="M435 315 L680 240 L680 685 L435 610 Z"/></clipPath>
+  </defs>
+
+  <rect width="1200" height="1200" fill="#050608"/>
+  <!-- Orbital rings -->
+  <path d="M205 354 A455 455 0 0 1 1003 278" fill="none" stroke="url(#gold)" stroke-width="17" stroke-linecap="round"/>
+  <path d="M1025 405 A440 440 0 0 1 255 660" fill="none" stroke="url(#silver)" stroke-width="13" stroke-linecap="round"/>
+  <path d="M1007 455 A390 390 0 0 1 338 730" fill="none" stroke="#4c535d" stroke-width="4" opacity=".65"/>
+
+  <!-- Sun disc and stylised surface detail -->
+  <circle cx="650" cy="420" r="305" fill="#ff8a00" opacity=".2" filter="url(#glow)"/>
+  <circle cx="650" cy="420" r="300" fill="url(#sunFill)" stroke="#ffb21c" stroke-width="5"/>
+  <g clip-path="url(#sunClip)" fill="none" stroke-linecap="round">
+    <path d="M400 280 Q475 205 548 270 T700 252 T895 300" stroke="#ffd35a" stroke-width="8" opacity=".65"/>
+    <path d="M375 365 Q450 315 505 355 T650 345 T920 375" stroke="#ffdb72" stroke-width="5" opacity=".6"/>
+    <path d="M390 470 Q460 405 540 460 T680 445 T930 485" stroke="#a93700" stroke-width="13" opacity=".7"/>
+    <path d="M420 555 Q490 495 560 535 T710 535 T890 570" stroke="#ffd45c" stroke-width="7" opacity=".65"/>
+    <path d="M500 150 Q460 240 520 300 T500 440 T545 650" stroke="#ffbd28" stroke-width="7" opacity=".65"/>
+    <path d="M690 120 Q640 225 700 300 T685 450 T735 680" stroke="#c94300" stroke-width="12" opacity=".6"/>
+    <path d="M800 170 Q745 260 800 335 T790 475 T830 640" stroke="#ffcf4a" stroke-width="6" opacity=".65"/>
+    <circle cx="750" cy="395" r="34" stroke="#ffdc65" stroke-width="12" opacity=".9"/>
+    <circle cx="750" cy="395" r="13" stroke="#8b2c00" stroke-width="8"/>
+    <circle cx="555" cy="500" r="25" stroke="#ffdc65" stroke-width="8" opacity=".75"/>
+    <circle cx="555" cy="500" r="8" stroke="#8b2c00" stroke-width="6"/>
+  </g>
+
+  <!-- Layered captured frames: progressively sharper toward the front -->
+  <g stroke="#e6e9ed" stroke-width="5" stroke-linejoin="round">
+    <path d="M105 420 L310 330 L310 590 L105 500 Z" fill="#171a20" opacity=".65"/>
+    <path d="M150 400 L355 310 L355 610 L150 520 Z" fill="#1a1e24" opacity=".8"/>
+    <path d="M205 375 L410 295 L410 630 L205 545 Z" fill="#242a31"/>
+    <path d="M265 350 L470 275 L470 650 L265 570 Z" fill="#161a20"/>
+    <path d="M330 330 L535 255 L535 670 L330 595 Z" fill="#0b0e12"/>
+    <path d="M405 315 L680 240 L680 685 L405 610 Z" fill="#080a0d"/>
+  </g>
+  <g clip-path="url(#frameClip)">
+    <circle cx="680" cy="460" r="205" fill="url(#monoFill)" stroke="#f4f6f8" stroke-width="8"/>
+    <g fill="none" stroke="#dce1e6" stroke-linecap="round">
+      <path d="M495 365 Q555 300 620 355 T770 345" stroke-width="5" opacity=".8"/>
+      <path d="M480 430 Q555 390 605 430 T775 420" stroke-width="7" opacity=".7"/>
+      <path d="M485 500 Q545 450 615 500 T785 495" stroke-width="4" opacity=".8"/>
+      <path d="M515 555 Q570 515 635 550 T770 560" stroke-width="6" opacity=".7"/>
+      <path d="M625 265 Q590 340 635 390 T625 520 T665 650" stroke-width="5" opacity=".7"/>
+      <path d="M715 255 Q675 330 720 395 T710 525 T750 655" stroke-width="5" opacity=".65"/>
+    </g>
+    <path d="M575 410 C600 380 625 390 638 420 C650 450 625 465 605 455 C590 448 590 435 575 410Z" fill="#10151b"/>
+    <path d="M700 505 C725 475 750 490 760 515 C770 540 745 550 725 540Z" fill="#151a20"/>
+  </g>
+  <!-- Fine highlight on the leading frame -->
+  <path d="M405 315 L680 240 L680 685 L405 610 Z" fill="none" stroke="url(#silver)" stroke-width="5" stroke-linejoin="round"/>
+
+  <!-- Upper-right solar flare -->
+  <g transform="translate(936 197)" filter="url(#glow)">
+    <path d="M0 -78 L8 -9 L78 0 L8 8 L0 78 L-8 8 L-78 0 L-8 -9 Z" fill="#fff0a0"/>
+    <circle r="12" fill="#fff"/>
+  </g>
+
+  <!-- Wordmark -->
+  <g fill="url(#silver)" stroke="#f4f5f7" stroke-width="1.5" stroke-linejoin="round">
+    <path d="M135 930 H174 V990 H280 V930 H319 V1070 H280 V1023 H174 V1070 H135 Z"/>
+    <path d="M365 930 H510 V965 H404 V985 H497 V1018 H404 V1035 H510 V1070 H365 Z"/>
+    <path d="M548 930 H587 V1035 H680 V1070 H548 Z"/>
+    <path d="M713 930 H752 V1070 H713 Z"/>
+    <path d="M775 1070 L870 915 L965 1070 H920 L870 987 L820 1070 Z"/>
+  </g>
+  <circle cx="870" cy="1042" r="13" fill="#ffad0a" filter="url(#glow)"/>
+</svg>

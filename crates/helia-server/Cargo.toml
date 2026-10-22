@@ -1,0 +1,42 @@
+[package]
+name = "helia-server"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+keywords.workspace = true
+categories.workspace = true
+authors.workspace = true
+description = "Helia HTTP/JSON API server"
+publish = false
+
+[lints]
+workspace = true
+
+[dependencies]
+axum = { version = "0.8.9", features = ["ws", "macros"] }
+helia-core = { version = "0.7.1", path = "../helia-core" }
+helia-gpu = { version = "0.7.1", path = "../helia-gpu" }
+helia-report = { version = "0.7.1", path = "../helia-report" }
+png = "0.18.1"
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.154"
+subtle = "2.6.1"
+thiserror = "2.0.21"
+tokio = { version = "1.53.3", features = ["rt-multi-thread", "macros", "sync", "net", "time", "fs", "signal"] }
+tokio-util = { version = "0.7.20", features = ["io"] }
+tower-http = { version = "0.7.1", features = ["cors"] }
+utoipa = "6.0.0"
+
+[dev-dependencies]
+futures-util = "0.3.34"
+helia-core = { version = "0.7.1", path = "../helia-core", features = ["testutil"] }
+http-body-util = "0.1.5"
+png = "0.18.1"
+tempfile = "3.27.0"
+tiff = { version = "0.11.3", default-features = false }
+tokio-tungstenite = "0.30.0"
+tower = "0.5.3"

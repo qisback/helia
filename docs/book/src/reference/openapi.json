@@ -1,0 +1,4606 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Helia API",
+    "description": "Solar lucky-imaging stacker. All paths are relative to the server's data root.",
+    "contact": {
+      "name": "Laurence Horrocks-Barlow"
+    },
+    "license": {
+      "name": "GPL-3.0-or-later"
+    },
+    "version": "0.7.1"
+  },
+  "paths": {
+    "/api/v1/captures/frame": {
+      "get": {
+        "tags": [
+          "captures"
+        ],
+        "summary": "One frame of a capture as an auto-stretched 8-bit greyscale PNG.",
+        "operationId": "frame",
+        "parameters": [
+          {
+            "name": "path",
+            "in": "query",
+            "description": "Capture path relative to the data root.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "index",
+            "in": "query",
+            "description": "Frame index (default 0).",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          {
+            "name": "channel",
+            "in": "query",
+            "description": "`r`, `g`, `b` or `lum` (default) for Bayer captures.",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ChannelArg"
+            }
+          },
+          {
+            "name": "max_width",
+            "in": "query",
+            "description": "Downscale to at most this width (16 to 8192).",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          {
+            "name": "bayer",
+            "in": "query",
+            "description": "Bayer handling, as for jobs: `auto` (default), `none` or a pattern.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "bit_depth",
+            "in": "query",
+            "description": "Bits per sample instead of the SER header's.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0
+            }
+          },
+          {
+            "name": "endian",
+            "in": "query",
+            "description": "`little` or `big`.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "flip_rows",
+            "in": "query",
+            "description": "Read the rows bottom to top.",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "8-bit greyscale PNG",
+            "content": {
+              "image/png": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/captures/inspect": {
+      "post": {
+        "tags": [
+          "captures"
+        ],
+        "summary": "Header information for a `.ser`, `.avi` or video capture, without reading frames.",
+        "operationId": "inspect",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InspectRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CaptureInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/docs": {
+      "get": {
+        "tags": [
+          "meta"
+        ],
+        "summary": "A small HTML page that lists the operations of the `OpenAPI` document; needs no token.",
+        "operationId": "docs",
+        "responses": {
+          "200": {
+            "content": {
+              "text/html": {}
+            }
+          }
+        },
+        "security": [
+          {}
+        ]
+      }
+    },
+    "/api/v1/health": {
+      "get": {
+        "tags": [
+          "meta"
+        ],
+        "summary": "Liveness probe. Always answers `{\"status\":\"ok\"}`; needs no token.",
+        "operationId": "health",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {}
+        ]
+      }
+    },
+    "/api/v1/jobs": {
+      "get": {
+        "tags": [
+          "jobs"
+        ],
+        "summary": "Remembered jobs, oldest first. The newest 100 finished jobs are kept.",
+        "operationId": "list_jobs",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/JobView"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "jobs"
+        ],
+        "summary": "Queue a stack. Answers `202` with the job; poll it or follow its events.",
+        "operationId": "create_job",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JobRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobView"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "queue full (`queue_full`)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/jobs/{id}": {
+      "get": {
+        "tags": [
+          "jobs"
+        ],
+        "summary": "One job: state, stage, progress, timings and summary.",
+        "operationId": "get_job",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "job id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobView"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "unknown job id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "jobs"
+        ],
+        "summary": "Cancel a queued or running job, or forget a finished one.",
+        "description": "A finished job's output file stays on disk.",
+        "operationId": "delete_job",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "job id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 0
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "cancellation requested",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobView"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "finished job forgotten"
+          },
+          "404": {
+            "description": "unknown job id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/jobs/{id}/events": {
+      "get": {
+        "tags": [
+          "jobs"
+        ],
+        "summary": "WebSocket stream of job events: a snapshot, then state and progress messages.",
+        "description": "The server closes the stream after the final state message.",
+        "operationId": "job_events",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "job id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 0
+            }
+          }
+        ],
+        "responses": {
+          "101": {
+            "description": "WebSocket; text frames are JobEvent JSON"
+          }
+        }
+      }
+    },
+    "/api/v1/jobs/{id}/preview.png": {
+      "get": {
+        "tags": [
+          "jobs"
+        ],
+        "summary": "An 8-bit PNG of the result (square-root stretch). Only once the job has succeeded.",
+        "operationId": "job_preview",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "job id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 0
+            }
+          },
+          {
+            "name": "max_width",
+            "in": "query",
+            "description": "Downscale to at most this width (16 to 8192; stored previews are at most 2048 wide).",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "PNG preview",
+            "content": {
+              "image/png": {}
+            }
+          },
+          "409": {
+            "description": "the job has not succeeded (`not_ready`)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/jobs/{id}/report": {
+      "get": {
+        "tags": [
+          "jobs"
+        ],
+        "summary": "The science report of a finished job that asked for `report`: one\nself-contained HTML page with the figures, tables and settings.",
+        "operationId": "job_report",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "job id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the report page",
+            "content": {
+              "text/html": {}
+            }
+          },
+          "404": {
+            "description": "the job did not ask for a report (`report_missing`)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "the job has not succeeded (`not_ready`)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/jobs/{id}/report/{file}": {
+      "get": {
+        "tags": [
+          "jobs"
+        ],
+        "summary": "One file of the science report: a figure (`quality-sorted.png`), its data\n(`frame-quality.csv`, `frame-quality.json`) or `fits-header.txt`. The files\nare listed in `summary.report.files`.",
+        "operationId": "job_report_file",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "job id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 0
+            }
+          },
+          {
+            "name": "file",
+            "in": "path",
+            "description": "file name from `summary.report.files`",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the file, with the matching content type"
+          },
+          "404": {
+            "description": "no such report or file (`report_missing`, `report_file_missing`)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "the job has not succeeded (`not_ready`)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/jobs/{id}/result": {
+      "get": {
+        "tags": [
+          "jobs"
+        ],
+        "summary": "The written TIFF or FITS file, streamed. Only once the job has succeeded.",
+        "operationId": "job_result",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "job id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the stacked TIFF, PNG or FITS file"
+          },
+          "409": {
+            "description": "the job has not succeeded (`not_ready`)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/jobs/{id}/sunspots.csv": {
+      "get": {
+        "tags": [
+          "jobs"
+        ],
+        "summary": "The sunspot table of a finished job that asked for `sunspots`, as CSV.",
+        "operationId": "job_sunspots_csv",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "job id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "one row per spot",
+            "content": {
+              "text/csv": {}
+            }
+          },
+          "404": {
+            "description": "the job did not ask for sunspots (`sunspots_missing`)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "the job has not succeeded (`not_ready`)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/jobs/{id}/sunspots.png": {
+      "get": {
+        "tags": [
+          "jobs"
+        ],
+        "summary": "The sunspot overlay of a finished job that asked for `sunspots`: the flattened\ndisc with penumbra, umbra and group numbers drawn on it.",
+        "operationId": "job_sunspots_png",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "job id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "overlay PNG",
+            "content": {
+              "image/png": {}
+            }
+          },
+          "404": {
+            "description": "the job did not ask for sunspots (`sunspots_missing`)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "the job has not succeeded (`not_ready`)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/mosaic": {
+      "post": {
+        "tags": [
+          "sequences"
+        ],
+        "summary": "Join panels of the Sun into a full-disc mosaic.",
+        "description": "Stack every panel first, with the same settings, using ordinary jobs. The\nrequest runs to the end before it answers.",
+        "operationId": "mosaic",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MosaicRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MosaicResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "`output` exists and `overwrite` is false (`output_exists`)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "bad settings, panels that do not match, or no time for a derotation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/openapi.json": {
+      "get": {
+        "tags": [
+          "meta"
+        ],
+        "summary": "This API as an `OpenAPI` document.",
+        "operationId": "openapi_json",
+        "responses": {
+          "200": {
+            "description": "OpenAPI 3 document"
+          }
+        }
+      }
+    },
+    "/api/v1/presets": {
+      "get": {
+        "tags": [
+          "meta"
+        ],
+        "summary": "`GET /presets`: the filter presets, their recommended settings and colours.",
+        "operationId": "presets",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PresetList"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/presets/{id}/lut": {
+      "get": {
+        "tags": [
+          "meta"
+        ],
+        "summary": "A preset's colour table as a file other programs read.",
+        "operationId": "preset_lut",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "preset id, see `GET /presets`",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "description": "`cube` (default), `csv`, `imagej` or `png`.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Entries, 2 to 4096 (default 256; an `imagej` table always has 256).",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          {
+            "name": "invert",
+            "in": "query",
+            "description": "Invert before colouring.",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "strength",
+            "in": "query",
+            "description": "Mix of colour and grey, 0 to 1 (default 1).",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "format": "float"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the table: a .cube, .csv, ImageJ .lut or a PNG strip"
+          },
+          "404": {
+            "description": "no such preset",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "a bad format, size or strength",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/solar-derotation": {
+      "post": {
+        "tags": [
+          "sequences"
+        ],
+        "summary": "Bring images of the Sun to one time by its differential rotation.",
+        "description": "Each image is derotated on its own, about the disc fitted to it; the\nresult is not shifted, so use the time-lapse (or a mosaic) to register them.",
+        "operationId": "solar_derotation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SolarDerotationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SolarDerotationResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "a result exists and `overwrite` is false (`output_exists`)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "bad settings, no time, or no clear disc",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/timelapse": {
+      "post": {
+        "tags": [
+          "sequences"
+        ],
+        "summary": "Register stacked images to each other and write a time-lapse: numbered\nframes, a registration table and a movie.",
+        "description": "Stack every capture first, with the same settings, using ordinary jobs. The\nrequest runs to the end before it answers; a long series with an MP4 can take\na while.",
+        "operationId": "timelapse",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TimelapseRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TimelapseResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "`output` already holds a time-lapse and `overwrite` is false (`output_exists`)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "bad settings, fewer than two inputs, or an input that is not a stacked image",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/version": {
+      "get": {
+        "tags": [
+          "meta"
+        ],
+        "summary": "Server version, backend availability, limits and whether a token is required.",
+        "description": "The GPU is probed once, on first use.",
+        "operationId": "version",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VersionInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AlignmentSummary": {
+        "type": "object",
+        "description": "Global alignment: the method that ran, why, and its confidence.",
+        "required": [
+          "requested",
+          "method",
+          "reason",
+          "fallbacks",
+          "sampled"
+        ],
+        "properties": {
+          "confidence": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "float",
+            "description": "Mean confidence of the frames, 0 to 1. Absent when it was not measured."
+          },
+          "confidence_min": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "float",
+            "description": "Least confidence of any frame, 0 to 1."
+          },
+          "fallbacks": {
+            "type": "integer",
+            "description": "Frames that wanted the limb fit but were aligned by phase correlation.",
+            "minimum": 0
+          },
+          "limb": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "type": "number",
+              "format": "float"
+            },
+            "description": "Fitted limb of the reference: centre x, centre y and radius, pixels."
+          },
+          "method": {
+            "type": "string",
+            "description": "What ran: `limb` or `phase`."
+          },
+          "reason": {
+            "type": "string",
+            "description": "Why, in a sentence (for `auto`, whether the full disc was in view)."
+          },
+          "requested": {
+            "type": "string",
+            "description": "What `config.align` asked for: `auto`, `phase` or `limb`."
+          },
+          "sampled": {
+            "type": "boolean",
+            "description": "The confidence comes from a sample of the frames (a GPU run)."
+          }
+        }
+      },
+      "AutoApSummary": {
+        "type": "object",
+        "description": "What automatic alignment points chose and what they were based on.",
+        "required": [
+          "size",
+          "step",
+          "search_radius",
+          "text"
+        ],
+        "properties": {
+          "arcsec_per_pixel": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "float",
+            "description": "Image scale from the fitted limb, arcseconds per pixel. Absent when\nthere was no limb."
+          },
+          "search_radius": {
+            "type": "integer",
+            "description": "Search radius around the global shift, pixels.",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "description": "Window edge, pixels.",
+            "minimum": 0
+          },
+          "step": {
+            "type": "integer",
+            "description": "Distance between window centres, pixels.",
+            "minimum": 0
+          },
+          "text": {
+            "type": "string",
+            "description": "The choice in a sentence."
+          },
+          "warp_px": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "float",
+            "description": "Local warp of the seeing, pixels (root mean square distance of an\nalignment point's shift from its frame's median). Absent when too few\npoints locked."
+          }
+        }
+      },
+      "BackendArg": {
+        "type": "string",
+        "description": "Compute backend request.",
+        "enum": [
+          "auto",
+          "cpu",
+          "gpu"
+        ]
+      },
+      "Backends": {
+        "type": "object",
+        "description": "Backend availability.",
+        "required": [
+          "cpu",
+          "gpu"
+        ],
+        "properties": {
+          "cpu": {
+            "$ref": "#/components/schemas/CpuInfo",
+            "description": "CPU reference path."
+          },
+          "gpu": {
+            "$ref": "#/components/schemas/GpuInfo",
+            "description": "wgpu path."
+          }
+        }
+      },
+      "BuildDetails": {
+        "type": "object",
+        "description": "How the server binary was built.",
+        "required": [
+          "commit",
+          "dirty",
+          "built",
+          "profile",
+          "target",
+          "rust",
+          "wgpu"
+        ],
+        "properties": {
+          "built": {
+            "type": "string",
+            "description": "Build time, UTC."
+          },
+          "commit": {
+            "type": "string",
+            "description": "Short git commit hash (`unknown` outside a git checkout)."
+          },
+          "dirty": {
+            "type": "boolean",
+            "description": "Built from a tree with uncommitted changes."
+          },
+          "profile": {
+            "type": "string",
+            "description": "Cargo profile."
+          },
+          "rust": {
+            "type": "string",
+            "description": "Compiler version."
+          },
+          "target": {
+            "type": "string",
+            "description": "Target triple."
+          },
+          "wgpu": {
+            "type": "string",
+            "description": "wgpu version."
+          }
+        }
+      },
+      "CalibrationConfig": {
+        "type": "object",
+        "description": "Calibration masters for a job. Each path is relative to the data root and\nnames a master file (FITS, from `helia calibrate`) or raw calibration\nframes to build one from (a SER, AVI or FITS file, or a folder of them).",
+        "properties": {
+          "bad_pixels": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Bad-pixel map: a FITS map from `helia calibrate`, or a text file with\nan `x y` pair (from 0, top-left) on each line.",
+            "default": null
+          },
+          "bias": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Master bias, or bias captures. Only used with `scale_dark`.",
+            "default": null
+          },
+          "combine": {
+            "type": "string",
+            "description": "How frames are combined into a master: `median`, `sigma` or `sigma:K`.\nDefault `sigma`.",
+            "default": "sigma"
+          },
+          "cosmetic": {
+            "type": "boolean",
+            "description": "Without `bad_pixels`, find the hot pixels of the dark and the cold ones\nof the flat and correct them. Default `true`.",
+            "default": true
+          },
+          "dark": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Master dark, or dark captures.",
+            "default": null
+          },
+          "displaced": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Captures of the Sun at many places on the sensor, to solve a flat from\nwhen there is no `flat` (self-calibration: dust and fringes included).\nThe dark is taken off first. Excludes `flat`.",
+            "default": null
+          },
+          "flat": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Master flat, or flat captures.",
+            "default": null
+          },
+          "flat_dark": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Dark captures at the exposure of the flats, when `flat` is captures.",
+            "default": null
+          },
+          "scale_dark": {
+            "type": "boolean",
+            "description": "Scale the dark by the ratio of the exposures (read from the `SharpCap`\nsidecar of the capture).",
+            "default": false
+          }
+        },
+        "additionalProperties": false
+      },
+      "CaptureInfo": {
+        "type": "object",
+        "description": "Header information for a capture.",
+        "required": [
+          "path",
+          "format",
+          "width",
+          "height",
+          "bit_depth",
+          "colour",
+          "frames",
+          "recommended",
+          "effective",
+          "overrides",
+          "notices"
+        ],
+        "properties": {
+          "bayer": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Bayer pattern (`rggb` ...) when raw colour."
+          },
+          "bit_depth": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Bits per sample.",
+            "minimum": 0
+          },
+          "codec": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Video codec (`h264`, ...), for video read through ffmpeg."
+          },
+          "colour": {
+            "type": "string",
+            "description": "Pixel layout: `mono`, `bayer`, `rgb`, `bgr`, or `video` for compressed\nvideo, which ffmpeg converts to luminance or one colour channel."
+          },
+          "detection": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/DetectionInfo",
+                "description": "The mosaic test, when it was run (a SER file labelled mono, no override)."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "effective": {
+            "$ref": "#/components/schemas/EffectiveInfo",
+            "description": "What Helia decodes the capture with, and where each value came from."
+          },
+          "format": {
+            "type": "string",
+            "description": "`ser`, `avi`, or the extension of a video read through ffmpeg (`mp4`,\n`mov`, `mkv`, `webm`, `m4v`; also `avi` for a compressed AVI)."
+          },
+          "fourcc": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "AVI `FourCC`."
+          },
+          "frame_rate": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "double",
+            "description": "Frames per second, for video."
+          },
+          "frames": {
+            "type": "integer",
+            "description": "Number of frames.",
+            "minimum": 0
+          },
+          "header": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/SerHeaderInfo",
+                "description": "The SER header exactly as written in the file."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "height": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Height in pixels.",
+            "minimum": 0
+          },
+          "instrument": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "SER instrument string."
+          },
+          "notices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NoticeInfo"
+            },
+            "description": "What to tell the user about how the file was read."
+          },
+          "observer": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "SER observer string."
+          },
+          "overrides": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The overrides in force, as command-line flags."
+          },
+          "path": {
+            "type": "string",
+            "description": "Capture path relative to the data root."
+          },
+          "quality_note": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Quality caveat when the input is lossy video, for example \"lossy 8-bit\n4:2:0 video (h264): fine for quick results, SER/AVI raw captures keep\nmore detail\"."
+          },
+          "recommended": {
+            "$ref": "#/components/schemas/Recommended",
+            "description": "The settings a job would use if none were given."
+          },
+          "sidecar": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/SidecarInfo",
+                "description": "`SharpCap` sidecar, when one sits next to the capture."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "telescope": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "SER telescope string."
+          },
+          "timestamps": {
+            "type": [
+              "boolean",
+              "null"
+            ],
+            "description": "SER per-frame timestamps present."
+          },
+          "width": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Width in pixels.",
+            "minimum": 0
+          }
+        }
+      },
+      "ChannelArg": {
+        "type": "string",
+        "description": "Colour plane taken from a Bayer capture.",
+        "enum": [
+          "r",
+          "g",
+          "b",
+          "lum"
+        ]
+      },
+      "ChannelSummary": {
+        "type": "object",
+        "description": "How red and blue were registered to green in a true-colour stack.",
+        "required": [
+          "channel",
+          "shift",
+          "confidence",
+          "applied"
+        ],
+        "properties": {
+          "applied": {
+            "type": "boolean",
+            "description": "The plane was moved. False when the shift was too small, too large or\nnot trustworthy."
+          },
+          "channel": {
+            "type": "string",
+            "description": "`red` or `blue`."
+          },
+          "confidence": {
+            "type": "number",
+            "format": "float",
+            "description": "Confidence of the correlation, 0 to 1."
+          },
+          "shift": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "float"
+            },
+            "description": "Shift measured, pixels: `[dx, dy]`."
+          }
+        }
+      },
+      "CpuInfo": {
+        "type": "object",
+        "description": "CPU availability (always true).",
+        "required": [
+          "available"
+        ],
+        "properties": {
+          "available": {
+            "type": "boolean",
+            "description": "Always true."
+          }
+        }
+      },
+      "DebayerArg": {
+        "type": "string",
+        "description": "Demosaicing method.",
+        "enum": [
+          "bilinear",
+          "mhc"
+        ]
+      },
+      "DerotateConfig": {
+        "type": "object",
+        "description": "How the Sun's differential rotation is undone (`derotate` of a time-lapse,\nand the settings of `POST /solar-derotation`); every field is optional.",
+        "properties": {
+          "celestial_north_up": {
+            "type": "boolean",
+            "description": "The images have celestial north up: solar north is turned by the\nposition angle P at each image's time, on top of `north_angle_deg`.",
+            "default": false
+          },
+          "law": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "`howard` (default), `snodgrass`, or `A,B,C`: degrees a day for\n`A + B sin^2 + C sin^4` of the latitude (`A` positive).",
+            "default": null
+          },
+          "mirror": {
+            "type": "boolean",
+            "description": "The images are mirror images (west on the left).",
+            "default": false
+          },
+          "north_angle_deg": {
+            "type": "number",
+            "format": "float",
+            "description": "Degrees counter-clockwise from the top of the image to solar north\n(default 0).",
+            "default": 0.0
+          },
+          "raw_brightness": {
+            "type": "boolean",
+            "description": "Move the pixel values as they are, not the contrast against the limb\ndarkening.",
+            "default": false
+          },
+          "to": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The time to bring every image to, UTC (`YYYY-MM-DDThh:mm:ss`). Default:\nthe reference frame's time in a time-lapse, the middle time of the\nimages in `POST /solar-derotation` (which also takes `first`, `middle`\nand `last`).",
+            "default": null
+          }
+        },
+        "additionalProperties": false
+      },
+      "DerotatedImage": {
+        "type": "object",
+        "description": "One derotated image.",
+        "required": [
+          "input",
+          "file",
+          "time",
+          "dt_s",
+          "max_shift_px",
+          "centre_shift_px",
+          "disc"
+        ],
+        "properties": {
+          "centre_shift_px": {
+            "type": "number",
+            "format": "float",
+            "description": "The same at the disc centre."
+          },
+          "disc": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "double"
+            },
+            "description": "The disc found in the input: centre x, centre y, radius, pixels."
+          },
+          "dt_s": {
+            "type": "number",
+            "format": "double",
+            "description": "Seconds moved, positive forward."
+          },
+          "file": {
+            "type": "string",
+            "description": "The result, relative to the data root."
+          },
+          "input": {
+            "type": "string",
+            "description": "The input."
+          },
+          "max_shift_px": {
+            "type": "number",
+            "format": "float",
+            "description": "The most any pixel of the disc came from, pixels."
+          },
+          "time": {
+            "type": "string",
+            "description": "The input's time, UTC."
+          }
+        }
+      },
+      "DetectionInfo": {
+        "type": "object",
+        "description": "The test for a hidden Bayer mosaic.",
+        "required": [
+          "frames_used",
+          "region",
+          "position_means",
+          "spread",
+          "verdict"
+        ],
+        "properties": {
+          "frames_used": {
+            "type": "integer",
+            "description": "Frames measured.",
+            "minimum": 0
+          },
+          "pattern": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Pattern found, for `mosaic`."
+          },
+          "position_means": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "double"
+            },
+            "description": "Mean level (0 to 1) of the pixels at even x/even y, odd x/even y,\neven x/odd y and odd x/odd y."
+          },
+          "reason": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Why it could not tell, for `inconclusive`."
+          },
+          "red_blue_basis": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "How red was told from blue, for `mosaic`."
+          },
+          "region": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "description": "Area measured: x, y, width, height."
+          },
+          "spread": {
+            "type": "number",
+            "format": "double",
+            "description": "(largest - smallest) / average of the four means."
+          },
+          "verdict": {
+            "type": "string",
+            "description": "`mosaic`, `mono` or `inconclusive`."
+          }
+        }
+      },
+      "EffectiveInfo": {
+        "type": "object",
+        "description": "What Helia decodes the capture with.",
+        "required": [
+          "bayer",
+          "bit_depth",
+          "byte_order",
+          "flip_rows"
+        ],
+        "properties": {
+          "bayer": {
+            "$ref": "#/components/schemas/SourcedText",
+            "description": "Bayer pattern (`rggb` ...), or `none` for mono."
+          },
+          "bit_depth": {
+            "$ref": "#/components/schemas/SourcedNumber",
+            "description": "Bits per sample."
+          },
+          "byte_order": {
+            "$ref": "#/components/schemas/SourcedText",
+            "description": "Byte order of 16-bit samples: `little` or `big`."
+          },
+          "flip_rows": {
+            "$ref": "#/components/schemas/SourcedFlag",
+            "description": "Rows are read bottom to top."
+          }
+        }
+      },
+      "ErrorBody": {
+        "type": "object",
+        "description": "Machine-readable error body.",
+        "required": [
+          "code",
+          "message"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Stable `snake_case` identifier, safe to match on."
+          },
+          "message": {
+            "type": "string",
+            "description": "Human-readable explanation."
+          }
+        }
+      },
+      "ErrorEnvelope": {
+        "type": "object",
+        "description": "Envelope returned for every non-2xx response.",
+        "required": [
+          "error"
+        ],
+        "properties": {
+          "error": {
+            "$ref": "#/components/schemas/ErrorBody",
+            "description": "The error."
+          }
+        }
+      },
+      "FieldRotationConfig": {
+        "type": "object",
+        "description": "How to undo the field rotation of an altazimuth mount.",
+        "properties": {
+          "mirror": {
+            "type": "boolean",
+            "description": "The picture is a mirror image (an odd number of reflections): the turn\nis the other way.",
+            "default": false
+          },
+          "reference": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The orientation every frame is turned to: `middle` (default), `first`\nor `last`.",
+            "default": null
+          }
+        },
+        "additionalProperties": false
+      },
+      "FieldRotationSummary": {
+        "type": "object",
+        "description": "What undoing the field rotation did.",
+        "required": [
+          "span_deg",
+          "rate_deg_per_min",
+          "max_turn_deg",
+          "reference_time",
+          "reference_angle_deg",
+          "altitude_deg",
+          "frames_stamped",
+          "lines"
+        ],
+        "properties": {
+          "altitude_deg": {
+            "type": "number",
+            "format": "double",
+            "description": "Altitude of the Sun at the reference, degrees."
+          },
+          "frames_stamped": {
+            "type": "integer",
+            "description": "Frames that had a timestamp of their own.",
+            "minimum": 0
+          },
+          "limb_shift_px": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "float",
+            "description": "Displacement at the limb, pixels, of the frame that turned most; absent\nwithout a fitted limb."
+          },
+          "lines": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The report in lines, as the command line prints it."
+          },
+          "max_turn_deg": {
+            "type": "number",
+            "format": "double",
+            "description": "Largest turn applied to a frame, degrees."
+          },
+          "rate_deg_per_min": {
+            "type": "number",
+            "format": "double",
+            "description": "Mean rate of rotation, degrees per minute."
+          },
+          "reference_angle_deg": {
+            "type": "number",
+            "format": "double",
+            "description": "Parallactic angle at the reference, degrees."
+          },
+          "reference_time": {
+            "type": "string",
+            "description": "The orientation every frame was turned to: the time of that frame,\nISO 8601 UTC."
+          },
+          "span_deg": {
+            "type": "number",
+            "format": "double",
+            "description": "Parallactic angle from the first frame to the last, degrees."
+          }
+        }
+      },
+      "GpuInfo": {
+        "type": "object",
+        "description": "GPU availability.",
+        "required": [
+          "available",
+          "software"
+        ],
+        "properties": {
+          "adapter": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Adapter description."
+          },
+          "available": {
+            "type": "boolean",
+            "description": "A GPU backend can be created (a software adapter counts)."
+          },
+          "software": {
+            "type": "boolean",
+            "description": "The adapter is a software rasteriser."
+          }
+        }
+      },
+      "GranulationSummary": {
+        "type": "object",
+        "description": "Granulation statistics of the stack (`helia measure`, the quality report).",
+        "required": [
+          "rms_contrast",
+          "cell_pitch_px",
+          "cell_diameter_px",
+          "rolloff_freq",
+          "resolved_freq",
+          "lines"
+        ],
+        "properties": {
+          "arcsec_per_pixel": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "float",
+            "description": "Image scale, arcseconds per pixel (absent without a fitted limb)."
+          },
+          "cell_diameter_px": {
+            "type": "number",
+            "format": "float",
+            "description": "Mean diameter of whole granules, pixels."
+          },
+          "cell_pitch_px": {
+            "type": "number",
+            "format": "float",
+            "description": "Mean spacing of granules, pixels."
+          },
+          "cutoff_freq": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "float",
+            "description": "Diffraction cut-off `D / lambda` in cycles per pixel; needs\n`aperture_mm` and a fitted limb."
+          },
+          "lines": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The report in lines, as the command line prints it."
+          },
+          "resolved_freq": {
+            "type": "number",
+            "format": "float",
+            "description": "Highest frequency (cycles per pixel) above 1% of the peak power."
+          },
+          "rms_contrast": {
+            "type": "number",
+            "format": "float",
+            "description": "Standard deviation over mean of the flattened disc-centre region (a\nfraction, 0.04 is 4%)."
+          },
+          "rolloff_freq": {
+            "type": "number",
+            "format": "float",
+            "description": "Spatial frequency (cycles per pixel) where the noise-subtracted power\nspectrum has fallen to 10% of its peak."
+          }
+        }
+      },
+      "Health": {
+        "type": "object",
+        "description": "Liveness probe.",
+        "required": [
+          "status"
+        ],
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Always `ok`."
+          }
+        }
+      },
+      "InspectRequest": {
+        "type": "object",
+        "description": "`POST /captures/inspect` body.",
+        "required": [
+          "path"
+        ],
+        "properties": {
+          "bayer": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "`auto` (default), `none`, `rggb`, `grbg`, `gbrg` or `bggr`: see what an\noverride would change."
+          },
+          "bit_depth": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int32",
+            "description": "Bits per sample instead of the SER header's (1 to 16).",
+            "minimum": 0
+          },
+          "endian": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "`little` or `big`, instead of the SER header flag."
+          },
+          "flip_rows": {
+            "type": "boolean",
+            "description": "Read the rows bottom to top."
+          },
+          "path": {
+            "type": "string",
+            "description": "Capture path relative to the data root."
+          }
+        },
+        "additionalProperties": false
+      },
+      "JobConfig": {
+        "type": "object",
+        "description": "The same knobs as `helia stack`.",
+        "properties": {
+          "align": {
+            "type": "string",
+            "description": "How whole frames are aligned: `auto` (fit the solar limb when the full\ndisc is in view and the fit is confident, else phase correlation),\n`phase`, or `limb`. The choice and its confidence come back in\n`summary.alignment`.",
+            "default": "auto"
+          },
+          "align_channels": {
+            "type": "boolean",
+            "description": "With `colour: \"true\"`, register red and blue to green (atmospheric\ndispersion). Default `true`.",
+            "default": true
+          },
+          "ap_auto": {
+            "type": "boolean",
+            "description": "Choose the alignment point size, spacing and search range from the\nimage scale (the fitted limb) and the seeing (a probe of a dozen\nframes). Excludes `ap_size`; needs `multipoint`. What was chosen comes\nback in `summary.auto_ap`.",
+            "default": false
+          },
+          "ap_passes": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int32",
+            "description": "Alignment point passes, 1 or 2. 2 stacks once and measures the points\nagain against that stack. Default 1; needs `multipoint`.",
+            "default": null,
+            "minimum": 0
+          },
+          "ap_residual": {
+            "type": "boolean",
+            "description": "Measure the alignment points once more against the finished stack, for\nthe residual figure of the `report` (`ap-residual.png`). Costs one more\nregistration pass. Needs `multipoint`.",
+            "default": false
+          },
+          "ap_size": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "Alignment point size in pixels (8 to 1024). Absent: chosen from the\nimage size.",
+            "default": null,
+            "minimum": 0
+          },
+          "ap_smooth": {
+            "type": "boolean",
+            "description": "Replace alignment point shifts that disagree with their neighbours by\nthe neighbours' median. Needs `multipoint`.",
+            "default": false
+          },
+          "aperture_mm": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "float",
+            "description": "Telescope aperture in millimetres, for the diffraction cut-off in\n`summary.granulation` and for `r0` in `summary.seeing`.",
+            "default": null
+          },
+          "autocrop": {
+            "type": "boolean",
+            "description": "Crop the result to the solar disc plus `autocrop_margin`, FITS too. A\ncapture without a clear disc is left uncropped; `summary.crop` is then\nabsent.",
+            "default": false
+          },
+          "autocrop_margin": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "float",
+            "description": "Margin of `autocrop` as a percentage of the disc radius, 0 to 200.\nDefault 10.",
+            "default": null
+          },
+          "backend": {
+            "$ref": "#/components/schemas/BackendArg",
+            "description": "Compute backend.",
+            "default": "auto"
+          },
+          "bayer": {
+            "type": "string",
+            "description": "`auto`, `none`, `rggb`, `grbg`, `gbrg` or `bggr`. `auto` trusts the\nfile's header, but checks a SER file labelled mono for a hidden Bayer\nmosaic and debayers when it finds one. `none` treats the frames as\nmono whatever the header says; a pattern forces it.",
+            "default": "auto"
+          },
+          "bit_depth": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int32",
+            "description": "Bits per sample instead of the SER header's (1 to 8 read one byte per\npixel, 9 to 16 two). SER only.",
+            "default": null,
+            "minimum": 0
+          },
+          "calibration": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CalibrationConfig",
+                "description": "Dark, flat and bad-pixel calibration, applied to every frame before it\nis demosaiced, scored or aligned. Absent: none."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "channel": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ChannelArg",
+                "description": "Colour plane to stack from a Bayer capture. Absent: the preset's\nchannel, else `lum`."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "colour": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Colour of the output: `auto` (the preset in force), `mono`, a preset\nid, or `true`. `true` is true colour from a raw colour camera: red,\ngreen and blue stacked on one alignment, channels aligned, white\nbalanced, written as an RGB TIFF or PNG or a three-plane FITS cube; it\nneeds a Bayer capture and excludes `channel`, `invert` and\n`colour_strength`. The other looks colour a `.tif` or `.png` from the\nmono stack, and FITS output is mono and unaltered for them. Absent: the\n`preset`'s colours if one was given, else mono.",
+            "default": null
+          },
+          "colour_strength": {
+            "type": "number",
+            "format": "float",
+            "description": "Mix of colour and grey, 0 to 1.",
+            "default": 1.0
+          },
+          "date": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "When the capture was taken, UTC (`YYYY-MM-DDThh:mm:ss`), for a capture\nthat does not hold its own time (an AVI or a video; a SER's time stamps\nare used otherwise). Gives P, B0 and L0 to `sunspots` and to the\nheliographic grids of `report`.",
+            "default": null
+          },
+          "debayer": {
+            "$ref": "#/components/schemas/DebayerArg",
+            "description": "Demosaicing method.",
+            "default": "mhc"
+          },
+          "detect_overlay": {
+            "type": "boolean",
+            "description": "Look for burned-in text (a `SharpCap` timestamp) and mask it.",
+            "default": true
+          },
+          "disc_mask": {
+            "type": "boolean",
+            "description": "Fit the limb and place alignment points on the disc only.",
+            "default": true
+          },
+          "edits": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            },
+            "description": "Further edits, applied in order after `sharpen`: objects with an `op`\nof `unsharp`, `wavelet`, `deconvolve`, `denoise`, `levels`, `curve`,\n`crop`, `rotate`, `flip` or `resize` and that operation's parameters\n(see the sharpening and adjustments page of the user guide). Unset\nparameters take their defaults.",
+            "default": []
+          },
+          "endian": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Byte order of 16-bit samples instead of the SER header flag:\n`little` or `big`. SER only.",
+            "default": null
+          },
+          "exclude": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Region"
+            },
+            "description": "Rectangles to keep alignment and scoring off. They are flattened in\nevery frame and so are flat in the result. Burned-in timestamps are\nfound automatically (see `detect_overlay`).",
+            "default": []
+          },
+          "field_rotation": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/FieldRotationConfig",
+                "description": "Undo the field rotation of an altazimuth mount: every frame is turned to\none orientation from the parallactic angle of the Sun at its SER\ntimestamp, before it is scored, aligned or stacked. Needs `site` (or the\nserver's `HELIA_SITE`) and a capture with timestamps; what it did is in\n`summary.field_rotation`. An empty object takes the defaults; not for an\nequatorial mount, and not with `colour: \"true\"`."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "flatten": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Flatten the disc's limb darkening before anything else: `model`\n(divide by the fitted law) or `profile` (divide by the measured\nazimuthal median). Outside the limb nothing changes. It runs first, so\n`sharpen` and `edits` see flat contrast. A capture with no clear disc is\nleft as it is and `summary.limb_darkening` is absent.",
+            "default": null
+          },
+          "flip_rows": {
+            "type": "boolean",
+            "description": "Read the rows bottom to top. SER only.",
+            "default": false
+          },
+          "grade": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Colour grading on top of the look: `hue=DEG,sat=S,gamma=G,black=B,\nwhite=W,r=R,g=G,b=B`, any of them (hue -180 to 180, sat 0 to 2, gamma 0.3\nto 3, black 0 to 0.9, white 0.1 to 1, r, g and b channel curves 0.3 to\n3). Absent: no grading. Not with `colour: \"true\"`.",
+            "default": null
+          },
+          "invert": {
+            "type": "boolean",
+            "description": "Invert before colouring (shows filaments and prominences).",
+            "default": false
+          },
+          "keep": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Share (`\"25%\"`) or count (`\"500\"`) of frames to keep. Default `25%`.",
+            "default": null
+          },
+          "keep_frames": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "Number of frames to keep; excludes `keep`.",
+            "default": null,
+            "minimum": 0
+          },
+          "limb_law": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The limb-darkening law fitted to the stack and used by `flatten`:\n`linear`, `quadratic` (the default) or `neckel` (five terms). The fit\ncomes back in `summary.limb_darkening` whether or not `flatten` is set.",
+            "default": null
+          },
+          "metric": {
+            "$ref": "#/components/schemas/MetricArg",
+            "description": "Frame ranking metric.",
+            "default": "gradient"
+          },
+          "multipoint": {
+            "type": "boolean",
+            "description": "Multi-point alignment; `false` is global alignment only.",
+            "default": true
+          },
+          "preset": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Filter preset (`ha`, `cak`, `cah`, `mg`, `na`, `he-d3`, `hbeta`,\n`white`; see `GET /presets`): its channel and frame share apply\nwherever `channel` and `keep` are absent, and a `.tif` or `.png`\noutput is coloured with it. Absent: the filter is detected from the file\nname, folder, sidecar or header, for the settings only.",
+            "default": null
+          },
+          "prominence_band": {
+            "type": "integer",
+            "description": "Pixels outside the fitted limb where alignment points are still\nallowed; 0 keeps them on the disc.",
+            "default": 0,
+            "minimum": 0
+          },
+          "report": {
+            "type": "boolean",
+            "description": "Make the science report: the frame quality graphs (sorted and in\ncapture order, with the keep threshold), the quality histogram, the\nglobal shift and drift and the seeing over the capture, as PNG with\ntheir data as CSV and JSON, and one self-contained HTML page. Turns\nthe seeing probe on (about 120 more frames are read). The files are\nlisted in `summary.report`; fetch them with\n`GET /jobs/{id}/report` and `GET /jobs/{id}/report/{file}`.",
+            "default": false
+          },
+          "robust": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/RobustArg",
+                "description": "Outlier-robust combination: `none` (the default weighted mean),\n`sigma`, `huber` or `winsor`. Excludes `sigma_clip`."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "robust_k": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "float",
+            "description": "Threshold of `robust` in standard deviations. Default 2.5 for `sigma`,\n1.345 for `huber`, 2 for `winsor`.",
+            "default": null
+          },
+          "seeing": {
+            "type": "boolean",
+            "description": "Estimate the seeing from the capture (`summary.seeing`): the Fried\nparameter from the spectral ratio, which needs `aperture_mm`, and a\nrelative alignment point motion index.",
+            "default": false
+          },
+          "sharpen": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Sharpening of the stack: `wavelet` (Registax-style layers, the usual\nchoice), `unsharp`, `rl` (Richardson-Lucy) or `none`, with the\nrecommended values of the filter in force. Absent: `none`. It runs\nfirst, on the mono image, before `edits` and before any colour.",
+            "default": null
+          },
+          "sharpen_fits": {
+            "type": "boolean",
+            "description": "Apply `sharpen` and `edits` to FITS output too. By default a FITS file\nis the unsharpened stack.",
+            "default": false
+          },
+          "sigma_clip": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "float",
+            "description": "Sigma clipping threshold in standard deviations; off when absent.\nSame as `robust: \"sigma\"` with `robust_k`.",
+            "default": null
+          },
+          "site": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Observing site as `\"lat,lon,alt\"` (degrees north, degrees east, metres),\nwritten to a FITS output as `OBSGEO-X/Y/Z`. Absent: the server's\n`HELIA_SITE` environment variable, else the keywords are left out.",
+            "default": null
+          },
+          "sunspots": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/SunspotsConfig",
+                "description": "Find the sunspots on the stack (`summary.sunspots`, the `SPOT*` FITS\ncards, `GET /jobs/{id}/sunspots.csv` and `sunspots.png`). An empty\nobject takes the defaults. For a white-light capture with the whole\ndisc in view."
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "wavelets": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Wavelets as in RegiStax 6, replacing the recommended layers: the\n`registax:` form of the CLI's `--wavelets`, for example\n`registax:l1=100/0.14/0.2,l2=100/0.11/0.15,scheme=dyadic,filter=gaussian`.\nA layer is `amount/sharpen[/denoise]` (amount 0 to 200 %, sharpen -0.1\nto 1, denoise 0 to 1.5); the gain is `1 + amount * sharpen * |sharpen|`\n(0.14 at 100 % is 3x, 1 is 101x) and the noise cut\n`10 * denoise * amount / 100` noise sigmas. Other keys: `scheme`\n(`dyadic` or `linear`), `filter` (`default` or `gaussian`), `initial`,\n`step`, `linked` (`on`). Implies `sharpen: \"wavelet\"`; with\n`sharpen: \"rl\"` the wavelets run after the deconvolution (the usual\norder: deconvolve, then lift and denoise); excludes `unsharp`.",
+            "default": null
+          },
+          "white_balance": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "White balance of `colour: \"true\"`: `auto` (make the disc centre\nneutral), `off` (the sensor's own balance) or `\"R,G,B\"` gains such as\n`\"1.9,1,1.5\"`. Default `auto`. Only with `colour: \"true\"`.",
+            "default": null
+          }
+        },
+        "additionalProperties": false
+      },
+      "JobEvent": {
+        "oneOf": [
+          {
+            "type": "object",
+            "description": "Full job view, sent once on connect.",
+            "required": [
+              "job",
+              "type"
+            ],
+            "properties": {
+              "job": {
+                "$ref": "#/components/schemas/JobView",
+                "description": "The job."
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "snapshot"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "description": "State change.",
+            "required": [
+              "job",
+              "state",
+              "type"
+            ],
+            "properties": {
+              "error": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ErrorBody",
+                    "description": "Failure reason when `failed`."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "job": {
+                "type": "integer",
+                "format": "int64",
+                "description": "Job id.",
+                "minimum": 0
+              },
+              "state": {
+                "$ref": "#/components/schemas/JobState",
+                "description": "New state."
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "state"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "description": "Progress tick.",
+            "required": [
+              "job",
+              "stage",
+              "stage_progress",
+              "progress",
+              "type"
+            ],
+            "properties": {
+              "job": {
+                "type": "integer",
+                "format": "int64",
+                "description": "Job id.",
+                "minimum": 0
+              },
+              "progress": {
+                "type": "number",
+                "format": "float",
+                "description": "Approximate overall progress."
+              },
+              "stage": {
+                "type": "string",
+                "description": "Stage name."
+              },
+              "stage_progress": {
+                "type": "number",
+                "format": "float",
+                "description": "Progress within the stage."
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "progress"
+                ]
+              }
+            }
+          }
+        ],
+        "description": "Message on the `/events` WebSocket."
+      },
+      "JobRequest": {
+        "type": "object",
+        "description": "`POST /jobs` body.",
+        "required": [
+          "input",
+          "output"
+        ],
+        "properties": {
+          "config": {
+            "$ref": "#/components/schemas/JobConfig",
+            "description": "Stacking settings."
+          },
+          "input": {
+            "type": "string",
+            "description": "Capture path (`.ser` or `.avi`), relative to the data root."
+          },
+          "output": {
+            "type": "string",
+            "description": "Output path; `.tif`/`.tiff` or `.fits`/`.fit`/`.fts`."
+          },
+          "overwrite": {
+            "type": "boolean",
+            "description": "Replace an existing output file."
+          }
+        },
+        "additionalProperties": false
+      },
+      "JobState": {
+        "type": "string",
+        "description": "Lifecycle state.",
+        "enum": [
+          "queued",
+          "running",
+          "succeeded",
+          "failed",
+          "cancelled"
+        ]
+      },
+      "JobSummary": {
+        "type": "object",
+        "description": "What a finished stack contains.",
+        "required": [
+          "frames",
+          "kept",
+          "registered",
+          "width",
+          "height",
+          "bayer_source",
+          "notices",
+          "alignment",
+          "edits",
+          "edited",
+          "calibration"
+        ],
+        "properties": {
+          "alignment": {
+            "$ref": "#/components/schemas/AlignmentSummary",
+            "description": "How whole frames were aligned, and how confident that was."
+          },
+          "alignment_points_active": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "Active alignment points (multi-point only).",
+            "minimum": 0
+          },
+          "alignment_points_total": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "Alignment points in the grid (multi-point only).",
+            "minimum": 0
+          },
+          "auto_ap": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AutoApSummary",
+                "description": "What `ap_auto` chose. Absent when it was off."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "bayer": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Bayer pattern the frames were decoded with (`rggb` ...); absent for mono."
+          },
+          "bayer_source": {
+            "type": "string",
+            "description": "Where that came from: `header`, `sidecar`, `detection` or `override`."
+          },
+          "calibration": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The calibration masters applied, one line each, and any warning about\nthem (a flat with rings, a dark that could not be scaled). Empty when\nthe job had no `calibration`."
+          },
+          "colour": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "How the output was coloured, in words; absent for a mono output."
+          },
+          "crop": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Region",
+                "description": "The region `autocrop` kept, in the pixels of the stacked image before\nthe crop. Absent when it was off or found no disc (see `notices`)."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "edited": {
+            "type": "boolean",
+            "description": "The edits were applied to the pixels of the output."
+          },
+          "edits": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The edits recorded in the output file, one line each. For FITS output\nwithout `sharpen_fits` this is the note that the file is unedited."
+          },
+          "field_rotation": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/FieldRotationSummary",
+                "description": "What the field rotation correction did, with `field_rotation` set."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "filter": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Preset id in force (chosen or detected), if any."
+          },
+          "filter_source": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Where the filter was read from (`chosen`, or the text it was found in)."
+          },
+          "frames": {
+            "type": "integer",
+            "description": "Frames in the capture.",
+            "minimum": 0
+          },
+          "granulation": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/GranulationSummary",
+                "description": "Granulation report of the unsharpened stack, for the white-light and\nsodium filters. Absent for other filters or when the disc centre has\nno usable signal."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "height": {
+            "type": "integer",
+            "description": "Output height.",
+            "minimum": 0
+          },
+          "kept": {
+            "type": "integer",
+            "description": "Frames in the kept set.",
+            "minimum": 0
+          },
+          "limb_darkening": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/LimbSummary",
+                "description": "The limb-darkening law fitted to the stack. Absent when there was no\nclear disc."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "notices": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Things worth knowing about how the capture was read, such as a Bayer\nmosaic found in a file whose header says mono."
+          },
+          "registered": {
+            "type": "integer",
+            "description": "Frames registered.",
+            "minimum": 0
+          },
+          "report": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ReportSummary",
+                "description": "The files of the science report, with `report` set."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "seeing": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/SeeingSummary",
+                "description": "The seeing estimated from the capture, with `seeing` on."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "sharpen_check": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/SharpenCheckSummary",
+                "description": "Whether the sharpening added detail or mostly noise, from the bands of\nthe stack before and after the edits. Absent when nothing was edited or\nthe edits changed the image size."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "sunspots": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/SunspotsSummary",
+                "description": "Sunspots found on the stack, with `sunspots` set."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "true_colour": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/TrueColourSummary",
+                "description": "What true colour did. Absent unless `colour` was `true`."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "width": {
+            "type": "integer",
+            "description": "Output width.",
+            "minimum": 0
+          }
+        }
+      },
+      "JobView": {
+        "type": "object",
+        "description": "Public view of a job.",
+        "required": [
+          "id",
+          "state",
+          "stage_progress",
+          "progress",
+          "input",
+          "output",
+          "config",
+          "created_at",
+          "timings"
+        ],
+        "properties": {
+          "backend": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Backend used."
+          },
+          "config": {
+            "$ref": "#/components/schemas/JobConfig",
+            "description": "The settings in force."
+          },
+          "created_at": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Creation time, Unix milliseconds.",
+            "minimum": 0
+          },
+          "error": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ErrorBody",
+                "description": "Failure reason."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "finished_at": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int64",
+            "description": "End time, Unix milliseconds.",
+            "minimum": 0
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Job id.",
+            "minimum": 0
+          },
+          "input": {
+            "type": "string",
+            "description": "Input path relative to the data root."
+          },
+          "output": {
+            "type": "string",
+            "description": "Output path relative to the data root."
+          },
+          "progress": {
+            "type": "number",
+            "format": "float",
+            "description": "Approximate overall progress, 0 to 1."
+          },
+          "queue_position": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "Position among queued jobs (0 is next), while queued.",
+            "minimum": 0
+          },
+          "run_seconds": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "float",
+            "description": "Seconds spent running so far or in total."
+          },
+          "stage": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Current stage name, once running."
+          },
+          "stage_progress": {
+            "type": "number",
+            "format": "float",
+            "description": "Progress within the current stage, 0 to 1."
+          },
+          "started_at": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int64",
+            "description": "Start time, Unix milliseconds.",
+            "minimum": 0
+          },
+          "state": {
+            "$ref": "#/components/schemas/JobState",
+            "description": "State."
+          },
+          "summary": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/JobSummary",
+                "description": "Result summary once succeeded."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "timings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StageTiming"
+            },
+            "description": "Per-stage wall times of a finished run."
+          }
+        }
+      },
+      "LicenceDetails": {
+        "type": "object",
+        "description": "Licensing of the software.",
+        "required": [
+          "copyright",
+          "licence",
+          "source"
+        ],
+        "properties": {
+          "copyright": {
+            "type": "string",
+            "description": "Copyright line."
+          },
+          "licence": {
+            "type": "string",
+            "description": "SPDX licence identifier."
+          },
+          "source": {
+            "type": "string",
+            "description": "Source code location."
+          }
+        }
+      },
+      "LimbSummary": {
+        "type": "object",
+        "description": "A limb-darkening law fitted to the stack's azimuthal median profile.",
+        "required": [
+          "law",
+          "names",
+          "coefficients",
+          "limb_level",
+          "rms",
+          "radius_px",
+          "text"
+        ],
+        "properties": {
+          "coefficients": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "float"
+            },
+            "description": "The coefficients, `I(mu) / I(1) = 1 - sum c_k (1 - mu^k)` for `neckel`,\n`1 - u (1 - mu) - u2 (1 - mu)^2` for the others."
+          },
+          "law": {
+            "type": "string",
+            "description": "`linear`, `quadratic` or `neckel`."
+          },
+          "limb_level": {
+            "type": "number",
+            "format": "float",
+            "description": "The law at the limb as a share of the disc centre."
+          },
+          "names": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Names of the coefficients, in order (`u1`, `u2`, or `a1` to `a5`)."
+          },
+          "radius_px": {
+            "type": "number",
+            "format": "float",
+            "description": "Fitted disc radius, pixels."
+          },
+          "rms": {
+            "type": "number",
+            "format": "float",
+            "description": "Root mean square departure of the profile from the law, as a share of\nthe centre intensity."
+          },
+          "text": {
+            "type": "string",
+            "description": "The fit in a sentence."
+          }
+        }
+      },
+      "Limits": {
+        "type": "object",
+        "description": "Server limits.",
+        "required": [
+          "workers",
+          "max_queue",
+          "max_body_bytes",
+          "active_jobs"
+        ],
+        "properties": {
+          "active_jobs": {
+            "type": "integer",
+            "description": "Jobs queued or running now.",
+            "minimum": 0
+          },
+          "max_body_bytes": {
+            "type": "integer",
+            "description": "Request body limit in bytes.",
+            "minimum": 0
+          },
+          "max_queue": {
+            "type": "integer",
+            "description": "Queued plus running jobs allowed.",
+            "minimum": 0
+          },
+          "workers": {
+            "type": "integer",
+            "description": "Concurrent jobs.",
+            "minimum": 0
+          }
+        }
+      },
+      "MetricArg": {
+        "type": "string",
+        "description": "Sharpness metric.",
+        "enum": [
+          "gradient",
+          "laplacian",
+          "helmli",
+          "mfgs",
+          "dct",
+          "fourier",
+          "contrast"
+        ]
+      },
+      "MosaicPair": {
+        "type": "object",
+        "description": "How a pair of panels matched.",
+        "required": [
+          "a",
+          "b",
+          "ncc",
+          "overlap_px",
+          "residual_px",
+          "used"
+        ],
+        "properties": {
+          "a": {
+            "type": "integer",
+            "description": "First panel, from 1.",
+            "minimum": 0
+          },
+          "b": {
+            "type": "integer",
+            "description": "Second panel, from 1.",
+            "minimum": 0
+          },
+          "ncc": {
+            "type": "number",
+            "format": "float",
+            "description": "Normalised correlation of the detail on the overlap."
+          },
+          "overlap_px": {
+            "type": "integer",
+            "description": "Pixels shared.",
+            "minimum": 0
+          },
+          "residual_px": {
+            "type": "number",
+            "format": "double",
+            "description": "How far the pair is from where the placement put it, pixels."
+          },
+          "used": {
+            "type": "boolean",
+            "description": "Whether it was used in the placement."
+          }
+        }
+      },
+      "MosaicPanel": {
+        "type": "object",
+        "description": "Where a panel went.",
+        "required": [
+          "panel",
+          "input",
+          "x",
+          "y",
+          "angle_deg",
+          "gain",
+          "offset"
+        ],
+        "properties": {
+          "angle_deg": {
+            "type": "number",
+            "format": "double",
+            "description": "Rotation against the first panel, degrees (clockwise on screen)."
+          },
+          "derotated_px": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "float",
+            "description": "The most the derotation moved the surface of this panel, pixels, when it\nran."
+          },
+          "gain": {
+            "type": "number",
+            "format": "float",
+            "description": "Gain applied for the brightness match."
+          },
+          "input": {
+            "type": "string",
+            "description": "The input."
+          },
+          "offset": {
+            "type": "number",
+            "format": "float",
+            "description": "Offset applied for the brightness match."
+          },
+          "panel": {
+            "type": "integer",
+            "description": "Position in `inputs`, from 1.",
+            "minimum": 0
+          },
+          "x": {
+            "type": "number",
+            "format": "double",
+            "description": "Shift in the mosaic's coordinates, pixels (the first panel is at 0)."
+          },
+          "y": {
+            "type": "number",
+            "format": "double",
+            "description": "Shift in y, pixels."
+          }
+        }
+      },
+      "MosaicRequest": {
+        "type": "object",
+        "description": "`POST /mosaic` body.",
+        "required": [
+          "inputs",
+          "output"
+        ],
+        "properties": {
+          "derotate": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/DerotateConfig",
+                "description": "Bring every panel to one time by the Sun's differential rotation first (an\nempty object for the defaults; `to` may be `first`, `middle` (default),\n`last` or a UTC time)."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "feather_px": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "float",
+            "description": "Width of the blend across a seam and at a panel's edge, pixels (0 to 200,\ndefault 12)."
+          },
+          "gain_match": {
+            "type": [
+              "boolean",
+              "null"
+            ],
+            "description": "Match the panels' gain and offset on the overlaps (default true)."
+          },
+          "inputs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Stacked panels (`.tif`, `.tiff`, `.png`, `.fits`) relative to the data root,\n2 to 64. The first is the reference: the mosaic is in its orientation and\nbrightness."
+          },
+          "max_rotation_deg": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "double",
+            "description": "The most the panels may be turned against each other, degrees (0 to 45,\ndefault 4; 0 holds them square)."
+          },
+          "min_correlation": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "float",
+            "description": "Least normalised correlation of the detail on an overlap, 0 to 1 (default\n0.45)."
+          },
+          "min_overlap_percent": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "float",
+            "description": "Least overlap that counts, percent of the smaller panel (default 5)."
+          },
+          "output": {
+            "type": "string",
+            "description": "The mosaic to write, relative to the data root; the extension picks the\nformat. The panel and pair tables are written beside it as\n`NAME-panels.csv` and `NAME-pairs.csv`."
+          },
+          "overwrite": {
+            "type": "boolean",
+            "description": "Replace an existing output."
+          },
+          "seams": {
+            "type": [
+              "boolean",
+              "null"
+            ],
+            "description": "Join along seams of least difference (default true)."
+          },
+          "times": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "type": "string"
+            },
+            "description": "UTC time of each panel, in the order given (needed for `derotate`).\nWithout it a FITS file's `DATE-AVG` or a file name with a full date and time\nis used."
+          }
+        },
+        "additionalProperties": false
+      },
+      "MosaicResponse": {
+        "type": "object",
+        "description": "What a mosaic made.",
+        "required": [
+          "output",
+          "width",
+          "height",
+          "panels",
+          "pairs",
+          "seam_rms",
+          "overlap_rms",
+          "panels_table",
+          "pairs_table",
+          "notes"
+        ],
+        "properties": {
+          "derotated_to": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The time the panels were brought to, UTC, when they were derotated."
+          },
+          "disc": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "type": "number",
+              "format": "double"
+            },
+            "description": "The disc fitted to the mosaic: centre x, centre y, radius, pixels."
+          },
+          "height": {
+            "type": "integer",
+            "description": "Height of the mosaic.",
+            "minimum": 0
+          },
+          "notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Plain-language lines about what happened."
+          },
+          "output": {
+            "type": "string",
+            "description": "The mosaic, relative to the data root."
+          },
+          "overlap_rms": {
+            "type": "number",
+            "format": "float",
+            "description": "RMS difference of the panels over the whole overlap, the same measure."
+          },
+          "pairs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MosaicPair"
+            },
+            "description": "The matched pairs."
+          },
+          "pairs_table": {
+            "type": "string",
+            "description": "The pair table (CSV), relative to the data root."
+          },
+          "panels": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MosaicPanel"
+            },
+            "description": "The panels."
+          },
+          "panels_table": {
+            "type": "string",
+            "description": "The panel table (CSV), relative to the data root."
+          },
+          "seam_rms": {
+            "type": "number",
+            "format": "float",
+            "description": "RMS difference of the panels beside a seam, as a share of the level there."
+          },
+          "width": {
+            "type": "integer",
+            "description": "Width of the mosaic.",
+            "minimum": 0
+          }
+        }
+      },
+      "NoticeInfo": {
+        "type": "object",
+        "description": "A message about how the capture was understood.",
+        "required": [
+          "level",
+          "text"
+        ],
+        "properties": {
+          "level": {
+            "type": "string",
+            "description": "`info` or `warning`."
+          },
+          "text": {
+            "type": "string",
+            "description": "The message."
+          }
+        }
+      },
+      "PresetColour": {
+        "type": "object",
+        "description": "The colour parameters of a preset.",
+        "required": [
+          "gamma",
+          "gains",
+          "exponents",
+          "mid_grey_rgb"
+        ],
+        "properties": {
+          "exponents": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "float"
+            },
+            "description": "Per-channel exponent (red, green, blue)."
+          },
+          "gains": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "float"
+            },
+            "description": "Per-channel gain (red, green, blue)."
+          },
+          "gamma": {
+            "type": "number",
+            "format": "float",
+            "description": "Tone exponent applied before colouring (below 1 brightens)."
+          },
+          "mid_grey_rgb": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0
+            },
+            "description": "What a mid-grey (0.5) becomes, 8-bit red, green, blue."
+          }
+        }
+      },
+      "PresetList": {
+        "type": "object",
+        "description": "`GET /presets` body.",
+        "required": [
+          "presets"
+        ],
+        "properties": {
+          "presets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PresetView"
+            },
+            "description": "Every preset."
+          }
+        }
+      },
+      "PresetSharpen": {
+        "type": "object",
+        "description": "The recommended sharpening values of a preset (what `sharpen` in a job\nuses for this filter).",
+        "required": [
+          "wavelet_gains",
+          "wavelet_noise",
+          "unsharp_amount",
+          "unsharp_threshold",
+          "rl_iterations",
+          "rl_tv",
+          "denoise",
+          "reason"
+        ],
+        "properties": {
+          "denoise": {
+            "type": "number",
+            "format": "float",
+            "description": "Wavelet denoise strength."
+          },
+          "reason": {
+            "type": "string",
+            "description": "Why they are what they are."
+          },
+          "rl_iterations": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Richardson-Lucy iterations.",
+            "minimum": 0
+          },
+          "rl_tv": {
+            "type": "number",
+            "format": "float",
+            "description": "Richardson-Lucy total-variation weight."
+          },
+          "unsharp_amount": {
+            "type": "number",
+            "format": "float",
+            "description": "Unsharp mask amount."
+          },
+          "unsharp_threshold": {
+            "type": "number",
+            "format": "float",
+            "description": "Unsharp mask threshold (image units, 0 to 1)."
+          },
+          "wavelet_gains": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "float"
+            },
+            "description": "Wavelet gain of layers 1 to 6."
+          },
+          "wavelet_noise": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "float"
+            },
+            "description": "Wavelet noise threshold of layers 1 to 6, in noise sigmas."
+          }
+        }
+      },
+      "PresetView": {
+        "type": "object",
+        "description": "One filter preset.",
+        "required": [
+          "id",
+          "name",
+          "wavelength",
+          "hue",
+          "summary",
+          "reason",
+          "channel",
+          "keep_percent",
+          "colour",
+          "sharpen"
+        ],
+        "properties": {
+          "channel": {
+            "type": "string",
+            "description": "Bayer channel stacked (`r`, `g`, `b` or `lum`)."
+          },
+          "colour": {
+            "$ref": "#/components/schemas/PresetColour",
+            "description": "Colour parameters. Colour is presentation, not measurement."
+          },
+          "hue": {
+            "type": "string",
+            "description": "Hue in words."
+          },
+          "id": {
+            "type": "string",
+            "description": "Id to give as `preset` or `colour` in a job: `ha`, `cak`, ..."
+          },
+          "keep_percent": {
+            "type": "number",
+            "format": "float",
+            "description": "Share of frames kept, percent."
+          },
+          "name": {
+            "type": "string",
+            "description": "Plain name."
+          },
+          "reason": {
+            "type": "string",
+            "description": "Why the recommendations are what they are."
+          },
+          "sharpen": {
+            "$ref": "#/components/schemas/PresetSharpen",
+            "description": "Recommended sharpening values."
+          },
+          "summary": {
+            "type": "string",
+            "description": "One line on what it is for."
+          },
+          "wavelength": {
+            "type": "string",
+            "description": "Wavelength as printed in the docs."
+          }
+        }
+      },
+      "Recommended": {
+        "type": "object",
+        "description": "What Helia would do with a capture if given no settings.",
+        "required": [
+          "channel",
+          "keep_percent",
+          "ap_size"
+        ],
+        "properties": {
+          "ap_size": {
+            "type": "integer",
+            "description": "Alignment point size in pixels.",
+            "minimum": 0
+          },
+          "channel": {
+            "type": "string",
+            "description": "Bayer channel it would stack (`r`, `g`, `b`, `lum`)."
+          },
+          "filter": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Preset id detected from the file name, folder, sidecar or SER header."
+          },
+          "filter_source": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The text the filter was read from."
+          },
+          "keep_percent": {
+            "type": "number",
+            "format": "float",
+            "description": "Share of frames it would keep, percent."
+          }
+        }
+      },
+      "Region": {
+        "type": "object",
+        "description": "A rectangle of the frame, in pixels from the top-left corner.",
+        "required": [
+          "x",
+          "y",
+          "w",
+          "h"
+        ],
+        "properties": {
+          "h": {
+            "type": "integer",
+            "description": "Height; at least 1.",
+            "minimum": 0
+          },
+          "w": {
+            "type": "integer",
+            "description": "Width; at least 1.",
+            "minimum": 0
+          },
+          "x": {
+            "type": "integer",
+            "description": "Left edge.",
+            "minimum": 0
+          },
+          "y": {
+            "type": "integer",
+            "description": "Top edge.",
+            "minimum": 0
+          }
+        }
+      },
+      "ReportSummary": {
+        "type": "object",
+        "description": "The science report of a job.",
+        "required": [
+          "files",
+          "not_drawn"
+        ],
+        "properties": {
+          "files": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "File names: `report.html`, the figures (`*.png`) and their data\n(`*.csv`, `*.json`). Fetch one with `GET /jobs/{id}/report/{file}`."
+          },
+          "not_drawn": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Figures that were not drawn, and why (for example, no seeing data)."
+          }
+        }
+      },
+      "RobustArg": {
+        "type": "string",
+        "description": "Outlier-robust combination of the frames at each pixel.",
+        "enum": [
+          "none",
+          "sigma",
+          "huber",
+          "winsor"
+        ]
+      },
+      "SeeingSummary": {
+        "type": "object",
+        "description": "Seeing estimated from the capture.",
+        "required": [
+          "frames",
+          "tiles",
+          "lines"
+        ],
+        "properties": {
+          "d_over_r0": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "float",
+            "description": "`D / r0` from the spectral ratio; needs `aperture_mm`."
+          },
+          "frames": {
+            "type": "integer",
+            "description": "Frames followed (spread over the whole capture).",
+            "minimum": 0
+          },
+          "grade": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "`excellent`, `good`, `fair`, `poor` or `bad`, from `r0_500nm_cm`."
+          },
+          "lines": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The report in lines, as the command line prints it."
+          },
+          "motion_arcsec": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "float",
+            "description": "The same in arcseconds, with a fitted limb."
+          },
+          "motion_px": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "float",
+            "description": "RMS differential motion between neighbouring alignment points, per\naxis, pixels. A relative index, not `r0`."
+          },
+          "r0_500nm_cm": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "float",
+            "description": "Fried parameter at 500 nm, centimetres."
+          },
+          "r0_cm": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "float",
+            "description": "Fried parameter at the capture's wavelength, centimetres."
+          },
+          "tiles": {
+            "type": "integer",
+            "description": "Tiles of the disc followed.",
+            "minimum": 0
+          }
+        }
+      },
+      "SerHeaderInfo": {
+        "type": "object",
+        "description": "A SER header exactly as written in the file, decoded.",
+        "required": [
+          "file_id",
+          "lu_id",
+          "colour_id",
+          "colour_meaning",
+          "little_endian",
+          "width",
+          "height",
+          "pixel_depth",
+          "frame_count",
+          "observer",
+          "instrument",
+          "telescope"
+        ],
+        "properties": {
+          "colour_id": {
+            "type": "integer",
+            "format": "int32",
+            "description": "`ColorID` as stored."
+          },
+          "colour_meaning": {
+            "type": "string",
+            "description": "Its meaning (`MONO`, `BAYER_RGGB` ...)."
+          },
+          "date_time": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "`DateTime` (local) decoded; absent when unset."
+          },
+          "date_time_utc": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "`DateTimeUTC` decoded; absent when unset."
+          },
+          "file_id": {
+            "type": "string",
+            "description": "`FileID`."
+          },
+          "frame_count": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Frame count.",
+            "minimum": 0
+          },
+          "height": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Height in pixels.",
+            "minimum": 0
+          },
+          "instrument": {
+            "type": "string",
+            "description": "Instrument."
+          },
+          "little_endian": {
+            "type": "boolean",
+            "description": "`LittleEndian` flag as stored."
+          },
+          "lu_id": {
+            "type": "integer",
+            "format": "int32",
+            "description": "`LuID`."
+          },
+          "observer": {
+            "type": "string",
+            "description": "Observer."
+          },
+          "pixel_depth": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Bits per sample.",
+            "minimum": 0
+          },
+          "telescope": {
+            "type": "string",
+            "description": "Telescope."
+          },
+          "timestamps": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/TimestampInfo",
+                "description": "Timestamps in the trailer."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "width": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Width in pixels.",
+            "minimum": 0
+          }
+        }
+      },
+      "SharpenCheckSummary": {
+        "type": "object",
+        "description": "Did the sharpening add detail, or mostly noise (see the sharpening page of\nthe user guide).",
+        "required": [
+          "detail_gain",
+          "noise_gain",
+          "noise_level",
+          "verdict"
+        ],
+        "properties": {
+          "detail_gain": {
+            "type": "number",
+            "format": "float",
+            "description": "The 1 to 4 pixel band of the stack after the edits over before."
+          },
+          "noise_gain": {
+            "type": "number",
+            "format": "float",
+            "description": "The pixel-scale band after over before: the noise."
+          },
+          "noise_level": {
+            "type": "number",
+            "format": "float",
+            "description": "Noise level of the stack as a share of the mean."
+          },
+          "residual": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "float",
+            "description": "Deconvolution residual as a share of the mean, when there was one."
+          },
+          "verdict": {
+            "type": "string",
+            "description": "`fine`, `noise_dominated` or `overfit`."
+          },
+          "warning": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "A sentence for a person, when the verdict is not `fine`."
+          }
+        }
+      },
+      "SidecarInfo": {
+        "type": "object",
+        "description": "`SharpCap` sidecar contents that Helia uses.",
+        "required": [
+          "path",
+          "sections"
+        ],
+        "properties": {
+          "bayer_hint": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Bayer pattern implied by the sidecar."
+          },
+          "colour_space": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "`Colour Space` value."
+          },
+          "frame_count": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "Frame count from the sidecar.",
+            "minimum": 0
+          },
+          "path": {
+            "type": "string",
+            "description": "Sidecar path relative to the data root."
+          },
+          "raw_colour": {
+            "type": [
+              "boolean",
+              "null"
+            ],
+            "description": "Whether the sidecar says the data is raw colour."
+          },
+          "sections": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Section headings (camera model)."
+          }
+        }
+      },
+      "SolarDerotationRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/DerotateConfig",
+            "description": "The target time (`first`, `middle` (default), `last` or a UTC time), the\nrotation law and the orientation of the images."
+          },
+          {
+            "type": "object",
+            "required": [
+              "inputs",
+              "output"
+            ],
+            "properties": {
+              "inputs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Images (`.tif`, `.tiff`, `.png`, `.fits`) relative to the data root, one\nto 200, each with the whole disc in view."
+              },
+              "output": {
+                "type": "string",
+                "description": "Directory for the results, named `NAME-derotated.EXT`, relative to the\ndata root. Created when missing."
+              },
+              "overwrite": {
+                "type": "boolean",
+                "description": "Replace results that exist."
+              },
+              "times": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": "string"
+                },
+                "description": "UTC time of each input, in the order given. Without it a FITS file's\n`DATE-AVG` or a file name with a full date and time is used; an input\nwith no time is an error."
+              }
+            }
+          }
+        ],
+        "description": "`POST /solar-derotation` body."
+      },
+      "SolarDerotationResponse": {
+        "type": "object",
+        "description": "What a solar derotation made.",
+        "required": [
+          "target",
+          "images"
+        ],
+        "properties": {
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DerotatedImage"
+            },
+            "description": "The images, in the order given."
+          },
+          "target": {
+            "type": "string",
+            "description": "The time every image was brought to, UTC."
+          }
+        }
+      },
+      "SourcedFlag": {
+        "type": "object",
+        "description": "A switch and where its setting came from.",
+        "required": [
+          "value",
+          "source"
+        ],
+        "properties": {
+          "source": {
+            "type": "string",
+            "description": "`header`, `sidecar`, `detection` or `override`."
+          },
+          "value": {
+            "type": "boolean",
+            "description": "The value."
+          }
+        }
+      },
+      "SourcedNumber": {
+        "type": "object",
+        "description": "A number Helia uses and where it came from.",
+        "required": [
+          "value",
+          "source"
+        ],
+        "properties": {
+          "source": {
+            "type": "string",
+            "description": "`header`, `sidecar`, `detection` or `override`."
+          },
+          "value": {
+            "type": "integer",
+            "format": "int32",
+            "description": "The value.",
+            "minimum": 0
+          }
+        }
+      },
+      "SourcedText": {
+        "type": "object",
+        "description": "A value Helia uses and where it came from.",
+        "required": [
+          "value",
+          "source"
+        ],
+        "properties": {
+          "source": {
+            "type": "string",
+            "description": "`header`, `sidecar`, `detection` or `override`."
+          },
+          "value": {
+            "type": "string",
+            "description": "The value."
+          }
+        }
+      },
+      "StageTiming": {
+        "type": "object",
+        "description": "Wall time of one stage.",
+        "required": [
+          "stage",
+          "seconds"
+        ],
+        "properties": {
+          "seconds": {
+            "type": "number",
+            "format": "float",
+            "description": "Seconds."
+          },
+          "stage": {
+            "type": "string",
+            "description": "Stage name."
+          }
+        }
+      },
+      "SunspotGroupRow": {
+        "type": "object",
+        "description": "One group of sunspots.",
+        "required": [
+          "id",
+          "spots",
+          "umbrae",
+          "lat_deg",
+          "cmd_deg",
+          "projected_msh",
+          "area_msh",
+          "umbra_msh"
+        ],
+        "properties": {
+          "area_msh": {
+            "type": "number",
+            "format": "float",
+            "description": "Corrected, millionths of the hemisphere."
+          },
+          "cmd_deg": {
+            "type": "number",
+            "format": "float",
+            "description": "Area-weighted central meridian distance, degrees."
+          },
+          "id": {
+            "type": "integer",
+            "description": "Number from 1, largest first.",
+            "minimum": 0
+          },
+          "lat_deg": {
+            "type": "number",
+            "format": "float",
+            "description": "Area-weighted latitude, degrees north."
+          },
+          "lon_deg": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "float",
+            "description": "Area-weighted Carrington longitude, degrees (needs `time`)."
+          },
+          "projected_msh": {
+            "type": "number",
+            "format": "float",
+            "description": "As seen, millionths of the visible hemisphere."
+          },
+          "spots": {
+            "type": "integer",
+            "description": "Spots in it.",
+            "minimum": 0
+          },
+          "umbra_msh": {
+            "type": "number",
+            "format": "float",
+            "description": "Umbrae corrected, millionths of the hemisphere."
+          },
+          "umbrae": {
+            "type": "integer",
+            "description": "Umbrae in it.",
+            "minimum": 0
+          }
+        }
+      },
+      "SunspotRow": {
+        "type": "object",
+        "description": "One sunspot.",
+        "required": [
+          "id",
+          "group",
+          "x",
+          "y",
+          "lat_deg",
+          "cmd_deg",
+          "mu",
+          "umbrae",
+          "umbra_px",
+          "penumbra_px",
+          "projected_msh",
+          "area_msh",
+          "umbra_msh"
+        ],
+        "properties": {
+          "area_msh": {
+            "type": "number",
+            "format": "float",
+            "description": "Corrected for foreshortening, millionths of the hemisphere."
+          },
+          "cmd_deg": {
+            "type": "number",
+            "format": "float",
+            "description": "Central meridian distance, degrees, west positive."
+          },
+          "group": {
+            "type": "integer",
+            "description": "Its group.",
+            "minimum": 0
+          },
+          "id": {
+            "type": "integer",
+            "description": "Number from 1.",
+            "minimum": 0
+          },
+          "lat_deg": {
+            "type": "number",
+            "format": "float",
+            "description": "Heliographic latitude, degrees north."
+          },
+          "lon_deg": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "float",
+            "description": "Carrington longitude, degrees (needs `time`)."
+          },
+          "mu": {
+            "type": "number",
+            "format": "float",
+            "description": "Cosine of the angle from disc centre."
+          },
+          "penumbra_px": {
+            "type": "integer",
+            "description": "Penumbra pixels.",
+            "minimum": 0
+          },
+          "projected_msh": {
+            "type": "number",
+            "format": "float",
+            "description": "As seen, millionths of the visible hemisphere."
+          },
+          "umbra_msh": {
+            "type": "number",
+            "format": "float",
+            "description": "Umbra corrected, millionths of the hemisphere."
+          },
+          "umbra_px": {
+            "type": "integer",
+            "description": "Umbra pixels.",
+            "minimum": 0
+          },
+          "umbrae": {
+            "type": "integer",
+            "description": "Umbrae in it.",
+            "minimum": 0
+          },
+          "x": {
+            "type": "number",
+            "format": "float",
+            "description": "Centroid, pixels."
+          },
+          "y": {
+            "type": "number",
+            "format": "float",
+            "description": "Centroid, pixels, top row 0."
+          }
+        }
+      },
+      "SunspotsConfig": {
+        "type": "object",
+        "description": "Tuning of the sunspot detection; every field is optional.",
+        "properties": {
+          "celestial_north_up": {
+            "type": "boolean",
+            "description": "The image has celestial north up: add the position angle P of the Sun\nat the capture time to `north_angle_deg`.",
+            "default": false
+          },
+          "group_gap_deg": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "float",
+            "description": "Spots closer than this on the Sun, degrees, form one group. Default 3.",
+            "default": null
+          },
+          "max_area": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "float",
+            "description": "Largest spot, millionths of the hemisphere; bigger dark regions are\nleft out as a cloud or vignette. Default 6000.",
+            "default": null
+          },
+          "min_area": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "float",
+            "description": "Smallest spot, millionths of the hemisphere. Default 2.",
+            "default": null
+          },
+          "mirror": {
+            "type": "boolean",
+            "description": "The image is a mirror image.",
+            "default": false
+          },
+          "north_angle_deg": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "float",
+            "description": "Counter-clockwise angle from the top of the image to solar north,\ndegrees. Default 0.",
+            "default": null
+          },
+          "penumbra": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "float",
+            "description": "Penumbra threshold, a share of the quiet disc (0 to 1). Default 0.88.",
+            "default": null
+          },
+          "umbra": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "float",
+            "description": "Umbra threshold, a share of the quiet disc (0 to 1). Default 0.55.",
+            "default": null
+          },
+          "wolf_k": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "float",
+            "description": "Observer factor k of the Wolf number. Default 1.",
+            "default": null
+          }
+        },
+        "additionalProperties": false
+      },
+      "SunspotsSummary": {
+        "type": "object",
+        "description": "Sunspots on the stack: counts, areas and the table.",
+        "required": [
+          "groups",
+          "spots",
+          "wolf",
+          "k",
+          "projected_msh",
+          "area_msh",
+          "umbra_msh",
+          "disc",
+          "spot_table",
+          "group_table",
+          "notes",
+          "lines"
+        ],
+        "properties": {
+          "area_msh": {
+            "type": "number",
+            "format": "float",
+            "description": "Everything corrected for foreshortening, millionths of the hemisphere."
+          },
+          "b0_deg": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "float",
+            "description": "Heliographic latitude of the disc centre, degrees (needs `time`)."
+          },
+          "disc": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "float"
+            },
+            "description": "Disc centre x, centre y and radius the positions are measured on, pixels."
+          },
+          "group_table": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SunspotGroupRow"
+            },
+            "description": "One row per group."
+          },
+          "groups": {
+            "type": "integer",
+            "description": "Sunspot groups, `g`.",
+            "minimum": 0
+          },
+          "k": {
+            "type": "number",
+            "format": "float",
+            "description": "The observer factor used."
+          },
+          "l0_deg": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "float",
+            "description": "Carrington longitude of the disc centre, degrees (needs `time`)."
+          },
+          "lines": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The report in lines, as the command line prints it."
+          },
+          "notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Things to be careful about."
+          },
+          "p_deg": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "float",
+            "description": "Position angle of the solar axis, degrees (needs `time`)."
+          },
+          "projected_msh": {
+            "type": "number",
+            "format": "float",
+            "description": "Everything as seen, millionths of the visible hemisphere."
+          },
+          "spot_table": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SunspotRow"
+            },
+            "description": "One row per spot."
+          },
+          "spots": {
+            "type": "integer",
+            "description": "Individual spots, `s` (umbrae and pores).",
+            "minimum": 0
+          },
+          "time": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Capture time used, ISO 8601 UTC; absent when the capture had none."
+          },
+          "umbra_msh": {
+            "type": "number",
+            "format": "float",
+            "description": "Umbrae corrected, millionths of the hemisphere."
+          },
+          "wolf": {
+            "type": "number",
+            "format": "float",
+            "description": "Relative Wolf number `k (10 g + s)`."
+          }
+        }
+      },
+      "TimelapseFrame": {
+        "type": "object",
+        "description": "One frame of a finished time-lapse.",
+        "required": [
+          "frame",
+          "input",
+          "file",
+          "shift_x",
+          "shift_y",
+          "method",
+          "gain"
+        ],
+        "properties": {
+          "derotated_px": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "float",
+            "description": "The most the derotation moved the surface of this frame, pixels, when\nit ran."
+          },
+          "file": {
+            "type": "string",
+            "description": "The frame file, relative to the data root."
+          },
+          "frame": {
+            "type": "integer",
+            "description": "Position in the sequence, from 1.",
+            "minimum": 0
+          },
+          "gain": {
+            "type": "number",
+            "format": "float",
+            "description": "Gain applied for the brightness (1 without `deflicker`)."
+          },
+          "input": {
+            "type": "string",
+            "description": "The input it came from."
+          },
+          "limb_confidence": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "float",
+            "description": "Confidence of the frame's limb fit, 0 to 1, when it has one."
+          },
+          "method": {
+            "type": "string",
+            "description": "`reference`, `limb`, `limb+phase`, `phase` or `failed`."
+          },
+          "phase_psr": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "float",
+            "description": "Peak-to-sidelobe ratio of the phase correlation, when it ran."
+          },
+          "shift_x": {
+            "type": "number",
+            "format": "float",
+            "description": "Shift applied, pixels (the frame's content was at the reference plus\nthis)."
+          },
+          "shift_y": {
+            "type": "number",
+            "format": "float",
+            "description": "Shift applied, pixels."
+          },
+          "time": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Capture time, UTC, when known."
+          }
+        }
+      },
+      "TimelapseRequest": {
+        "type": "object",
+        "description": "`POST /timelapse` body.",
+        "required": [
+          "inputs",
+          "output"
+        ],
+        "properties": {
+          "crop": {
+            "type": "boolean",
+            "description": "Cut every frame to the area all of them cover."
+          },
+          "deflicker": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "`off` (default), `match` or `smooth`."
+          },
+          "deflicker_window": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "Frames in the running median of `smooth` (odd, at least 3; default 5).",
+            "minimum": 0
+          },
+          "derotate": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/DerotateConfig",
+                "description": "Bring every frame to one time by the Sun's differential rotation (an\nempty object for the defaults). Needs the time of every input."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "format": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Frame format: `png` (8-bit, default) or `tiff` (16-bit)."
+          },
+          "fps": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "float",
+            "description": "Frames a second of the movie (default 10, up to 120)."
+          },
+          "inputs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Stacked images, relative to the data root, one per frame (2 to 200).\nThey are put in time order when every one has a time."
+          },
+          "max_refine_px": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "format": "float",
+            "description": "Largest correction in pixels the refinement may make (default 3)."
+          },
+          "movie": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "`auto` (default: MP4 when ffmpeg is installed, else an animated PNG),\n`mp4`, `apng` or `none`."
+          },
+          "output": {
+            "type": "string",
+            "description": "Directory for the frames, the movie and the table, relative to the data\nroot. Created when missing."
+          },
+          "overwrite": {
+            "type": "boolean",
+            "description": "Replace an earlier time-lapse in `output`."
+          },
+          "reference": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The frame the others are registered to: `first`, `middle` (default) or\na number counting from 1."
+          },
+          "refine": {
+            "type": [
+              "boolean",
+              "null"
+            ],
+            "description": "Refine the limb shift by phase correlation of the disc centre\n(default true)."
+          },
+          "report": {
+            "type": "boolean",
+            "description": "Also write the diagnostics of the series into `output/report/`: how\neach frame was registered, the brightness before and after\n`deflicker`, and the derotation displacement, as PNG, CSV and JSON and\none self-contained `report.html` (`summary` `report`)."
+          },
+          "times": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "type": "string"
+            },
+            "description": "UTC capture time of each input (`YYYY-MM-DDThh:mm:ss`), in the order\ngiven in `inputs`. Without it a FITS file's `DATE-AVG` or a file name\nthat holds a full date and time is used; frames with no time are kept\nin the order given."
+          }
+        },
+        "additionalProperties": false
+      },
+      "TimelapseResponse": {
+        "type": "object",
+        "description": "What a time-lapse made.",
+        "required": [
+          "frames",
+          "width",
+          "height",
+          "reference",
+          "table",
+          "notes"
+        ],
+        "properties": {
+          "crop": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Region",
+                "description": "The area of the stacked images that was kept, with `crop`."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "frames": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TimelapseFrame"
+            },
+            "description": "The frames in order."
+          },
+          "height": {
+            "type": "integer",
+            "description": "Height of the written frames.",
+            "minimum": 0
+          },
+          "movie": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The movie file, relative to the data root, when one was made."
+          },
+          "movie_kind": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "`mp4` or `apng`."
+          },
+          "notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Plain-language lines: what registration did, and any caveat."
+          },
+          "reference": {
+            "type": "integer",
+            "description": "The reference frame, from 1.",
+            "minimum": 0
+          },
+          "report": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The diagnostics page (`report.html`), relative to the data root, with\n`report`; its figures and data are beside it."
+          },
+          "table": {
+            "type": "string",
+            "description": "The registration table (CSV), relative to the data root."
+          },
+          "width": {
+            "type": "integer",
+            "description": "Width of the written frames.",
+            "minimum": 0
+          }
+        }
+      },
+      "TimestampInfo": {
+        "type": "object",
+        "description": "SER trailer timestamps.",
+        "required": [
+          "count"
+        ],
+        "properties": {
+          "count": {
+            "type": "integer",
+            "description": "How many.",
+            "minimum": 0
+          },
+          "first": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "First, UTC."
+          },
+          "last": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Last, UTC."
+          }
+        }
+      },
+      "TrueColourSummary": {
+        "type": "object",
+        "description": "What a true-colour job did.",
+        "required": [
+          "gains",
+          "notes"
+        ],
+        "properties": {
+          "channels": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "$ref": "#/components/schemas/ChannelSummary"
+            },
+            "description": "Red and blue against green; absent when `align_channels` was off."
+          },
+          "gains": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "float"
+            },
+            "description": "Gains applied to red, green and blue, including the common scale that\nkeeps the picture inside white."
+          },
+          "notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The notes written into the file's history, including warnings (a\nchannel held at the largest automatic gain, a shift not applied)."
+          }
+        }
+      },
+      "VersionInfo": {
+        "type": "object",
+        "description": "`/version` response.",
+        "required": [
+          "name",
+          "version",
+          "api",
+          "build",
+          "licence",
+          "backends",
+          "limits",
+          "auth_required"
+        ],
+        "properties": {
+          "api": {
+            "type": "string",
+            "description": "API version in the URL prefix."
+          },
+          "auth_required": {
+            "type": "boolean",
+            "description": "Whether a token is required."
+          },
+          "backends": {
+            "$ref": "#/components/schemas/Backends",
+            "description": "Backends."
+          },
+          "build": {
+            "$ref": "#/components/schemas/BuildDetails",
+            "description": "Build record."
+          },
+          "licence": {
+            "$ref": "#/components/schemas/LicenceDetails",
+            "description": "Copyright and licence."
+          },
+          "limits": {
+            "$ref": "#/components/schemas/Limits",
+            "description": "Limits."
+          },
+          "name": {
+            "type": "string",
+            "description": "Package name."
+          },
+          "version": {
+            "type": "string",
+            "description": "Package version."
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearer": []
+    }
+  ]
+}

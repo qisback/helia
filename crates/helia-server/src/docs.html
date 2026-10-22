@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Helia API</title>
+<style>
+body{font:15px/1.5 system-ui,sans-serif;max-width:60rem;margin:2rem auto;padding:0 1rem}
+code,pre{font-family:ui-monospace,monospace;background:#8881;padding:.1em .3em;border-radius:3px}
+pre{padding:.6em;overflow:auto}
+.op{border:1px solid #8884;border-radius:6px;margin:.6rem 0;padding:.4rem .8rem}
+.m{display:inline-block;min-width:4.5rem;font-weight:700;text-transform:uppercase}
+input{font:inherit;padding:.2rem .4rem;width:22rem;max-width:100%}
+</style>
+</head>
+<body>
+<h1>Helia API</h1>
+<p>Token (if the server needs one): <input id="t" type="password" autocomplete="off">
+<button id="go">Load</button></p>
+<p>Raw document: <a href="openapi.json">openapi.json</a> (needs the bearer token).</p>
+<div id="out"></div>
+<script>
+const out = document.getElementById('out');
+document.getElementById('go').onclick = async () => {
+  const t = document.getElementById('t').value;
+  out.textContent = 'Loading...';
+  try {
+    const r = await fetch('openapi.json', {headers: t ? {Authorization: 'Bearer ' + t} : {}});
+    if (!r.ok) { out.textContent = 'HTTP ' + r.status; return; }
+    const d = await r.json();
+    out.textContent = '';
+    for (const [path, ops] of Object.entries(d.paths)) {
+      for (const [method, op] of Object.entries(ops)) {
+        const div = document.createElement('div');
+        div.className = 'op';
+        const head = document.createElement('div');
+        const m = document.createElement('span');
+        m.className = 'm'; m.textContent = method;
+        const p = document.createElement('code'); p.textContent = path;
+        head.append(m, p);
+        const s = document.createElement('div');
+        s.textContent = op.summary || op.description || '';
+        const resp = document.createElement('pre');
+        resp.textContent = JSON.stringify(op.responses, null, 1);
+        div.append(head, s, resp);
+        out.append(div);
+      }
+    }
+  } catch (e) { out.textContent = String(e); }
+};
+</script>
+</body>
+</html>

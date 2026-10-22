@@ -1,0 +1,21 @@
+Helia is GPL-3.0-or-later (see LICENSE). It includes the third-party Rust crates
+below, each under the licence shown. This list covers every platform the
+workspace builds for, so it can name crates a given archive does not use.
+
+{{#each overview}}
+{{{name}}}  ({{count}} crates)
+{{/each}}
+
+{{#each licenses}}
+================================================================================
+{{{name}}}
+================================================================================
+
+Used by:
+{{#each used_by}}
+  {{crate.name}} {{crate.version}}{{#if crate.repository}}  {{crate.repository}}{{/if}}
+{{/each}}
+
+{{{text}}}
+
+{{/each}}

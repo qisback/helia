@@ -1,0 +1,1 @@
+--8<-- "docs/research/state-of-the-art-2026.md"

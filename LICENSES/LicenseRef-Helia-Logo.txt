@@ -1,0 +1,22 @@
+Helia logo licence
+
+Copyright 2026 Laurence Horrocks-Barlow. All rights reserved.
+
+The Helia logo, and every image derived from it (the icons, the transparent
+version, the favicon and the like), is not free software and is not covered by
+the GNU General Public License or any other open licence.
+
+Permission is granted to:
+
+ 1. use the logo, unmodified, in unmodified builds and releases of Helia as
+    published by Laurence Horrocks-Barlow; and
+ 2. use the unmodified logo to refer to the Helia project (for example in an
+    article, a review or a link to the project).
+
+Any other use, including copying, modifying, redistributing the logo on its
+own, or using it for another project, product or service, needs the prior
+written permission of the copyright holder.
+
+Forks and modified versions of Helia must remove this logo and its derived
+images and replace them with their own. See ADDITIONAL-TERMS.md, section 7(c)
+of the GNU General Public License, version 3, and LOGO-LICENCE.md.

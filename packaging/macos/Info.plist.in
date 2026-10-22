@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+SPDX-FileCopyrightText: 2026 Laurence Horrocks-Barlow
+SPDX-License-Identifier: GPL-3.0-or-later
+See ADDITIONAL-TERMS.md for terms added under GPLv3 section 7.
+
+@VERSION@ is filled in by packaging/macos/build-app.sh. Helia is listed as an
+Alternate handler for its file types, so it appears under Open With and never
+takes over the default program.
+-->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>CFBundleName</key><string>Helia</string>
+  <key>CFBundleDisplayName</key><string>Helia</string>
+  <key>CFBundleIdentifier</key><string>casa.discworld.helia</string>
+  <key>CFBundleExecutable</key><string>helia-gui</string>
+  <key>CFBundleIconFile</key><string>helia</string>
+  <key>CFBundlePackageType</key><string>APPL</string>
+  <key>CFBundleSignature</key><string>????</string>
+  <key>CFBundleInfoDictionaryVersion</key><string>6.0</string>
+  <key>CFBundleShortVersionString</key><string>@VERSION@</string>
+  <key>CFBundleVersion</key><string>@VERSION@</string>
+  <key>LSMinimumSystemVersion</key><string>12.0</string>
+  <key>LSApplicationCategoryType</key><string>public.app-category.photography</string>
+  <key>NSHighResolutionCapable</key><true/>
+  <key>NSSupportsAutomaticGraphicsSwitching</key><true/>
+  <key>NSHumanReadableCopyright</key><string>Copyright (C) 2026 Laurence Horrocks-Barlow</string>
+  <key>UTImportedTypeDeclarations</key>
+  <array>
+    <dict>
+      <key>UTTypeIdentifier</key><string>casa.discworld.helia.ser</string>
+      <key>UTTypeDescription</key><string>SER astronomy video</string>
+      <key>UTTypeConformsTo</key><array><string>public.movie</string></array>
+      <key>UTTypeTagSpecification</key>
+      <dict>
+        <key>public.filename-extension</key><array><string>ser</string></array>
+      </dict>
+    </dict>
+  </array>
+  <key>CFBundleDocumentTypes</key>
+  <array>
+    <dict>
+      <key>CFBundleTypeName</key><string>SER astronomy video</string>
+      <key>CFBundleTypeRole</key><string>Viewer</string>
+      <key>LSHandlerRank</key><string>Alternate</string>
+      <key>LSItemContentTypes</key><array><string>casa.discworld.helia.ser</string></array>
+    </dict>
+    <dict>
+      <key>CFBundleTypeName</key><string>AVI video</string>
+      <key>CFBundleTypeRole</key><string>Viewer</string>
+      <key>LSHandlerRank</key><string>Alternate</string>
+      <key>LSItemContentTypes</key><array><string>public.avi</string></array>
+    </dict>
+    <dict>
+      <key>CFBundleTypeName</key><string>FITS image</string>
+      <key>CFBundleTypeRole</key><string>Viewer</string>
+      <key>LSHandlerRank</key><string>Alternate</string>
+      <key>CFBundleTypeExtensions</key><array><string>fits</string><string>fit</string><string>fts</string></array>
+    </dict>
+  </array>
+</dict>
+</plist>

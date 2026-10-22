@@ -1,0 +1,20 @@
+/target
+/fuzz/target
+/fuzz/corpus
+/fuzz/artifacts
+*.ser
+!tests/data/**/*.ser
+/lcov.info
+*.avi
+# Snapshot test scratch output
+/docs/book/src/images/ui/*.new.png
+/docs/book/src/images/ui/*.diff.png
+/site
+/.venv
+# Real video captures are never committed.
+*.mp4
+*.mov
+*.mkv
+*.webm
+*.m4v
+__pycache__/

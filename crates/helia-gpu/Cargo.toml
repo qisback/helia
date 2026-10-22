@@ -1,0 +1,38 @@
+[package]
+name = "helia-gpu"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+keywords.workspace = true
+categories.workspace = true
+authors.workspace = true
+description = "Helia wgpu compute backend"
+publish = false
+build = "build.rs"
+
+[lints]
+workspace = true
+
+# The lib's libtest harness would reject criterion's flags (`cargo bench -- --output-format bencher`).
+[lib]
+bench = false
+
+[dependencies]
+bytemuck = "1.25.2"
+helia-core = { version = "0.7.1", path = "../helia-core" }
+pollster = "1.0.1"
+rayon = "1.12.0"
+thiserror = "2.0.21"
+wgpu = "30.0.1"
+
+[dev-dependencies]
+criterion = "0.7.0"
+helia-core = { version = "0.7.1", path = "../helia-core", features = ["testutil"] }
+
+[[bench]]
+name = "gpu"
+harness = false

@@ -1,0 +1,272 @@
+{
+ "app": "helia",
+ "meta": {
+  "os": "Linux-6.1.0-52-amd64-x86_64-with-glibc2.36",
+  "arch": "x86_64",
+  "cores": 8,
+  "cpu": "AMD EPYC-Milan Processor",
+  "ram_gb": 30.6,
+  "label": "x86 8-core",
+  "commit": "f318da8",
+  "bin": "helia/target/release/helia",
+  "date": "-",
+  "version": "helia 0.6.0",
+  "reps": 2,
+  "gpu_index": null
+ },
+ "cases": {
+  "ha-720x540-avi": "720x540 8-bit Bayer AVI, 1000 frames",
+  "ha-1080-ser16": "1920x1080 16-bit SER, 100 frames",
+  "ha-1080-ser8": "1920x1080 8-bit SER, 631 frames",
+  "cak-mono-avi": "1936x1088 8-bit mono AVI, 498 frames",
+  "white-bayer-avi": "1920x1080 8-bit AVI, 630 frames",
+  "cak-bayer-avi": "1920x1080 8-bit Bayer AVI, 2713 frames"
+ },
+ "runs": [
+  {
+   "ok": true,
+   "wall": 181.053,
+   "rss_mb": 549,
+   "cpu_s": 1413.89,
+   "other_cores": 0.01,
+   "loaded": false,
+   "busy_limit": 0.5,
+   "vram_mb": null,
+   "stages": {
+    "open": 0.18,
+    "scoring frames": 49.55,
+    "building reference": 0.03,
+    "aligning frames": 44.24,
+    "measuring alignment points": 51.13,
+    "stacking": 35.81,
+    "finishing": 0.01,
+    "write": 0.03,
+    "total": 181.02
+   },
+   "busy": {
+    "decode": [
+     0.08,
+     0.01
+    ],
+    "debayer": [
+     0.04,
+     0.01
+    ],
+    "quality": [
+     0.05,
+     0.01
+    ],
+    "global align": [
+     44.25,
+     5.53
+    ],
+    "AP align": [
+     0.24,
+     0.03
+    ],
+    "stack": [
+     35.76,
+     4.47
+    ],
+    "finish": [
+     0.0,
+     0.0
+    ]
+   },
+   "frames": 1000,
+   "kept": 250,
+   "tail": null,
+   "group": "captures",
+   "case": "ha-720x540-avi",
+   "mode": "swgl",
+   "threads": 0,
+   "rep": 0,
+   "load1_before": 4.99,
+   "bytes": 389202432
+  },
+  {
+   "ok": true,
+   "wall": 179.893,
+   "rss_mb": 522,
+   "cpu_s": 1413.49,
+   "other_cores": 0.01,
+   "loaded": false,
+   "busy_limit": 0.5,
+   "vram_mb": null,
+   "stages": {
+    "open": 0.12,
+    "scoring frames": 49.46,
+    "building reference": 0.02,
+    "aligning frames": 43.79,
+    "measuring alignment points": 50.67,
+    "stacking": 35.76,
+    "finishing": 0.01,
+    "write": 0.01,
+    "total": 179.88
+   },
+   "busy": {
+    "decode": [
+     0.09,
+     0.01
+    ],
+    "debayer": [
+     0.04,
+     0.01
+    ],
+    "quality": [
+     0.06,
+     0.01
+    ],
+    "global align": [
+     43.79,
+     5.47
+    ],
+    "AP align": [
+     0.19,
+     0.02
+    ],
+    "stack": [
+     35.71,
+     4.46
+    ],
+    "finish": [
+     0.0,
+     0.0
+    ]
+   },
+   "frames": 1000,
+   "kept": 250,
+   "tail": null,
+   "group": "captures",
+   "case": "ha-720x540-avi",
+   "mode": "swgl",
+   "threads": 0,
+   "rep": 1,
+   "load1_before": 4.99,
+   "bytes": 389202432
+  },
+  {
+   "ok": true,
+   "wall": 93.488,
+   "rss_mb": 1452,
+   "cpu_s": 730.34,
+   "other_cores": 0.01,
+   "loaded": false,
+   "busy_limit": 0.5,
+   "vram_mb": null,
+   "stages": {
+    "open": 0.07,
+    "scoring frames": 26.87,
+    "building reference": 0.13,
+    "aligning frames": 23.34,
+    "measuring alignment points": 24.68,
+    "stacking": 18.08,
+    "finishing": 0.03,
+    "write": 0.05,
+    "total": 93.42
+   },
+   "busy": {
+    "decode": [
+     0.14,
+     0.02
+    ],
+    "debayer": [
+     0.16,
+     0.02
+    ],
+    "quality": [
+     0.03,
+     0.0
+    ],
+    "global align": [
+     23.4,
+     2.92
+    ],
+    "AP align": [
+     0.02,
+     0.0
+    ],
+    "stack": [
+     17.9,
+     2.24
+    ],
+    "finish": [
+     0.01,
+     0.0
+    ]
+   },
+   "frames": 100,
+   "kept": 25,
+   "tail": null,
+   "group": "captures",
+   "case": "ha-1080-ser16",
+   "mode": "swgl",
+   "threads": 0,
+   "rep": 0,
+   "load1_before": 7.93,
+   "bytes": 414720978
+  },
+  {
+   "ok": true,
+   "wall": 93.292,
+   "rss_mb": 1506,
+   "cpu_s": 728.92,
+   "other_cores": 0.01,
+   "loaded": false,
+   "busy_limit": 0.5,
+   "vram_mb": null,
+   "stages": {
+    "open": 0.07,
+    "scoring frames": 26.9,
+    "building reference": 0.13,
+    "aligning frames": 23.23,
+    "measuring alignment points": 24.62,
+    "stacking": 18.02,
+    "finishing": 0.03,
+    "write": 0.05,
+    "total": 93.22
+   },
+   "busy": {
+    "decode": [
+     0.15,
+     0.02
+    ],
+    "debayer": [
+     0.16,
+     0.02
+    ],
+    "quality": [
+     0.03,
+     0.0
+    ],
+    "global align": [
+     23.29,
+     2.91
+    ],
+    "AP align": [
+     0.02,
+     0.0
+    ],
+    "stack": [
+     17.84,
+     2.23
+    ],
+    "finish": [
+     0.01,
+     0.0
+    ]
+   },
+   "frames": 100,
+   "kept": 25,
+   "tail": null,
+   "group": "captures",
+   "case": "ha-1080-ser16",
+   "mode": "swgl",
+   "threads": 0,
+   "rep": 1,
+   "load1_before": 7.93,
+   "bytes": 414720978
+  }
+ ],
+ "kernels": []
+}
