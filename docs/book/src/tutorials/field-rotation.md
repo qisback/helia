@@ -44,6 +44,10 @@ degrees, 25 pixels at the limb; best half of the frames kept.
 | Global alignment | 1.286 | 0.706 | 1.296 |
 | Alignment points | 1.311 | 0.915 | 1.321 |
 
+![Grouped bars of the granulation band (1 to 4 px) at the disc centre in per cent of the mean. Global alignment: frames as they were 1.286, rotating capture 0.706, corrected 1.296. Alignment points: 1.311, 0.915 and 1.321.](../images/charts/tutorials-field-rotation-granulation.svg)
+
+*Granulation band at the disc centre for 100 frames of `15_20_57.ser` given the timestamps of an hour, from the table above (higher is better).*
+
 ## 3. Align a time-lapse
 
 Stack each capture to FITS (the file carries `DATE-AVG`), then turn the images to one

@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="406" viewBox="0 0 480 406" role="img" aria-labelledby="t d">
+<title id="t">Read-back: whole run</title><desc id="d">Horizontal grouped bars of the whole run in seconds before and after: 1.73 to 1.35, 1.93 to 1.84, 3.40 to 2.77, 3.88 to 3.13, 4.13 to 3.50, 6.94 to 5.88 and 12.06 to 9.19.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="405" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">Read-back: whole run</text>
+<rect x="16" y="38" width="12" height="12" rx="2" fill="#0072B2"/>
+<text x="34.0" y="49.0" class="ink" text-anchor="start">Before</text>
+<rect x="94.0" y="38" width="12" height="12" rx="2" fill="#D55E00"/>
+<text x="112.0" y="49.0" class="ink" text-anchor="start">After</text>
+<text x="158.0" y="94.0" class="ink" text-anchor="end">0.4 GB 720x540 AVI</text>
+<rect x="166.0" y="75.0" width="36.3" height="14" fill="#0072B2"/>
+<text x="206.3" y="87.0" class="sub" text-anchor="start" style="font-size:11px">1.73</text>
+<rect x="166.0" y="91.0" width="28.3" height="14" fill="#D55E00"/>
+<text x="198.3" y="103.0" class="sub" text-anchor="start" style="font-size:11px">1.35</text>
+<text x="158.0" y="126.5" class="ink" text-anchor="end">0.4 GB 1080p 16-bit</text>
+<text x="158.0" y="141.5" class="ink" text-anchor="end">SER</text>
+<rect x="166.0" y="115.0" width="40.5" height="14" fill="#0072B2"/>
+<text x="210.5" y="127.0" class="sub" text-anchor="start" style="font-size:11px">1.93</text>
+<rect x="166.0" y="131.0" width="38.6" height="14" fill="#D55E00"/>
+<text x="208.6" y="143.0" class="sub" text-anchor="start" style="font-size:11px">1.84</text>
+<text x="158.0" y="174.0" class="ink" text-anchor="end">1.0 GB mono AVI</text>
+<rect x="166.0" y="155.0" width="71.3" height="14" fill="#0072B2"/>
+<text x="241.3" y="167.0" class="sub" text-anchor="start" style="font-size:11px">3.40</text>
+<rect x="166.0" y="171.0" width="58.1" height="14" fill="#D55E00"/>
+<text x="228.1" y="183.0" class="sub" text-anchor="start" style="font-size:11px">2.77</text>
+<text x="158.0" y="214.0" class="ink" text-anchor="end">1.3 GB 1080p AVI</text>
+<rect x="166.0" y="195.0" width="81.3" height="14" fill="#0072B2"/>
+<text x="251.3" y="207.0" class="sub" text-anchor="start" style="font-size:11px">3.88</text>
+<rect x="166.0" y="211.0" width="65.6" height="14" fill="#D55E00"/>
+<text x="235.6" y="223.0" class="sub" text-anchor="start" style="font-size:11px">3.13</text>
+<text x="158.0" y="254.0" class="ink" text-anchor="end">1.3 GB 1080p SER</text>
+<rect x="166.0" y="235.0" width="86.6" height="14" fill="#0072B2"/>
+<text x="256.6" y="247.0" class="sub" text-anchor="start" style="font-size:11px">4.13</text>
+<rect x="166.0" y="251.0" width="73.4" height="14" fill="#D55E00"/>
+<text x="243.4" y="263.0" class="sub" text-anchor="start" style="font-size:11px">3.50</text>
+<text x="158.0" y="294.0" class="ink" text-anchor="end">3.1 GB 640x480 AVI</text>
+<rect x="166.0" y="275.0" width="145.5" height="14" fill="#0072B2"/>
+<text x="315.5" y="287.0" class="sub" text-anchor="start" style="font-size:11px">6.94</text>
+<rect x="166.0" y="291.0" width="123.2" height="14" fill="#D55E00"/>
+<text x="293.2" y="303.0" class="sub" text-anchor="start" style="font-size:11px">5.88</text>
+<text x="158.0" y="334.0" class="ink" text-anchor="end">5.6 GB Bayer AVI</text>
+<rect x="166.0" y="315.0" width="252.8" height="14" fill="#0072B2"/>
+<text x="422.8" y="327.0" class="sub" text-anchor="start" style="font-size:11px">12.06</text>
+<rect x="166.0" y="331.0" width="192.6" height="14" fill="#D55E00"/>
+<text x="362.6" y="343.0" class="sub" text-anchor="start" style="font-size:11px">9.19</text>
+<line class="grid" x1="166.0" x2="166.0" y1="68" y2="350"/>
+<text x="166.0" y="366.0" class="sub" text-anchor="middle" style="font-size:11px">0</text>
+<line class="grid" x1="218.4" x2="218.4" y1="68" y2="350"/>
+<text x="218.4" y="366.0" class="sub" text-anchor="middle" style="font-size:11px">2.5</text>
+<line class="grid" x1="270.8" x2="270.8" y1="68" y2="350"/>
+<text x="270.8" y="366.0" class="sub" text-anchor="middle" style="font-size:11px">5</text>
+<line class="grid" x1="323.2" x2="323.2" y1="68" y2="350"/>
+<text x="323.2" y="366.0" class="sub" text-anchor="middle" style="font-size:11px">7.5</text>
+<line class="grid" x1="375.6" x2="375.6" y1="68" y2="350"/>
+<text x="375.6" y="366.0" class="sub" text-anchor="middle" style="font-size:11px">10</text>
+<line class="grid" x1="428.0" x2="428.0" y1="68" y2="350"/>
+<text x="428.0" y="366.0" class="sub" text-anchor="middle" style="font-size:11px">12.5</text>
+<line class="axis" x1="166" x2="166" y1="68" y2="350"/>
+<text x="297.0" y="384.0" class="sub" text-anchor="middle">Whole run, seconds</text>
+</svg>

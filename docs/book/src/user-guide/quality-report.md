@@ -90,6 +90,10 @@ added noise:
 | Roll-off against blur of 0.6, 1.0, 1.6, 2.4 px | 0.113, 0.108, 0.096, 0.071 cycles per pixel |
 | More noise | the noise floor rises by over 20 times; the resolved frequency does not rise |
 
+![Line chart: roll-off falls as blur grows, 0.113 cycles per pixel at 0.6 px, 0.108 at 1.0, 0.096 at 1.6 and 0.071 at 2.4 px.](../images/charts/quality-report-rolloff-blur.svg)
+
+*Roll-off frequency of synthetic granulation blurred by known Gaussians, from the known-answer tests above.*
+
 On the project's four sodium captures (ASI482MC; Na D preset, GPU; FITS output, so
 unsharpened). Each is stacked three ways: the preset's best 12% of frames with
 alignment points; all frames (`--keep 100%`); the best 12% with global alignment
@@ -110,6 +114,18 @@ agrees:
 | `14_42_57.avi` | best 12%, points | 1.39% | 34.3 | 26.7 |
 | | all frames | 0.53% | 48.0 | 21.8 |
 | | best 12%, global | 0.55% | 34.3 | 12.0 |
+
+![Grouped bars for four captures and three stacks. 15_20_57.ser: Best 12%, points 4.17, All frames 3.99, Best 12%, global 4.14; Sun_Test.ser: Best 12%, points 3.76, All frames 3.44, Best 12%, global 3.64; 15_32_09.avi: Best 12%, points 1.95, All frames 1.86, Best 12%, global 1.91; 14_42_57.avi: Best 12%, points 1.39, All frames 0.53, Best 12%, global 0.55.](../images/charts/quality-report-captures-contrast.svg)
+
+*RMS contrast of each sodium capture stacked three ways, from the table above (ASI482MC, Na D preset).*
+
+![Grouped bars for four captures and three stacks. 15_20_57.ser: Best 12%, points 6.7, All frames 7.1, Best 12%, global 6.7; Sun_Test.ser: Best 12%, points 6.9, All frames 8.3, Best 12%, global 6.9; 15_32_09.avi: Best 12%, points 13.3, All frames 14.1, Best 12%, global 15.0; 14_42_57.avi: Best 12%, points 34.3, All frames 48.0, Best 12%, global 34.3.](../images/charts/quality-report-captures-rolloff.svg)
+
+*Roll-off of each sodium capture stacked three ways, from the table above (ASI482MC, Na D preset).*
+
+![Grouped bars for four captures and three stacks. 15_20_57.ser: Best 12%, points 3.0, All frames 3.1, Best 12%, global 3.0; Sun_Test.ser: Best 12%, points 3.4, All frames 4.3, Best 12%, global 3.4; 15_32_09.avi: Best 12%, points 6.3, All frames 6.5, Best 12%, global 6.5; 14_42_57.avi: Best 12%, points 26.7, All frames 21.8, Best 12%, global 12.0.](../images/charts/quality-report-captures-resolved.svg)
+
+*Resolved of each sodium capture stacked three ways, from the table above (ASI482MC, Na D preset).*
 
 * The contrast ranks all four captures as expected: alignment points above global
   alignment, and a selected 12% above all the frames. The roll-off period agrees

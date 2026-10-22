@@ -108,6 +108,10 @@ set side by side. The disc is cut by the frame: that is the capture.*
 | `off` | 0.998, 0.998, 0.998 | The sensor's own balance: a raw sensor weighs the colours differently from the eye, so the disc is pink |
 | `1.9,1,1.5` | 0.998, 0.525, 0.788 | Your own gains, applied by hand (and then scaled together): strongly magenta, because this capture does not want them |
 
+![Grouped bars of red, green and blue gains: auto 0.950, 1.226, 1.076; off 0.998 for all three; manual 1.9,1,1.5 gives 0.998, 0.525, 0.788.](../images/charts/true-colour-white-balance.svg)
+
+*Red, green and blue gains printed for the three `--white-balance` options on 14_42_57.avi, from the table above.*
+
 Use `auto` unless you know the gains your own sensor and filter need. The
 manual gains are for repeating a balance between captures from the same setup.
 The gains are always the three numbers in the `colour:` line, so they can be
@@ -199,6 +203,10 @@ conclusion is the warning's: use a filter look instead (`--preset ha`, the
 [Colourising](../user-guide/colourising.md) page). The nearly-empty-channel case
 is reproduced here on real H-alpha captures; the project has no real sodium capture
 (the ones labelled sodium turned out to be H-alpha).
+
+![Scatter of shift in x against shift in y, in pixels. White light: red (+0.08, +0.03), blue (-0.12, -0.06). H-alpha: red (+1.36, -0.04), blue (+0.05, -0.00).](../images/charts/tutorials-true-colour-channel-shift.svg)
+
+*Shift of red and blue onto green found by phase correlation, from the `Channel alignment` lines of the white-light and the H-alpha captures.*
 
 ## What to expect and how to tell it worked
 

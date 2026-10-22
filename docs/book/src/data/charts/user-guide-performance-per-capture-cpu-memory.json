@@ -1,0 +1,30 @@
+{
+ "id": "user-guide-performance-per-capture-cpu-memory",
+ "page": "user-guide/performance.md",
+ "kind": "hbars",
+ "title": "CPU peak memory per capture",
+ "caption": "Peak resident memory of the CPU run, from the table above, for the five captures the table gives in GB (the two given in MB are not drawn).",
+ "alt": "Horizontal bars of CPU peak resident set in gigabytes: 2.2 for the 1080p 16-bit SER, 2.3 for the 1.0 GB AVI, 2.2 for the 1.3 GB AVI, 2.2 for the 1.3 GB SER and 2.2 for the 5.6 GB AVI.",
+ "categories": [
+  "0.4 GB 1080p 16-bit SER",
+  "1.0 GB 1936x1088 AVI",
+  "1.3 GB 1080p AVI",
+  "1.3 GB 1080p SER",
+  "5.6 GB 1080p Bayer AVI"
+ ],
+ "series": [
+  {
+   "name": "CPU peak RSS",
+   "values": [
+    2.2,
+    2.3,
+    2.2,
+    2.2,
+    2.2
+   ]
+  }
+ ],
+ "value_axis": "Peak resident memory, GB",
+ "dp": 1,
+ "note": "'What to expect' table; 315 MB and 367 MB rows left out as they are printed in MB"
+}

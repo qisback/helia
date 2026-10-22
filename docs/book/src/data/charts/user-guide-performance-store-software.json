@@ -1,0 +1,34 @@
+{
+ "id": "user-guide-performance-store-software",
+ "page": "user-guide/performance.md",
+ "kind": "hbars",
+ "title": "Frame store on the software adapter",
+ "caption": "Wall seconds on the software adapter (lavapipe, 24 cores) with the store off and forced on, from the text below the stage table.",
+ "alt": "Horizontal grouped bars of wall seconds before and after: 17.5 to 17.2 for the 0.4 GB AVI, 12.7 to 13.2 for the 0.4 GB SER and 65.7 to 67.0 for the 1.0 GB capture.",
+ "categories": [
+  "0.4 GB AVI",
+  "0.4 GB SER",
+  "1.0 GB capture"
+ ],
+ "series": [
+  {
+   "name": "Before",
+   "values": [
+    17.5,
+    12.7,
+    65.7
+   ]
+  },
+  {
+   "name": "After",
+   "values": [
+    17.2,
+    13.2,
+    67.0
+   ]
+  }
+ ],
+ "value_axis": "Wall-clock time, seconds (best of three)",
+ "dp": 1,
+ "note": "prose after the stage table in 'Measured effect'"
+}

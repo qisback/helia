@@ -85,8 +85,13 @@ class Notes(unittest.TestCase):
         self.assertIn("GPL-3.0-or-later", self.notes)
 
     def test_downloads_and_source(self):
-        for p in ("Linux x86_64", "Linux aarch64", "Windows x86_64", "macOS"):
+        for p in ("Linux x86_64", "Linux aarch64", "Windows x86_64"):
             self.assertIn(p, self.notes)
+        self.assertNotIn("macOS (Apple silicon)", self.notes)
+        self.assertIn(release.NO_MACOS, self.notes)
+        with_mac = release.build_notes("1.2.3", "v1.2.3", self.date, "", "https://example.invalid", "o/r", macos=True)
+        self.assertIn("| macOS (Apple silicon) | dmg |", with_mac)
+        self.assertNotIn(release.NO_MACOS, with_mac)
         self.assertIn("https://example.invalid/o/r/archive/v1.2.3.tar.gz", self.notes)
 
     def test_checksum_block_round_trip(self):

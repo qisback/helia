@@ -106,6 +106,14 @@ that ring (the glow):
 | `15_32_09` | 0.33 | 0.69 | 0.087 | 0.000 |
 | `15_37_19` | 0.25 | 0.71 | 0.020 | 0.000 |
 
+![Dumbbell chart of the ring median as a share of the disc's brightness, before and after. 15_32_09: 0.087 to 0.000. 15_37_19: 0.020 to 0.000.](../images/charts/user-guide-prominences-glow.svg)
+
+*Median of the ring from 1.02 to 1.15 radii (the glow), before and after the layer, from the table above (lower is better).*
+
+![Dumbbell chart: brightness of the brightest 1% of the ring from 1.02 to 1.15 radii, as a share of the disc's, before and after. 15_32_09: 0.33 to 0.69. 15_37_19: 0.25 to 0.71.](../images/charts/user-guide-prominences-brightest.svg)
+
+*Brightness of the brightest 1% of the ring from 1.02 to 1.15 radii, before and after the layer, from the table above (higher shows the prominences better).*
+
 The share of the ring above 5% of the disc falls from 97% to 10% for the first (the
 glow was above 5% nearly all round; what is left is the prominences) and stays 4%
 for the second (a clean sky), and the disc inside 0.9 of the radius is bit-identical.
@@ -116,6 +124,10 @@ band across the frame that the layer cannot remove completely). In the pictures 
 prominences on the left limb and the large one at the bottom of the first
 capture, which the plain stack shows as a smudge in the glow, stand out with their
 shape.
+
+![Dumbbell chart on a log axis of the variation beyond 1.35 radii, per cent of the disc. First capture 1.4 before and 0.001 after; second capture 9.8 before and 1.0 after.](../images/charts/user-guide-prominences-far-field.svg)
+
+*Variation of the brightness beyond 1.35 radii before and after the layer, from the paragraph below the table (lower is better).*
 
 ## Limits
 

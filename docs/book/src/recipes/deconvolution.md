@@ -51,6 +51,10 @@ Band-pass contrast of the disc centre (per cent of the mean, `helia measure` ban
 Over the iterations (limb PSF, TV 0) the gains are detail x1.75 and noise x1.66 at
 6, x2.04 and x2.07 at 12, x2.34 and x2.65 at 25.
 
+![Lines of gain against iterations: detail 1.75 at 6, 2.04 at 12, 2.34 at 25; noise 1.66, 2.07 and 2.65. Noise overtakes detail at 12 iterations.](../images/charts/recipe-deconvolution-iterations.svg)
+
+*Detail and noise gains of Richardson-Lucy with the limb PSF at 6, 12 and 25 iterations, from the figures printed under the table above.*
+
 ![Crops: stack, RL with the scale PSF, RL with the limb PSF, and RL (scale PSF) then wavelets](../images/real/deconvolution-compare.png)
 
 ## The warning

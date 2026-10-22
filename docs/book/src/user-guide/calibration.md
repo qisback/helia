@@ -202,6 +202,18 @@ over the true gain, after matching their means, over the middle of the field:
 | The dark taken off, or not (offset of 15% of the mean) | 0.44% against 0.56% |
 | The default high-pass (52 px), against the high-passed truth | 0.86%, the smooth part 0.18% |
 
+![Line chart: error 0.54 per cent with 10 frames, 0.11 with 25 and 0.08 with 50.](../images/charts/calibration-selfflat-frames.svg)
+
+*RMS error of the flat recovered from the Sun's own drift (displacements from the limb), by number of frames, from the validation table above.*
+
+![Line chart: error 0.20 per cent at noise 0.005, 0.75 at 0.02 and 1.9 at 0.05.](../images/charts/calibration-selfflat-noise.svg)
+
+*RMS error of the recovered flat with 25 frames on a disc of 0.5 to 1, by pixel noise, from the validation table above.*
+
+![Line chart: error 0.15 per cent for 0.1 px, 0.22 for 0.2 px and 0.40 for 0.4 px.](../images/charts/calibration-selfflat-displacement.svg)
+
+*RMS error of the recovered flat when the displacements are wrong by 0.1, 0.2 and 0.4 px, from the validation table above.*
+
 Every row is under 1% except where the test says what degrades it, and the
 default takes out the smooth part, which the data cannot determine.
 
@@ -219,6 +231,10 @@ from the even frames and the odd frames of 120 spread over the capture
 | `15_32_09.avi` | 84 px | 0.66% | 0.31% | 0.90 |
 | `Sun_Test.ser` | 16 px | 1.42% | 0.22% | 0.99 |
 
+![Grouped bars: 15_32_09.avi flat RMS 0.66 per cent and difference between halves 0.31; Sun_Test.ser 1.42 and 0.22.](../images/charts/calibration-selfflat-real-halves.svg)
+
+*Flat RMS and the difference between flats solved from the even and the odd frames of two real captures, from the table above.*
+
 Both halves agree, so there is structure fixed to the sensor in both. Whether it is
 the sensor or the Sun is the question the span answers, and the answer is the
 other result: stacking `Sun_Test.ser` with the flat solved from its own drift (a
@@ -228,6 +244,10 @@ of `15_32_09.avi` the same stack changed it by 0.6% (0.971% to 0.965%), the fine
 band by 3% (0.314% to 0.305%). So on captures of this kind a flat from the capture's
 own drift does not help, which is why a span under 30 px is refused. It needs
 frames made for it.
+
+![Sun_Test granulation band 1.847 per cent falls to 1.486; 15_32_09 granulation band 0.971 falls to 0.965 and its fine band 0.314 falls to 0.305.](../images/charts/calibration-selfflat-granulation.svg)
+
+*Band of `helia measure` before and after stacking with the flat solved from the capture's own drift, from the text below the table.*
 
 ## Etalons and Newton rings
 
@@ -286,6 +306,14 @@ the response of the sensor):
 | dark only | 0.00706 | 6.4 dB |
 | flat only | 0.01623 | -0.8 dB |
 | dark, flat and bad pixels | 0.00021 | **36.9 dB** |
+
+![Bars on a log axis: no calibration 0.01476, dark only 0.00706, flat only 0.01623, dark, flat and bad pixels 0.00021.](../images/charts/calibration-residual-rms.svg)
+
+*RMS of the stack against the stack from a perfect sensor, for each calibration, from the table above.*
+
+![Bars: dark only 6.4 dB, flat only -0.8 dB, dark, flat and bad pixels 36.9 dB.](../images/charts/calibration-residual-db.svg)
+
+*Residual below the uncalibrated stack, in decibels, from the table above; flat only is worse than none.*
 
 The test requires 20 dB. The pieces behave: a master of 40 darks has an error of
 0.0016 against 0.0098 for one frame; the master flat is within 0.003 of the true

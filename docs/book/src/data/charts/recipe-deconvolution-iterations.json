@@ -1,0 +1,39 @@
+{
+ "id": "recipe-deconvolution-iterations",
+ "page": "recipes/deconvolution.md",
+ "kind": "lines",
+ "title": "Gain over the iterations",
+ "caption": "Detail and noise gains of Richardson-Lucy with the limb PSF at 6, 12 and 25 iterations, from the figures printed under the table above.",
+ "alt": "Lines of gain against iterations: detail 1.75 at 6, 2.04 at 12, 2.34 at 25; noise 1.66, 2.07 and 2.65. Noise overtakes detail at 12 iterations.",
+ "series": [
+  {
+   "name": "Detail (1 to 4 px)",
+   "values": [
+    1.75,
+    2.04,
+    2.34
+   ],
+   "x": [
+    6,
+    12,
+    25
+   ]
+  },
+  {
+   "name": "Noise (pixel scale)",
+   "values": [
+    1.66,
+    2.07,
+    2.65
+   ],
+   "x": [
+    6,
+    12,
+    25
+   ]
+  }
+ ],
+ "xlabel": "Iterations",
+ "ylabel": "Gain over the stack (times)",
+ "note": "recipes/deconvolution.md, What you should see, prose"
+}

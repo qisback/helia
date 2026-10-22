@@ -1,0 +1,46 @@
+{
+ "id": "user-guide-performance-stage-gpu-cpu",
+ "page": "user-guide/performance.md",
+ "kind": "hbars",
+ "title": "Time per stage, 5.6 GB capture",
+ "caption": "Wall seconds of each stage for the 5.6 GB capture on the GPU and on the CPU, from the table above (lower is better).",
+ "alt": "Horizontal grouped bars of wall seconds, GPU then CPU. Open 0.6 and 0.6; score 3.4 and 3.2; reference 0.1 and 0.1; global alignment 1.6 and 2.4; alignment points 1.4 and 17.8; stack 1.2 and 2.5; finish and write 0.1 and 0.1.",
+ "categories": [
+  "open, start device",
+  "score 2713 frames",
+  "build reference",
+  "global align, 1628",
+  "align points, 635",
+  "stack 814 frames",
+  "finish and write"
+ ],
+ "series": [
+  {
+   "name": "GPU",
+   "values": [
+    0.6,
+    3.4,
+    0.1,
+    1.6,
+    1.4,
+    1.2,
+    0.1
+   ]
+  },
+  {
+   "name": "CPU",
+   "values": [
+    0.6,
+    3.2,
+    0.1,
+    2.4,
+    17.8,
+    2.5,
+    0.1
+   ]
+  }
+ ],
+ "value_axis": "Wall-clock time, seconds",
+ "dp": 1,
+ "note": "'Where the time goes' table, from `--timings`"
+}

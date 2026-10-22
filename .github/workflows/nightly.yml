@@ -65,9 +65,17 @@ jobs:
       - name: ffmpeg (macOS)
         if: runner.os == 'macOS'
         run: brew install ffmpeg
-      - run: cargo test --workspace --all-features --target ${{ matrix.target }}
+      # The published tree has the forge host rewritten to github.com in text, so this one snapshot of
+      # the feedback page (which prints that host) cannot match its forge-made image; skip it here.
+      # A set HELIA_GPU_TESTS makes a missing adapter fatal, so the 'none' targets leave it unset.
+      - name: test (software GPU adapter)
+        if: matrix.gpu != 'none'
+        run: cargo test --workspace --all-features --target ${{ matrix.target }} -- --skip snapshots::feedback_page_when_the_service_is_down
         env:
           HELIA_GPU_TESTS: ${{ matrix.gpu }}
+      - name: test (no GPU tests)
+        if: matrix.gpu == 'none'
+        run: cargo test --workspace --all-features --target ${{ matrix.target }} -- --skip snapshots::feedback_page_when_the_service_is_down
 
   bench:
     runs-on: ubuntu-24.04

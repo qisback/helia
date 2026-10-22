@@ -1,0 +1,34 @@
+{
+ "id": "seeing-best-worst-motion",
+ "page": "user-guide/seeing.md",
+ "kind": "dumbbell",
+ "title": "Motion index, best and worst quarter",
+ "caption": "Motion index of the quarter of frames ranked sharpest and of the quarter ranked worst, on three captures, from the table above.",
+ "alt": "Best and worst quarter: 15_20_57 0.147 and 0.184 px; Sun_Test 0.147 and 0.220; 15_32_09 0.133 and 0.138. Best is lower on all three.",
+ "categories": [
+  "15_20_57",
+  "Sun_Test",
+  "15_32_09"
+ ],
+ "series": [
+  {
+   "name": "Best quarter",
+   "values": [
+    0.147,
+    0.147,
+    0.133
+   ]
+  },
+  {
+   "name": "Worst quarter",
+   "values": [
+    0.184,
+    0.22,
+    0.138
+   ]
+  }
+ ],
+ "value_axis": "Motion index, px (lower is steadier)",
+ "dp": 3,
+ "note": "seeing.md, 'On the real captures', second table"
+}

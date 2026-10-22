@@ -25,6 +25,10 @@ round the Sun too, the disc turns by about 13.3 degrees a day at the equator, wh
 | 5 hours | 10.7 px | 1 px |
 | 24 hours | 51 px | 5 px |
 
+![Grouped bars on a log axis, in pixels. Equator at the disc centre: 0.2 px at 5 minutes, 2.1 at 1 hour, 10.7 at 5 hours, 51 at 24 hours. Mid-latitude lag behind the equator: 0.02, 0.2, 1 and 5 px.](../images/charts/user-guide-derotation-motion.svg)
+
+*Motion on a disc 220 pixels in radius, from the table above: the equator at the disc centre and the mid-latitude lag behind it.*
+
 Registering by the limb or by phase correlation cannot take it out: the limb does not
 move at all, and a phase correlation of the surface follows the rotation of the middle
 and leaves the edge turned. The pictures have to be brought to one time by a model of the
@@ -37,6 +41,10 @@ latitude** `phi`:
 
 `omega(phi) = A + B sin^2(phi) + C sin^4(phi)`
 
+
+![Horizontal bars of the equator rate in degrees a day: howard 14.33, snodgrass 14.11.](../images/charts/user-guide-derotation-law-equator.svg)
+
+*Sidereal rotation rate at the equator of the two published laws, from the table of laws above.*
 Helia has two published laws and takes your own.
 
 | Law | Source | A | B | C | Equator, deg/day |

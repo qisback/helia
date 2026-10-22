@@ -1,0 +1,37 @@
+{
+ "id": "how-stacking-refine-granulation",
+ "page": "user-guide/how-stacking-works.md",
+ "kind": "hbars",
+ "title": "Granulation, one and two passes",
+ "caption": "Granulation band at the disc centre after one and two passes, from the table above; higher is more contrast.",
+ "alt": "Granulation band in per cent, one pass then two: 15_20_57 2.050 and 2.050; Sun_Test 1.843 and 1.879; 14_42_57 0.155 and 0.159; 15_32_09 0.971 and 0.971.",
+ "categories": [
+  "15_20_57.ser",
+  "Sun_Test.ser",
+  "14_42_57.avi",
+  "15_32_09.avi"
+ ],
+ "series": [
+  {
+   "name": "One pass",
+   "values": [
+    2.05,
+    1.843,
+    0.155,
+    0.971
+   ]
+  },
+  {
+   "name": "Two passes",
+   "values": [
+    2.05,
+    1.879,
+    0.159,
+    0.971
+   ]
+  }
+ ],
+ "value_axis": "Granulation band, per cent (higher is better)",
+ "dp": 3,
+ "note": "how-stacking-works.md, refining the shifts table"
+}

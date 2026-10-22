@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="232" viewBox="0 0 480 232" role="img" aria-labelledby="t d">
+<title id="t">Surface motion and the correlation</title><desc id="d">Horizontal bars in pixels. Correlation correction without derotation 0.18, with derotation 0.35, their difference 0.17, and the derotation model&#x27;s prediction 0.185.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="231" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">Surface motion and the correlation</text>
+<text x="158.0" y="62.5" class="ink" text-anchor="end">Correction, no</text>
+<text x="158.0" y="77.5" class="ink" text-anchor="end">derotation</text>
+<rect x="166.0" y="57.0" width="117.9" height="18" fill="#0072B2"/>
+<text x="287.9" y="73.0" class="sub" text-anchor="start" style="font-size:11px">0.180</text>
+<text x="158.0" y="98.5" class="ink" text-anchor="end">Correction,</text>
+<text x="158.0" y="113.5" class="ink" text-anchor="end">derotated</text>
+<rect x="166.0" y="93.0" width="229.2" height="18" fill="#0072B2"/>
+<text x="399.2" y="109.0" class="sub" text-anchor="start" style="font-size:11px">0.350</text>
+<text x="158.0" y="138.0" class="ink" text-anchor="end">Difference</text>
+<rect x="166.0" y="125.0" width="111.4" height="18" fill="#0072B2"/>
+<text x="281.4" y="141.0" class="sub" text-anchor="start" style="font-size:11px">0.170</text>
+<text x="158.0" y="166.0" class="ink" text-anchor="end">Model (derotated_px)</text>
+<rect x="166.0" y="153.0" width="121.2" height="18" fill="#0072B2"/>
+<text x="291.2" y="169.0" class="sub" text-anchor="start" style="font-size:11px">0.185</text>
+<line class="grid" x1="166.0" x2="166.0" y1="46" y2="176"/>
+<text x="166.0" y="192.0" class="sub" text-anchor="middle" style="font-size:11px">0</text>
+<line class="grid" x1="231.5" x2="231.5" y1="46" y2="176"/>
+<text x="231.5" y="192.0" class="sub" text-anchor="middle" style="font-size:11px">0.1</text>
+<line class="grid" x1="297.0" x2="297.0" y1="46" y2="176"/>
+<text x="297.0" y="192.0" class="sub" text-anchor="middle" style="font-size:11px">0.2</text>
+<line class="grid" x1="362.5" x2="362.5" y1="46" y2="176"/>
+<text x="362.5" y="192.0" class="sub" text-anchor="middle" style="font-size:11px">0.3</text>
+<line class="grid" x1="428.0" x2="428.0" y1="46" y2="176"/>
+<text x="428.0" y="192.0" class="sub" text-anchor="middle" style="font-size:11px">0.4</text>
+<line class="axis" x1="166" x2="166" y1="46" y2="176"/>
+<text x="297.0" y="210.0" class="sub" text-anchor="middle">Pixels at the disc centre</text>
+</svg>

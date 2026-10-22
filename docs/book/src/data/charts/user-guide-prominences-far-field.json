@@ -1,0 +1,32 @@
+{
+ "id": "user-guide-prominences-far-field",
+ "page": "user-guide/prominences.md",
+ "kind": "hbars",
+ "title": "Variation of the far sky",
+ "caption": "Variation of the brightness beyond 1.35 radii before and after the layer, from the paragraph below the table (lower is better).",
+ "alt": "Horizontal grouped bars on a log axis of the variation beyond 1.35 radii, per cent of the disc. First capture 1.4 before and 0.001 after; second capture 9.8 before and 1.0 after.",
+ "categories": [
+  "15_32_09",
+  "15_37_19"
+ ],
+ "series": [
+  {
+   "name": "Before",
+   "values": [
+    1.4,
+    9.8
+   ]
+  },
+  {
+   "name": "After",
+   "values": [
+    0.001,
+    1.0
+   ]
+  }
+ ],
+ "value_axis": "Variation, per cent of the disc",
+ "log": true,
+ "dp": 3,
+ "note": "prose after the H-alpha table"
+}

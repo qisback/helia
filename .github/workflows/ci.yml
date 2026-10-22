@@ -79,10 +79,18 @@ jobs:
         if: runner.os == 'macOS'
         run: brew install ffmpeg
       # Windows uses WARP (DX12 software adapter), which ships with the OS.
-      - run: cargo test --workspace --all-features --target ${{ matrix.target }}
+      # The published tree has the forge host rewritten to github.com in text, so this one snapshot of
+      # the feedback page (which prints that host) cannot match its forge-made image; skip it here.
+      # A set HELIA_GPU_TESTS makes a missing adapter fatal, so the 'none' targets leave it unset.
+      - name: test (software GPU adapter)
+        if: matrix.gpu != 'none'
+        run: cargo test --workspace --all-features --target ${{ matrix.target }} -- --skip snapshots::feedback_page_when_the_service_is_down
         env:
           HELIA_GPU_TESTS: ${{ matrix.gpu }}
           HELIA_REQUIRE_FFMPEG: ${{ runner.os == 'Linux' && '1' || '' }}
+      - name: test (no GPU tests)
+        if: matrix.gpu == 'none'
+        run: cargo test --workspace --all-features --target ${{ matrix.target }} -- --skip snapshots::feedback_page_when_the_service_is_down
       - run: cargo build --release --workspace --target ${{ matrix.target }}
 
   msrv:

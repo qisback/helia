@@ -1,0 +1,34 @@
+{
+ "id": "how-stacking-limb-error",
+ "page": "user-guide/how-stacking-works.md",
+ "kind": "hbars",
+ "title": "Limb-fit shift error, synthetic",
+ "caption": "Shift error of the limb fit on synthetic discs with known shifts, from the table above; lower is better.",
+ "alt": "Shift error in pixels: 12 random discs worst 0.014; 40 shifted frames mean 0.021 and worst 0.066; limb cut by the frame worst 0.020; prominence and flare 0.023; whole pipeline limb worst 0.026 and phase correlation worst 0.048.",
+ "categories": [
+  "12 discs, worst",
+  "40 frames, mean",
+  "40 frames, worst",
+  "Cut limb, worst",
+  "Prominence, flare",
+  "Pipeline, limb, worst",
+  "Pipeline, phase, worst"
+ ],
+ "series": [
+  {
+   "name": "Shift error",
+   "values": [
+    0.014,
+    0.021,
+    0.066,
+    0.02,
+    0.023,
+    0.026,
+    0.048
+   ]
+  }
+ ],
+ "value_axis": "Shift error, pixels (lower is better)",
+ "dp": 3,
+ "note": "how-stacking-works.md, How accurate is it, synthetic table"
+}

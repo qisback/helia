@@ -296,8 +296,8 @@ and `--strength` choose how. See [Colourising](colourising.md#exporting-a-colour
 ### Limb darkening
 
 Every run fits the limb darkening of the stack and prints it, for example
-`limb:    quadratic: u1 = 0.470, u2 = 0.046; limb at 48% of the centre; rings differ
-from the law by 0.67% rms`. `--limb-law linear|quadratic|neckel` chooses the law
+`limb:    quadratic: u1 = 0.472, u2 = 0.046; limb at 48% of the centre; rings differ
+from the law by 0.66% rms`. `--limb-law linear|quadratic|neckel` chooses the law
 (default quadratic). `--flatten model|profile` also divides the disc by the fitted
 law or by the measured profile, before the sharpening, in every output but FITS
 (add `--sharpen-fits`). `helia edit` takes the same flags. See

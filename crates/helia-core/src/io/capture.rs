@@ -1063,7 +1063,7 @@ pub fn inspect(path: &Path, opts: &OpenOptions) -> Result<CaptureReport> {
         Some("ser") => open_ser(path, opts),
         Some("avi") => open_avi(path, opts),
         _ => Err(Error::Unsupported(format!(
-            "unrecognised capture type {}; expected .ser or .avi",
+            "unrecognised capture type {}; expected .ser, .avi, .mp4, .mov, .mkv, .webm or .m4v (a FITS, TIFF or PNG still goes to `helia edit` or `helia measure`)",
             path.display()
         ))),
     }
@@ -1073,6 +1073,16 @@ pub fn inspect(path: &Path, opts: &OpenOptions) -> Result<CaptureReport> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn inspect_names_every_capture_type_when_it_refuses_a_file() {
+        let err = inspect(Path::new("Light_x.fit"), &OpenOptions::default())
+            .expect_err("not a capture")
+            .to_string();
+        for ext in [".ser", ".avi", ".mp4", ".mkv", "helia edit"] {
+            assert!(err.contains(ext), "{err}");
+        }
+    }
     use crate::io::raw::SharedFrames;
     use crate::io::ser::SerHeader;
     use crate::testutil::{mosaic_disc, ser_bytes_with};

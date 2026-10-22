@@ -1,0 +1,31 @@
+{
+ "id": "user-guide-prominences-glow",
+ "page": "user-guide/prominences.md",
+ "kind": "bars",
+ "title": "Glow in the prominence ring",
+ "caption": "Median of the ring from 1.02 to 1.15 radii (the glow), before and after the layer, from the table above (lower is better).",
+ "alt": "Grouped bars of the ring median as a share of the disc's brightness, before and after. 15_32_09: 0.087 to 0.000. 15_37_19: 0.020 to 0.000.",
+ "categories": [
+  "15_32_09",
+  "15_37_19"
+ ],
+ "series": [
+  {
+   "name": "Before",
+   "values": [
+    0.087,
+    0.02
+   ]
+  },
+  {
+   "name": "After",
+   "values": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "value_axis": "Share of the disc's brightness",
+ "dp": 3,
+ "note": "'The H-alpha captures' table"
+}

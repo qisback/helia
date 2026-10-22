@@ -32,6 +32,10 @@ of the mean:
 | New recommended wavelets | 0.62 | 2.17 | 1.62 |
 | This recipe (RegiStax-style) | 0.72 | 2.05 | 1.23 |
 
+![Grouped bars of band-pass contrast in per cent of the mean. Pixel scale: stack 0.30, old wavelets 0.40, new wavelets 0.62, this recipe 0.72. 1 to 4 px: 0.96, 1.22, 2.17, 2.05. 4 to 12 px: 0.79, 0.92, 1.62, 1.23.](../images/charts/recipe-sharpening-contrast.svg)
+
+*Band-pass contrast of the disc centre in three bands for the stack and three wavelet settings, from `helia measure`.*
+
 The old defaults raised the 1 to 4 px band by a quarter, which is why a picture
 looked soft. The recipe doubles it, and the noise (pixel-scale band) rises less
 than the detail does. Noisier captures behave the same way: on the 2022

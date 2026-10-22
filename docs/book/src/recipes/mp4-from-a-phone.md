@@ -88,6 +88,10 @@ granulation band of `helia measure`: green 1.53 per cent, luminance 1.18, red 0.
 (blue is noise). The orange is the app's tone map, not the Sun's colour, and
 `--colour true` is refused because a video is already demosaiced.
 
+![Horizontal bars of granulation-band contrast: green 1.53, luminance 1.18, red 0.76 per cent.](../images/charts/recipe-mp4-seestar-bands.svg)
+
+*Granulation-band contrast of the stack from each plane of `2025-09-17-161400-Solar.mp4`, from `helia measure`.*
+
 ![Luminance on the left, green on the right: a 200 px crop of the stack](../images/real/white-seestar-lum-vs-green.png)
 
 At 2.4 arcsec per pixel a granule (1.5 arcsec) is smaller than a pixel, so this video

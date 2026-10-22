@@ -74,3 +74,7 @@ To colour the same stack in another program: **Colour** step, **Colour table**, 
 
 On the second capture of that day (`15_37_19.avi`) the same settings take the brightest
 1% of the ring from 0.25 to 0.71 of the disc.
+
+![Dumbbell chart: brightness of the brightest 1% of the ring from 1.02 to 1.15 radii, as a share of the disc's, before and after. 15_32_09: 0.33 to 0.69. 15_37_19: 0.25 to 0.71.](../images/charts/tutorials-prominences-brightest.svg)
+
+*Brightness of the brightest 1% of the ring just outside the limb with the default settings, from the text for the two H-alpha captures (higher shows the prominences better).*

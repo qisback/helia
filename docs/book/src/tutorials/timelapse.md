@@ -97,6 +97,10 @@ frame,file,source,time_utc,shift_x_px,shift_y_px,method,limb_x,limb_y,limb_radiu
 * `level` is the mean brightness of the inner disc: 0.645 and 0.563. `gain` brings both
   to their median, 0.604, by 0.937 and 1.073.
 
+![Dumbbell chart of the mean brightness of the inner disc: frame 1 from 0.645 to 0.604, frame 2 from 0.563 to 0.604.](../images/charts/tutorials-timelapse-level.svg)
+
+*Mean brightness of the inner disc of each frame in `timelapse.csv`, and the median both are brought to by the gain.*
+
 To see whether the registration worked, subtract the two frames. Before registration
 the two stacks differ by a bright crescent where the limbs do not coincide, and the
 spots, filaments and plage are doubled. After it the difference is a faint, smooth

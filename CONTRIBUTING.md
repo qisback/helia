@@ -1,13 +1,19 @@
 # Contributing to Helia
 
-**Outside contributions are not being accepted yet.** Until a contributor agreement
-(CLA or DCO) is decided, pull requests from other people will be closed unread. Issues are
-welcome: bug reports, questions and ideas. This page describes how the project is
-worked on today.
+**I am not accepting contributions at the moment.** I develop Helia on an internal
+repository with an extensive internal CI system, and everything is built and tested there
+before it reaches GitHub. The GitHub repository is a published mirror. A pull request
+would have to be pulled back into the internal repository, tested on that CI, then rebased
+and pushed out again, so for now I close pull requests without merging them.
+
+**Bug reports and feature requests are welcome** as GitHub issues. The easiest way is **Feedback** in the app (Ctrl+Shift+F) or `helia feedback`, which send it for you. Otherwise open a GitHub issue; see [Reporting bugs](#reporting-bugs) for what to include.
+
+The rest of this page describes how Helia is built and checked, for anyone who wants to
+build it from source or understand how it is worked on.
 
 Helia is GPL-3.0-or-later.
 
-## Before you open a pull request
+## Building and checking locally
 
 ```sh
 cargo fmt --all
@@ -62,7 +68,7 @@ Helia is GPL-3.0-or-later with the additional terms in
 [ADDITIONAL-TERMS.md](ADDITIONAL-TERMS.md) (GPL section 7(b) and 7(c): the
 author attribution and the dedication are preserved, and modified versions are
 marked as changed). The terms for outside contributions (copyright and any
-contributor agreement) are not settled yet, which is why they are not accepted. The project follows the
+contributor agreement) are not settled. The project follows the
 [REUSE specification](https://reuse.software/spec/):
 
 - Every source file (Rust, WGSL, Python, shell, PowerShell, workflow YAML) starts

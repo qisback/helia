@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="414" viewBox="0 0 480 414" role="img" aria-labelledby="t d">
+<title id="t">Robust stacking error: hot pixels</title><desc id="d">RMSE times 1000 for hot pixels. mean: 1.52, 3.42, 15.1, 63.35. sigma: 1.57, 1.53, 1.49, 2.58. huber: 1.53, 1.5, 2.85, 21.45. winsor: 1.52, 1.51, 3.99, 32.2.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="413" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">Robust stacking error: hot pixels</text>
+<rect x="16" y="38" width="12" height="12" rx="2" fill="#0072B2"/>
+<text x="34.0" y="49.0" class="ink" text-anchor="start">mean</text>
+<rect x="80.0" y="38" width="12" height="12" rx="2" fill="#D55E00"/>
+<text x="98.0" y="49.0" class="ink" text-anchor="start">sigma</text>
+<rect x="151.0" y="38" width="12" height="12" rx="2" fill="#009E73"/>
+<text x="169.0" y="49.0" class="ink" text-anchor="start">huber</text>
+<rect x="222.0" y="38" width="12" height="12" rx="2" fill="#CC79A7"/>
+<text x="240.0" y="49.0" class="ink" text-anchor="start">winsor</text>
+<text x="158.0" y="110.0" class="ink" text-anchor="end">Clean</text>
+<rect x="166.0" y="75.0" width="23.8" height="14" fill="#0072B2"/>
+<text x="193.8" y="87.0" class="sub" text-anchor="start" style="font-size:11px">1.52</text>
+<rect x="166.0" y="91.0" width="25.7" height="14" fill="#D55E00"/>
+<text x="195.7" y="103.0" class="sub" text-anchor="start" style="font-size:11px">1.57</text>
+<rect x="166.0" y="107.0" width="24.2" height="14" fill="#009E73"/>
+<text x="194.2" y="119.0" class="sub" text-anchor="start" style="font-size:11px">1.53</text>
+<rect x="166.0" y="123.0" width="23.8" height="14" fill="#CC79A7"/>
+<text x="193.8" y="135.0" class="sub" text-anchor="start" style="font-size:11px">1.52</text>
+<text x="158.0" y="182.0" class="ink" text-anchor="end">0.1% of samples</text>
+<rect x="166.0" y="147.0" width="70.0" height="14" fill="#0072B2"/>
+<text x="240.0" y="159.0" class="sub" text-anchor="start" style="font-size:11px">3.42</text>
+<rect x="166.0" y="163.0" width="24.2" height="14" fill="#D55E00"/>
+<text x="194.2" y="175.0" class="sub" text-anchor="start" style="font-size:11px">1.53</text>
+<rect x="166.0" y="179.0" width="23.1" height="14" fill="#009E73"/>
+<text x="193.1" y="191.0" class="sub" text-anchor="start" style="font-size:11px">1.50</text>
+<rect x="166.0" y="195.0" width="23.4" height="14" fill="#CC79A7"/>
+<text x="193.4" y="207.0" class="sub" text-anchor="start" style="font-size:11px">1.51</text>
+<text x="158.0" y="254.0" class="ink" text-anchor="end">1%</text>
+<rect x="166.0" y="219.0" width="154.4" height="14" fill="#0072B2"/>
+<text x="324.4" y="231.0" class="sub" text-anchor="start" style="font-size:11px">15.10</text>
+<rect x="166.0" y="235.0" width="22.7" height="14" fill="#D55E00"/>
+<text x="192.7" y="247.0" class="sub" text-anchor="start" style="font-size:11px">1.49</text>
+<rect x="166.0" y="251.0" width="59.6" height="14" fill="#009E73"/>
+<text x="229.6" y="263.0" class="sub" text-anchor="start" style="font-size:11px">2.85</text>
+<rect x="166.0" y="267.0" width="78.7" height="14" fill="#CC79A7"/>
+<text x="248.7" y="279.0" class="sub" text-anchor="start" style="font-size:11px">3.99</text>
+<text x="158.0" y="326.0" class="ink" text-anchor="end">5%</text>
+<rect x="166.0" y="291.0" width="236.0" height="14" fill="#0072B2"/>
+<text x="406.0" y="303.0" class="sub" text-anchor="start" style="font-size:11px">63.35</text>
+<rect x="166.0" y="307.0" width="53.9" height="14" fill="#D55E00"/>
+<text x="223.9" y="319.0" class="sub" text-anchor="start" style="font-size:11px">2.58</text>
+<rect x="166.0" y="323.0" width="174.4" height="14" fill="#009E73"/>
+<text x="344.4" y="335.0" class="sub" text-anchor="start" style="font-size:11px">21.45</text>
+<rect x="166.0" y="339.0" width="197.5" height="14" fill="#CC79A7"/>
+<text x="367.5" y="351.0" class="sub" text-anchor="start" style="font-size:11px">32.20</text>
+<line class="grid" x1="166.0" x2="166.0" y1="68" y2="358"/>
+<text x="166.0" y="374.0" class="sub" text-anchor="middle" style="font-size:11px">1</text>
+<line class="grid" x1="297.0" x2="297.0" y1="68" y2="358"/>
+<text x="297.0" y="374.0" class="sub" text-anchor="middle" style="font-size:11px">10</text>
+<line class="grid" x1="428.0" x2="428.0" y1="68" y2="358"/>
+<text x="428.0" y="374.0" class="sub" text-anchor="middle" style="font-size:11px">100</text>
+<line class="axis" x1="166" x2="166" y1="68" y2="358"/>
+<text x="297.0" y="392.0" class="sub" text-anchor="middle">RMSE times 1000 (lower is better), log scale</text>
+</svg>

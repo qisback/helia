@@ -61,6 +61,10 @@ timing:  scoring frames 0.52s, building reference 0.12s, aligning frames 0.24s, 
 wrote:   sun-ha.tif
 ```
 
+![Horizontal bars of seconds per stage: scoring frames 0.52, building reference 0.12, aligning frames 0.24, measuring alignment points 0.32, stacking 0.45 and finishing 0.01, total 2.18.](../images/charts/recipe-h-alpha-stage-times.svg)
+
+*Seconds spent in each stage of the 100-frame, 1920 x 1080 H-alpha stack, from the `timing:` line of the real output above.*
+
 Reading it:
 
 * **settings** is what Helia chose and why. `--preset ha` gives the red channel, 25
@@ -93,6 +97,10 @@ Measured on `15_37_19.avi` (the granulation band of `helia measure`, which on an
 H-alpha disc reads the fine chromospheric mottle): red 0.14 per cent, green 1.39
 per cent.
 
+![Two bars of granulation-band contrast: red plane 0.14 per cent, green plane 1.39 per cent.](../images/charts/recipe-h-alpha-clipped-red.svg)
+
+*Granulation-band contrast of the stack from the red and the green plane of `15_37_19.avi`, from `helia measure`.*
+
 ## Sharpening, measured
 
 The preset wavelets were re-measured on four real H-alpha captures
@@ -104,6 +112,10 @@ and the fibril-scale band 10 points higher (1.31 to 1.34 times, was 1.19 to 1.22
 Layer 1 amplifies the noise most, so it is lifted least. The noise cuts changed
 nothing measurable on these captures (cuts of 0 to 3 sigma on any layer moved the
 bands by under 2 per cent).
+
+![Dumbbells, old gains then new: fine band low end 1.41 then 1.24 and high end 1.46 then 1.31; 1 to 4 px band 1.37 then 1.40 and 1.39 then 1.44; fibril band 1.19 then 1.31 and 1.22 then 1.34.](../images/charts/recipe-h-alpha-wavelet-gains.svg)
+
+*Band level as a multiple of the unsharpened stack for the old gains and the new defaults, ends of the ranges over four real captures, from `helia measure`.*
 
 ![Old gains on the left, the new defaults on the right, a 200 x 160 px crop of the same stack](../images/real/ha-sharpen-before-after.png)
 

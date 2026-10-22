@@ -1,0 +1,31 @@
+{
+ "id": "tutorials-timelapse-level",
+ "page": "tutorials/timelapse.md",
+ "kind": "dumbbell",
+ "title": "Brightness level of the two frames",
+ "caption": "Mean brightness of the inner disc of each frame in `timelapse.csv`, and the median both are brought to by the gain.",
+ "alt": "Dumbbell chart of the mean brightness of the inner disc: frame 1 from 0.645 to 0.604, frame 2 from 0.563 to 0.604.",
+ "categories": [
+  "Frame 1 (14:32:09)",
+  "Frame 2 (14:37:19)"
+ ],
+ "series": [
+  {
+   "name": "Level",
+   "values": [
+    0.645,
+    0.563
+   ]
+  },
+  {
+   "name": "After the gain",
+   "values": [
+    0.604,
+    0.604
+   ]
+  }
+ ],
+ "value_axis": "Mean brightness of the inner disc",
+ "dp": 3,
+ "note": "bullets after the timelapse.csv listing"
+}

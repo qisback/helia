@@ -111,6 +111,10 @@ truth over the disc, after the one scale factor that a flat leaves open:
 | dark and flat | 2.10 | 348.6 |
 | dark, flat and bad pixels | **1.96** | **42.6** |
 
+![Grouped bars on a log axis, RMS error and largest error (x1000): no calibration 14.43 and 869.1; dark only 16.31 and 880.0; flat only 3.78 and 376.2; dark and flat 2.10 and 348.6; dark, flat and bad pixels 1.96 and 42.6.](../images/charts/calibrate-error-by-calibration.svg)
+
+*RMS and largest error of the simulated-sensor stack against the truth, for each calibration, from the table above.*
+
 The limb fit tells the same story: the real stack has `u1 = 0.472, u2 = 0.048`;
 the uncalibrated simulated stack `u1 = 0.576, u2 = -0.037` (the vignette read as
 limb darkening); the calibrated one `u1 = 0.471, u2 = 0.048`.

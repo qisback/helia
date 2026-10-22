@@ -1,0 +1,26 @@
+{
+ "id": "how-stacking-limb-vs-phase",
+ "page": "user-guide/how-stacking-works.md",
+ "kind": "bars",
+ "title": "Limb against phase correlation",
+ "caption": "Worst difference between the limb fit and phase correlation on three real captures, from the table above.",
+ "alt": "Worst limb minus phase difference in pixels: 15_32_09 0.32, 15_20_57 up to 0.9, Sun_Test 1.5. The fourth capture, 14_42_57, fell back on every frame.",
+ "categories": [
+  "15_32_09.avi",
+  "15_20_57.ser",
+  "Sun_Test.ser"
+ ],
+ "series": [
+  {
+   "name": "Worst difference",
+   "values": [
+    0.32,
+    0.9,
+    1.5
+   ]
+  }
+ ],
+ "value_axis": "Worst limb minus phase, pixels",
+ "dp": 2,
+ "note": "how-stacking-works.md, How accurate is it, real frames table; 14_42_57 has no figure"
+}

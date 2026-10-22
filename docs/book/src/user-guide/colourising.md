@@ -77,6 +77,10 @@ clipped, so this is not what a sodium capture would look like. `helia stack --co
 | `15_32_09.avi` (H-alpha) | 0.82, 1.31, 5.23 (blue held) | red +1.83, -0.25 px; blue +0.40, 0.00 px |
 | `14_42_57.avi` (broad band, label unknown, red and blue partly clipped) | 0.76, 1.09, 0.96 | red +0.11, +0.10 px; blue -0.17, -0.14 px |
 
+![Grouped bars of red, green and blue gains: Sun_Test 0.96, 1.02, 4.10; 15_20_57 1.07, 1.00, 3.99; 15_32_09 0.82, 1.31, 5.23; 14_42_57 0.76, 1.09, 0.96. Blue is held at the cap on the three H-alpha captures.](../images/charts/colourising-gains.svg)
+
+*Red, green and blue gains of `helia stack --colour true --preset white --keep 12%` on the four 2022-07-17 captures, from the table above.*
+
 The H-alpha captures show why the cap exists (an uncapped blue gain of 15 to 23
 would be all noise) and that true colour is not for them: their red and green
 planes show different things through an H-alpha filter, so the red shift of a pixel

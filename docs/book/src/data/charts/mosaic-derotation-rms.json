@@ -1,0 +1,24 @@
+{
+ "id": "mosaic-derotation-rms",
+ "page": "user-guide/mosaic.md",
+ "kind": "bars",
+ "title": "Derotation of two panels",
+ "caption": "RMS error against the Sun at the first panel's time for two panels four hours apart on a synthetic rotating Sun, from the text above.",
+ "alt": "Bars: RMS error 0.0011 with derotation and 0.018 without.",
+ "categories": [
+  "With --derotate",
+  "Without"
+ ],
+ "series": [
+  {
+   "name": "RMS error",
+   "values": [
+    0.0011,
+    0.018
+   ]
+  }
+ ],
+ "value_axis": "RMS error, fraction of full scale (lower is better)",
+ "dp": 4,
+ "note": "mosaic.md, 'With derotation'"
+}

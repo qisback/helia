@@ -83,6 +83,14 @@ run-to-run variation of 10% or so.
 | 720x540 8-bit Bayer AVI | 1000 | 15.5 | 5.4 | 20.5 | 2.9 |
 | 1920x1080 8-bit Bayer AVI | 630 | 70.5 | 19.2 | 73.1 | 10.7 |
 
+![Dumbbell chart of CPU wall seconds before and now: 8.3 to 2.9, 31.1 to 15.0, 15.5 to 5.4 and 70.5 to 19.2, for the four captures.](../images/charts/user-guide-gpu-cpu-speed.svg)
+
+*Wall seconds of `helia stack --keep 25%` on the CPU of the laptop, from the table above (lower is better).*
+
+![Dumbbell chart of GPU wall seconds before and now: 13.2 to 1.6, 40.8 to 5.8, 20.5 to 2.9 and 73.1 to 10.7, for the four captures.](../images/charts/user-guide-gpu-gpu-speed.svg)
+
+*Wall seconds of `helia stack --keep 25%` on the laptop RTX 3050 Ti, from the table above (lower is better).*
+
 "Before" is the first release of the stacker, where only scoring and
 accumulation ran on the GPU. Use `helia stack --timings` to see where the time
 goes on your own machine.

@@ -1,0 +1,41 @@
+{
+ "id": "calibrate-error-by-calibration",
+ "page": "tutorials/calibrate.md",
+ "kind": "hbars",
+ "title": "Error against the truth stack",
+ "caption": "RMS and largest error of the simulated-sensor stack against the truth, for each calibration, from the table above.",
+ "alt": "Grouped bars on a log axis, RMS error and largest error (x1000): no calibration 14.43 and 869.1; dark only 16.31 and 880.0; flat only 3.78 and 376.2; dark and flat 2.10 and 348.6; dark, flat and bad pixels 1.96 and 42.6.",
+ "categories": [
+  "No calibration",
+  "Dark only",
+  "Flat only",
+  "Dark and flat",
+  "Dark, flat, bad pixels"
+ ],
+ "series": [
+  {
+   "name": "RMS error",
+   "values": [
+    14.43,
+    16.31,
+    3.78,
+    2.1,
+    1.96
+   ]
+  },
+  {
+   "name": "Largest error",
+   "values": [
+    869.1,
+    880.0,
+    376.2,
+    348.6,
+    42.6
+   ]
+  }
+ ],
+ "value_axis": "Error, x1000 of full scale (lower is better)",
+ "log": true,
+ "dp": 2,
+ "note": "tutorials/calibrate.md, 'Check that it worked'"
+}

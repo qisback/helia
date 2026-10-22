@@ -1,0 +1,34 @@
+{
+ "id": "seeing-best-worst-dr0",
+ "page": "user-guide/seeing.md",
+ "kind": "dumbbell",
+ "title": "D/r0, best and worst quarter",
+ "caption": "D/r0 of the quarter of frames ranked sharpest and of the quarter ranked worst, on three captures, from the table above.",
+ "alt": "Best and worst quarter D/r0: 15_20_57 3.63 and 4.37; Sun_Test 5.01 and 7.36; 15_32_09 15.17 and 15.40.",
+ "categories": [
+  "15_20_57",
+  "Sun_Test",
+  "15_32_09"
+ ],
+ "series": [
+  {
+   "name": "Best quarter",
+   "values": [
+    3.63,
+    5.01,
+    15.17
+   ]
+  },
+  {
+   "name": "Worst quarter",
+   "values": [
+    4.37,
+    7.36,
+    15.4
+   ]
+  }
+ ],
+ "value_axis": "D/r0 (lower is better seeing)",
+ "dp": 2,
+ "note": "seeing.md, 'On the real captures', second table"
+}

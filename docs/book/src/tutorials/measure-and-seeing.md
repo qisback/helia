@@ -159,6 +159,14 @@ helia stack 14_42_57.avi -o c.fits --preset white --no-multipoint # best 12%, wh
 | all frames | 630 | 0.544% | 0.021 (48.0 px) | 0.046 (21.8 px) |
 | best 12%, whole frame only | 76 | 0.503% | 0.021 (48.0 px) | 0.050 (20.0 px) |
 
+![Bars: best 12 per cent with alignment points 1.085 per cent, all frames 0.544, best 12 per cent with whole-frame alignment only 0.503.](../images/charts/measure-and-seeing-contrast.svg)
+
+*RMS contrast of 14_42_57.avi stacked three ways with `--preset white`, from the table above.*
+
+![Grouped bars: roll-off 0.038, 0.021 and 0.021; resolved 0.054, 0.046 and 0.050 cycles per pixel for points, all frames and whole frame only.](../images/charts/measure-and-seeing-rolloff.svg)
+
+*Roll-off and resolved frequency of 14_42_57.avi stacked three ways with `--preset white`, from the table above.*
+
 Frame selection and alignment points both lift the contrast (twice that of the
 other two here), and the roll-off moves to a higher frequency. Seeing and defocus
 move the roll-off down, so a night with a higher roll-off at the same settings had

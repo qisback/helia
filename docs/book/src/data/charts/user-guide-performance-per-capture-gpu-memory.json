@@ -1,0 +1,34 @@
+{
+ "id": "user-guide-performance-per-capture-gpu-memory",
+ "page": "user-guide/performance.md",
+ "kind": "hbars",
+ "title": "GPU peak memory per capture",
+ "caption": "Peak resident memory of the GPU run on the same seven captures, from the table above (lower is better).",
+ "alt": "Horizontal bars of GPU peak resident set in megabytes: 437, 769, 712, 642, 629, 328 and 656, from the smallest to the largest capture.",
+ "categories": [
+  "0.4 GB 720x540 AVI",
+  "0.4 GB 1080p 16-bit SER",
+  "1.0 GB 1936x1088 AVI",
+  "1.3 GB 1080p AVI",
+  "1.3 GB 1080p SER",
+  "3.1 GB 640x480 AVI",
+  "5.6 GB 1080p Bayer AVI"
+ ],
+ "series": [
+  {
+   "name": "GPU peak RSS",
+   "values": [
+    437,
+    769,
+    712,
+    642,
+    629,
+    328,
+    656
+   ]
+  }
+ ],
+ "value_axis": "Peak resident memory, MB",
+ "dp": 0,
+ "note": "'What to expect' table, GPU peak RSS column"
+}

@@ -1,0 +1,31 @@
+{
+ "id": "recipe-h-alpha-stage-times",
+ "page": "recipes/h-alpha-full-disc.md",
+ "kind": "hbars",
+ "title": "Stage times, 100-frame H-alpha stack",
+ "caption": "Seconds spent in each stage of the 100-frame, 1920 x 1080 H-alpha stack, from the `timing:` line of the real output above.",
+ "alt": "Horizontal bars of seconds per stage: scoring frames 0.52, building reference 0.12, aligning frames 0.24, measuring alignment points 0.32, stacking 0.45 and finishing 0.01, total 2.18.",
+ "categories": [
+  "Scoring frames",
+  "Building reference",
+  "Aligning frames",
+  "Measuring alignment points",
+  "Stacking",
+  "Finishing"
+ ],
+ "series": [
+  {
+   "name": "Time",
+   "values": [
+    0.52,
+    0.12,
+    0.24,
+    0.32,
+    0.45,
+    0.01
+   ]
+  }
+ ],
+ "value_axis": "Seconds (lower is faster)",
+ "note": "recipes/h-alpha-full-disc.md, the timing: line of the real output"
+}

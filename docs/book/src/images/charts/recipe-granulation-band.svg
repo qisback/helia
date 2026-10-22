@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="246" viewBox="0 0 480 246" role="img" aria-labelledby="t d">
+<title id="t">Band 1 to 4 px, before and after</title><desc id="d">Band 1 to 4 px in per cent, before then after, for Sun_Test 8-bit: 1.54 to 2.94; 15_20_57 16-bit: 1.98 to 3.23; 15_32_09 8-bit: 0.55 to 1.52.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="245" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">Band 1 to 4 px, before and after</text>
+<rect x="16" y="38" width="12" height="12" rx="2" fill="#0072B2"/>
+<text x="34.0" y="49.0" class="ink" text-anchor="start">Before</text>
+<rect x="94.0" y="38" width="12" height="12" rx="2" fill="#D55E00"/>
+<text x="112.0" y="49.0" class="ink" text-anchor="start">After</text>
+<text x="158.0" y="94.0" class="ink" text-anchor="end">Sun_Test.ser</text>
+<rect x="166.0" y="75.0" width="100.9" height="14" fill="#0072B2"/>
+<text x="270.9" y="87.0" class="sub" text-anchor="start" style="font-size:11px">1.54</text>
+<rect x="166.0" y="91.0" width="192.6" height="14" fill="#D55E00"/>
+<text x="362.6" y="103.0" class="sub" text-anchor="start" style="font-size:11px">2.94</text>
+<text x="158.0" y="134.0" class="ink" text-anchor="end">15_20_57.ser</text>
+<rect x="166.0" y="115.0" width="129.7" height="14" fill="#0072B2"/>
+<text x="299.7" y="127.0" class="sub" text-anchor="start" style="font-size:11px">1.98</text>
+<rect x="166.0" y="131.0" width="211.6" height="14" fill="#D55E00"/>
+<text x="381.6" y="143.0" class="sub" text-anchor="start" style="font-size:11px">3.23</text>
+<text x="158.0" y="174.0" class="ink" text-anchor="end">15_32_09.avi</text>
+<rect x="166.0" y="155.0" width="36.0" height="14" fill="#0072B2"/>
+<text x="206.0" y="167.0" class="sub" text-anchor="start" style="font-size:11px">0.55</text>
+<rect x="166.0" y="171.0" width="99.6" height="14" fill="#D55E00"/>
+<text x="269.6" y="183.0" class="sub" text-anchor="start" style="font-size:11px">1.52</text>
+<line class="grid" x1="166.0" x2="166.0" y1="68" y2="190"/>
+<text x="166.0" y="206.0" class="sub" text-anchor="middle" style="font-size:11px">0</text>
+<line class="grid" x1="231.5" x2="231.5" y1="68" y2="190"/>
+<text x="231.5" y="206.0" class="sub" text-anchor="middle" style="font-size:11px">1</text>
+<line class="grid" x1="297.0" x2="297.0" y1="68" y2="190"/>
+<text x="297.0" y="206.0" class="sub" text-anchor="middle" style="font-size:11px">2</text>
+<line class="grid" x1="362.5" x2="362.5" y1="68" y2="190"/>
+<text x="362.5" y="206.0" class="sub" text-anchor="middle" style="font-size:11px">3</text>
+<line class="grid" x1="428.0" x2="428.0" y1="68" y2="190"/>
+<text x="428.0" y="206.0" class="sub" text-anchor="middle" style="font-size:11px">4</text>
+<line class="axis" x1="166" x2="166" y1="68" y2="190"/>
+<text x="297.0" y="224.0" class="sub" text-anchor="middle">Band 1 to 4 px, per cent</text>
+</svg>

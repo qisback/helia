@@ -214,6 +214,10 @@ hours apart (the second turned 1.2 degrees) join with an RMS error against the S
 first panel's time of 0.0011 with `--derotate` and 0.018 without: the surface in the
 overlap had moved by about 8 pixels.
 
+![Bars: RMS error 0.0011 with derotation and 0.018 without.](../images/charts/mosaic-derotation-rms.svg)
+
+*RMS error against the Sun at the first panel's time for two panels four hours apart on a synthetic rotating Sun, from the text above.*
+
 ## Limits
 
 * Panels must share a strip of the Sun with a neighbour, with detail in it: a strip of

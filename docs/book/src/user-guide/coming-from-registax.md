@@ -97,6 +97,10 @@ fine control and the top of the range is far-reaching:
 | 0.50 | 26 | 51 |
 | 1.00 | 101 | 201 |
 
+![Lines on log axes of gain against sharpen. At 100 per cent: 1.25 at 0.05, 2.0 at 0.10, 3.0 at 0.14, 7.3 at 0.25, 26 at 0.50, 101 at 1.00. At 200 per cent: 1.5, 3.0, 4.9, 13.5, 51 and 201.](../images/charts/coming-from-registax-sharpen-gain.svg)
+
+*Gain of a layer at amounts of 100 and 200 per cent for each sharpen value, from the table above.*
+
 Denoise 0.05 is a cut of half a noise sigma (a light touch), 0.20 is two sigma
 (typical), 0.30 is three, and 1.5 is fifteen (it removes the layer). The
 RegiStax value you would type, 0.15 or 0.20 on the fine layers, lands where you

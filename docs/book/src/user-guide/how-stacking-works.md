@@ -74,6 +74,34 @@ adds a few per cent) is not seen by this test, which is why the reference
 (next section) does not trust any one frame either. Turn the test off with
 `StackConfig::robust_ranking = false` in the API.
 
+Measured on `15_20_57.ser` with a line drawn across two frames and hot pixels in two
+others, ranked on the whole frame (damage injected as in
+#168; the change is
+#172). The two line frames
+sat about 20% and 18% above their neighbours and are put back; the hot-pixel
+frames raise the score by only 3 to 4%, which the median reference covers. An offset
+is the length of the sub-pixel displacement, found by phase correlation, between the
+reference (or the stack) made from the damaged capture and the one made from the
+same capture without the damage, both with sigma clipping (kappa 2.5) and ranked on
+the whole frame (the test `damaged_frames_do_not_move_the_reference_or_the_stack`; the
+with-the-fix column was re-measured with its report test,
+`report_reference_and_stack_shift_with_damage`, and the top five frames then held no
+line frame):
+
+| | Without the fix | With the fix |
+|---|---|---|
+| Damaged frames among the five reference frames | 4 of 5 | no line frame (the test requires it) |
+| Offset of the reference (px) | 0.14 | 0.012, with and without alignment points |
+| Offset of the stack, alignment points off (px) | 0.14 | 0.013 |
+| Offset of the stack, alignment points on (px) | 0.14 | 0.011 |
+
+![Bars of offset in pixels against the undamaged result. Reference: 0.14 without the fix, 0.012 with it. Stack without alignment points: 0.14 and 0.013. Stack with alignment points: 0.14 and 0.011.](../images/charts/how-stacking-artefact-shift.svg)
+
+*Offset of the reference and of the stack made with damaged frames from those made without the damage, in pixels, without and with the fix, with alignment points off and on (#172).*
+
+Five clean captures with the defaults are unchanged: the ranking is the same, nothing
+is put back, and the granulation and 4 to 12 px band contrast agree to four digits.
+
 The frames are then sorted best first. You choose how many to keep with
 `--keep` (a share such as 25%, the default; 12% for white light and Na D) or `--keep-frames` (a count). The
 app draws the sorted scores as the **Quality, sorted** curve, with a dashed
@@ -173,6 +201,10 @@ of the limb fit is:
 | A prominence and a bright flare near the limb | 0.023 px |
 | Whole pipeline, textured synthetic capture of 40 frames | limb worst 0.026 px, phase correlation worst 0.048 px |
 
+![Shift error in pixels: 12 random discs worst 0.014; 40 shifted frames mean 0.021 and worst 0.066; limb cut by the frame worst 0.020; prominence and flare 0.023; whole pipeline limb worst 0.026 and phase correlation worst 0.048.](../images/charts/how-stacking-limb-error.svg)
+
+*Shift error of the limb fit on synthetic discs with known shifts, from the table above; lower is better.*
+
 On real frames there is no ground truth, so the limb fit is compared with phase
 correlation on the same frames (the best 25% of the first 200 frames of each
 capture, aligned to the pipeline's reference, CPU run on a 24-thread server):
@@ -183,6 +215,14 @@ capture, aligned to the pipeline's reference, CPU run on a 24-thread server):
 | `15_20_57.ser` (1920 x 1080, raw colour) | whole | phase correlation | 0.42 | 15 of 25 frames fell back; the rest differ by up to 0.9 px |
 | `Sun_Test.ser` (1920 x 1080, mono) | whole | phase correlation | 0.71 | 21 of 50 frames fell back; median 0.30 px, worst 1.5 px |
 | `14_42_57.avi` (1920 x 1080) | 63% of the limb | phase correlation | 0.01 | every frame fell back |
+
+![Reference limb confidence: 15_32_09 0.89, 15_20_57 0.42, Sun_Test 0.71, 14_42_57 0.01.](../images/charts/how-stacking-limb-confidence.svg)
+
+*Limb-fit confidence of the reference frame on four real captures, from the table above; auto uses the limb only above 0.5.*
+
+![Worst limb minus phase difference in pixels: 15_32_09 0.32, 15_20_57 up to 0.9, Sun_Test 1.5. The fourth capture, 14_42_57, fell back on every frame.](../images/charts/how-stacking-limb-vs-phase.svg)
+
+*Worst difference between the limb fit and phase correlation on three real captures, from the table above.*
 
 So the limb fit and phase correlation agree to about a tenth of a pixel when
 the limb is clean, and `auto` uses the limb only then. In the other captures the
@@ -266,21 +306,26 @@ the Na D preset on the CPU; the figure is the granulation band (1 to 4 px) of
 
 | Capture | Scale | Warp | Auto chose | 32 px | 48 px | 64 px | 96 px |
 |---|---|---|---|---|---|---|---|
-| `Sun_Test.ser` | 2.16 arcsec/px | 0.88 px | 32 px, search 5 | 1.847% | 1.814% | 1.792% | 1.779% |
-| `15_20_57.ser` | 2.16 arcsec/px | 0.23 px | 32 px, search 4 | 2.050% | 2.041% | 2.039% | 2.036% |
-| `15_32_09.avi` | 4.31 arcsec/px | 0.23 px | 32 px, search 4 | 0.971% | 0.962% | 0.957% | 0.952% |
-| `14_42_57.avi` | 1.44 arcsec/px | 1.59 px | 32 px, search 7 | 0.170% | 0.158% | 0.156% | 0.152% |
+| `Sun_Test.ser` | 2.16 arcsec/px | 0.74 px | 32 px, search 5 | 1.843% | 1.816% | 1.787% | 1.775% |
+| `15_20_57.ser` | 2.16 arcsec/px | 0.24 px | 32 px, search 4 | 2.050% | 2.041% | 2.039% | 2.036% |
+| `15_32_09.avi` | 4.31 arcsec/px | 0.24 px | 32 px, search 4 | 0.971% | 0.962% | 0.957% | 0.951% |
+| `14_42_57.avi` | 1.44 arcsec/px | 2.29 px | 32 px, search 9 | 0.155% | 0.141% | 0.140% | 0.140% |
+
+![Granulation band in per cent by window size. Sun_Test 1.878 at 24 px, 1.843 at 32, 1.816 at 48, 1.787 at 64, 1.775 at 96. 15_20_57 2.064, 2.050, 2.041, 2.039, 2.036. 15_32_09 0.980, 0.971, 0.962, 0.957, 0.951. 14_42_57 0.192, 0.155, 0.141, 0.140, 0.140.](../images/charts/how-stacking-ap-size.svg)
+
+*Granulation band at the disc centre for each alignment point window, from the table and the 24 px figures below it.*
 
 * At these scales a granule is under three pixels, so the rule lands on the
   32 pixel floor on every capture. Helia's automatic size is the preset's, and
   the auto run's granulation figure is the `--ap-size 32` one to the last digit
-  of the table. The window only grows on a scale finer than about 0.12 arcsec per
+  on the two captures with a small warp, and within 0.001 points on `Sun_Test.ser`
+  (1.842%) and 0.005 points on `14_42_57.avi` (0.150%), where the search range is wider. The window only grows on a scale finer than about 0.12 arcsec per
   pixel, or for a filter with larger detail.
-* Smaller windows read higher in the granulation band (at 24 px: 1.884% on
-  `Sun_Test.ser`, 2.064% on `15_20_57.ser`, 0.980% on `15_32_09.avi`, 0.210% on
+* Smaller windows read higher in the granulation band (at 24 px: 1.878% on
+  `Sun_Test.ser`, 2.064% on `15_20_57.ser`, 0.980% on `15_32_09.avi`, 0.192% on
   `14_42_57.avi`). On `14_42_57.avi`, where only 63% of the limb is in view and
-  the contrast is low, the meso band (4 to 12 px) rises from 0.39% at 32 px to
-  0.54% at 24 px and 1.38% at 12 px. That is blocking from windows that lock on
+  the contrast is low, the meso band (4 to 12 px) rises from 0.38% at 32 px to
+  0.51% at 24 px and 1.18% at 12 px. That is blocking from windows that lock on
   noise, not detail, so 32 pixels stays the floor.
 * Spacing, with auto's 32 pixel windows: a step of 8, 12 or 16 px (75% to 50%
   overlap) gave the same granulation band on the first three captures (within
@@ -317,26 +362,34 @@ used (smaller means the stack agrees better with the frames it was made from).
 
 | Capture | Setting | Fine | Granulation | Meso | Residual (px) | Shifts replaced |
 |---|---|---|---|---|---|---|
-| `15_20_57.ser` | one pass | 1.573% | 2.050% | 1.720% | 0.042 | 0 |
-| | two passes | 1.575% | 2.050% | 1.719% | 0.017 | 0 |
-| `Sun_Test.ser` | one pass | 1.074% | 1.847% | 1.634% | 0.368 | 0 |
-| | smoothing | 1.074% | 1.847% | 1.633% | 0.369 | 705 of 370120 |
-| | two passes | 1.068% | 1.880% | 1.657% | 0.102 | 0 |
-| | both | 1.068% | 1.880% | 1.657% | 0.107 | 1215 of 370120 |
-| `14_42_57.avi` | one pass | 0.109% | 0.170% | 0.388% | 1.112 | 0 |
-| | smoothing | 0.110% | 0.170% | 0.388% | 1.092 | 11594 of 440791 |
-| | two passes | 0.105% | 0.172% | 0.400% | 0.637 | 0 |
-| | both | 0.107% | 0.172% | 0.399% | 0.666 | 24516 of 440791 |
-| `15_32_09.avi` | one pass | 0.314% | 0.971% | 0.791% | 0.045 | 0 |
-| | two passes | 0.314% | 0.971% | 0.791% | 0.018 | 0 |
+| `15_20_57.ser` | one pass | 1.571% | 2.050% | 1.719% | 0.045 | 0 |
+| | two passes | 1.574% | 2.050% | 1.719% | 0.018 | 0 |
+| `Sun_Test.ser` | one pass | 1.071% | 1.843% | 1.629% | 0.389 | 0 |
+| | smoothing | 1.071% | 1.843% | 1.629% | 0.390 | 732 of 370272 |
+| | two passes | 1.067% | 1.879% | 1.654% | 0.107 | 0 |
+| | both | 1.067% | 1.879% | 1.654% | 0.112 | 1257 of 370272 |
+| `14_42_57.avi` | one pass | 0.083% | 0.155% | 0.382% | 1.417 | 0 |
+| | smoothing | 0.084% | 0.156% | 0.382% | 1.387 | 18366 of 691933 |
+| | two passes | 0.082% | 0.159% | 0.389% | 0.730 | 0 |
+| | both | 0.083% | 0.159% | 0.390% | 0.752 | 38199 of 691933 |
+| `15_32_09.avi` | one pass | 0.314% | 0.971% | 0.790% | 0.056 | 0 |
+| | two passes | 0.314% | 0.971% | 0.791% | 0.020 | 0 |
 
-* The second pass cuts the residual by a factor of 1.7 to 3.6 on every capture, and
-  adds 1.8% to the granulation band on `Sun_Test.ser` (1.847% to 1.880%) and
-  1.2% on `14_42_57.avi`, the two captures with the larger local warp (0.88 and
-  1.59 px). Where the warp is small (0.23 px on `15_20_57.ser` and
+![Residual in pixels. 15_20_57: one pass 0.045, two passes 0.018. Sun_Test: one pass 0.389, smoothing 0.390, two passes 0.107, both 0.112. 14_42_57: 1.417, 1.387, 0.730, 0.752. 15_32_09: one pass 0.056, two passes 0.020.](../images/charts/how-stacking-refine-residual.svg)
+
+*Residual shift (RMS pixels against the finished stack) for each refinement setting, from the table above; lower is better.*
+
+![Granulation band in per cent, one pass then two: 15_20_57 2.050 and 2.050; Sun_Test 1.843 and 1.879; 14_42_57 0.155 and 0.159; 15_32_09 0.971 and 0.971.](../images/charts/how-stacking-refine-granulation.svg)
+
+*Granulation band at the disc centre after one and two passes, from the table above; higher is more contrast.*
+
+* The second pass cuts the residual by a factor of 1.9 to 3.6 on every capture, and
+  adds 2.0% to the granulation band on `Sun_Test.ser` (1.843% to 1.879%) and
+  2.6% on `14_42_57.avi` (0.155% to 0.159%), the two captures with the larger local warp (0.74 and
+  2.29 px). Where the warp is small (0.24 px on `15_20_57.ser` and
   `15_32_09.avi`) the reference is already good and nothing moves.
-* Smoothing changed the granulation band by less than 0.1% everywhere. It
-  replaces 2.6% of the shifts on `14_42_57.avi`, the low-contrast capture where
+* Smoothing changed the granulation band by 0.001 points or less everywhere. It
+  replaces 2.7% of the shifts on `14_42_57.avi`, the low-contrast capture where
   mismatches are common, and lowers the residual there by 2%. Elsewhere it
   makes no measurable difference.
 * Synthetic data with a known truth (48 frames of a warped, noisy synthetic
@@ -438,6 +491,18 @@ a 48 by 48 scene, noise 0.02 on a signal of 0.2 to 0.8, quality weights 0.5 to
 | cloud (frames at 40%) | 0.5% | 2.17 | 1.50 | 1.49 | 1.49 |
 | | 1% | 3.82 | 1.49 | 1.56 | 1.61 |
 | | 5% | 17.39 | 1.52 | 5.69 | 8.39 |
+
+![RMSE times 1000 for hot pixels. mean: 1.52, 3.42, 15.1, 63.35. sigma: 1.57, 1.53, 1.49, 2.58. huber: 1.53, 1.5, 2.85, 21.45. winsor: 1.52, 1.51, 3.99, 32.2.](../images/charts/how-stacking-robust-hot.svg)
+
+*RMSE against the truth, times 1000, for hot pixels at each share of samples, from the table above; lower is better.*
+
+![RMSE times 1000 for plane trails. mean: 1.52, 2.06, 5.74, 25.37. sigma: 1.57, 1.53, 1.49, 1.51. huber: 1.53, 1.49, 1.7, 9.21. winsor: 1.52, 1.5, 1.94, 13.71.](../images/charts/how-stacking-robust-trails.svg)
+
+*RMSE against the truth, times 1000, for plane trails at each share of samples, from the table above; lower is better.*
+
+![RMSE times 1000 for cloud. mean: 1.52, 2.17, 3.82, 17.39. sigma: 1.57, 1.5, 1.49, 1.52. huber: 1.53, 1.49, 1.56, 5.69. winsor: 1.52, 1.49, 1.61, 8.39.](../images/charts/how-stacking-robust-cloud.svg)
+
+*RMSE against the truth, times 1000, for cloud at each share of samples, from the table above; lower is better.*
 
 On clean data the cost is small: against the weighted mean, the mean level
 changes by at most 0.001% and the contrast of the fine texture by 0.07%

@@ -1,0 +1,23 @@
+{
+ "id": "recipe-h-alpha-clipped-red",
+ "page": "recipes/h-alpha-full-disc.md",
+ "kind": "bars",
+ "title": "Granulation band, red against green",
+ "caption": "Granulation-band contrast of the stack from the red and the green plane of `15_37_19.avi`, from `helia measure`.",
+ "alt": "Two bars of granulation-band contrast: red plane 0.14 per cent, green plane 1.39 per cent.",
+ "categories": [
+  "Red plane (clipped)",
+  "Green plane"
+ ],
+ "series": [
+  {
+   "name": "Granulation band",
+   "values": [
+    0.14,
+    1.39
+   ]
+  }
+ ],
+ "value_axis": "Band-pass contrast, per cent (higher is more detail)",
+ "note": "recipes/h-alpha-full-disc.md, 'A clipped red plane'"
+}

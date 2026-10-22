@@ -101,6 +101,14 @@ the best 25 to 30 per cent, 200 px crop, per cent of the gradient value; above
 | 2022 14_42_57 | broad band | 1-4 px | 99 | 127 | 135 | 98 | 97 | 93 |
 | 2022 14_42_57 | broad band | 4-12 px | 89 | 148 | 163 | 88 | 81 | 73 |
 
+![Grouped bars for six H-alpha and Ca K captures; every metric lies between 92 and 106 per cent of gradient energy, with no consistent winner.](../images/charts/choosing-a-quality-metric-bakeoff-narrowband.svg)
+
+*Contrast in the 4 to 12 px band of stacks ranked by each metric, per cent of the gradient-energy stack, from the table above.*
+
+![Grouped bars for two bands: in the 4 to 12 px band helmli reads 148 and mfgs 163 per cent of gradient energy while dct is 88, fourier 81 and contrast 73.](../images/charts/choosing-a-quality-metric-bakeoff-broadband.svg)
+
+*Contrast of the 2022 broad-band capture 14_42_57 stacked by each metric, per cent of the gradient-energy stack, from the table above.*
+
 What the table says:
 
 * **H-alpha and Ca K: nothing beats gradient energy.** Every metric is within
@@ -127,6 +135,10 @@ differences largely average out; the real-data test
 `every_ranking_metric_agrees_with_gradient_energy_on_real_frames` keeps this
 from silently breaking.
 
+![Bars: laplacian 60 per cent, helmli 70, fourier 47, mfgs 33, dct 33 and contrast 23, against 25 per cent by chance.](../images/charts/choosing-a-quality-metric-rank-overlap.svg)
+
+*Share of gradient energy's best quarter that each metric also puts in its best quarter, first 120 frames of 15_32_09 (H-alpha), from the text above.*
+
 ## Does the seeing decide it?
 
 The idea was to pick the metric from the seeing estimate: Popowicz
@@ -142,6 +154,10 @@ r0. On the captures here:
 | 15_36_42 | 0.27 | 13 |
 | owner 15_32_09, 15_37_19 | 0.16, 0.17 | 14, 11 |
 | 15_44_48 | 0.93 | not fitted |
+
+![Scatter of D/r0 against motion index: 15_32_09 at 0.16 px and 14, 15_37_19 at 0.17 and 11, 15_20_57 at 0.19 and 4.0, Sun_Test at 0.27 and 7.3, 15_36_42 at 0.27 and 13, 14_42_57 at 0.50 and 7.8.](../images/charts/choosing-a-quality-metric-seeing.svg)
+
+*Motion index and D/r0 of the captures at hand (pixel scale assumed), from the table above; 15_44_48 has no fitted D/r0.*
 
 (The pixel scale of these captures is assumed and the tiles are wider than an
 isoplanatic patch, so the D/r0 figures are indicative.) The capture where the

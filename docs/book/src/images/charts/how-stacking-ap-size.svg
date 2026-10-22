@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="398" viewBox="0 0 480 398" role="img" aria-labelledby="t d">
+<title id="t">Granulation by window size</title><desc id="d">Granulation band in per cent by window size. Sun_Test 1.878 at 24 px, 1.843 at 32, 1.816 at 48, 1.787 at 64, 1.775 at 96. 15_20_57 2.064, 2.050, 2.041, 2.039, 2.036. 15_32_09 0.980, 0.971, 0.962, 0.957, 0.951. 14_42_57 0.192, 0.155, 0.141, 0.140, 0.140.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="397" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">Granulation by window size</text>
+<rect x="16" y="38" width="12" height="12" rx="2" fill="#0072B2"/>
+<text x="34.0" y="49.0" class="ink" text-anchor="start">Sun_Test.ser</text>
+<rect x="136.0" y="38" width="12" height="12" rx="2" fill="#D55E00"/>
+<text x="154.0" y="49.0" class="ink" text-anchor="start">15_20_57.ser</text>
+<rect x="256.0" y="38" width="12" height="12" rx="2" fill="#009E73"/>
+<text x="274.0" y="49.0" class="ink" text-anchor="start">15_32_09.avi</text>
+<rect x="16" y="58" width="12" height="12" rx="2" fill="#CC79A7"/>
+<text x="34.0" y="69.0" class="ink" text-anchor="start">14_42_57.avi</text>
+<line class="grid" x1="58" x2="462" y1="308.0" y2="308.0"/>
+<text x="52.0" y="312.0" class="sub" text-anchor="end" style="font-size:11px">0.1</text>
+<line class="grid" x1="58" x2="462" y1="203.0" y2="203.0"/>
+<text x="52.0" y="207.0" class="sub" text-anchor="end" style="font-size:11px">1</text>
+<line class="grid" x1="58" x2="462" y1="98.0" y2="98.0"/>
+<text x="52.0" y="102.0" class="sub" text-anchor="end" style="font-size:11px">10</text>
+<line class="grid" x1="58.0" x2="58.0" y1="98" y2="308"/>
+<text x="58.0" y="324.0" class="sub" text-anchor="middle" style="font-size:11px">20</text>
+<line class="grid" x1="159.0" x2="159.0" y1="98" y2="308"/>
+<text x="159.0" y="324.0" class="sub" text-anchor="middle" style="font-size:11px">40</text>
+<line class="grid" x1="260.0" x2="260.0" y1="98" y2="308"/>
+<text x="260.0" y="324.0" class="sub" text-anchor="middle" style="font-size:11px">60</text>
+<line class="grid" x1="361.0" x2="361.0" y1="98" y2="308"/>
+<text x="361.0" y="324.0" class="sub" text-anchor="middle" style="font-size:11px">80</text>
+<line class="grid" x1="462.0" x2="462.0" y1="98" y2="308"/>
+<text x="462.0" y="324.0" class="sub" text-anchor="middle" style="font-size:11px">100</text>
+<line class="axis" x1="58" x2="462" y1="308" y2="308"/>
+<line class="axis" x1="58" x2="58" y1="98" y2="308"/>
+<path class="ln" d="M78.2,174.3 L118.6,175.1 L199.4,175.8 L280.2,176.5 L441.8,176.8" stroke="#0072B2" stroke-width="2"/>
+<circle cx="78.2" cy="174.3" r="4.5" fill="#0072B2"/>
+<circle cx="118.6" cy="175.1" r="4.5" fill="#0072B2"/>
+<circle cx="199.4" cy="175.8" r="4.5" fill="#0072B2"/>
+<circle cx="280.2" cy="176.5" r="4.5" fill="#0072B2"/>
+<circle cx="441.8" cy="176.8" r="4.5" fill="#0072B2"/>
+<path class="ln" d="M78.2,170.0 L118.6,170.3 L199.4,170.5 L280.2,170.5 L441.8,170.6" stroke="#D55E00" stroke-width="2"/>
+<rect x="73.7" y="165.5" width="9.0" height="9.0" fill="#D55E00"/>
+<rect x="114.1" y="165.8" width="9.0" height="9.0" fill="#D55E00"/>
+<rect x="194.9" y="166.0" width="9.0" height="9.0" fill="#D55E00"/>
+<rect x="275.7" y="166.0" width="9.0" height="9.0" fill="#D55E00"/>
+<rect x="437.3" y="166.1" width="9.0" height="9.0" fill="#D55E00"/>
+<path class="ln" d="M78.2,203.9 L118.6,204.3 L199.4,204.8 L280.2,205.0 L441.8,205.3" stroke="#009E73" stroke-width="2"/>
+<polygon points="78.2,198.4 83.7,203.9 78.2,209.4 72.7,203.9" fill="#009E73"/>
+<polygon points="118.6,198.8 124.1,204.3 118.6,209.8 113.1,204.3" fill="#009E73"/>
+<polygon points="199.4,199.3 204.9,204.8 199.4,210.3 193.9,204.8" fill="#009E73"/>
+<polygon points="280.2,199.5 285.7,205.0 280.2,210.5 274.7,205.0" fill="#009E73"/>
+<polygon points="441.8,199.8 447.3,205.3 441.8,210.8 436.3,205.3" fill="#009E73"/>
+<path class="ln" d="M78.2,278.3 L118.6,288.0 L199.4,292.3 L280.2,292.7 L441.8,292.7" stroke="#CC79A7" stroke-width="2"/>
+<polygon points="78.2,272.8 83.7,282.8 72.7,282.8" fill="#CC79A7"/>
+<polygon points="118.6,282.5 124.1,292.5 113.1,292.5" fill="#CC79A7"/>
+<polygon points="199.4,286.8 204.9,296.8 193.9,296.8" fill="#CC79A7"/>
+<polygon points="280.2,287.2 285.7,297.2 274.7,297.2" fill="#CC79A7"/>
+<polygon points="441.8,287.2 447.3,297.2 436.3,297.2" fill="#CC79A7"/>
+<text x="260.0" y="344.0" class="sub" text-anchor="middle">Alignment point window, pixels</text>
+<text x="260.0" y="360.0" class="sub" text-anchor="middle">Vertical: Granulation band, per cent (higher is more contrast),</text>
+<text x="260.0" y="376.0" class="sub" text-anchor="middle">log scale</text>
+</svg>

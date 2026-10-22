@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="324" viewBox="0 0 480 324" role="img" aria-labelledby="t d">
+<title id="t">Gain over no calibration</title><desc id="d">Bars: dark only 6.4 dB, flat only -0.8 dB, dark, flat and bad pixels 36.9 dB.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="323" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">Gain over no calibration</text>
+<line class="grid" x1="58" x2="468" y1="246.0" y2="246.0"/>
+<text x="52.0" y="250.0" class="sub" text-anchor="end" style="font-size:11px">-10</text>
+<line class="grid" x1="58" x2="468" y1="208.0" y2="208.0"/>
+<text x="52.0" y="212.0" class="sub" text-anchor="end" style="font-size:11px">0</text>
+<line class="grid" x1="58" x2="468" y1="170.0" y2="170.0"/>
+<text x="52.0" y="174.0" class="sub" text-anchor="end" style="font-size:11px">10</text>
+<line class="grid" x1="58" x2="468" y1="132.0" y2="132.0"/>
+<text x="52.0" y="136.0" class="sub" text-anchor="end" style="font-size:11px">20</text>
+<line class="grid" x1="58" x2="468" y1="94.0" y2="94.0"/>
+<text x="52.0" y="98.0" class="sub" text-anchor="end" style="font-size:11px">30</text>
+<line class="grid" x1="58" x2="468" y1="56.0" y2="56.0"/>
+<text x="52.0" y="60.0" class="sub" text-anchor="end" style="font-size:11px">40</text>
+<rect x="109.3" y="183.7" width="33.0" height="24.3" fill="#0072B2"/>
+<text x="125.8" y="180.7" class="sub" text-anchor="middle" style="font-size:11px">6.4</text>
+<text x="126.3" y="262.0" class="ink" text-anchor="middle">Dark only</text>
+<rect x="246.0" y="208.0" width="33.0" height="3.0" fill="#0072B2"/>
+<text x="262.5" y="222.0" class="sub" text-anchor="middle" style="font-size:11px">-0.8</text>
+<text x="263.0" y="262.0" class="ink" text-anchor="middle">Flat only</text>
+<rect x="382.7" y="67.8" width="33.0" height="140.2" fill="#0072B2"/>
+<text x="399.2" y="64.8" class="sub" text-anchor="middle" style="font-size:11px">36.9</text>
+<text x="399.7" y="262.0" class="ink" text-anchor="middle">Dark, flat, bad</text>
+<text x="399.7" y="277.0" class="ink" text-anchor="middle">pixels</text>
+<line class="axis" x1="58" x2="468" y1="208.0" y2="208.0"/>
+<line class="axis" x1="58" x2="58" y1="56" y2="246"/>
+<text x="240.0" y="302.0" class="sub" text-anchor="middle">Decibels below uncalibrated (higher is better)</text>
+</svg>

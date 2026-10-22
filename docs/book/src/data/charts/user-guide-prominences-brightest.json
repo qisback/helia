@@ -1,0 +1,31 @@
+{
+ "id": "user-guide-prominences-brightest",
+ "page": "user-guide/prominences.md",
+ "kind": "dumbbell",
+ "title": "Brightest 1% of the prominence ring",
+ "caption": "Brightness of the brightest 1% of the ring from 1.02 to 1.15 radii, before and after the layer, from the table above (higher shows the prominences better).",
+ "alt": "Dumbbell chart: brightness of the brightest 1% of the ring from 1.02 to 1.15 radii, as a share of the disc's, before and after. 15_32_09: 0.33 to 0.69. 15_37_19: 0.25 to 0.71.",
+ "categories": [
+  "15_32_09",
+  "15_37_19"
+ ],
+ "series": [
+  {
+   "name": "Before",
+   "values": [
+    0.33,
+    0.25
+   ]
+  },
+  {
+   "name": "After",
+   "values": [
+    0.69,
+    0.71
+   ]
+  }
+ ],
+ "value_axis": "Share of the disc's brightness",
+ "dp": 2,
+ "note": "'The H-alpha captures' table"
+}

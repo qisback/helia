@@ -149,6 +149,10 @@ least `2 x p / wavelength`. Worked values:
 | 656.3 nm (H-alpha) | 3.76 microns | f/11.5 |
 | 393.4 nm (calcium K) | 3.76 microns | f/19.1 |
 
+![Bars: 550 nm with 3.76 micron pixels f/13.7, 550 nm with 2.4 micron f/8.7, 656.3 nm with 3.76 micron f/11.5, 393.4 nm with 3.76 micron f/19.1.](../images/charts/capturing-nyquist-focal-ratio.svg)
+
+*Focal ratio at which the pixel is half the diffraction scale (2 x pixel / wavelength), from the worked values above; a calculation, not a measurement.*
+
 Seeing blurs the image below the diffraction limit, so in poor seeing a little
 under-sampling costs little. In good seeing, slightly over-sampling (up to
 about one and a half times Nyquist) helps the sub-pixel alignment and later

@@ -73,6 +73,10 @@ Kolmogorov phase screens, a granulation-like object, known `D / r0` and noise
 | Cut-off at twice the sampling limit, aliased | 5.25 for a truth of 5 |
 | Two independent patches in a tile | 3.92 for a truth of 4 (one patch: 3.86) |
 
+![Scatter of recovered against true D/r0: true 3 gives 2.84, 5 gives 4.94, 8 gives 7.25 and 12 gives 9.71, below the line of equality that is plotted as true against true.](../images/charts/seeing-synthetic-recovery.svg)
+
+*D/r0 recovered from Kolmogorov phase screens of known D/r0 (160 frames, 4 tiles), from the validation table above.*
+
 It loses sensitivity as `D / r0` grows (above about 12 only the lowest frequencies
 carry any signal, and the estimate reads low); the report says so.
 
@@ -124,6 +128,10 @@ screens at `D / r0` 6, with tiles 16 pupil pixels apart at height:
 | Half at the ground, half at height | 0.0486 |
 | All at height | 0.0667 |
 
+![Bars: index 0.0000 with all turbulence at the ground, 0.0486 with half at height and 0.0667 with all at height.](../images/charts/seeing-motion-index-height.svg)
+
+*Motion index of synthetic phase screens at D/r0 6, by where the turbulence is, from the table above.*
+
 and for turbulence at height it grows monotonically with `D / r0` (3 to 12) with a
 log-log slope of 0.83, the 5/6 the theory gives for the RMS of a differential
 tilt.
@@ -140,6 +148,10 @@ capture is too blocky to lock tiles):
 | `15_32_09.avi` (4.31 arcsec/px) | 0.16 px, 0.69 arcsec | 26 | 0.23 px |
 | `14_42_57.avi` | not enough points locked | | 1.59 px |
 
+![Grouped bars: 15_20_57 index 0.19 and warp 0.23 px; Sun_Test 0.27 and 0.88; 15_32_09 0.16 and 0.23.](../images/charts/seeing-real-motion-index.svg)
+
+*Motion index of the whole capture (120 frames) beside the warp `--ap-auto` measures, from the table above; 14_42_57 has no index.*
+
 The ranking agrees with the warp `--ap-auto` measures on a different principle (the
 spread of a point's shift about its frame's median).
 
@@ -154,6 +166,14 @@ aperture taken as 80 mm, so only the comparison means anything):
 | `15_20_57.ser` | 0.147 / 0.184 px | 3.63 / 4.37 |
 | `Sun_Test.ser` | 0.147 / 0.220 px | 5.01 / 7.36 |
 | `15_32_09.avi` | 0.133 / 0.138 px | 15.17 / 15.40 |
+
+![Best and worst quarter: 15_20_57 0.147 and 0.184 px; Sun_Test 0.147 and 0.220; 15_32_09 0.133 and 0.138. Best is lower on all three.](../images/charts/seeing-best-worst-motion.svg)
+
+*Motion index of the quarter of frames ranked sharpest and of the quarter ranked worst, on three captures, from the table above.*
+
+![Best and worst quarter D/r0: 15_20_57 3.63 and 4.37; Sun_Test 5.01 and 7.36; 15_32_09 15.17 and 15.40.](../images/charts/seeing-best-worst-dr0.svg)
+
+*D/r0 of the quarter of frames ranked sharpest and of the quarter ranked worst, on three captures, from the table above.*
 
 Both rank the best frames as the better seeing on all three captures. On
 `15_32_09.avi` the difference is small (a few per cent): the capture is short and

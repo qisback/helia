@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="362" viewBox="0 0 480 362" role="img" aria-labelledby="t d">
+<title id="t">Shift caused by damaged frames, before and after the fix</title><desc id="d">Bars of offset in pixels against the undamaged result. Reference: 0.14 without the fix, 0.012 with it. Stack without alignment points: 0.14 and 0.013. Stack with alignment points: 0.14 and 0.011.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="361" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">Shift caused by damaged frames, before and after the fix</text>
+<rect x="16" y="38" width="12" height="12" rx="2" fill="#0072B2"/>
+<text x="34.0" y="49.0" class="ink" text-anchor="start">Without the fix</text>
+<rect x="157.0" y="38" width="12" height="12" rx="2" fill="#D55E00"/>
+<text x="175.0" y="49.0" class="ink" text-anchor="start">With the fix</text>
+<line class="grid" x1="58" x2="468" y1="268.0" y2="268.0"/>
+<text x="52.0" y="272.0" class="sub" text-anchor="end" style="font-size:11px">0.01</text>
+<line class="grid" x1="58" x2="468" y1="173.0" y2="173.0"/>
+<text x="52.0" y="177.0" class="sub" text-anchor="end" style="font-size:11px">0.1</text>
+<line class="grid" x1="58" x2="468" y1="78.0" y2="78.0"/>
+<text x="52.0" y="82.0" class="sub" text-anchor="end" style="font-size:11px">1</text>
+<rect x="92.3" y="159.1" width="33.0" height="108.9" fill="#0072B2"/>
+<text x="108.8" y="156.1" class="sub" text-anchor="middle" style="font-size:11px">0.140</text>
+<rect x="126.3" y="260.5" width="33.0" height="7.5" fill="#D55E00"/>
+<text x="142.8" y="257.5" class="sub" text-anchor="middle" style="font-size:11px">0.012</text>
+<text x="126.3" y="284.0" class="ink" text-anchor="middle">Reference</text>
+<rect x="229.0" y="159.1" width="33.0" height="108.9" fill="#0072B2"/>
+<text x="245.5" y="156.1" class="sub" text-anchor="middle" style="font-size:11px">0.140</text>
+<rect x="263.0" y="257.2" width="33.0" height="10.8" fill="#D55E00"/>
+<text x="279.5" y="254.2" class="sub" text-anchor="middle" style="font-size:11px">0.013</text>
+<text x="263.0" y="284.0" class="ink" text-anchor="middle">Stack, alignment</text>
+<text x="263.0" y="299.0" class="ink" text-anchor="middle">points off</text>
+<rect x="365.7" y="159.1" width="33.0" height="108.9" fill="#0072B2"/>
+<text x="382.2" y="156.1" class="sub" text-anchor="middle" style="font-size:11px">0.140</text>
+<rect x="399.7" y="264.1" width="33.0" height="3.9" fill="#D55E00"/>
+<text x="416.2" y="261.1" class="sub" text-anchor="middle" style="font-size:11px">0.011</text>
+<text x="399.7" y="284.0" class="ink" text-anchor="middle">Stack, alignment</text>
+<text x="399.7" y="299.0" class="ink" text-anchor="middle">points on</text>
+<line class="axis" x1="58" x2="468" y1="268.0" y2="268.0"/>
+<line class="axis" x1="58" x2="58" y1="78" y2="268"/>
+<text x="240.0" y="324.0" class="sub" text-anchor="middle">Offset from the undamaged result, pixels (lower is better), log</text>
+<text x="240.0" y="340.0" class="sub" text-anchor="middle">scale</text>
+</svg>

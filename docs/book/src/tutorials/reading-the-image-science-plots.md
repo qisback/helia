@@ -139,6 +139,10 @@ level and at zero.
    leaves black) and 1.3% at the top. A plateau of more than a few per cent at the top of
    the output means the white point is clipping the disc: lower `--white` or the gain.
 
+![Horizontal bars of per cent of pixels at a limit: raw red plane 92.4 at the sensor limit, raw green 1.6, written image 8.5 at zero and 1.3 at the top.](../images/charts/reading-science-clipping.svg)
+
+*Share of pixels at a limit in the raw red and green planes and in the written image, from the histogram panels.*
+
 ## 7. Noise and signal to noise
 
 ![Signal to noise of the best frame, the stack and the sharpened image](../images/science/noise-snr.png)

@@ -288,7 +288,9 @@ pub struct StackOutput {
     pub crop_skipped: Option<autocrop::Skipped>,
     /// What the automatic alignment points chose, when they were on.
     pub auto_ap: Option<ApChoice>,
-    /// The limb-darkening law fitted to the stack, when there is a disc.
+    /// The limb-darkening law fitted to the stack, when there is a disc. Its
+    /// centre is in the coordinates of `image`, so after a crop it moves with
+    /// the crop.
     pub limb: Option<LimbFit>,
     /// What the second pass and smoothing did, when multipoint ran.
     pub refine: Option<RefineReport>,
@@ -962,7 +964,7 @@ impl Pipeline {
         if cfg.normalise && colour.is_none() {
             ctx.profile.time(Category::Finish, || normalise(&mut image));
         }
-        let limb = cfg
+        let mut limb = cfg
             .limb_law
             .and_then(|law| limbdark::fit_image(&image, law));
         let (mut disc, mut crop, mut crop_skipped) = (disc, None, None);
@@ -972,6 +974,11 @@ impl Pipeline {
                     image = cropped;
                     colour = colour.map(|c| c.cut(report.rect));
                     disc = Some(report.disc);
+                    // The fit's centre is in the uncropped frame; move it with the crop.
+                    if let Some(l) = &mut limb {
+                        l.cx -= report.rect.x0 as f32;
+                        l.cy -= report.rect.y0 as f32;
+                    }
                     crop = Some(report);
                 }
                 Err(why) => crop_skipped = Some(why),
@@ -2544,6 +2551,10 @@ mod tests {
         // The disc is reported in the cropped image's coordinates.
         assert_eq!(cropped.disc, Some(c.disc));
         assert!((c.disc.cx - cropped.image.width as f32 / 2.0).abs() < 3.0);
+        // The limb fit follows the crop too, so a profile taken from it is on the disc.
+        let (lw, lc) = (whole.limb.expect("limb"), cropped.limb.expect("limb"));
+        assert!((lc.cx - (lw.cx - c.rect.x0 as f32)).abs() < 1e-3);
+        assert!((lc.cy - (lw.cy - c.rect.y0 as f32)).abs() < 1e-3);
         assert!(cropped.provenance.iter().any(|p| p.step == "CROPPING"));
         assert!(whole.crop.is_none() && whole.crop_skipped.is_none());
     }

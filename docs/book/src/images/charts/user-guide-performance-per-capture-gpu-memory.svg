@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="316" viewBox="0 0 480 316" role="img" aria-labelledby="t d">
+<title id="t">GPU peak memory per capture</title><desc id="d">Horizontal bars of GPU peak resident set in megabytes: 437, 769, 712, 642, 629, 328 and 656, from the smallest to the largest capture.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="315" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">GPU peak memory per capture</text>
+<text x="158.0" y="66.0" class="ink" text-anchor="end">0.4 GB 720x540 AVI</text>
+<rect x="166.0" y="53.0" width="143.1" height="18" fill="#0072B2"/>
+<text x="313.1" y="69.0" class="sub" text-anchor="start" style="font-size:11px">437</text>
+<text x="158.0" y="90.5" class="ink" text-anchor="end">0.4 GB 1080p 16-bit</text>
+<text x="158.0" y="105.5" class="ink" text-anchor="end">SER</text>
+<rect x="166.0" y="85.0" width="251.8" height="18" fill="#0072B2"/>
+<text x="421.8" y="101.0" class="sub" text-anchor="start" style="font-size:11px">769</text>
+<text x="158.0" y="130.0" class="ink" text-anchor="end">1.0 GB 1936x1088 AVI</text>
+<rect x="166.0" y="117.0" width="233.2" height="18" fill="#0072B2"/>
+<text x="403.2" y="133.0" class="sub" text-anchor="start" style="font-size:11px">712</text>
+<text x="158.0" y="158.0" class="ink" text-anchor="end">1.3 GB 1080p AVI</text>
+<rect x="166.0" y="145.0" width="210.3" height="18" fill="#0072B2"/>
+<text x="380.3" y="161.0" class="sub" text-anchor="start" style="font-size:11px">642</text>
+<text x="158.0" y="186.0" class="ink" text-anchor="end">1.3 GB 1080p SER</text>
+<rect x="166.0" y="173.0" width="206.0" height="18" fill="#0072B2"/>
+<text x="376.0" y="189.0" class="sub" text-anchor="start" style="font-size:11px">629</text>
+<text x="158.0" y="214.0" class="ink" text-anchor="end">3.1 GB 640x480 AVI</text>
+<rect x="166.0" y="201.0" width="107.4" height="18" fill="#0072B2"/>
+<text x="277.4" y="217.0" class="sub" text-anchor="start" style="font-size:11px">328</text>
+<text x="158.0" y="238.5" class="ink" text-anchor="end">5.6 GB 1080p Bayer</text>
+<text x="158.0" y="253.5" class="ink" text-anchor="end">AVI</text>
+<rect x="166.0" y="233.0" width="214.8" height="18" fill="#0072B2"/>
+<text x="384.8" y="249.0" class="sub" text-anchor="start" style="font-size:11px">656</text>
+<line class="grid" x1="166.0" x2="166.0" y1="46" y2="260"/>
+<text x="166.0" y="276.0" class="sub" text-anchor="middle" style="font-size:11px">0</text>
+<line class="grid" x1="231.5" x2="231.5" y1="46" y2="260"/>
+<text x="231.5" y="276.0" class="sub" text-anchor="middle" style="font-size:11px">200</text>
+<line class="grid" x1="297.0" x2="297.0" y1="46" y2="260"/>
+<text x="297.0" y="276.0" class="sub" text-anchor="middle" style="font-size:11px">400</text>
+<line class="grid" x1="362.5" x2="362.5" y1="46" y2="260"/>
+<text x="362.5" y="276.0" class="sub" text-anchor="middle" style="font-size:11px">600</text>
+<line class="grid" x1="428.0" x2="428.0" y1="46" y2="260"/>
+<text x="428.0" y="276.0" class="sub" text-anchor="middle" style="font-size:11px">800</text>
+<line class="axis" x1="166" x2="166" y1="46" y2="260"/>
+<text x="297.0" y="294.0" class="sub" text-anchor="middle">Peak resident memory, MB</text>
+</svg>

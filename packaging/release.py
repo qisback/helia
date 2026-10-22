@@ -161,11 +161,12 @@ PLATFORMS = [
     ("Linux x86_64", "tar.gz, .deb, .rpm, AppImage"),
     ("Linux aarch64", "tar.gz, .deb, .rpm, AppImage"),
     ("Windows x86_64", "installer (setup.exe), zip"),
-    ("macOS (Apple silicon)", "dmg"),
 ]
+MACOS_ROW = ("macOS (Apple silicon)", "dmg")
+NO_MACOS = "No macOS build for this release."
 
 
-def build_notes(version, tag, date, body, server, repo):
+def build_notes(version, tag, date, body, server, repo, macos=False):
     base = f"{server}/{repo}"
     pre = " (pre-release)" if is_prerelease(version) else ""
     out = [
@@ -183,8 +184,9 @@ def build_notes(version, tag, date, body, server, repo):
         "",
         "| Platform | Files |",
         "| --- | --- |",
-        *[f"| {p} | {f} |" for p, f in PLATFORMS],
+        *[f"| {p} | {f} |" for p, f in PLATFORMS + ([MACOS_ROW] if macos else [])],
         "",
+        *([] if macos else [NO_MACOS, ""]),
         "Linux builds need glibc 2.35 or newer. Verify with `sha256sum -c SHA256SUMS --ignore-missing`. "
         "`helia-*.cdx.json` are the CycloneDX SBOMs.",
         "",
@@ -199,7 +201,7 @@ def build_notes(version, tag, date, body, server, repo):
 def cmd_notes(a):
     body, date = changelog_entry(a.changelog, a.version)
     date = date or datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d")
-    pathlib.Path(a.out).write_text(build_notes(a.version, a.tag, date, body, a.server, a.repo), encoding="utf-8")
+    pathlib.Path(a.out).write_text(build_notes(a.version, a.tag, date, body, a.server, a.repo, a.macos), encoding="utf-8")
     print(f"wrote {a.out}")
 
 
@@ -366,6 +368,7 @@ def main():
     n.add_argument("--server", required=True)
     n.add_argument("--repo", required=True)
     n.add_argument("--out", required=True)
+    n.add_argument("--macos", action="store_true", help="list the macOS dmg (only when one is attached)")
     n.set_defaults(fn=cmd_notes)
     s = sub.add_parser("sbom")
     s.add_argument("files", nargs="+")

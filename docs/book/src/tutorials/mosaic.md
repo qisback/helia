@@ -84,6 +84,14 @@ Compare the table with what the panels were cut with:
 | 5 | (193.40, 204.10) | (193.41, 204.11) | 0.6 | 0.605 | 1.04 | 0.962 (0.957) |
 | 6 | (377.90, 206.80) | (377.93, 206.80) | 0.9 | 0.895 | 0.91 | 1.099 (1.090) |
 
+![Scatter of found against cut turn in degrees: 1.1 found as 1.106, -0.7 as -0.698, -1.0 as -0.998, 0.6 as 0.605 and 0.9 as 0.895, on the line of equality.](../images/charts/mosaic-turn-found-against-cut.svg)
+
+*Turn found for each panel against the turn it was cut with, from the table above; the line of equality is cut against cut.*
+
+![Scatter of found gain against the gain to undo the cut: 1.075 found as 1.071, 0.935 as 0.939, 1.042 as 1.038, 0.962 as 0.957 and 1.099 as 1.090, close to the line of equality.](../images/charts/mosaic-gain-found-against-cut.svg)
+
+*Gain found for each panel against the gain that would undo the one it was cut with (printed in the table above); the line is equality.*
+
 (These numbers are from 8-bit PNG panels; the test that cuts them in memory finds the
 placements to 0.03 pixel and 0.006 degree.) The "gain to undo it" is `1/gain`: a panel cut
 dimmer is scaled up. The panels are matched to the first, so the mosaic is in panel 1's

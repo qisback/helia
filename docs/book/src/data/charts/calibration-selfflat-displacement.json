@@ -1,0 +1,27 @@
+{
+ "id": "calibration-selfflat-displacement",
+ "page": "user-guide/calibration.md",
+ "kind": "lines",
+ "title": "Self-flat error against displacement error",
+ "caption": "RMS error of the recovered flat when the displacements are wrong by 0.1, 0.2 and 0.4 px, from the validation table above.",
+ "alt": "Line chart: error 0.15 per cent for 0.1 px, 0.22 for 0.2 px and 0.40 for 0.4 px.",
+ "series": [
+  {
+   "name": "Error",
+   "x": [
+    0.1,
+    0.2,
+    0.4
+   ],
+   "values": [
+    0.15,
+    0.22,
+    0.4
+   ]
+  }
+ ],
+ "xlabel": "Error in the displacements, px",
+ "ylabel": "RMS error of the gain, per cent (lower is better)",
+ "dp": 2,
+ "note": "calibration.md, 'How well it works', displacement error row"
+}

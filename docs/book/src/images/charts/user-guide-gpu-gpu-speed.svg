@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="286" viewBox="0 0 480 286" role="img" aria-labelledby="t d">
+<title id="t">GPU time, before and now</title><desc id="d">Horizontal grouped bars of GPU wall seconds before and now: 13.2 to 1.6, 40.8 to 5.8, 20.5 to 2.9 and 73.1 to 10.7, for the four captures.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="285" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">GPU time, before and now</text>
+<rect x="16" y="38" width="12" height="12" rx="2" fill="#0072B2"/>
+<text x="34.0" y="49.0" class="ink" text-anchor="start">GPU, before</text>
+<rect x="129.0" y="38" width="12" height="12" rx="2" fill="#D55E00"/>
+<text x="147.0" y="49.0" class="ink" text-anchor="start">GPU, now</text>
+<text x="158.0" y="86.5" class="ink" text-anchor="end">1080p 16-bit Bayer</text>
+<text x="158.0" y="101.5" class="ink" text-anchor="end">SER, 100</text>
+<rect x="166.0" y="75.0" width="43.2" height="14" fill="#0072B2"/>
+<text x="213.2" y="87.0" class="sub" text-anchor="start" style="font-size:11px">13.2</text>
+<rect x="166.0" y="91.0" width="5.2" height="14" fill="#D55E00"/>
+<text x="175.2" y="103.0" class="sub" text-anchor="start" style="font-size:11px">1.6</text>
+<text x="158.0" y="126.5" class="ink" text-anchor="end">1080p 8-bit mono</text>
+<text x="158.0" y="141.5" class="ink" text-anchor="end">SER, 631</text>
+<rect x="166.0" y="115.0" width="133.6" height="14" fill="#0072B2"/>
+<text x="303.6" y="127.0" class="sub" text-anchor="start" style="font-size:11px">40.8</text>
+<rect x="166.0" y="131.0" width="19.0" height="14" fill="#D55E00"/>
+<text x="189.0" y="143.0" class="sub" text-anchor="start" style="font-size:11px">5.8</text>
+<text x="158.0" y="166.5" class="ink" text-anchor="end">720x540 Bayer AVI,</text>
+<text x="158.0" y="181.5" class="ink" text-anchor="end">1000</text>
+<rect x="166.0" y="155.0" width="67.1" height="14" fill="#0072B2"/>
+<text x="237.1" y="167.0" class="sub" text-anchor="start" style="font-size:11px">20.5</text>
+<rect x="166.0" y="171.0" width="9.5" height="14" fill="#D55E00"/>
+<text x="179.5" y="183.0" class="sub" text-anchor="start" style="font-size:11px">2.9</text>
+<text x="158.0" y="206.5" class="ink" text-anchor="end">1080p 8-bit Bayer</text>
+<text x="158.0" y="221.5" class="ink" text-anchor="end">AVI, 630</text>
+<rect x="166.0" y="195.0" width="239.4" height="14" fill="#0072B2"/>
+<text x="409.4" y="207.0" class="sub" text-anchor="start" style="font-size:11px">73.1</text>
+<rect x="166.0" y="211.0" width="35.0" height="14" fill="#D55E00"/>
+<text x="205.0" y="223.0" class="sub" text-anchor="start" style="font-size:11px">10.7</text>
+<line class="grid" x1="166.0" x2="166.0" y1="68" y2="230"/>
+<text x="166.0" y="246.0" class="sub" text-anchor="middle" style="font-size:11px">0</text>
+<line class="grid" x1="231.5" x2="231.5" y1="68" y2="230"/>
+<text x="231.5" y="246.0" class="sub" text-anchor="middle" style="font-size:11px">20</text>
+<line class="grid" x1="297.0" x2="297.0" y1="68" y2="230"/>
+<text x="297.0" y="246.0" class="sub" text-anchor="middle" style="font-size:11px">40</text>
+<line class="grid" x1="362.5" x2="362.5" y1="68" y2="230"/>
+<text x="362.5" y="246.0" class="sub" text-anchor="middle" style="font-size:11px">60</text>
+<line class="grid" x1="428.0" x2="428.0" y1="68" y2="230"/>
+<text x="428.0" y="246.0" class="sub" text-anchor="middle" style="font-size:11px">80</text>
+<line class="axis" x1="166" x2="166" y1="68" y2="230"/>
+<text x="297.0" y="264.0" class="sub" text-anchor="middle">Wall-clock time, seconds</text>
+</svg>

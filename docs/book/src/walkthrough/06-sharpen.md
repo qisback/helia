@@ -15,8 +15,8 @@ you export.
 
 The first control is **Limb darkening**: **Off**, **Model** or **Profile**, and
 the law to fit (Linear, Quadratic, Neckel). The line under the chips is the fit
-made on your stack, for example *quadratic: u1 = 0.470, u2 = 0.046; limb at 48% of
-the centre; rings differ from the law by 0.67% rms*. **Model** divides the disc
+made on your stack, for example *quadratic: u1 = 0.472, u2 = 0.046; limb at 48% of
+the centre; rings differ from the law by 0.66% rms*. **Model** divides the disc
 by that law and **Profile** by the measured radial profile, so the sharpening
 below sees flat contrast from the centre to the limb. Only the disc changes. It is
 off by default; try it with **Before / after**, and see
@@ -78,6 +78,10 @@ mean, about 2.3 times, and the pixel-scale band (mostly noise) from 0.30% to
 than the noise rises, and the noise cut on layer 1 keeps the grain from taking
 over. If the picture looks processed rather than just crisp, lower the sharpen of
 layer 2 or raise the denoise of layer 1.
+
+![Dumbbells of contrast, before then after sharpening: 1 to 4 px detail 0.96 then 2.17 per cent of the mean; pixel scale 0.30 then 0.62.](../images/charts/walkthrough-sharpen-bands.svg)
+
+*Band-pass contrast of the disc-centre crop before and after the recommended wavelets, from `helia measure`.*
 
 ![The Sharpen step with RegiStax-style settings: Gaussian filter, layer 1 at 0.14 and 0.20, layer 2 at 0.13 and 0.15, layer 3 at 50%](../images/real/sharpen-registax.png)
 

@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="246" viewBox="0 0 480 246" role="img" aria-labelledby="t d">
+<title id="t">Fine band, before and after</title><desc id="d">Fine band in per cent, before then after, for Sun_Test 8-bit: 1.64 to 1.48; 15_20_57 16-bit: 2.95 to 2.13; 15_32_09 8-bit: 0.23 to 0.45.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="245" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">Fine band, before and after</text>
+<rect x="16" y="38" width="12" height="12" rx="2" fill="#0072B2"/>
+<text x="34.0" y="49.0" class="ink" text-anchor="start">Before</text>
+<rect x="94.0" y="38" width="12" height="12" rx="2" fill="#D55E00"/>
+<text x="112.0" y="49.0" class="ink" text-anchor="start">After</text>
+<text x="158.0" y="94.0" class="ink" text-anchor="end">Sun_Test.ser</text>
+<rect x="166.0" y="75.0" width="143.2" height="14" fill="#0072B2"/>
+<text x="313.2" y="87.0" class="sub" text-anchor="start" style="font-size:11px">1.64</text>
+<rect x="166.0" y="91.0" width="129.3" height="14" fill="#D55E00"/>
+<text x="299.3" y="103.0" class="sub" text-anchor="start" style="font-size:11px">1.48</text>
+<text x="158.0" y="134.0" class="ink" text-anchor="end">15_20_57.ser</text>
+<rect x="166.0" y="115.0" width="257.6" height="14" fill="#0072B2"/>
+<text x="427.6" y="127.0" class="sub" text-anchor="start" style="font-size:11px">2.95</text>
+<rect x="166.0" y="131.0" width="186.0" height="14" fill="#D55E00"/>
+<text x="356.0" y="143.0" class="sub" text-anchor="start" style="font-size:11px">2.13</text>
+<text x="158.0" y="174.0" class="ink" text-anchor="end">15_32_09.avi</text>
+<rect x="166.0" y="155.0" width="20.1" height="14" fill="#0072B2"/>
+<text x="190.1" y="167.0" class="sub" text-anchor="start" style="font-size:11px">0.23</text>
+<rect x="166.0" y="171.0" width="39.3" height="14" fill="#D55E00"/>
+<text x="209.3" y="183.0" class="sub" text-anchor="start" style="font-size:11px">0.45</text>
+<line class="grid" x1="166.0" x2="166.0" y1="68" y2="190"/>
+<text x="166.0" y="206.0" class="sub" text-anchor="middle" style="font-size:11px">0</text>
+<line class="grid" x1="209.7" x2="209.7" y1="68" y2="190"/>
+<text x="209.7" y="206.0" class="sub" text-anchor="middle" style="font-size:11px">0.5</text>
+<line class="grid" x1="253.3" x2="253.3" y1="68" y2="190"/>
+<text x="253.3" y="206.0" class="sub" text-anchor="middle" style="font-size:11px">1</text>
+<line class="grid" x1="297.0" x2="297.0" y1="68" y2="190"/>
+<text x="297.0" y="206.0" class="sub" text-anchor="middle" style="font-size:11px">1.5</text>
+<line class="grid" x1="340.7" x2="340.7" y1="68" y2="190"/>
+<text x="340.7" y="206.0" class="sub" text-anchor="middle" style="font-size:11px">2</text>
+<line class="grid" x1="384.3" x2="384.3" y1="68" y2="190"/>
+<text x="384.3" y="206.0" class="sub" text-anchor="middle" style="font-size:11px">2.5</text>
+<line class="grid" x1="428.0" x2="428.0" y1="68" y2="190"/>
+<text x="428.0" y="206.0" class="sub" text-anchor="middle" style="font-size:11px">3</text>
+<line class="axis" x1="166" x2="166" y1="68" y2="190"/>
+<text x="297.0" y="224.0" class="sub" text-anchor="middle">Fine band, per cent</text>
+</svg>

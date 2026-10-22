@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="309" viewBox="0 0 480 309" role="img" aria-labelledby="t d">
+<title id="t">Spots found by share of frames kept</title><desc id="d">Bars of spots found: 14 at 6% of the frames kept, 14 at 12%, 13 at 25% and 13 at 50%.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="308" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">Spots found by share of frames kept</text>
+<line class="grid" x1="58" x2="468" y1="246.0" y2="246.0"/>
+<text x="52.0" y="250.0" class="sub" text-anchor="end" style="font-size:11px">0</text>
+<line class="grid" x1="58" x2="468" y1="214.3" y2="214.3"/>
+<text x="52.0" y="218.3" class="sub" text-anchor="end" style="font-size:11px">2.5</text>
+<line class="grid" x1="58" x2="468" y1="182.7" y2="182.7"/>
+<text x="52.0" y="186.7" class="sub" text-anchor="end" style="font-size:11px">5</text>
+<line class="grid" x1="58" x2="468" y1="151.0" y2="151.0"/>
+<text x="52.0" y="155.0" class="sub" text-anchor="end" style="font-size:11px">7.5</text>
+<line class="grid" x1="58" x2="468" y1="119.3" y2="119.3"/>
+<text x="52.0" y="123.3" class="sub" text-anchor="end" style="font-size:11px">10</text>
+<line class="grid" x1="58" x2="468" y1="87.7" y2="87.7"/>
+<text x="52.0" y="91.7" class="sub" text-anchor="end" style="font-size:11px">12.5</text>
+<line class="grid" x1="58" x2="468" y1="56.0" y2="56.0"/>
+<text x="52.0" y="60.0" class="sub" text-anchor="end" style="font-size:11px">15</text>
+<rect x="92.2" y="68.7" width="33.0" height="177.3" fill="#0072B2"/>
+<text x="108.8" y="65.7" class="sub" text-anchor="middle" style="font-size:11px">14</text>
+<text x="109.2" y="262.0" class="ink" text-anchor="middle">6%</text>
+<rect x="194.8" y="68.7" width="33.0" height="177.3" fill="#0072B2"/>
+<text x="211.2" y="65.7" class="sub" text-anchor="middle" style="font-size:11px">14</text>
+<text x="211.8" y="262.0" class="ink" text-anchor="middle">12%</text>
+<rect x="297.2" y="81.3" width="33.0" height="164.7" fill="#0072B2"/>
+<text x="313.8" y="78.3" class="sub" text-anchor="middle" style="font-size:11px">13</text>
+<text x="314.2" y="262.0" class="ink" text-anchor="middle">25%</text>
+<rect x="399.8" y="81.3" width="33.0" height="164.7" fill="#0072B2"/>
+<text x="416.2" y="78.3" class="sub" text-anchor="middle" style="font-size:11px">13</text>
+<text x="416.8" y="262.0" class="ink" text-anchor="middle">50%</text>
+<line class="axis" x1="58" x2="468" y1="246.0" y2="246.0"/>
+<line class="axis" x1="58" x2="58" y1="56" y2="246"/>
+<text x="240.0" y="287.0" class="sub" text-anchor="middle">Spots found</text>
+</svg>

@@ -1,0 +1,25 @@
+{
+ "id": "recipe-mp4-seestar-bands",
+ "page": "recipes/mp4-from-a-phone.md",
+ "kind": "hbars",
+ "title": "Granulation band of a Seestar video",
+ "caption": "Granulation-band contrast of the stack from each plane of `2025-09-17-161400-Solar.mp4`, from `helia measure`.",
+ "alt": "Horizontal bars of granulation-band contrast: green 1.53, luminance 1.18, red 0.76 per cent.",
+ "categories": [
+  "Green",
+  "Luminance",
+  "Red"
+ ],
+ "series": [
+  {
+   "name": "Granulation band",
+   "values": [
+    1.53,
+    1.18,
+    0.76
+   ]
+  }
+ ],
+ "value_axis": "Band-pass contrast, per cent (higher is more detail)",
+ "note": "recipes/mp4-from-a-phone.md, 'A Seestar video of the Sun'"
+}

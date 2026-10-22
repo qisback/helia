@@ -1,0 +1,48 @@
+{
+ "id": "mosaic-gain-found-against-cut",
+ "page": "tutorials/mosaic.md",
+ "kind": "scatter",
+ "title": "Gain found against gain to undo",
+ "caption": "Gain found for each panel against the gain that would undo the one it was cut with (printed in the table above); the line is equality.",
+ "alt": "Scatter of found gain against the gain to undo the cut: 1.075 found as 1.071, 0.935 as 0.939, 1.042 as 1.038, 0.962 as 0.957 and 1.099 as 1.090, close to the line of equality.",
+ "series": [
+  {
+   "name": "Equal",
+   "x": [
+    1.075,
+    0.935,
+    1.042,
+    0.962,
+    1.099
+   ],
+   "values": [
+    1.075,
+    0.935,
+    1.042,
+    0.962,
+    1.099
+   ]
+  },
+  {
+   "name": "Found",
+   "x": [
+    1.075,
+    0.935,
+    1.042,
+    0.962,
+    1.099
+   ],
+   "values": [
+    1.071,
+    0.939,
+    1.038,
+    0.957,
+    1.09
+   ]
+  }
+ ],
+ "xlabel": "Gain to undo the cut gain",
+ "ylabel": "Gain found",
+ "dp": 3,
+ "note": "mosaic.md tutorial, comparison table"
+}

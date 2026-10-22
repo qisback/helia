@@ -1,0 +1,25 @@
+{
+ "id": "tutorial-limb-flatten-rings",
+ "page": "tutorials/limb-darkening.md",
+ "kind": "bars",
+ "title": "Rings off the law, flattening",
+ "caption": "How far the rings stray from the fitted quadratic law, unflattened and after each flattening source, from the table above.",
+ "alt": "Rings off the law in per cent: unflattened 0.66, flatten model 0.74, flatten profile 0.34.",
+ "categories": [
+  "Unflattened",
+  "Model",
+  "Profile"
+ ],
+ "series": [
+  {
+   "name": "Rings off the law",
+   "values": [
+    0.66,
+    0.74,
+    0.34
+   ]
+  }
+ ],
+ "value_axis": "Rings off the law, per cent (lower is better)",
+ "note": "tutorials/limb-darkening.md, check it worked"
+}

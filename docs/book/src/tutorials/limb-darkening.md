@@ -8,7 +8,7 @@ description: "Tutorial: flatten the limb darkening of a solar stack in Helia so 
 that the sharpening sees the same contrast everywhere, and read the numbers that
 say how strong the darkening is and how well a law describes it.
 
-**Time:** two minutes of work; each stack here took about 2.5 seconds on a GPU.
+**Time:** two minutes of work; each stack here took about 2 seconds on a GPU.
 
 **You need:** a capture with the whole disc in the frame. The reference for the
 settings is [Limb darkening](../user-guide/sharpening.md#limb-darkening); this page
@@ -42,9 +42,9 @@ The summary ends with the limb fit, which every run makes whether or not you fla
 ```text
 settings: H-alpha (chosen); red channel, keep 25%, alignment points 64 px
 channel:  the red plane is clipped (red 98% of its lit pixels sit at the sensor limit, so the disc is flat there); stacking the green plane instead. ...
-align:    phase correlation (limb fit not confident enough, 0.67); confidence mean 1.00, least 1.00 (sampled)
-limb:    quadratic: u1 = 0.471, u2 = 0.046; limb at 48% of the centre; rings differ from the law by 0.66% rms
-disc:    centre (788.3, 552.3), radius 444.6 px
+align:    phase correlation (limb fit not confident enough, 0.60); confidence mean 1.00, least 1.00 (sampled)
+limb:    quadratic: u1 = 0.472, u2 = 0.046; limb at 48% of the centre; rings differ from the law by 0.66% rms
+disc:    centre (788.2, 552.3), radius 444.7 px
 ```
 
 Read the `limb:` line like this:
@@ -52,7 +52,7 @@ Read the `limb:` line like this:
 | Part | Meaning |
 |---|---|
 | `quadratic` | The law fitted (the default). `--limb-law` changes it |
-| `u1 = 0.471, u2 = 0.046` | The coefficients of `L(mu) = 1 - u1 (1 - mu) - u2 (1 - mu)^2`. `u1` is the linear part: the larger it is, the stronger the darkening |
+| `u1 = 0.472, u2 = 0.046` | The coefficients of `L(mu) = 1 - u1 (1 - mu) - u2 (1 - mu)^2`. `u1` is the linear part: the larger it is, the stronger the darkening |
 | `limb at 48% of the centre` | The law's brightness at the limb itself (`mu` = 0), as a share of the centre: `1 - u1 - u2` = 0.483 here |
 | `rings differ from the law by 0.66% rms` | How far the measured brightness of each one-pixel ring strays from the law. Small means the law describes the disc; large means something else is radial in the picture (see [Troubleshooting](#troubleshooting)) |
 
@@ -68,19 +68,19 @@ helia measure plain.fits --limb
 ```text
 file:        plain.fits
 image:       1920 x 1080
-disc:        centre (788.5, 552.3), radius 444.6 px, sky 0.0080, centre 0.9085
+disc:        centre (788.5, 552.4), radius 444.6 px, sky 0.0080, centre 0.9084
 linear: u = 0.498; limb at 50% of the centre; rings differ from the law by 0.69% rms
-quadratic: u1 = 0.471, u2 = 0.046; limb at 48% of the centre; rings differ from the law by 0.66% rms
-neckel: a1 = 0.443, a2 = 0.046, a3 = 0.028, a4 = 0.058, a5 = -0.089; limb at 51% of the centre; rings differ from the law by 0.65% rms
+quadratic: u1 = 0.472, u2 = 0.046; limb at 48% of the centre; rings differ from the law by 0.66% rms
+neckel: a1 = 0.441, a2 = 0.047, a3 = 0.029, a4 = 0.058, a5 = -0.090; limb at 52% of the centre; rings differ from the law by 0.65% rms
 mu    measured    linear quadratic   neckel
-0.90  0.9547      0.9502   0.9524   0.9560
-0.80  0.9066      0.9004   0.9039   0.9071
-0.70  0.8496      0.8506   0.8545   0.8556
-0.60  0.8023      0.8009   0.8041   0.8034
-0.50  0.7613      0.7511   0.7528   0.7518
-0.40  0.7039      0.7013   0.7006   0.7014
-0.30  0.6503      0.6515   0.6475   0.6525
-0.25  0.6142      0.6266   0.6206   0.6287
+0.90  0.9536      0.9502   0.9524   0.9561
+0.80  0.9054      0.9004   0.9039   0.9071
+0.70  0.8495      0.8506   0.8544   0.8556
+0.60  0.8030      0.8009   0.8041   0.8034
+0.50  0.7618      0.7511   0.7528   0.7518
+0.40  0.7047      0.7013   0.7006   0.7014
+0.30  0.6500      0.6515   0.6475   0.6526
+0.25  0.6146      0.6266   0.6206   0.6288
 ```
 
 `mu` is the cosine of the angle from the local vertical: 1 at the centre of the
@@ -125,9 +125,17 @@ helia measure flat-profile.fits --limb
 
 | | Linear `u` | Quadratic `u1`, `u2` | Rings off the law (quadratic) | Disc centre level |
 |---|---|---|---|---|
-| Unflattened | 0.498 | 0.471, 0.046 | 0.66% | 0.9085 |
-| `--flatten model` | -0.001 | 0.003, -0.006 | 0.74% | 0.6496 |
-| `--flatten profile` | 0.000 | -0.002, 0.004 | 0.34% | 0.6514 |
+| Unflattened | 0.498 | 0.472, 0.046 | 0.66% | 0.9084 |
+| `--flatten model` | -0.000 | 0.003, -0.005 | 0.74% | 0.6499 |
+| `--flatten profile` | 0.000 | -0.003, 0.005 | 0.34% | 0.6513 |
+
+![Linear u: unflattened 0.498, flatten model -0.000, flatten profile 0.000.](../images/charts/tutorial-limb-flatten-linear.svg)
+
+*Linear `u` of 15_20_57.ser unflattened and after each flattening source, from the table above.*
+
+![Rings off the law in per cent: unflattened 0.66, flatten model 0.74, flatten profile 0.34.](../images/charts/tutorial-limb-flatten-rings.svg)
+
+*How far the rings stray from the fitted quadratic law, unflattened and after each flattening source, from the table above.*
 
 The coefficients go to zero: the disc has no darkening left. The model removes
 only the fitted law (its rings stay about as far off as before, 0.74%); the profile
@@ -135,8 +143,8 @@ removes the whole measured radial profile, so any radial gradient the law could
 not describe goes too, and the rings end up 0.34% off a flat line. Neither
 touches the granulation or fine detail: dividing by a smooth radial function
 cannot move contrast that is not radial. (On this capture the project measured
-the granulation band of `helia measure` at 2.050% before, 2.052% with the model and
-2.049% with the profile.)
+the granulation band of `helia measure` at 2.021% before, 2.023% with the model and
+2.020% with the profile.)
 
 ## 4. The same in the app
 
@@ -172,7 +180,7 @@ helia edit plain.fits -o flat.tif --flatten profile
 
 ```text
 edit:     1. flatten the limb darkening by the measured radial profile (azimuthal median), on the disc only
-wrote:    flat.tif (1920x1080) in 1.10s
+wrote:    flat.tif (1920x1080) in 0.85s
 ```
 
 (`--limb-law` chooses the law fitted and printed, and the one `--flatten model`
@@ -185,7 +193,7 @@ divides by; `--flatten profile` divides by the measured profile whatever the law
   five-term law (0.66% against 0.65%).
 * **`linear`** has one coefficient, which is easy to compare between captures
   (`u` 0.498 here, 0.539 on `Sun_Test.ser`). It is a little too stiff close to the
-  limb: at `mu` 0.25 it is 0.627 where the disc measures 0.614.
+  limb: at `mu` 0.25 it is 0.627 where the disc measures 0.615.
 * **`neckel`** (Neckel and Labs, five terms) is the form the literature tables use.
   Its terms are nearly collinear and the rings barely determine five numbers, so
   compare the law (the `limb at` figure and the table), not `a1` to `a5`. It
@@ -220,12 +228,12 @@ in [What the real captures say](../user-guide/sharpening.md#what-the-real-captur
   the unsharpened stack. The run says `note: FITS is the unsharpened stack; the
   sharpening and edits go to TIFF and PNG (add --sharpen-fits to change that)`.
   Measuring such a FITS file gives the unflattened numbers (verified:
-  `u1 = 0.471` again). Add `--sharpen-fits`, or flatten the TIFF or PNG.
+  `u1 = 0.472` again). Add `--sharpen-fits`, or flatten the TIFF or PNG.
 * **The rings are far from the law (several per cent) and the fit looks odd.** The
   fit measures the image, so anything radial is read as limb darkening. Seen on
   this set: `14_42_57.avi`, a capture whose frame cuts the limb (63% of it
-  visible), gave `quadratic: u1 = 0.823, u2 = -0.584; limb at 76% of the
-  centre; rings differ from the law by 1.66% rms`. A `u2` that cancels `u1`
+  visible), gave `quadratic: u1 = 0.958, u2 = -0.751; limb at 79% of the
+  centre; rings differ from the law by 2.36% rms`. A `u2` that cancels `u1`
   like that is not physics. Flattening such a disc is harmless but the
   coefficients are not a measurement; frame the whole disc, or calibrate with a
   flat ([Calibration](../user-guide/calibration.md)) if the cause is vignetting.

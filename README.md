@@ -113,9 +113,7 @@ install the Visual Studio C++ Build Tools first.
 
 ## Contributing
 
-Helia is not accepting outside contributions yet: pull requests will be closed
-until a contributor agreement is in place. Bug reports, questions and ideas are
-welcome as issues. See [CONTRIBUTING.md](CONTRIBUTING.md).
+I develop Helia on an internal repository with an extensive internal CI system, and everything is built and tested there before it reaches GitHub, which is a published mirror. For that reason I am not accepting contributions at the moment: a pull request would have to be pulled back internally, tested, then rebased and pushed out again. Bug reports and feature requests are welcome as GitHub issues. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Supporting Helia
 

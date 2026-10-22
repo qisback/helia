@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="406" viewBox="0 0 480 406" role="img" aria-labelledby="t d">
+<title id="t">Measured profile by band</title><desc id="d">Share of the centre at mu 0.5 and 0.3: H-alpha 0.761 and 0.660, 0.732 and 0.614, 0.743 and 0.626, 0.762 and 0.650; Ca K 0.791 and 0.678, 0.797 and 0.678; white light 0.704 and 0.547.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="405" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">Measured profile by band</text>
+<rect x="16" y="38" width="12" height="12" rx="2" fill="#0072B2"/>
+<text x="34.0" y="49.0" class="ink" text-anchor="start">mu 0.5</text>
+<rect x="94.0" y="38" width="12" height="12" rx="2" fill="#D55E00"/>
+<text x="112.0" y="49.0" class="ink" text-anchor="start">mu 0.3</text>
+<text x="158.0" y="94.0" class="ink" text-anchor="end">H-alpha 15_37_19</text>
+<rect x="166.0" y="75.0" width="249.2" height="14" fill="#0072B2"/>
+<text x="419.2" y="87.0" class="sub" text-anchor="start" style="font-size:11px">0.761</text>
+<rect x="166.0" y="91.0" width="216.1" height="14" fill="#D55E00"/>
+<text x="386.1" y="103.0" class="sub" text-anchor="start" style="font-size:11px">0.660</text>
+<text x="158.0" y="134.0" class="ink" text-anchor="end">H-alpha 15_32_09</text>
+<rect x="166.0" y="115.0" width="239.7" height="14" fill="#0072B2"/>
+<text x="409.7" y="127.0" class="sub" text-anchor="start" style="font-size:11px">0.732</text>
+<rect x="166.0" y="131.0" width="201.1" height="14" fill="#D55E00"/>
+<text x="371.1" y="143.0" class="sub" text-anchor="start" style="font-size:11px">0.614</text>
+<text x="158.0" y="174.0" class="ink" text-anchor="end">H-alpha Sun_Test</text>
+<rect x="166.0" y="155.0" width="243.3" height="14" fill="#0072B2"/>
+<text x="413.3" y="167.0" class="sub" text-anchor="start" style="font-size:11px">0.743</text>
+<rect x="166.0" y="171.0" width="205.0" height="14" fill="#D55E00"/>
+<text x="375.0" y="183.0" class="sub" text-anchor="start" style="font-size:11px">0.626</text>
+<text x="158.0" y="214.0" class="ink" text-anchor="end">H-alpha 15_20_57</text>
+<rect x="166.0" y="195.0" width="249.6" height="14" fill="#0072B2"/>
+<text x="419.6" y="207.0" class="sub" text-anchor="start" style="font-size:11px">0.762</text>
+<rect x="166.0" y="211.0" width="212.9" height="14" fill="#D55E00"/>
+<text x="382.9" y="223.0" class="sub" text-anchor="start" style="font-size:11px">0.650</text>
+<text x="158.0" y="254.0" class="ink" text-anchor="end">Ca K 15_36_42</text>
+<rect x="166.0" y="235.0" width="259.1" height="14" fill="#0072B2"/>
+<text x="429.1" y="247.0" class="sub" text-anchor="start" style="font-size:11px">0.791</text>
+<rect x="166.0" y="251.0" width="222.0" height="14" fill="#D55E00"/>
+<text x="392.0" y="263.0" class="sub" text-anchor="start" style="font-size:11px">0.678</text>
+<text x="158.0" y="294.0" class="ink" text-anchor="end">Ca K 15_44_48</text>
+<rect x="166.0" y="275.0" width="261.0" height="14" fill="#0072B2"/>
+<text x="431.0" y="287.0" class="sub" text-anchor="start" style="font-size:11px">0.797</text>
+<rect x="166.0" y="291.0" width="222.0" height="14" fill="#D55E00"/>
+<text x="392.0" y="303.0" class="sub" text-anchor="start" style="font-size:11px">0.678</text>
+<text x="158.0" y="334.0" class="ink" text-anchor="end">White light Seestar</text>
+<rect x="166.0" y="315.0" width="230.6" height="14" fill="#0072B2"/>
+<text x="400.6" y="327.0" class="sub" text-anchor="start" style="font-size:11px">0.704</text>
+<rect x="166.0" y="331.0" width="179.1" height="14" fill="#D55E00"/>
+<text x="349.1" y="343.0" class="sub" text-anchor="start" style="font-size:11px">0.547</text>
+<line class="grid" x1="166.0" x2="166.0" y1="68" y2="350"/>
+<text x="166.0" y="366.0" class="sub" text-anchor="middle" style="font-size:11px">0</text>
+<line class="grid" x1="231.5" x2="231.5" y1="68" y2="350"/>
+<text x="231.5" y="366.0" class="sub" text-anchor="middle" style="font-size:11px">0.2</text>
+<line class="grid" x1="297.0" x2="297.0" y1="68" y2="350"/>
+<text x="297.0" y="366.0" class="sub" text-anchor="middle" style="font-size:11px">0.4</text>
+<line class="grid" x1="362.5" x2="362.5" y1="68" y2="350"/>
+<text x="362.5" y="366.0" class="sub" text-anchor="middle" style="font-size:11px">0.6</text>
+<line class="grid" x1="428.0" x2="428.0" y1="68" y2="350"/>
+<text x="428.0" y="366.0" class="sub" text-anchor="middle" style="font-size:11px">0.8</text>
+<line class="axis" x1="166" x2="166" y1="68" y2="350"/>
+<text x="297.0" y="384.0" class="sub" text-anchor="middle">Profile, share of the centre (lower is darker)</text>
+</svg>

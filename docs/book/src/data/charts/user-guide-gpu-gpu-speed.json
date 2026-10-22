@@ -1,0 +1,37 @@
+{
+ "id": "user-guide-gpu-gpu-speed",
+ "page": "user-guide/gpu.md",
+ "kind": "hbars",
+ "title": "GPU time, before and now",
+ "caption": "Wall seconds of `helia stack --keep 25%` on the laptop RTX 3050 Ti, from the table above (lower is better).",
+ "alt": "Horizontal grouped bars of GPU wall seconds before and now: 13.2 to 1.6, 40.8 to 5.8, 20.5 to 2.9 and 73.1 to 10.7, for the four captures.",
+ "categories": [
+  "1080p 16-bit Bayer SER, 100",
+  "1080p 8-bit mono SER, 631",
+  "720x540 Bayer AVI, 1000",
+  "1080p 8-bit Bayer AVI, 630"
+ ],
+ "series": [
+  {
+   "name": "GPU, before",
+   "values": [
+    13.2,
+    40.8,
+    20.5,
+    73.1
+   ]
+  },
+  {
+   "name": "GPU, now",
+   "values": [
+    1.6,
+    5.8,
+    2.9,
+    10.7
+   ]
+  }
+ ],
+ "value_axis": "Wall-clock time, seconds",
+ "dp": 1,
+ "note": "'Measured speed' table"
+}

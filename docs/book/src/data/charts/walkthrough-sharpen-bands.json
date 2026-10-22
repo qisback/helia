@@ -1,0 +1,30 @@
+{
+ "id": "walkthrough-sharpen-bands",
+ "page": "walkthrough/06-sharpen.md",
+ "kind": "dumbbell",
+ "title": "Bands before and after the wavelets",
+ "caption": "Band-pass contrast of the disc-centre crop before and after the recommended wavelets, from `helia measure`.",
+ "alt": "Dumbbells of contrast, before then after sharpening: 1 to 4 px detail 0.96 then 2.17 per cent of the mean; pixel scale 0.30 then 0.62.",
+ "categories": [
+  "Detail (1 to 4 px)",
+  "Noise (pixel scale)"
+ ],
+ "series": [
+  {
+   "name": "Before",
+   "values": [
+    0.96,
+    0.3
+   ]
+  },
+  {
+   "name": "After",
+   "values": [
+    2.17,
+    0.62
+   ]
+  }
+ ],
+ "value_axis": "Band-pass contrast, per cent of the mean",
+ "note": "walkthrough/06-sharpen.md, paragraph under the pair picture"
+}

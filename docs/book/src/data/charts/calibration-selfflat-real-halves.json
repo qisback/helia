@@ -1,0 +1,31 @@
+{
+ "id": "calibration-selfflat-real-halves",
+ "page": "user-guide/calibration.md",
+ "kind": "bars",
+ "title": "Self-flat, two halves of a capture",
+ "caption": "Flat RMS and the difference between flats solved from the even and the odd frames of two real captures, from the table above.",
+ "alt": "Grouped bars: 15_32_09.avi flat RMS 0.66 per cent and difference between halves 0.31; Sun_Test.ser 1.42 and 0.22.",
+ "categories": [
+  "15_32_09.avi (84 px)",
+  "Sun_Test.ser (16 px)"
+ ],
+ "series": [
+  {
+   "name": "Flat RMS",
+   "values": [
+    0.66,
+    1.42
+   ]
+  },
+  {
+   "name": "Difference between halves",
+   "values": [
+    0.31,
+    0.22
+   ]
+  }
+ ],
+ "value_axis": "Per cent (lower difference is better)",
+ "dp": 2,
+ "note": "calibration.md, 'On the real captures', table"
+}

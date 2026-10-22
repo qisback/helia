@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="331" viewBox="0 0 480 331" role="img" aria-labelledby="t d">
+<title id="t">Colour gains per capture</title><desc id="d">Grouped bars of red, green and blue gains: Sun_Test 0.96, 1.02, 4.10; 15_20_57 1.07, 1.00, 3.99; 15_32_09 0.82, 1.31, 5.23; 14_42_57 0.76, 1.09, 0.96. Blue is held at the cap on the three H-alpha captures.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="330" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">Colour gains per capture</text>
+<rect x="16" y="38" width="12" height="12" rx="2" fill="#0072B2"/>
+<text x="34.0" y="49.0" class="ink" text-anchor="start">Red</text>
+<rect x="73.0" y="38" width="12" height="12" rx="2" fill="#D55E00"/>
+<text x="91.0" y="49.0" class="ink" text-anchor="start">Green</text>
+<rect x="144.0" y="38" width="12" height="12" rx="2" fill="#009E73"/>
+<text x="162.0" y="49.0" class="ink" text-anchor="start">Blue</text>
+<line class="grid" x1="58" x2="468" y1="268.0" y2="268.0"/>
+<text x="52.0" y="272.0" class="sub" text-anchor="end" style="font-size:11px">0</text>
+<line class="grid" x1="58" x2="468" y1="236.3" y2="236.3"/>
+<text x="52.0" y="240.3" class="sub" text-anchor="end" style="font-size:11px">1</text>
+<line class="grid" x1="58" x2="468" y1="204.7" y2="204.7"/>
+<text x="52.0" y="208.7" class="sub" text-anchor="end" style="font-size:11px">2</text>
+<line class="grid" x1="58" x2="468" y1="173.0" y2="173.0"/>
+<text x="52.0" y="177.0" class="sub" text-anchor="end" style="font-size:11px">3</text>
+<line class="grid" x1="58" x2="468" y1="141.3" y2="141.3"/>
+<text x="52.0" y="145.3" class="sub" text-anchor="end" style="font-size:11px">4</text>
+<line class="grid" x1="58" x2="468" y1="109.7" y2="109.7"/>
+<text x="52.0" y="113.7" class="sub" text-anchor="end" style="font-size:11px">5</text>
+<line class="grid" x1="58" x2="468" y1="78.0" y2="78.0"/>
+<text x="52.0" y="82.0" class="sub" text-anchor="end" style="font-size:11px">6</text>
+<rect x="62.0" y="237.6" width="30.5" height="30.4" fill="#0072B2"/>
+<text x="77.2" y="234.6" class="sub" text-anchor="middle" style="font-size:11px">0.96</text>
+<rect x="93.5" y="235.7" width="30.5" height="32.3" fill="#D55E00"/>
+<text x="108.8" y="232.7" class="sub" text-anchor="middle" style="font-size:11px">1.02</text>
+<rect x="125.0" y="138.2" width="30.5" height="129.8" fill="#009E73"/>
+<text x="140.2" y="135.2" class="sub" text-anchor="middle" style="font-size:11px">4.10</text>
+<text x="109.2" y="284.0" class="ink" text-anchor="middle">Sun_Test</text>
+<rect x="164.5" y="234.1" width="30.5" height="33.9" fill="#0072B2"/>
+<text x="179.8" y="231.1" class="sub" text-anchor="middle" style="font-size:11px">1.07</text>
+<rect x="196.0" y="236.3" width="30.5" height="31.7" fill="#D55E00"/>
+<text x="211.2" y="233.3" class="sub" text-anchor="middle" style="font-size:11px">1.00</text>
+<rect x="227.5" y="141.6" width="30.5" height="126.4" fill="#009E73"/>
+<text x="242.8" y="138.6" class="sub" text-anchor="middle" style="font-size:11px">3.99</text>
+<text x="211.8" y="284.0" class="ink" text-anchor="middle">15_20_57</text>
+<rect x="267.0" y="242.0" width="30.5" height="26.0" fill="#0072B2"/>
+<text x="282.2" y="239.0" class="sub" text-anchor="middle" style="font-size:11px">0.82</text>
+<rect x="298.5" y="226.5" width="30.5" height="41.5" fill="#D55E00"/>
+<text x="313.8" y="223.5" class="sub" text-anchor="middle" style="font-size:11px">1.31</text>
+<rect x="330.0" y="102.4" width="30.5" height="165.6" fill="#009E73"/>
+<text x="345.2" y="99.4" class="sub" text-anchor="middle" style="font-size:11px">5.23</text>
+<text x="314.2" y="284.0" class="ink" text-anchor="middle">15_32_09</text>
+<rect x="369.5" y="243.9" width="30.5" height="24.1" fill="#0072B2"/>
+<text x="384.8" y="240.9" class="sub" text-anchor="middle" style="font-size:11px">0.76</text>
+<rect x="401.0" y="233.5" width="30.5" height="34.5" fill="#D55E00"/>
+<text x="416.2" y="230.5" class="sub" text-anchor="middle" style="font-size:11px">1.09</text>
+<rect x="432.5" y="237.6" width="30.5" height="30.4" fill="#009E73"/>
+<text x="447.8" y="234.6" class="sub" text-anchor="middle" style="font-size:11px">0.96</text>
+<text x="416.8" y="284.0" class="ink" text-anchor="middle">14_42_57</text>
+<line class="axis" x1="58" x2="468" y1="268.0" y2="268.0"/>
+<line class="axis" x1="58" x2="58" y1="78" y2="268"/>
+<text x="240.0" y="309.0" class="sub" text-anchor="middle">Gain (common scale included)</text>
+</svg>

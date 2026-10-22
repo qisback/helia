@@ -1,0 +1,28 @@
+{
+ "id": "user-guide-sunspots-stability-spots",
+ "page": "user-guide/sunspots.md",
+ "kind": "bars",
+ "title": "Spots found by share of frames kept",
+ "caption": "Spots found in the 2025-09-17 phone video (7 groups each time) when 6, 12, 25 and 50% of the frames are stacked, from the text.",
+ "alt": "Bars of spots found: 14 at 6% of the frames kept, 14 at 12%, 13 at 25% and 13 at 50%.",
+ "categories": [
+  "6%",
+  "12%",
+  "25%",
+  "50%"
+ ],
+ "series": [
+  {
+   "name": "Spots",
+   "values": [
+    14,
+    14,
+    13,
+    13
+   ]
+  }
+ ],
+ "value_axis": "Spots found",
+ "dp": 0,
+ "note": "'A real white-light disc'"
+}

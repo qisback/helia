@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="216" viewBox="0 0 480 216" role="img" aria-labelledby="t d">
+<title id="t">Motion index, best and worst quarter</title><desc id="d">Best and worst quarter: 15_20_57 0.147 and 0.184 px; Sun_Test 0.147 and 0.220; 15_32_09 0.133 and 0.138. Best is lower on all three.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="215" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">Motion index, best and worst quarter</text>
+<rect x="16" y="38" width="12" height="12" rx="2" fill="#0072B2"/>
+<text x="34.0" y="49.0" class="ink" text-anchor="start">Best quarter</text>
+<rect x="136.0" y="38" width="12" height="12" rx="2" fill="#D55E00"/>
+<text x="154.0" y="49.0" class="ink" text-anchor="start">Worst quarter</text>
+<text x="158.0" y="89.0" class="ink" text-anchor="end">15_20_57</text>
+<line x1="338.9" x2="382.4" y1="85.0" y2="85.0" stroke="#999999" stroke-width="3"/>
+<circle cx="338.9" cy="85.0" r="6" fill="#0072B2"/>
+<rect x="376.4" y="79.0" width="12" height="12" fill="#D55E00"/>
+<text x="392.4" y="89.0" class="sub" text-anchor="start" style="font-size:11px">0.184</text>
+<text x="328.9" y="89.0" class="sub" text-anchor="end" style="font-size:11px">0.147</text>
+<text x="158.0" y="119.0" class="ink" text-anchor="end">Sun_Test</text>
+<line x1="338.9" x2="424.7" y1="115.0" y2="115.0" stroke="#999999" stroke-width="3"/>
+<circle cx="338.9" cy="115.0" r="6" fill="#0072B2"/>
+<rect x="418.7" y="109.0" width="12" height="12" fill="#D55E00"/>
+<text x="434.7" y="119.0" class="sub" text-anchor="start" style="font-size:11px">0.220</text>
+<text x="328.9" y="119.0" class="sub" text-anchor="end" style="font-size:11px">0.147</text>
+<text x="158.0" y="149.0" class="ink" text-anchor="end">15_32_09</text>
+<line x1="322.4" x2="328.3" y1="145.0" y2="145.0" stroke="#999999" stroke-width="3"/>
+<circle cx="322.4" cy="145.0" r="6" fill="#0072B2"/>
+<rect x="322.3" y="139.0" width="12" height="12" fill="#D55E00"/>
+<text x="338.3" y="149.0" class="sub" text-anchor="start" style="font-size:11px">0.138</text>
+<text x="312.4" y="149.0" class="sub" text-anchor="end" style="font-size:11px">0.133</text>
+<line class="grid" x1="166.0" x2="166.0" y1="68" y2="160"/>
+<text x="166.0" y="176.0" class="sub" text-anchor="middle" style="font-size:11px">0</text>
+<line class="grid" x1="224.8" x2="224.8" y1="68" y2="160"/>
+<text x="224.8" y="176.0" class="sub" text-anchor="middle" style="font-size:11px">0.05</text>
+<line class="grid" x1="283.6" x2="283.6" y1="68" y2="160"/>
+<text x="283.6" y="176.0" class="sub" text-anchor="middle" style="font-size:11px">0.1</text>
+<line class="grid" x1="342.4" x2="342.4" y1="68" y2="160"/>
+<text x="342.4" y="176.0" class="sub" text-anchor="middle" style="font-size:11px">0.15</text>
+<line class="grid" x1="401.2" x2="401.2" y1="68" y2="160"/>
+<text x="401.2" y="176.0" class="sub" text-anchor="middle" style="font-size:11px">0.2</text>
+<line class="grid" x1="460.0" x2="460.0" y1="68" y2="160"/>
+<text x="460.0" y="176.0" class="sub" text-anchor="middle" style="font-size:11px">0.25</text>
+<text x="313.0" y="194.0" class="sub" text-anchor="middle">Motion index, px (lower is steadier)</text>
+</svg>

@@ -1,0 +1,34 @@
+{
+ "id": "tutorials-true-colour-channel-shift",
+ "page": "tutorials/true-colour.md",
+ "kind": "scatter",
+ "title": "Channel shifts onto green",
+ "caption": "Shift of red and blue onto green found by phase correlation, from the `Channel alignment` lines of the white-light and the H-alpha captures.",
+ "alt": "Scatter of shift in x against shift in y, in pixels. White light: red (+0.08, +0.03), blue (-0.12, -0.06). H-alpha: red (+1.36, -0.04), blue (+0.05, -0.00).",
+ "series": [],
+ "xlabel": "Shift in x, pixels",
+ "ylabel": "Shift in y, pixels",
+ "points": [
+  {
+   "x": 0.08,
+   "y": 0.03,
+   "label": "red, white light"
+  },
+  {
+   "x": -0.12,
+   "y": -0.06,
+   "label": "blue, white light"
+  },
+  {
+   "x": 1.36,
+   "y": -0.04,
+   "label": "red, H-alpha"
+  },
+  {
+   "x": 0.05,
+   "y": 0.0,
+   "label": "blue, H-alpha"
+  }
+ ],
+ "note": "Channel alignment lines of the two captures"
+}

@@ -25,6 +25,18 @@ alignment point read-back change as well). Peak memory is the process's maximum 
 | 640x480 8-bit AVI (Jupiter) | 10000 | 3.1 GB | 6.8 | 367 MB | 6.3 | 5.9 | 328 MB |
 | 1920x1080 8-bit Bayer AVI (Ca K) | 2713 | 5.6 GB | 27.6 | 2.2 GB | 13.8 | 9.2 | 656 MB |
 
+![Horizontal grouped bars of wall seconds. CPU: 1.9, 1.6, 6.1, 4.1, 5.8, 6.8 and 27.6. GPU before: 2.2, 2.0, 3.7, 3.5, 3.9, 6.3 and 13.8. GPU now: 1.4, 1.8, 2.8, 3.1, 3.5, 5.9 and 9.2, from the smallest to the largest capture.](../images/charts/user-guide-performance-per-capture-time.svg)
+
+*Wall-clock seconds for `helia stack` on seven real captures, from the table above (lower is better).*
+
+![Horizontal bars of GPU peak resident set in megabytes: 437, 769, 712, 642, 629, 328 and 656, from the smallest to the largest capture.](../images/charts/user-guide-performance-per-capture-gpu-memory.svg)
+
+*Peak resident memory of the GPU run on the same seven captures, from the table above (lower is better).*
+
+![Horizontal bars of CPU peak resident set in gigabytes: 2.2 for the 1080p 16-bit SER, 2.3 for the 1.0 GB AVI, 2.2 for the 1.3 GB AVI, 2.2 for the 1.3 GB SER and 2.2 for the 5.6 GB AVI.](../images/charts/user-guide-performance-per-capture-cpu-memory.svg)
+
+*Peak resident memory of the CPU run, from the table above, for the five captures the table gives in GB (the two given in MB are not drawn).*
+
 Read the table like this:
 
 * **Small captures do not need a GPU.** A 1000-frame 720x540 capture stacks in
@@ -69,6 +81,10 @@ GPU, from the same run:
 | alignment points, 635 points, 1628 frames | 1.4 | 17.8 |
 | stack 814 frames | 1.2 | 2.5 |
 | finish and write | 0.1 | 0.1 |
+
+![Horizontal grouped bars of wall seconds, GPU then CPU. Open 0.6 and 0.6; score 3.4 and 3.2; reference 0.1 and 0.1; global alignment 1.6 and 2.4; alignment points 1.4 and 17.8; stack 1.2 and 2.5; finish and write 0.1 and 0.1.](../images/charts/user-guide-performance-stage-gpu-cpu.svg)
+
+*Wall seconds of each stage for the 5.6 GB capture on the GPU and on the CPU, from the table above (lower is better).*
 
 Scoring reads and decodes the whole file, so it is bound by how fast the frames
 move from the file to the processor: on the GPU, about 2 GB/s of raw frames
@@ -203,6 +219,18 @@ during the run; RSS is the process's peak resident set.
 | 1920x1080 16-bit SER, 100 frames, 0.4 GB | 1.74 (1.90) | 1.75 (1.78) | 1.1 GiB | 1.5 GiB | 777 MB | 771 MB |
 | 720x540 8-bit Bayer AVI, 1000 frames, 0.4 GB | 1.92 (1.98) | 1.99 (2.13) | 0.48 GiB | 1.0 GiB | 437 MB | 439 MB |
 
+![Dumbbell chart of wall seconds before and after: 11.37 to 11.06, 5.61 to 5.82, 2.94 to 3.00, 3.48 to 3.43, 3.34 to 3.21, 1.74 to 1.75 and 1.92 to 1.99, from the 5.6 GB to the 0.4 GB capture.](../images/charts/user-guide-performance-store-time.svg)
+
+*Wall seconds before and after keeping frames on the device, best of three, from the table above (lower is better).*
+
+![Dumbbell chart of peak video memory in GiB before and after: 0.97 to 6.2, 0.48 to 3.2, 0.97 to 2.2, 0.97 to 2.2, 1.3 to 2.3, 1.1 to 1.5 and 0.48 to 1.0, from the 5.6 GB to the 0.4 GB capture.](../images/charts/user-guide-performance-store-vram.svg)
+
+*Peak video memory before and after, from the table above: it rises by about the size of the capture.*
+
+![Dumbbell chart of peak resident set in megabytes before and after: 674 to 652, 332 to 326, 641 to 626, 665 to 633, 718 to 679, 777 to 771 and 437 to 439, from the 5.6 GB to the 0.4 GB capture.](../images/charts/user-guide-performance-store-rss.svg)
+
+*Peak resident memory before and after, from the table above (lower is better).*
+
 The stacked images are identical: the TIFF files of the two builds have the same
 checksum on every capture, at every store size below, and on the software adapter.
 That is stricter than the 1e-6 the change was held to.
@@ -217,6 +245,10 @@ runs). By stage, on the 5.6 GB capture (best of three):
 | global alignment, 1628 frames | 1.56 | 1.22 |
 | alignment points, 635 points | 3.91 | 3.81 |
 | stack | 1.04 | 0.98 |
+
+![Dumbbell chart of wall seconds before and after: score all frames 3.42 to 3.50, global alignment 1.56 to 1.22, alignment points 3.91 to 3.81, stack 1.04 to 0.98.](../images/charts/user-guide-performance-store-stages.svg)
+
+*Wall seconds of four stages on the 5.6 GB capture before and after, best of three, from the table above (lower is better).*
 
 On this capture global alignment got 22 and stacking 6 per cent faster (more on
 smaller captures), because they no longer wait for the file and the upload. The other two did not. Scoring has to upload
@@ -236,6 +268,10 @@ because the same comparison with it forced on gave 17.5 s before and 17.2 s afte
 (0.4 GB AVI), 12.7 and 13.2 s (0.4 GB SER) and 65.7 and 67.0 s (1.0 GB), best of
 three (two for the last), with 0.3 to 0.9 GB more RSS. The checksums match.
 
+![Dumbbell chart of wall seconds before and after: 17.5 to 17.2 for the 0.4 GB AVI, 12.7 to 13.2 for the 0.4 GB SER and 65.7 to 67.0 for the 1.0 GB capture.](../images/charts/user-guide-performance-store-software.svg)
+
+*Wall seconds on the software adapter (lavapipe, 24 cores) with the store off and forced on, from the text below the stage table.*
+
 **A card that cannot hold the capture** was tested by limiting the store on the
 A100 (best of two; the checksum is `41c66afd` throughout on the 5.6 GB capture,
 as without the store; the spread between runs, 10 per cent, is larger than the
@@ -247,6 +283,14 @@ difference between the sizes):
 | 5.6 GB capture, peak VRAM (GiB) | 0.97 | 1.5 | 2.0 | 3.0 | 6.2 |
 | 1.3 GB capture, wall (s) | 3.71 | 3.28 | 3.28 | 3.04 | 3.19 |
 | 1.3 GB capture, peak VRAM (GiB) | 0.97 | 1.5 | 2.0 | 2.2 | 2.2 |
+
+![Lines of wall seconds against HELIA_GPU_RESIDENT_MB of 0, 512, 1024, 2048 and 6144. 5.6 GB capture: 12.45, 12.01, 12.66, 11.34, 12.03. 1.3 GB capture: 3.71, 3.28, 3.28, 3.04, 3.19.](../images/charts/user-guide-performance-resident-time.svg)
+
+*Wall seconds against the size of the store, best of two on the A100, from the table above; the spread between runs, 10 per cent, is larger than the differences.*
+
+![Lines of peak video memory in GiB against HELIA_GPU_RESIDENT_MB of 0, 512, 1024, 2048 and 6144. 5.6 GB capture: 0.97, 1.5, 2.0, 3.0, 6.2. 1.3 GB capture: 0.97, 1.5, 2.0, 2.2, 2.2.](../images/charts/user-guide-performance-resident-vram.svg)
+
+*Peak video memory against the size of the store, from the table above: it grows with the store until the capture fits.*
 
 ### Tutorial: see what the store does on your capture
 
@@ -382,6 +426,14 @@ A100 with `HELIA_GPU_DEVICE=2` (GPU 0 was busy with a language model), on the
 | 1920x1080 8-bit SER, 631 frames, 1.3 GB | 1.18 | 0.64 | 4.13 | 3.50 |
 | 640x480 8-bit AVI (Jupiter), 10000 frames, 3.1 GB | 1.57 | 0.61 | 6.94 | 5.88 |
 | 1920x1080 8-bit Bayer AVI, 2713 frames, 5.6 GB | 4.94 | 1.50 | 12.06 | 9.19 |
+
+![Dumbbell chart of the alignment point stage in seconds before and after: 0.59 to 0.24, 0.27 to 0.14, 0.97 to 0.36, 1.11 to 0.50, 1.18 to 0.64, 1.57 to 0.61 and 4.94 to 1.50.](../images/charts/user-guide-performance-points-stage.svg)
+
+*Wall seconds of the alignment point stage before and after reading less back, best of three, from the table below (lower is better).*
+
+![Dumbbell chart of the whole run in seconds before and after: 1.73 to 1.35, 1.93 to 1.84, 3.40 to 2.77, 3.88 to 3.13, 4.13 to 3.50, 6.94 to 5.88 and 12.06 to 9.19.](../images/charts/user-guide-performance-points-run.svg)
+
+*Wall seconds of the whole run before and after reading less back, best of three, from the table below (lower is better).*
 
 The stacked images are identical: the TIFF files of the two builds have the same
 checksum on all seven captures (and on the three smaller ones on the software

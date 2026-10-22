@@ -1,0 +1,31 @@
+{
+ "id": "recipe-ca-k-gains",
+ "page": "recipes/ca-k.md",
+ "kind": "bars",
+ "title": "Old and new gains on Ca K",
+ "caption": "Gain in the 4 to 12 px band and extra pixel noise for the old and the new wavelet gains, measured on the real captures.",
+ "alt": "Bars, old then new: the 4 to 12 px band rises 16 then 24 per cent; pixel noise rises 29 then 25 per cent.",
+ "categories": [
+  "4 to 12 px band lift",
+  "Extra pixel noise"
+ ],
+ "series": [
+  {
+   "name": "Old gains",
+   "values": [
+    16,
+    29
+   ]
+  },
+  {
+   "name": "New gains",
+   "values": [
+    24,
+    25
+   ]
+  }
+ ],
+ "value_axis": "Increase, per cent",
+ "note": "recipes/ca-k.md, 'Settings'",
+ "dp": 0
+}

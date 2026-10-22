@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="414" viewBox="0 0 480 414" role="img" aria-labelledby="t d">
+<title id="t">Residual shift by setting</title><desc id="d">Residual in pixels. 15_20_57: one pass 0.045, two passes 0.018. Sun_Test: one pass 0.389, smoothing 0.390, two passes 0.107, both 0.112. 14_42_57: 1.417, 1.387, 0.730, 0.752. 15_32_09: one pass 0.056, two passes 0.020.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="413" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">Residual shift by setting</text>
+<rect x="16" y="38" width="12" height="12" rx="2" fill="#0072B2"/>
+<text x="34.0" y="49.0" class="ink" text-anchor="start">One pass</text>
+<rect x="108.0" y="38" width="12" height="12" rx="2" fill="#D55E00"/>
+<text x="126.0" y="49.0" class="ink" text-anchor="start">Smoothing</text>
+<rect x="207.0" y="38" width="12" height="12" rx="2" fill="#009E73"/>
+<text x="225.0" y="49.0" class="ink" text-anchor="start">Two passes</text>
+<rect x="313.0" y="38" width="12" height="12" rx="2" fill="#CC79A7"/>
+<text x="331.0" y="49.0" class="ink" text-anchor="start">Both</text>
+<text x="158.0" y="110.0" class="ink" text-anchor="end">15_20_57.ser</text>
+<rect x="166.0" y="75.0" width="57.0" height="14" fill="#0072B2"/>
+<text x="227.0" y="87.0" class="sub" text-anchor="start" style="font-size:11px">0.045</text>
+<rect x="166.0" y="107.0" width="22.3" height="14" fill="#009E73"/>
+<text x="192.3" y="119.0" class="sub" text-anchor="start" style="font-size:11px">0.018</text>
+<text x="158.0" y="182.0" class="ink" text-anchor="end">Sun_Test.ser</text>
+<rect x="166.0" y="147.0" width="138.9" height="14" fill="#0072B2"/>
+<text x="308.9" y="159.0" class="sub" text-anchor="start" style="font-size:11px">0.389</text>
+<rect x="166.0" y="163.0" width="139.0" height="14" fill="#D55E00"/>
+<text x="309.0" y="175.0" class="sub" text-anchor="start" style="font-size:11px">0.390</text>
+<rect x="166.0" y="179.0" width="89.9" height="14" fill="#009E73"/>
+<text x="259.9" y="191.0" class="sub" text-anchor="start" style="font-size:11px">0.107</text>
+<rect x="166.0" y="195.0" width="91.6" height="14" fill="#CC79A7"/>
+<text x="261.6" y="207.0" class="sub" text-anchor="start" style="font-size:11px">0.112</text>
+<text x="158.0" y="254.0" class="ink" text-anchor="end">14_42_57.avi</text>
+<rect x="166.0" y="219.0" width="187.9" height="14" fill="#0072B2"/>
+<text x="357.9" y="231.0" class="sub" text-anchor="start" style="font-size:11px">1.417</text>
+<rect x="166.0" y="235.0" width="187.1" height="14" fill="#D55E00"/>
+<text x="357.1" y="247.0" class="sub" text-anchor="start" style="font-size:11px">1.387</text>
+<rect x="166.0" y="251.0" width="162.7" height="14" fill="#009E73"/>
+<text x="332.7" y="263.0" class="sub" text-anchor="start" style="font-size:11px">0.730</text>
+<rect x="166.0" y="267.0" width="163.9" height="14" fill="#CC79A7"/>
+<text x="333.9" y="279.0" class="sub" text-anchor="start" style="font-size:11px">0.752</text>
+<text x="158.0" y="326.0" class="ink" text-anchor="end">15_32_09.avi</text>
+<rect x="166.0" y="291.0" width="65.3" height="14" fill="#0072B2"/>
+<text x="235.3" y="303.0" class="sub" text-anchor="start" style="font-size:11px">0.056</text>
+<rect x="166.0" y="323.0" width="26.3" height="14" fill="#009E73"/>
+<text x="196.3" y="335.0" class="sub" text-anchor="start" style="font-size:11px">0.020</text>
+<line class="grid" x1="166.0" x2="166.0" y1="68" y2="358"/>
+<text x="166.0" y="374.0" class="sub" text-anchor="middle" style="font-size:11px">0.01</text>
+<line class="grid" x1="253.3" x2="253.3" y1="68" y2="358"/>
+<text x="253.3" y="374.0" class="sub" text-anchor="middle" style="font-size:11px">0.1</text>
+<line class="grid" x1="340.7" x2="340.7" y1="68" y2="358"/>
+<text x="340.7" y="374.0" class="sub" text-anchor="middle" style="font-size:11px">1</text>
+<line class="grid" x1="428.0" x2="428.0" y1="68" y2="358"/>
+<text x="428.0" y="374.0" class="sub" text-anchor="middle" style="font-size:11px">10</text>
+<line class="axis" x1="166" x2="166" y1="68" y2="358"/>
+<text x="297.0" y="392.0" class="sub" text-anchor="middle">Residual, pixels (lower is better), log scale</text>
+</svg>

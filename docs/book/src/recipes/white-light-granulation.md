@@ -84,6 +84,14 @@ wavelets against keep 12 per cent, 32 px points, green, the Na gains):
 | `15_20_57.ser`, 16-bit | 1.98% | 3.23% | 2.95% | 2.13% |
 | `15_32_09.avi`, 8-bit, 720 x 540 | 0.55% | 1.52% | 0.23% | 0.45% |
 
+![Band 1 to 4 px in per cent, before then after, for Sun_Test 8-bit: 1.54 to 2.94; 15_20_57 16-bit: 1.98 to 3.23; 15_32_09 8-bit: 0.55 to 1.52.](../images/charts/recipe-granulation-band.svg)
+
+*Band 1 to 4 px before and after the white-light settings on three H-alpha captures, from the table above.*
+
+![Fine band in per cent, before then after, for Sun_Test 8-bit: 1.64 to 1.48; 15_20_57 16-bit: 2.95 to 2.13; 15_32_09 8-bit: 0.23 to 0.45.](../images/charts/recipe-granulation-fine-band.svg)
+
+*Fine band before and after the white-light settings on three H-alpha captures, from the table above.*
+
 They show the settings suit a bright, finely mottled disc seen in the green
 plane; they say nothing about granulation or about sodium. The white-light data to
 hand (`2025-09-17-161400-Solar.mp4`, 2.4 arcsec per pixel; the calcium K colour

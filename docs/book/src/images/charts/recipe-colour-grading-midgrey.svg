@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="216" viewBox="0 0 480 216" role="img" aria-labelledby="t d">
+<title id="t">Mid-grey through the H-alpha look</title><desc id="d">Dumbbells of the output level, old then new: red 169 then 169, green 90 then 68, blue 33 then 11.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="215" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">Mid-grey through the H-alpha look</text>
+<rect x="16" y="38" width="12" height="12" rx="2" fill="#0072B2"/>
+<text x="34.0" y="49.0" class="ink" text-anchor="start">Old look</text>
+<rect x="108.0" y="38" width="12" height="12" rx="2" fill="#D55E00"/>
+<text x="126.0" y="49.0" class="ink" text-anchor="start">New look</text>
+<text x="158.0" y="89.0" class="ink" text-anchor="end">Red</text>
+<line x1="414.4" x2="414.4" y1="85.0" y2="85.0" stroke="#999999" stroke-width="3"/>
+<circle cx="414.4" cy="85.0" r="6" fill="#0072B2"/>
+<rect x="408.4" y="79.0" width="12" height="12" fill="#D55E00"/>
+<text x="424.4" y="89.0" class="sub" text-anchor="start" style="font-size:11px">169</text>
+<text x="404.4" y="89.0" class="sub" text-anchor="end" style="font-size:11px">169</text>
+<text x="158.0" y="119.0" class="ink" text-anchor="end">Green</text>
+<line x1="298.3" x2="266.0" y1="115.0" y2="115.0" stroke="#999999" stroke-width="3"/>
+<circle cx="298.3" cy="115.0" r="6" fill="#0072B2"/>
+<rect x="260.0" y="109.0" width="12" height="12" fill="#D55E00"/>
+<text x="256.0" y="119.0" class="sub" text-anchor="end" style="font-size:11px">68</text>
+<text x="308.3" y="119.0" class="sub" text-anchor="start" style="font-size:11px">90</text>
+<text x="158.0" y="149.0" class="ink" text-anchor="end">Blue</text>
+<line x1="214.5" x2="182.2" y1="145.0" y2="145.0" stroke="#999999" stroke-width="3"/>
+<circle cx="214.5" cy="145.0" r="6" fill="#0072B2"/>
+<rect x="176.2" y="139.0" width="12" height="12" fill="#D55E00"/>
+<text x="172.2" y="149.0" class="sub" text-anchor="end" style="font-size:11px">11</text>
+<text x="224.5" y="149.0" class="sub" text-anchor="start" style="font-size:11px">33</text>
+<line class="grid" x1="166.0" x2="166.0" y1="68" y2="160"/>
+<text x="166.0" y="176.0" class="sub" text-anchor="middle" style="font-size:11px">0</text>
+<line class="grid" x1="239.5" x2="239.5" y1="68" y2="160"/>
+<text x="239.5" y="176.0" class="sub" text-anchor="middle" style="font-size:11px">50</text>
+<line class="grid" x1="313.0" x2="313.0" y1="68" y2="160"/>
+<text x="313.0" y="176.0" class="sub" text-anchor="middle" style="font-size:11px">100</text>
+<line class="grid" x1="386.5" x2="386.5" y1="68" y2="160"/>
+<text x="386.5" y="176.0" class="sub" text-anchor="middle" style="font-size:11px">150</text>
+<line class="grid" x1="460.0" x2="460.0" y1="68" y2="160"/>
+<text x="460.0" y="176.0" class="sub" text-anchor="middle" style="font-size:11px">200</text>
+<text x="313.0" y="194.0" class="sub" text-anchor="middle">Output level, 0 to 255</text>
+</svg>

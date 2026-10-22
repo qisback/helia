@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="286" viewBox="0 0 480 286" role="img" aria-labelledby="t d">
+<title id="t">Frame store: time by stage</title><desc id="d">Horizontal grouped bars of wall seconds before and after: score all frames 3.42 to 3.50, global alignment 1.56 to 1.22, alignment points 3.91 to 3.81, stack 1.04 to 0.98.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="285" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">Frame store: time by stage</text>
+<rect x="16" y="38" width="12" height="12" rx="2" fill="#0072B2"/>
+<text x="34.0" y="49.0" class="ink" text-anchor="start">Before</text>
+<rect x="94.0" y="38" width="12" height="12" rx="2" fill="#D55E00"/>
+<text x="112.0" y="49.0" class="ink" text-anchor="start">After</text>
+<text x="158.0" y="86.5" class="ink" text-anchor="end">score all 2713</text>
+<text x="158.0" y="101.5" class="ink" text-anchor="end">frames</text>
+<rect x="166.0" y="75.0" width="224.0" height="14" fill="#0072B2"/>
+<text x="394.0" y="87.0" class="sub" text-anchor="start" style="font-size:11px">3.42</text>
+<rect x="166.0" y="91.0" width="229.2" height="14" fill="#D55E00"/>
+<text x="399.2" y="103.0" class="sub" text-anchor="start" style="font-size:11px">3.50</text>
+<text x="158.0" y="126.5" class="ink" text-anchor="end">global alignment,</text>
+<text x="158.0" y="141.5" class="ink" text-anchor="end">1628</text>
+<rect x="166.0" y="115.0" width="102.2" height="14" fill="#0072B2"/>
+<text x="272.2" y="127.0" class="sub" text-anchor="start" style="font-size:11px">1.56</text>
+<rect x="166.0" y="131.0" width="79.9" height="14" fill="#D55E00"/>
+<text x="249.9" y="143.0" class="sub" text-anchor="start" style="font-size:11px">1.22</text>
+<text x="158.0" y="166.5" class="ink" text-anchor="end">alignment points,</text>
+<text x="158.0" y="181.5" class="ink" text-anchor="end">635</text>
+<rect x="166.0" y="155.0" width="256.1" height="14" fill="#0072B2"/>
+<text x="426.1" y="167.0" class="sub" text-anchor="start" style="font-size:11px">3.91</text>
+<rect x="166.0" y="171.0" width="249.6" height="14" fill="#D55E00"/>
+<text x="419.6" y="183.0" class="sub" text-anchor="start" style="font-size:11px">3.81</text>
+<text x="158.0" y="214.0" class="ink" text-anchor="end">stack</text>
+<rect x="166.0" y="195.0" width="68.1" height="14" fill="#0072B2"/>
+<text x="238.1" y="207.0" class="sub" text-anchor="start" style="font-size:11px">1.04</text>
+<rect x="166.0" y="211.0" width="64.2" height="14" fill="#D55E00"/>
+<text x="234.2" y="223.0" class="sub" text-anchor="start" style="font-size:11px">0.98</text>
+<line class="grid" x1="166.0" x2="166.0" y1="68" y2="230"/>
+<text x="166.0" y="246.0" class="sub" text-anchor="middle" style="font-size:11px">0</text>
+<line class="grid" x1="231.5" x2="231.5" y1="68" y2="230"/>
+<text x="231.5" y="246.0" class="sub" text-anchor="middle" style="font-size:11px">1</text>
+<line class="grid" x1="297.0" x2="297.0" y1="68" y2="230"/>
+<text x="297.0" y="246.0" class="sub" text-anchor="middle" style="font-size:11px">2</text>
+<line class="grid" x1="362.5" x2="362.5" y1="68" y2="230"/>
+<text x="362.5" y="246.0" class="sub" text-anchor="middle" style="font-size:11px">3</text>
+<line class="grid" x1="428.0" x2="428.0" y1="68" y2="230"/>
+<text x="428.0" y="246.0" class="sub" text-anchor="middle" style="font-size:11px">4</text>
+<line class="axis" x1="166" x2="166" y1="68" y2="230"/>
+<text x="297.0" y="264.0" class="sub" text-anchor="middle">Wall-clock time, seconds</text>
+</svg>

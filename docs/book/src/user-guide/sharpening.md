@@ -206,7 +206,7 @@ nearly collinear and the rings barely determine five numbers (compare the law,
 not the terms). Every `helia stack` prints it and the API returns it:
 
 ```text
-limb:    quadratic: u1 = 0.470, u2 = 0.046; limb at 48% of the centre; rings differ from the law by 0.67% rms
+limb:    quadratic: u1 = 0.472, u2 = 0.046; limb at 48% of the centre; rings differ from the law by 0.66% rms
 ```
 
 `helia measure image.fits --limb` fits all three laws to an existing image and
@@ -254,14 +254,22 @@ with `helia measure --limb`:
 
 | Capture | Disc | Linear `u` | Quadratic `u1`, `u2` | Limb level (linear, quadratic) | Rings off the law (quadratic) |
 |---|---|---|---|---|---|
-| `Sun_Test.ser` | whole | 0.539 | 0.546, -0.012 | 46%, 47% | 0.71% |
-| `15_20_57.ser` | whole | 0.497 | 0.470, 0.046 | 50%, 48% | 0.67% |
-| `15_32_09.avi` | whole | 0.555 | 0.515, 0.070 | 44%, 41% | 0.79% |
-| `14_42_57.avi` | 63% of the limb | 0.720 | 0.710, 0.018 | 28%, 27% | 3.58% |
+| `Sun_Test.ser` | whole | 0.537 | 0.545, -0.014 | 46%, 47% | 0.71% |
+| `15_20_57.ser` | whole | 0.498 | 0.472, 0.046 | 50%, 48% | 0.66% |
+| `15_32_09.avi` | whole | 0.552 | 0.501, 0.089 | 45%, 41% | 0.71% |
+| `14_42_57.avi` | 63% of the limb | 0.528 | 0.958, -0.751 | 47%, 79% | 2.36% |
+
+![Bars of the linear coefficient u: Sun_Test 0.537, 15_20_57 0.498, 15_32_09 0.552.](../images/charts/sharpening-limb-linear-capture.svg)
+
+*Linear `u` fitted to three whole-disc H-alpha captures of 2022-07-17, from the table above (the partial disc is left out).*
+
+![Grouped bars: u1 is 0.545, 0.472 and 0.501; u2 is -0.014, 0.046 and 0.089 for Sun_Test, 15_20_57 and 15_32_09.](../images/charts/sharpening-limb-quadratic-capture.svg)
+
+*Quadratic `u1` and `u2` fitted to three whole-disc H-alpha captures, from the table above; `u2` is poorly determined.*
 
 The five-term fit of the three whole discs gives `a1` = 0.44 to 0.45, `a2` = 0.04
-to 0.14, `a3` = 0.02 to 0.04, `a4` = -0.001 to 0.07, `a5` = -0.10 to -0.08, with
-the limb at 47% to 52% of the centre.
+to 0.15, `a3` = 0.02 to 0.05, `a4` = -0.02 to 0.08, `a5` = -0.10 to -0.06, with
+the limb at 46% to 52% of the centre.
 
 Against the literature, as far as it could be checked from the sources
 available while writing this (the Neckel and Labs 1994 coefficient table itself
@@ -276,11 +284,11 @@ That passage was written for sodium, and the numbers are H-alpha's, so the
 comparison below is with a continuum that H-alpha is not: the line is formed in
 the chromosphere, where the darkening is weaker. The fits sit where a red band
 puts them.
-The linear coefficient of the three whole discs (0.50 to 0.56) brackets the 0.56
-at 600 nm, and the quadratic `u1` of `15_20_57.ser` (0.470) is the 0.47 of the
+The linear coefficient of the three whole discs (0.50 to 0.55) sits just under the 0.56
+at 600 nm, and the quadratic `u1` of `15_20_57.ser` (0.472) is the 0.47 of the
 550 nm table. The limb is brighter than at 550 nm (41% to 48% against 30%),
 which is the direction a redder band predicts. Caveats on all of this: `u2` is
-poorly determined (it is -0.012 on one capture and 0.23 in the table) because
+poorly determined (it is -0.014 on one capture and 0.23 in the table) because
 `u1` and `u2` trade against each other when the rings stop at `mu` = 0.24; a
 narrow line image is not a continuum, and the D lines are formed higher than the
 continuum, so line-core darkening differs from continuum darkening; the cameras
@@ -288,7 +296,7 @@ are not radiometrically calibrated and the captures are not flat-fielded; and
 the green channel of a colour camera is a broad band. The partial disc
 (`14_42_57.avi`) is outside what the method supports: the rings are not full
 circles, the fitted radius is larger than the frame and the fit is a poor one
-(3.6% rms), so its coefficients are not a measurement of anything.
+(2.4% rms), so its coefficients are not a measurement of anything.
 
 ### Limb darkening per band, from the 2026-10-20 captures
 
@@ -298,12 +306,24 @@ Quadratic fits of the unsharpened stacks (`helia measure --limb`); the
 | Band | Capture, plane | Disc | Linear `u` | `u1`, `u2` | mu 0.5 | mu 0.3 |
 |---|---|---|---|---|---|---|
 | H-alpha | `15_37_19.avi`, green | whole | 0.495 | 0.584, -0.155 | 0.761 | 0.660 |
-| H-alpha | `15_32_09.avi`, green | whole | 0.552 | 0.503, 0.087 | 0.731 | 0.613 |
-| H-alpha | `Sun_Test.ser`, green | whole | 0.537 | 0.545, -0.014 | 0.742 | 0.623 |
-| H-alpha | `15_20_57.ser`, green | whole | 0.498 | 0.471, 0.046 | 0.761 | 0.650 |
+| H-alpha | `15_32_09.avi`, green | whole | 0.552 | 0.501, 0.089 | 0.732 | 0.614 |
+| H-alpha | `Sun_Test.ser`, green | whole | 0.537 | 0.545, -0.014 | 0.743 | 0.626 |
+| H-alpha | `15_20_57.ser`, green | whole | 0.498 | 0.472, 0.046 | 0.762 | 0.650 |
 | Ca K | `15_36_42.avi`, brightest plane | whole | 0.435 | 0.345, 0.156 | 0.791 | 0.678 |
 | Ca K | `15_44_48.avi`, mono | partial (centre 1513, 421; R 935 px) | 0.428 | 0.293, 0.235 | 0.797 | 0.678 |
 | White light | Seestar MP4, green | whole | 0.612 | 0.463, 0.263 | 0.704 | 0.547 |
+
+![Linear u: H-alpha 0.495, 0.552, 0.537 and 0.498; Ca K 0.435 and 0.428; white light 0.612.](../images/charts/sharpening-limb-linear-band.svg)
+
+*Linear `u` of the unsharpened stacks in three bands, from the 2026-10-20 captures in the table above.*
+
+![u1 and u2: H-alpha 15_37_19 0.584 and -0.155; 15_32_09 0.501 and 0.089; Sun_Test 0.545 and -0.014; 15_20_57 0.472 and 0.046; Ca K 15_36_42 0.345 and 0.156; 15_44_48 0.293 and 0.235; white light 0.463 and 0.263.](../images/charts/sharpening-limb-quadratic-band.svg)
+
+*Quadratic `u1` and `u2` of the unsharpened stacks in three bands, from the table above; the two trade against each other.*
+
+![Share of the centre at mu 0.5 and 0.3: H-alpha 0.761 and 0.660, 0.732 and 0.614, 0.743 and 0.626, 0.762 and 0.650; Ca K 0.791 and 0.678, 0.797 and 0.678; white light 0.704 and 0.547.](../images/charts/sharpening-limb-profile-band.svg)
+
+*Measured profile at mu 0.5 and mu 0.3 as a share of the centre, from the table above; lower means more darkening.*
 
 The two Ca K captures, from different cameras, agree to 0.005 at mu 0.3 and 0.01
 at mu 0.5 although their `u1` and `u2` differ (the same trade-off between the two
@@ -317,11 +337,11 @@ than on green, so use the green profile. The white-light profile is the steepest
 map, so treat it as indicative.
 
 Flattening `15_20_57.ser` with either source takes the fitted linear
-coefficient from 0.497 to -0.000 (model) and 0.000 (profile), with the rings
-0.74% and 0.35% off a flat line (the profile removes the whole radial gradient,
+coefficient from 0.498 to -0.000 (model) and 0.000 (profile), with the rings
+0.74% and 0.34% off a flat line (the profile removes the whole radial gradient,
 the model only the law). The granulation does not move: the granulation band of
-`helia measure` is 2.050% before, 2.052% with the model and 2.049% with the
-profile, the fine band 1.573%, 1.572% and 1.571%. This capture also has a bright
+`helia measure` is 2.021% before, 2.023% with the model and 2.020% with the
+profile, the fine band 1.559%, 1.558% and 1.557%. This capture also has a bright
 patch on one side that is not radial (the filter's sweet spot); flattening leaves
 it, as it should, and the bright-end scaling is what stops it clipping.
 
@@ -539,6 +559,14 @@ the finest wavelet layer, which is mostly noise, before and after.
 | `14_42_57.avi`, 1920 x 1080, 8-bit, 630 frames | 1.22x, 0.00031 to 0.00008 | 1.03x, 0.00031 to 0.00031 | 1.02x, 0.00031 to 0.00200 |
 | `Sun_Test.ser`, 1920 x 1080, 8-bit, 631 frames | 1.24x, 0.00679 to 0.00001 | 1.04x, 0.00679 to 0.00835 | 1.02x, 0.00679 to 0.00777 |
 
+![Detail ratio, wavelets, unsharp mask, deconvolution: 15_20_57 1.25, 1.03, 1.03; 15_32_09 1.25, 1.03, 1.03; 14_42_57 1.22, 1.03, 1.02; Sun_Test 1.24, 1.04, 1.02.](../images/charts/sharpening-real-detail.svg)
+
+*Detail metric as a ratio to the stack for three methods on four 2022-07-17 captures, from the table above.*
+
+![Noise of the stack then after wavelets, unsharp mask, deconvolution: 15_20_57 0.00028, 0.00001, 0.00028, 0.00028; 15_32_09 0.00036, 0.00010, 0.00036, 0.00039; 14_42_57 0.00031, 0.00008, 0.00031, 0.00200; Sun_Test 0.00679, 0.00001, 0.00835, 0.00777.](../images/charts/sharpening-real-noise.svg)
+
+*Finest-layer noise of the stack and after each method on four captures, from the table above; lower is better; a value of 0.00001 sits on the axis floor.*
+
 What it says:
 
 * **Wavelets** raise the detail metric by about a quarter on all four and take
@@ -576,6 +604,10 @@ A100 (Vulkan) and on the same machine's 24 CPU threads (not otherwise idle),
 | Denoise and levels | 21 ms | 16 ms |
 | Deconvolution, 20 iterations, Gaussian blur | 433 ms | 74 ms |
 | Deconvolution, 20 iterations, Airy blur | 1549 ms | 112 ms |
+
+![CPU then GPU in ms: wavelets 25 and 20; unsharp mask 6 and 7; denoise and levels 21 and 16; deconvolution Gaussian 433 and 74; deconvolution Airy 1549 and 112.](../images/charts/sharpening-preview-latency.svg)
+
+*Best of five preview times at 1280 x 960 on the CPU and the A100 GPU, from the table above; lower is better.*
 
 On the GPU every preview is within the 150 ms the sliders aim for. On the CPU the
 filters are too, but deconvolution is not, and the app says so with a notice

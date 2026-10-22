@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="228" viewBox="0 0 480 228" role="img" aria-labelledby="t d">
+<title id="t">Granulation band with a self-flat</title><desc id="d">Sun_Test granulation band 1.847 per cent falls to 1.486; 15_32_09 granulation band 0.971 falls to 0.965 and its fine band 0.314 falls to 0.305.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="227" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">Granulation band with a self-flat</text>
+<rect x="16" y="38" width="12" height="12" rx="2" fill="#0072B2"/>
+<text x="34.0" y="49.0" class="ink" text-anchor="start">Without the self-flat</text>
+<rect x="199.0" y="38" width="12" height="12" rx="2" fill="#D55E00"/>
+<text x="217.0" y="49.0" class="ink" text-anchor="start">With the self-flat</text>
+<text x="158.0" y="84.5" class="ink" text-anchor="end">Sun_Test,</text>
+<text x="158.0" y="99.5" class="ink" text-anchor="end">granulation</text>
+<line x1="437.5" x2="384.4" y1="88.0" y2="88.0" stroke="#999999" stroke-width="3"/>
+<circle cx="437.5" cy="88.0" r="6" fill="#0072B2"/>
+<rect x="378.4" y="82.0" width="12" height="12" fill="#D55E00"/>
+<text x="374.4" y="92.0" class="sub" text-anchor="end" style="font-size:11px">1.486</text>
+<text x="447.5" y="92.0" class="sub" text-anchor="start" style="font-size:11px">1.847</text>
+<text x="158.0" y="120.5" class="ink" text-anchor="end">15_32_09,</text>
+<text x="158.0" y="135.5" class="ink" text-anchor="end">granulation</text>
+<line x1="308.7" x2="307.9" y1="124.0" y2="124.0" stroke="#999999" stroke-width="3"/>
+<circle cx="308.7" cy="124.0" r="6" fill="#0072B2"/>
+<rect x="301.9" y="118.0" width="12" height="12" fill="#D55E00"/>
+<text x="297.9" y="128.0" class="sub" text-anchor="end" style="font-size:11px">0.965</text>
+<text x="318.7" y="128.0" class="sub" text-anchor="start" style="font-size:11px">0.971</text>
+<text x="158.0" y="161.0" class="ink" text-anchor="end">15_32_09, fine</text>
+<line x1="212.2" x2="210.8" y1="157.0" y2="157.0" stroke="#999999" stroke-width="3"/>
+<circle cx="212.2" cy="157.0" r="6" fill="#0072B2"/>
+<rect x="204.8" y="151.0" width="12" height="12" fill="#D55E00"/>
+<text x="200.8" y="161.0" class="sub" text-anchor="end" style="font-size:11px">0.305</text>
+<text x="222.2" y="161.0" class="sub" text-anchor="start" style="font-size:11px">0.314</text>
+<line class="grid" x1="166.0" x2="166.0" y1="68" y2="172"/>
+<text x="166.0" y="188.0" class="sub" text-anchor="middle" style="font-size:11px">0</text>
+<line class="grid" x1="239.5" x2="239.5" y1="68" y2="172"/>
+<text x="239.5" y="188.0" class="sub" text-anchor="middle" style="font-size:11px">0.5</text>
+<line class="grid" x1="313.0" x2="313.0" y1="68" y2="172"/>
+<text x="313.0" y="188.0" class="sub" text-anchor="middle" style="font-size:11px">1</text>
+<line class="grid" x1="386.5" x2="386.5" y1="68" y2="172"/>
+<text x="386.5" y="188.0" class="sub" text-anchor="middle" style="font-size:11px">1.5</text>
+<line class="grid" x1="460.0" x2="460.0" y1="68" y2="172"/>
+<text x="460.0" y="188.0" class="sub" text-anchor="middle" style="font-size:11px">2</text>
+<text x="313.0" y="206.0" class="sub" text-anchor="middle">Band contrast, per cent</text>
+</svg>

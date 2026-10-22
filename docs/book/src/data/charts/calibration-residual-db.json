@@ -1,0 +1,26 @@
+{
+ "id": "calibration-residual-db",
+ "page": "user-guide/calibration.md",
+ "kind": "bars",
+ "title": "Gain over no calibration",
+ "caption": "Residual below the uncalibrated stack, in decibels, from the table above; flat only is worse than none.",
+ "alt": "Bars: dark only 6.4 dB, flat only -0.8 dB, dark, flat and bad pixels 36.9 dB.",
+ "categories": [
+  "Dark only",
+  "Flat only",
+  "Dark, flat, bad pixels"
+ ],
+ "series": [
+  {
+   "name": "Below uncalibrated",
+   "values": [
+    6.4,
+    -0.8,
+    36.9
+   ]
+  }
+ ],
+ "value_axis": "Decibels below uncalibrated (higher is better)",
+ "dp": 1,
+ "note": "calibration.md, residual pattern table"
+}

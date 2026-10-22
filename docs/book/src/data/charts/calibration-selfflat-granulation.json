@@ -1,0 +1,34 @@
+{
+ "id": "calibration-selfflat-granulation",
+ "page": "user-guide/calibration.md",
+ "kind": "dumbbell",
+ "title": "Granulation band with a self-flat",
+ "caption": "Band of `helia measure` before and after stacking with the flat solved from the capture's own drift, from the text below the table.",
+ "alt": "Sun_Test granulation band 1.847 per cent falls to 1.486; 15_32_09 granulation band 0.971 falls to 0.965 and its fine band 0.314 falls to 0.305.",
+ "categories": [
+  "Sun_Test, granulation",
+  "15_32_09, granulation",
+  "15_32_09, fine"
+ ],
+ "series": [
+  {
+   "name": "Without the self-flat",
+   "values": [
+    1.847,
+    0.971,
+    0.314
+   ]
+  },
+  {
+   "name": "With the self-flat",
+   "values": [
+    1.486,
+    0.965,
+    0.305
+   ]
+  }
+ ],
+ "value_axis": "Band contrast, per cent",
+ "dp": 3,
+ "note": "calibration.md, 'On the real captures', paragraph after the table"
+}

@@ -51,6 +51,10 @@ pictures is slight; it is the order of work, limb, then derotation, then correla
 matters as the series gets longer: without it a correlation over hours would follow the
 rotation of the middle of the disc and shift the whole disc to suit it.
 
+![Horizontal bars in pixels. Correlation correction without derotation 0.18, with derotation 0.35, their difference 0.17, and the derotation model's prediction 0.185.](../images/charts/tutorials-derotation-surface-motion.svg)
+
+*Pixel figures quoted in the text for the two-frame time-lapse: the correlation's correction to the limb fit, and the model's surface motion.*
+
 ## 2. Derotate a stack on its own
 
 To bring stacks to a time without registering them, use `helia solar-derotate`. Here the

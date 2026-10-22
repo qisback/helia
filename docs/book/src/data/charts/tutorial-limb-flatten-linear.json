@@ -1,0 +1,26 @@
+{
+ "id": "tutorial-limb-flatten-linear",
+ "page": "tutorials/limb-darkening.md",
+ "kind": "bars",
+ "title": "Linear u before and after flattening",
+ "caption": "Linear `u` of 15_20_57.ser unflattened and after each flattening source, from the table above.",
+ "alt": "Linear u: unflattened 0.498, flatten model -0.000, flatten profile 0.000.",
+ "categories": [
+  "Unflattened",
+  "Model",
+  "Profile"
+ ],
+ "series": [
+  {
+   "name": "Linear u",
+   "values": [
+    0.498,
+    -0.0,
+    0.0
+   ]
+  }
+ ],
+ "value_axis": "Linear coefficient u",
+ "dp": 3,
+ "note": "tutorials/limb-darkening.md, check it worked"
+}

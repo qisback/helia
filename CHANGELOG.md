@@ -6,6 +6,17 @@ to follow [Semantic Versioning](https://semver.org/) once it reaches 1.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- `helia info` on a file it cannot open lists every capture type it reads (SER, AVI, MP4, MOV, MKV, WebM, M4V) and says that a FITS, TIFF or PNG still goes to `helia edit` or `helia measure`, instead of "expected .ser or .avi" (#265). How: the message of `io::capture::inspect` now matches the one `helia stack` gives; a unit test checks the wording. No behaviour change otherwise.
+
+- The limb-darkening figure of a science report (`limb-profile.png` and `.csv`) is right when `--autocrop` is on (#264). Before, the profile was taken around the disc centre of the uncropped stack on the cropped image, so the CSV started at `measured 0` and the figure ran the wrong way with residuals of -100%, while the summary line still gave the correct rms. How: the pipeline fits the limb before the crop, and now moves the fit's centre by the crop's top-left corner with `out.disc`. Measured on a full-disc 1080x1920 MP4 (release build): with `--autocrop` the profile now equals the uncropped one, the largest residual for mu above 0.3 being 1.0%, where it was -98.6% at mu 0.97 before. A pipeline test checks that the centre moves with the crop.
+### Documentation
+
+- **Contributing notice** (#278). `CONTRIBUTING.md`, the README and the pull request template now say that Helia is developed on an internal repository with internal CI, that GitHub is a published mirror, that contributions are not accepted for now, and that bug reports and feature requests go through GitHub issues. How: wording only, no code change.
+
+- The README no longer makes a promise about the future. It says Helia is free software under the GPLv3 and makes no promise about the future. How: wording only, no code or About page change.
+
 ## [0.7.1]
 
 The source link in the About page and the packaging metadata point at GitHub. Adds science outputs groups 3 and 4, a performance and benchmarks page and a Ko-fi button, and makes the release notes terse.
@@ -16,6 +27,7 @@ The source link in the About page and the packaging metadata point at GitHub. Ad
 
 - GUI snapshots no longer change when the version is bumped. How: the GUI reads the version it displays (the step list footer, the About heading, the report figure footer and the feedback details) through one function, `ui_version()`, which returns the fixed string 0.7.0 under `cargo test` and the crate version otherwise. The snapshot pictures are unchanged and the manual screenshots show 0.7.0; the Windows lane no longer fails on a release bump.
 - The Stack step Science snapshot in the manual is regenerated: its report footer still read Helia 0.6.0. How: the figure footer carries the crate version, so a version bump changes about 40 pixels of the picture, which sits exactly at the snapshot tolerance on Linux and went over it on the Windows lane. The snapshot is rendered again at 0.7.0.
+- The limb-darkening numbers for `15_20_57.ser` in the book are re-measured and made consistent: the linear `u` is 0.498 and the quadratic `u1` 0.472 everywhere (the guide said 0.497 and 0.470), the rings are 0.66% off the quadratic law (the guide said 0.67%) and 0.34% off a flat line after profile flattening (0.35% in one place), and the tutorial's output block and flattening table take the measured values (for example `u1`, `u2` after the model flatten are 0.003, -0.005, and the centre levels 0.9084, 0.6499 and 0.6513). How: `helia stack --preset ha` plain, with `--flatten model` and with `--flatten profile --sharpen-fits`, each followed by `helia measure --limb`, run with a release build of main at commit cf685b9 on `15_20_57.ser`; the charts are regenerated from the same numbers. The rest of the tutorial follows: section 1's stack summary (limb u1 0.472, align confidence 0.60, disc centre 788.2, 552.3 and radius 444.7), the granulation band before and after flattening (2.021%, 2.023%, 2.020%; fine band 1.559%, 1.558%, 1.557%, which the guide gave as 2.050%, 2.052%, 2.049% and 1.573%, 1.572%, 1.571%), the linear law's value at `mu` 0.25 against the disc (0.615), the partial-disc `14_42_57.avi` fit (u1 0.958, u2 -0.751, 2.36%) and the `helia edit` time; the same `15_20_57.ser` limb line in the autocrop, CLI and walkthrough pages now reads 0.472 and 0.66%. The other helia-measured tables were re-run on the same build for all four 2022-07-17 captures: the limb fits in the sharpening guide (the partial-disc `14_42_57.avi` row is now u 0.528, u1 0.958, u2 -0.751, rings 2.36%; `15_32_09.avi` u1 0.501, u2 0.089; `Sun_Test.ser` u 0.537) and, in the stacking guide, the automatic alignment point size table (24 to 96 px, Na D preset on the CPU, with the warp and search range `--ap-auto` chose, for example 2.29 px and 9 px on `14_42_57.avi`, where the granulation band at 32 px is now 0.155% against 0.170%) and the refining table (`--ap-passes`, `--ap-smooth`, `--ap-residual`, Na D preset on the GPU). The spacing and search-radius remarks of the stacking guide have no command line option and were not re-run.
 
 ### Added
 
@@ -93,6 +105,11 @@ The source link in the About page and the packaging metadata point at GitHub. Ad
   job ran. The name is fixed, the workflows are checked with actionlint, and the push CI now tests
   Linux x86-64, Windows x86-64 and macOS arm64 only (software GPU adapter), with the Linux and
   Windows arm64 and macOS Intel targets moved to the nightly workflow.
+- GitHub CI test jobs failed on their first run
+  (#250). On macOS a set `HELIA_GPU_TESTS`
+  made the GPU tests demand an adapter the hosted runner lacks, so the variable is now unset there.
+  On Linux and Windows one feedback-page snapshot differs on the published tree, because the
+  publisher rewrites the forge host to github.com in text; that single test is skipped on GitHub.
 
 ### Changed
 

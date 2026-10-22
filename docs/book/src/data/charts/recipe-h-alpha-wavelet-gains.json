@@ -1,0 +1,42 @@
+{
+ "id": "recipe-h-alpha-wavelet-gains",
+ "page": "recipes/h-alpha-full-disc.md",
+ "kind": "hbars",
+ "title": "Old and new wavelet gains, by band",
+ "caption": "Band level as a multiple of the unsharpened stack for the old gains and the new defaults, ends of the ranges over four real captures, from `helia measure`.",
+ "alt": "Dumbbells, old gains then new: fine band low end 1.41 then 1.24 and high end 1.46 then 1.31; 1 to 4 px band 1.37 then 1.40 and 1.39 then 1.44; fibril band 1.19 then 1.31 and 1.22 then 1.34.",
+ "categories": [
+  "Fine, low end",
+  "Fine, high end",
+  "1 to 4 px, low end",
+  "1 to 4 px, high end",
+  "Fibril, low end",
+  "Fibril, high end"
+ ],
+ "series": [
+  {
+   "name": "Old gains",
+   "values": [
+    1.41,
+    1.46,
+    1.37,
+    1.39,
+    1.19,
+    1.22
+   ]
+  },
+  {
+   "name": "New defaults",
+   "values": [
+    1.24,
+    1.31,
+    1.4,
+    1.44,
+    1.31,
+    1.34
+   ]
+  }
+ ],
+ "value_axis": "Band level, times the unsharpened stack",
+ "note": "recipes/h-alpha-full-disc.md, 'Sharpening, measured' (low and high end of each printed range)"
+}

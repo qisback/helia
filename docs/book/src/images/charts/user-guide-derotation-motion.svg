@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="331" viewBox="0 0 480 331" role="img" aria-labelledby="t d">
+<title id="t">Surface motion between pictures</title><desc id="d">Grouped bars on a log axis, in pixels. Equator at the disc centre: 0.2 px at 5 minutes, 2.1 at 1 hour, 10.7 at 5 hours, 51 at 24 hours. Mid-latitude lag behind the equator: 0.02, 0.2, 1 and 5 px.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="330" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">Surface motion between pictures</text>
+<rect x="16" y="38" width="12" height="12" rx="2" fill="#0072B2"/>
+<text x="34.0" y="49.0" class="ink" text-anchor="start">Equator at the disc centre</text>
+<rect x="234.0" y="38" width="12" height="12" rx="2" fill="#D55E00"/>
+<text x="252.0" y="49.0" class="ink" text-anchor="start">Mid-latitude lag</text>
+<line class="grid" x1="58" x2="468" y1="268.0" y2="268.0"/>
+<text x="52.0" y="272.0" class="sub" text-anchor="end" style="font-size:11px">0.01</text>
+<line class="grid" x1="58" x2="468" y1="220.5" y2="220.5"/>
+<text x="52.0" y="224.5" class="sub" text-anchor="end" style="font-size:11px">0.1</text>
+<line class="grid" x1="58" x2="468" y1="173.0" y2="173.0"/>
+<text x="52.0" y="177.0" class="sub" text-anchor="end" style="font-size:11px">1</text>
+<line class="grid" x1="58" x2="468" y1="125.5" y2="125.5"/>
+<text x="52.0" y="129.5" class="sub" text-anchor="end" style="font-size:11px">10</text>
+<line class="grid" x1="58" x2="468" y1="78.0" y2="78.0"/>
+<text x="52.0" y="82.0" class="sub" text-anchor="end" style="font-size:11px">100</text>
+<rect x="75.2" y="206.2" width="33.0" height="61.8" fill="#0072B2"/>
+<text x="91.8" y="203.2" class="sub" text-anchor="middle" style="font-size:11px">0.20</text>
+<rect x="109.2" y="253.7" width="33.0" height="14.3" fill="#D55E00"/>
+<text x="125.8" y="250.7" class="sub" text-anchor="middle" style="font-size:11px">0.02</text>
+<text x="109.2" y="284.0" class="ink" text-anchor="middle">5 minutes</text>
+<rect x="177.8" y="157.7" width="33.0" height="110.3" fill="#0072B2"/>
+<text x="194.2" y="154.7" class="sub" text-anchor="middle" style="font-size:11px">2.10</text>
+<rect x="211.8" y="206.2" width="33.0" height="61.8" fill="#D55E00"/>
+<text x="228.2" y="203.2" class="sub" text-anchor="middle" style="font-size:11px">0.20</text>
+<text x="211.8" y="284.0" class="ink" text-anchor="middle">1 hour</text>
+<rect x="280.2" y="124.1" width="33.0" height="143.9" fill="#0072B2"/>
+<text x="296.8" y="121.1" class="sub" text-anchor="middle" style="font-size:11px">10.70</text>
+<rect x="314.2" y="173.0" width="33.0" height="95.0" fill="#D55E00"/>
+<text x="330.8" y="170.0" class="sub" text-anchor="middle" style="font-size:11px">1.00</text>
+<text x="314.2" y="284.0" class="ink" text-anchor="middle">5 hours</text>
+<rect x="382.8" y="91.9" width="33.0" height="176.1" fill="#0072B2"/>
+<text x="399.2" y="88.9" class="sub" text-anchor="middle" style="font-size:11px">51.00</text>
+<rect x="416.8" y="139.8" width="33.0" height="128.2" fill="#D55E00"/>
+<text x="433.2" y="136.8" class="sub" text-anchor="middle" style="font-size:11px">5.00</text>
+<text x="416.8" y="284.0" class="ink" text-anchor="middle">24 hours</text>
+<line class="axis" x1="58" x2="468" y1="268.0" y2="268.0"/>
+<line class="axis" x1="58" x2="58" y1="78" y2="268"/>
+<text x="240.0" y="309.0" class="sub" text-anchor="middle">Motion of the surface, pixels, log scale</text>
+</svg>

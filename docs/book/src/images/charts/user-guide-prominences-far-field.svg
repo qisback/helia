@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="206" viewBox="0 0 480 206" role="img" aria-labelledby="t d">
+<title id="t">Variation of the far sky</title><desc id="d">Horizontal grouped bars on a log axis of the variation beyond 1.35 radii, per cent of the disc. First capture 1.4 before and 0.001 after; second capture 9.8 before and 1.0 after.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="205" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">Variation of the far sky</text>
+<rect x="16" y="38" width="12" height="12" rx="2" fill="#0072B2"/>
+<text x="34.0" y="49.0" class="ink" text-anchor="start">Before</text>
+<rect x="94.0" y="38" width="12" height="12" rx="2" fill="#D55E00"/>
+<text x="112.0" y="49.0" class="ink" text-anchor="start">After</text>
+<text x="158.0" y="94.0" class="ink" text-anchor="end">15_32_09</text>
+<rect x="166.0" y="75.0" width="206.1" height="14" fill="#0072B2"/>
+<text x="376.1" y="87.0" class="sub" text-anchor="start" style="font-size:11px">1.400</text>
+<rect x="166.0" y="91.0" width="1.0" height="14" fill="#D55E00"/>
+<text x="170.0" y="103.0" class="sub" text-anchor="start" style="font-size:11px">0.001</text>
+<text x="158.0" y="134.0" class="ink" text-anchor="end">15_37_19</text>
+<rect x="166.0" y="115.0" width="261.4" height="14" fill="#0072B2"/>
+<text x="431.4" y="127.0" class="sub" text-anchor="start" style="font-size:11px">9.800</text>
+<rect x="166.0" y="131.0" width="196.5" height="14" fill="#D55E00"/>
+<text x="366.5" y="143.0" class="sub" text-anchor="start" style="font-size:11px">1.000</text>
+<line class="grid" x1="166.0" x2="166.0" y1="68" y2="150"/>
+<text x="166.0" y="166.0" class="sub" text-anchor="middle" style="font-size:11px">0.001</text>
+<line class="grid" x1="231.5" x2="231.5" y1="68" y2="150"/>
+<text x="231.5" y="166.0" class="sub" text-anchor="middle" style="font-size:11px">0.01</text>
+<line class="grid" x1="297.0" x2="297.0" y1="68" y2="150"/>
+<text x="297.0" y="166.0" class="sub" text-anchor="middle" style="font-size:11px">0.1</text>
+<line class="grid" x1="362.5" x2="362.5" y1="68" y2="150"/>
+<text x="362.5" y="166.0" class="sub" text-anchor="middle" style="font-size:11px">1</text>
+<line class="grid" x1="428.0" x2="428.0" y1="68" y2="150"/>
+<text x="428.0" y="166.0" class="sub" text-anchor="middle" style="font-size:11px">10</text>
+<line class="axis" x1="166" x2="166" y1="68" y2="150"/>
+<text x="297.0" y="184.0" class="sub" text-anchor="middle">Variation, per cent of the disc, log scale</text>
+</svg>

@@ -35,6 +35,10 @@ recommends:
   (3.0, 1.5, 0.8, 0.2) and a short deconvolution of 8 iterations. Sharpening
   noise only makes a prettier mess.
 
+![Bars of the granulation-band to fine-band ratio: blue 3.5, luminance 3.2, red 3.3, green 3.0.](../images/charts/recipe-ca-k-channel-ratio.svg)
+
+*Ratio of the granulation band to the fine band for each plane of the colour Ca K capture, measured on the real capture.*
+
 ```sh
 helia stack cak_001.ser -o cak.tif --preset cak --sharpen wavelet
 helia stack cak_001.ser -o cak-negative.png --preset cak --sharpen wavelet --invert
@@ -48,6 +52,10 @@ Frames kept (6 to 60 per cent) and alignment points (24 to 128 px, 90 arcsec is
 (the ratio of the fibril band to the fine band rose from 8.3 at 6 per cent to 9.5 at
 60), so 30 per cent stays. The new gains lift the 4 to 12 px band by 24 per cent
 against 16 per cent for the old ones, for 25 against 29 per cent more pixel noise.
+
+![Bars, old then new: the 4 to 12 px band rises 16 then 24 per cent; pixel noise rises 29 then 25 per cent.](../images/charts/recipe-ca-k-gains.svg)
+
+*Gain in the 4 to 12 px band and extra pixel noise for the old and the new wavelet gains, measured on the real captures.*
 
 ## Tips
 

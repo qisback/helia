@@ -1,0 +1,26 @@
+{
+ "id": "sharpening-limb-linear-capture",
+ "page": "user-guide/sharpening.md",
+ "kind": "bars",
+ "title": "Linear limb darkening, H-alpha",
+ "caption": "Linear `u` fitted to three whole-disc H-alpha captures of 2022-07-17, from the table above (the partial disc is left out).",
+ "alt": "Bars of the linear coefficient u: Sun_Test 0.537, 15_20_57 0.498, 15_32_09 0.552.",
+ "categories": [
+  "Sun_Test.ser",
+  "15_20_57.ser",
+  "15_32_09.avi"
+ ],
+ "series": [
+  {
+   "name": "Linear u",
+   "values": [
+    0.537,
+    0.498,
+    0.552
+   ]
+  }
+ ],
+ "value_axis": "Linear coefficient u",
+ "dp": 3,
+ "note": "user-guide/sharpening.md, What the real captures say"
+}

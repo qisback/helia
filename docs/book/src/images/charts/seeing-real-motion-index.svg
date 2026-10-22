@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="331" viewBox="0 0 480 331" role="img" aria-labelledby="t d">
+<title id="t">Motion index and autoap warp</title><desc id="d">Grouped bars: 15_20_57 index 0.19 and warp 0.23 px; Sun_Test 0.27 and 0.88; 15_32_09 0.16 and 0.23.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="330" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">Motion index and autoap warp</text>
+<rect x="16" y="38" width="12" height="12" rx="2" fill="#0072B2"/>
+<text x="34.0" y="49.0" class="ink" text-anchor="start">Motion index</text>
+<rect x="136.0" y="38" width="12" height="12" rx="2" fill="#D55E00"/>
+<text x="154.0" y="49.0" class="ink" text-anchor="start">Autoap warp</text>
+<line class="grid" x1="58" x2="468" y1="268.0" y2="268.0"/>
+<text x="52.0" y="272.0" class="sub" text-anchor="end" style="font-size:11px">0</text>
+<line class="grid" x1="58" x2="468" y1="230.0" y2="230.0"/>
+<text x="52.0" y="234.0" class="sub" text-anchor="end" style="font-size:11px">0.2</text>
+<line class="grid" x1="58" x2="468" y1="192.0" y2="192.0"/>
+<text x="52.0" y="196.0" class="sub" text-anchor="end" style="font-size:11px">0.4</text>
+<line class="grid" x1="58" x2="468" y1="154.0" y2="154.0"/>
+<text x="52.0" y="158.0" class="sub" text-anchor="end" style="font-size:11px">0.6</text>
+<line class="grid" x1="58" x2="468" y1="116.0" y2="116.0"/>
+<text x="52.0" y="120.0" class="sub" text-anchor="end" style="font-size:11px">0.8</text>
+<line class="grid" x1="58" x2="468" y1="78.0" y2="78.0"/>
+<text x="52.0" y="82.0" class="sub" text-anchor="end" style="font-size:11px">1</text>
+<rect x="92.3" y="231.9" width="33.0" height="36.1" fill="#0072B2"/>
+<text x="108.8" y="228.9" class="sub" text-anchor="middle" style="font-size:11px">0.19</text>
+<rect x="126.3" y="224.3" width="33.0" height="43.7" fill="#D55E00"/>
+<text x="142.8" y="221.3" class="sub" text-anchor="middle" style="font-size:11px">0.23</text>
+<text x="126.3" y="284.0" class="ink" text-anchor="middle">15_20_57</text>
+<rect x="229.0" y="216.7" width="33.0" height="51.3" fill="#0072B2"/>
+<text x="245.5" y="213.7" class="sub" text-anchor="middle" style="font-size:11px">0.27</text>
+<rect x="263.0" y="100.8" width="33.0" height="167.2" fill="#D55E00"/>
+<text x="279.5" y="97.8" class="sub" text-anchor="middle" style="font-size:11px">0.88</text>
+<text x="263.0" y="284.0" class="ink" text-anchor="middle">Sun_Test</text>
+<rect x="365.7" y="237.6" width="33.0" height="30.4" fill="#0072B2"/>
+<text x="382.2" y="234.6" class="sub" text-anchor="middle" style="font-size:11px">0.16</text>
+<rect x="399.7" y="224.3" width="33.0" height="43.7" fill="#D55E00"/>
+<text x="416.2" y="221.3" class="sub" text-anchor="middle" style="font-size:11px">0.23</text>
+<text x="399.7" y="284.0" class="ink" text-anchor="middle">15_32_09</text>
+<line class="axis" x1="58" x2="468" y1="268.0" y2="268.0"/>
+<line class="axis" x1="58" x2="58" y1="78" y2="268"/>
+<text x="240.0" y="309.0" class="sub" text-anchor="middle">Pixels (lower is steadier)</text>
+</svg>

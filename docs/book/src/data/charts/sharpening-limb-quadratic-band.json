@@ -1,0 +1,47 @@
+{
+ "id": "sharpening-limb-quadratic-band",
+ "page": "user-guide/sharpening.md",
+ "kind": "hbars",
+ "title": "Quadratic limb darkening by band",
+ "caption": "Quadratic `u1` and `u2` of the unsharpened stacks in three bands, from the table above; the two trade against each other.",
+ "alt": "u1 and u2: H-alpha 15_37_19 0.584 and -0.155; 15_32_09 0.501 and 0.089; Sun_Test 0.545 and -0.014; 15_20_57 0.472 and 0.046; Ca K 15_36_42 0.345 and 0.156; 15_44_48 0.293 and 0.235; white light 0.463 and 0.263.",
+ "categories": [
+  "H-alpha 15_37_19",
+  "H-alpha 15_32_09",
+  "H-alpha Sun_Test",
+  "H-alpha 15_20_57",
+  "Ca K 15_36_42",
+  "Ca K 15_44_48",
+  "White light Seestar"
+ ],
+ "series": [
+  {
+   "name": "u1",
+   "values": [
+    0.584,
+    0.501,
+    0.545,
+    0.472,
+    0.345,
+    0.293,
+    0.463
+   ]
+  },
+  {
+   "name": "u2",
+   "values": [
+    -0.155,
+    0.089,
+    -0.014,
+    0.046,
+    0.156,
+    0.235,
+    0.263
+   ]
+  }
+ ],
+ "value_axis": "Quadratic coefficient",
+ "dp": 3,
+ "note": "user-guide/sharpening.md, Limb darkening per band",
+ "labels": false
+}

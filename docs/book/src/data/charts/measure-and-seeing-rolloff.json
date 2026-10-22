@@ -1,0 +1,34 @@
+{
+ "id": "measure-and-seeing-rolloff",
+ "page": "tutorials/measure-and-seeing.md",
+ "kind": "bars",
+ "title": "Roll-off, three settings",
+ "caption": "Roll-off and resolved frequency of 14_42_57.avi stacked three ways with `--preset white`, from the table above.",
+ "alt": "Grouped bars: roll-off 0.038, 0.021 and 0.021; resolved 0.054, 0.046 and 0.050 cycles per pixel for points, all frames and whole frame only.",
+ "categories": [
+  "Best 12%, points",
+  "All frames",
+  "Best 12%, whole frame"
+ ],
+ "series": [
+  {
+   "name": "Roll-off",
+   "values": [
+    0.038,
+    0.021,
+    0.021
+   ]
+  },
+  {
+   "name": "Resolved",
+   "values": [
+    0.054,
+    0.046,
+    0.05
+   ]
+  }
+ ],
+ "value_axis": "Cycles per pixel (higher is sharper)",
+ "dp": 3,
+ "note": "measure-and-seeing.md, section 5"
+}

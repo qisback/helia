@@ -18,6 +18,10 @@ mid-grey now maps to RGB 169, 68, 11, where it was 169, 90, 33. The same look is
 used in `helia lut` and the colour tables, so a table saved for another program
 matches.
 
+![Dumbbells of the output level, old then new: red 169 then 169, green 90 then 68, blue 33 then 11.](../images/charts/recipe-colour-grading-midgrey.svg)
+
+*RGB value a mid-grey maps to in the old and the new H-alpha look, as printed on the page.*
+
 ## Step by step, in the app
 
 1. Stack the capture and go to **Colour**. **H-alpha** is already chosen. Under

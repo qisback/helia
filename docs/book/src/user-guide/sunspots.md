@@ -163,6 +163,14 @@ There is no reference count for that day among the captures, so the Wolf number 
 not compared with the official series, which needs a calibrated `k` for each
 observer and instrument.
 
+![Bars of spots found: 14 at 6% of the frames kept, 14 at 12%, 13 at 25% and 13 at 50%.](../images/charts/user-guide-sunspots-stability-spots.svg)
+
+*Spots found in the 2025-09-17 phone video (7 groups each time) when 6, 12, 25 and 50% of the frames are stacked, from the text.*
+
+![Bars of the Wolf number: 84 at 6% of the frames kept, 84 at 12%, 83 at 25% and 83 at 50%.](../images/charts/user-guide-sunspots-stability-wolf.svg)
+
+*Wolf number (k = 1) for the same four stacks, from the text.*
+
 ## Limits
 
 * The count depends on resolution and seeing: small spots and pores are missed, and

@@ -155,6 +155,10 @@ the line (full scale is 1):
 | `huber` | -0.048 | -0.038 |
 | `winsor` | -0.057 | -0.048 |
 
+![Residual line level (full scale 1). None: -0.112 with alignment points and -0.094 without. Sigma: 0.000 and 0.000. Huber: -0.048 and -0.038. Winsor: -0.057 and -0.048.](../images/charts/tutorial-robust-line.svg)
+
+*Stack of damaged frames minus the clean stack at the worst column of the line, with alignment points and without, from the table above.*
+
 `sigma` takes the line out completely. `huber` and `winsor` pull it back by
 about half and no more: they down-weight an outlier, they do not remove it, and
 here the damaged frames also carry high quality weights. That is the reason the
@@ -197,6 +201,14 @@ helia stack 15_20_57.ser -o clean-winsor.fits --preset ha --keep 100% --robust w
 | `huber` | 0.46 | 6.00 | 0.82 s |
 | `winsor` | 0.18 | 2.98 | 0.98 s |
 | none | | | 0.46 s |
+
+![RMS difference from the mean, times 1000: sigma 0.45, huber 0.46, winsor 0.18. Largest difference: sigma 8.09, huber 6.00, winsor 2.98.](../images/charts/tutorial-robust-cost-difference.svg)
+
+*Difference of each guard from the plain mean on 100 clean frames of 15_20_57.ser (times 1000), from the table above.*
+
+![Stacking time in seconds: none 0.46, sigma 0.89, huber 0.82, winsor 0.98.](../images/charts/tutorial-robust-cost-time.svg)
+
+*Time of the stacking step for 100 frames with each guard, on an A100 with Vulkan, from the table above.*
 
 On a capture with nothing to remove, the three guards change the picture by
 about half a thousandth of full scale (on a mean level of 0.809) and cost

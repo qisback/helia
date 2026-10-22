@@ -1,0 +1,34 @@
+{
+ "id": "choosing-a-quality-metric-rank-overlap",
+ "page": "user-guide/choosing-a-quality-metric.md",
+ "kind": "hbars",
+ "title": "Best-quarter overlap with gradient",
+ "caption": "Share of gradient energy's best quarter that each metric also puts in its best quarter, first 120 frames of 15_32_09 (H-alpha), from the text above.",
+ "alt": "Bars: laplacian 60 per cent, helmli 70, fourier 47, mfgs 33, dct 33 and contrast 23, against 25 per cent by chance.",
+ "categories": [
+  "helmli",
+  "laplacian",
+  "fourier",
+  "mfgs",
+  "dct",
+  "contrast",
+  "Chance"
+ ],
+ "series": [
+  {
+   "name": "Overlap",
+   "values": [
+    70,
+    60,
+    47,
+    33,
+    33,
+    23,
+    25
+   ]
+  }
+ ],
+ "value_axis": "Share of best quarter shared, per cent",
+ "dp": 0,
+ "note": "choosing-a-quality-metric.md, paragraph after the step 3 table"
+}

@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="331" viewBox="0 0 480 331" role="img" aria-labelledby="t d">
+<title id="t">Detail gain on real captures</title><desc id="d">Detail ratio, wavelets, unsharp mask, deconvolution: 15_20_57 1.25, 1.03, 1.03; 15_32_09 1.25, 1.03, 1.03; 14_42_57 1.22, 1.03, 1.02; Sun_Test 1.24, 1.04, 1.02.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="330" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">Detail gain on real captures</text>
+<rect x="16" y="38" width="12" height="12" rx="2" fill="#0072B2"/>
+<text x="34.0" y="49.0" class="ink" text-anchor="start">Wavelets</text>
+<rect x="108.0" y="38" width="12" height="12" rx="2" fill="#D55E00"/>
+<text x="126.0" y="49.0" class="ink" text-anchor="start">Unsharp mask</text>
+<rect x="228.0" y="38" width="12" height="12" rx="2" fill="#009E73"/>
+<text x="246.0" y="49.0" class="ink" text-anchor="start">Deconvolution</text>
+<line class="grid" x1="58" x2="468" y1="268.0" y2="268.0"/>
+<text x="52.0" y="272.0" class="sub" text-anchor="end" style="font-size:11px">0</text>
+<line class="grid" x1="58" x2="468" y1="230.0" y2="230.0"/>
+<text x="52.0" y="234.0" class="sub" text-anchor="end" style="font-size:11px">0.25</text>
+<line class="grid" x1="58" x2="468" y1="192.0" y2="192.0"/>
+<text x="52.0" y="196.0" class="sub" text-anchor="end" style="font-size:11px">0.5</text>
+<line class="grid" x1="58" x2="468" y1="154.0" y2="154.0"/>
+<text x="52.0" y="158.0" class="sub" text-anchor="end" style="font-size:11px">0.75</text>
+<line class="grid" x1="58" x2="468" y1="116.0" y2="116.0"/>
+<text x="52.0" y="120.0" class="sub" text-anchor="end" style="font-size:11px">1</text>
+<line class="grid" x1="58" x2="468" y1="78.0" y2="78.0"/>
+<text x="52.0" y="82.0" class="sub" text-anchor="end" style="font-size:11px">1.25</text>
+<rect x="62.0" y="78.0" width="30.5" height="190.0" fill="#0072B2"/>
+<text x="77.2" y="75.0" class="sub" text-anchor="middle" style="font-size:11px">1.25</text>
+<rect x="93.5" y="111.4" width="30.5" height="156.6" fill="#D55E00"/>
+<text x="108.8" y="108.4" class="sub" text-anchor="middle" style="font-size:11px">1.03</text>
+<rect x="125.0" y="111.4" width="30.5" height="156.6" fill="#009E73"/>
+<text x="140.2" y="108.4" class="sub" text-anchor="middle" style="font-size:11px">1.03</text>
+<text x="109.2" y="284.0" class="ink" text-anchor="middle">15_20_57.ser</text>
+<rect x="164.5" y="78.0" width="30.5" height="190.0" fill="#0072B2"/>
+<text x="179.8" y="75.0" class="sub" text-anchor="middle" style="font-size:11px">1.25</text>
+<rect x="196.0" y="111.4" width="30.5" height="156.6" fill="#D55E00"/>
+<text x="211.2" y="108.4" class="sub" text-anchor="middle" style="font-size:11px">1.03</text>
+<rect x="227.5" y="111.4" width="30.5" height="156.6" fill="#009E73"/>
+<text x="242.8" y="108.4" class="sub" text-anchor="middle" style="font-size:11px">1.03</text>
+<text x="211.8" y="284.0" class="ink" text-anchor="middle">15_32_09.avi</text>
+<rect x="267.0" y="82.6" width="30.5" height="185.4" fill="#0072B2"/>
+<text x="282.2" y="79.6" class="sub" text-anchor="middle" style="font-size:11px">1.22</text>
+<rect x="298.5" y="111.4" width="30.5" height="156.6" fill="#D55E00"/>
+<text x="313.8" y="108.4" class="sub" text-anchor="middle" style="font-size:11px">1.03</text>
+<rect x="330.0" y="113.0" width="30.5" height="155.0" fill="#009E73"/>
+<text x="345.2" y="110.0" class="sub" text-anchor="middle" style="font-size:11px">1.02</text>
+<text x="314.2" y="284.0" class="ink" text-anchor="middle">14_42_57.avi</text>
+<rect x="369.5" y="79.5" width="30.5" height="188.5" fill="#0072B2"/>
+<text x="384.8" y="76.5" class="sub" text-anchor="middle" style="font-size:11px">1.24</text>
+<rect x="401.0" y="109.9" width="30.5" height="158.1" fill="#D55E00"/>
+<text x="416.2" y="106.9" class="sub" text-anchor="middle" style="font-size:11px">1.04</text>
+<rect x="432.5" y="113.0" width="30.5" height="155.0" fill="#009E73"/>
+<text x="447.8" y="110.0" class="sub" text-anchor="middle" style="font-size:11px">1.02</text>
+<text x="416.8" y="284.0" class="ink" text-anchor="middle">Sun_Test.ser</text>
+<line class="axis" x1="58" x2="468" y1="268.0" y2="268.0"/>
+<line class="axis" x1="58" x2="58" y1="78" y2="268"/>
+<text x="240.0" y="309.0" class="sub" text-anchor="middle">Detail, ratio to the stack</text>
+</svg>

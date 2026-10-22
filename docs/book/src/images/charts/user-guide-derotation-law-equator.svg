@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="160" viewBox="0 0 480 160" role="img" aria-labelledby="t d">
+<title id="t">Equator rate of the two laws</title><desc id="d">Horizontal bars of the equator rate in degrees a day: howard 14.33, snodgrass 14.11.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="159" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">Equator rate of the two laws</text>
+<text x="158.0" y="66.0" class="ink" text-anchor="end">howard</text>
+<rect x="166.0" y="53.0" width="250.3" height="18" fill="#0072B2"/>
+<text x="420.3" y="69.0" class="sub" text-anchor="start" style="font-size:11px">14.33</text>
+<text x="158.0" y="94.0" class="ink" text-anchor="end">snodgrass</text>
+<rect x="166.0" y="81.0" width="246.5" height="18" fill="#0072B2"/>
+<text x="416.5" y="97.0" class="sub" text-anchor="start" style="font-size:11px">14.11</text>
+<line class="grid" x1="166.0" x2="166.0" y1="46" y2="104"/>
+<text x="166.0" y="120.0" class="sub" text-anchor="middle" style="font-size:11px">0</text>
+<line class="grid" x1="209.7" x2="209.7" y1="46" y2="104"/>
+<text x="209.7" y="120.0" class="sub" text-anchor="middle" style="font-size:11px">2.5</text>
+<line class="grid" x1="253.3" x2="253.3" y1="46" y2="104"/>
+<text x="253.3" y="120.0" class="sub" text-anchor="middle" style="font-size:11px">5</text>
+<line class="grid" x1="297.0" x2="297.0" y1="46" y2="104"/>
+<text x="297.0" y="120.0" class="sub" text-anchor="middle" style="font-size:11px">7.5</text>
+<line class="grid" x1="340.7" x2="340.7" y1="46" y2="104"/>
+<text x="340.7" y="120.0" class="sub" text-anchor="middle" style="font-size:11px">10</text>
+<line class="grid" x1="384.3" x2="384.3" y1="46" y2="104"/>
+<text x="384.3" y="120.0" class="sub" text-anchor="middle" style="font-size:11px">12.5</text>
+<line class="grid" x1="428.0" x2="428.0" y1="46" y2="104"/>
+<text x="428.0" y="120.0" class="sub" text-anchor="middle" style="font-size:11px">15</text>
+<line class="axis" x1="166" x2="166" y1="46" y2="104"/>
+<text x="297.0" y="138.0" class="sub" text-anchor="middle">Equator rate, degrees a day</text>
+</svg>

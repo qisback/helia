@@ -27,9 +27,9 @@ The summary gains a `crop:` line (and the `disc:` line beside it is now in the
 cropped picture's pixels):
 
 ```text
-limb:    quadratic: u1 = 0.471, u2 = 0.046; limb at 48% of the centre; rings differ from the law by 0.66% rms
+limb:    quadratic: u1 = 0.472, u2 = 0.046; limb at 48% of the centre; rings differ from the law by 0.66% rms
 crop:    979x979 from (299, 63), disc plus 10%
-disc:    centre (489.5, 489.3), radius 444.6 px
+disc:    centre (489.5, 489.4), radius 444.6 px
 wrote:   crop.png
 ```
 

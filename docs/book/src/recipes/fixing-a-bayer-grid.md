@@ -46,6 +46,10 @@ Mosaic check (2x2 pixel positions, share of full scale)
 warning:  The SER header says mono (ColorID 0), but the frames hold a Bayer mosaic that looks like RGGB: ...
 ```
 
+![Bars of share of full scale at the four cell positions: 79.6, 77.6, 77.4 and 0.3 per cent; the last is the empty blue pixel.](../images/charts/recipe-bayer-position-means.svg)
+
+*Average brightness at the four positions of a 2 x 2 cell, from the mosaic check of the example output.*
+
 Read the second list: the Bayer pattern is `RGGB` and its source is `detection`,
 so the header was overruled by the pixels. The four numbers are the average
 brightness at the four positions of a cell. Here one position is 0.3 per cent while
