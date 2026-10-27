@@ -7,7 +7,9 @@
 //!
 //! Headers sent: `Host`, `User-Agent: helia-update/<version>`, `Accept: */*`, and
 //! `Range` when resuming (plus what the HTTP library adds for framing). No cookies,
-//! no `Authorization`, no identifiers.
+//! no identifiers. `Authorization: Bearer` is sent only when the caller passes a
+//! token and only on the hop whose host is the request's `bearer_host`; a redirect
+//! to any other host (a short-lived file-storage address) carries none.
 
 use std::time::Duration;
 
@@ -44,6 +46,20 @@ impl UreqHttp {
     }
 }
 
+/// Does `url` go to `bearer_host`? Host only, or host and port when `bearer_host`
+/// names a port (tests).
+fn is_bearer_hop(url: &str, bearer_host: &str) -> bool {
+    let want = bearer_host.to_ascii_lowercase();
+    if want.contains(':') {
+        url.split("://")
+            .nth(1)
+            .and_then(|r| r.split(['/', '?', '#']).next())
+            .is_some_and(|a| a.to_ascii_lowercase() == want)
+    } else {
+        url_host(url).is_some_and(|h| h == want)
+    }
+}
+
 fn content_range_start(v: &str) -> Option<u64> {
     v.strip_prefix("bytes ")?.split('-').next()?.parse().ok()
 }
@@ -59,6 +75,11 @@ impl Http for UreqHttp {
             let mut r = self.agent.get(&url);
             if let Some(n) = req.range_from {
                 r = r.header("Range", format!("bytes={n}-"));
+            }
+            if let (Some(token), Some(bh)) = (req.bearer, req.bearer_host)
+                && is_bearer_hop(&url, bh)
+            {
+                r = r.header("Authorization", format!("Bearer {token}"));
             }
             let resp = r.call().map_err(|e| Error::Http(e.to_string()))?;
             let status = resp.status().as_u16();

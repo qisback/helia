@@ -31,6 +31,8 @@ path = [
   "tools/bench/results/*.json",
   "packaging/about.hbs",
   "packaging/about.toml",
+  "packaging/external/helia-items.json",
+  "packaging/external/licences/package-manager.txt",
   "packaging/linux/helia.desktop",
   "packaging/linux/copyright",
   "packaging/linux/*.xml",
@@ -62,6 +64,34 @@ path = [
 precedence = "override"
 SPDX-FileCopyrightText = "2026 Laurence Horrocks-Barlow"
 SPDX-License-Identifier = "MIT OR Apache-2.0"
+
+# The AppImage runtime notice is Helia text; the LGPL text is the Free Software Foundation's, kept
+# verbatim and shipped inside the AppImage because the runtime links libfuse (issue 212).
+[[annotations]]
+path = ["packaging/linux/appimage-runtime-notice.txt"]
+precedence = "override"
+SPDX-FileCopyrightText = "2026 Laurence Horrocks-Barlow"
+SPDX-License-Identifier = "GPL-3.0-or-later"
+
+# Licence texts shown to the user before an external tool is installed: the Free Software
+# Foundation's text, kept verbatim (packaging/external/build_manifest.py inlines them).
+[[annotations]]
+path = ["packaging/external/licences/LGPL-3.0-or-later.txt"]
+precedence = "override"
+SPDX-FileCopyrightText = "2007 Free Software Foundation, Inc."
+SPDX-License-Identifier = "LGPL-3.0-or-later"
+
+[[annotations]]
+path = ["packaging/external/licences/GPL-3.0-or-later.txt"]
+precedence = "override"
+SPDX-FileCopyrightText = "2007 Free Software Foundation, Inc."
+SPDX-License-Identifier = "GPL-3.0-or-later"
+
+[[annotations]]
+path = ["packaging/linux/licences/LGPL-2.1.txt"]
+precedence = "override"
+SPDX-FileCopyrightText = "1991, 1999 Free Software Foundation, Inc."
+SPDX-License-Identifier = "LGPL-2.1-only"
 
 # The Helia logo and every image derived from it: all rights reserved, not GPL.
 # See LOGO-LICENCE.md. Override the aggregate annotation above for the copies under docs/.

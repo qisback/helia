@@ -49,6 +49,7 @@ command line, the API job `config` object, and the desktop app.
 | Bit depth of a SER file | `--bit-depth N` (1 to 16) | `bit_depth` | Bit depth in the Open inspector: Auto, 8-bit, 16-bit | the SER header's |
 | Byte order of a SER file | `--endian little` or `big` | `endian` | Byte order in the Open inspector | the header flag, checked against the data |
 | Row order of a SER file | `--flip-rows` | `flip_rows` | Row order in the Open inspector | top to bottom |
+| Row order of FITS frames | `--row-order auto`, `top-down` or `bottom-up` | `row_order` | Row order in the Open inspector: Auto, Top-down, Bottom-up | `auto` (a `ROWORDER` card, else Seestar S50 top-down, else bottom-up) |
 | Colour channel | `--channel r`, `g`, `b` or `lum` | `channel` | Advanced settings: Channel | the preset's, else `lum` |
 | Demosaicing method | `--debayer bilinear` or `mhc` | `debayer` | Debayer: method | `mhc` |
 | Filter preset | `--preset ha` (see `helia presets`) | `preset` | Quick stack card: the filter buttons | detected from the file name, folder, sidecar or header |

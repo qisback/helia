@@ -68,6 +68,7 @@ To colour the same stack in another program: **Colour** step, **Colour table**, 
 |---|---|---|
 | Dark arcs next to the limb | The glow is much stronger on one side | Raise Gate a little; widen Feather |
 | Speckle all round the disc | Stretch too high for the noise | Lower Stretch or Strength, raise Gate |
+| Flat-edged slabs or bands along the limb on a capture with no prominence | Ringing of the sharpening, stretched (fixed: the gate and the reference now have a floor of 1.5% and 8% of the disc) | Update; or sharpen less |
 | No prominences appear | The capture has none, or they are below the noise | Check the sharpened stack; stack more frames |
 | The layer looks flat near a frame edge | The ring is cut by the frame | Lower Reach |
 | The picture is unchanged | The limb fit failed (no clear disc) | Frame the whole disc |

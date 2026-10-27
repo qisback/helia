@@ -1,0 +1,31 @@
+[package]
+name = "helia-external"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+keywords.workspace = true
+categories.workspace = true
+authors.workspace = true
+description = "Opt-in installer for external programs and data packs: signed manifest, licence acceptance, verified download. Shared by Helia, Valerian and Annora"
+publish = false
+
+[lints]
+workspace = true
+
+[dependencies]
+helia-update = { version = "0.8.2", path = "../helia-update" }
+lzma-rs = "0.3.0"
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.154"
+sha2 = "0.11.1"
+tar = { version = "0.4.46", default-features = false }
+thiserror = "2.0.21"
+zip = { version = "9.0.5", default-features = false, features = ["deflate"] }
+
+[dev-dependencies]
+helia-update = { version = "0.8.2", path = "../helia-update", features = ["sign"] }
+tempfile = "3.27.0"

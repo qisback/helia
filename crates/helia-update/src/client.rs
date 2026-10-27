@@ -16,6 +16,7 @@
 use std::path::{Path, PathBuf};
 
 use crate::apply::{self, ApplyFs, ApplyOutcome, Ctx, Process, Rollback};
+use crate::backend::{AssetAccess, BackendCx, BackendStatus, Gate, UpdateBackend};
 use crate::check::{CheckOptions, Outcome, Update, Updater};
 use crate::download::Staged;
 use crate::error::{Error, Result};
@@ -104,9 +105,23 @@ pub struct Available {
     pub install: InstallKind,
     /// The file is already downloaded and verified.
     pub staged: Option<Staged>,
+    /// Automatic mode may download this on its own. True when the file is on a host
+    /// the source allows; a backend may narrow that.
+    pub auto_download: bool,
+    /// A plain sentence for the user when this copy of Helia does not download the
+    /// file by itself, and what to do instead.
+    pub note: Option<String>,
+    /// Where to get the file by hand, when the note needs one.
+    pub link: Option<String>,
 }
 
 impl Available {
+    /// Should automatic mode download this without being asked?
+    #[must_use]
+    pub fn may_auto_download(&self) -> bool {
+        self.auto_download && self.self_applies()
+    }
+
     /// Can the app install this itself (rather than show a command or a file)?
     #[must_use]
     pub fn self_applies(&self) -> bool {
@@ -170,6 +185,8 @@ pub struct Status {
     pub staged: Option<Staged>,
     /// The version an update replaced, when one did and its copy is kept.
     pub previous: Option<String>,
+    /// The backend's line, when a backend is installed.
+    pub backend: Option<BackendStatus>,
 }
 
 /// The pieces the client works with, injected so tests need no network or disk.
@@ -201,6 +218,8 @@ pub struct Client<'a> {
     pub relaunch_gui: bool,
     /// Use this channel instead of the saved one (for one command).
     pub channel_override: Option<Channel>,
+    /// A gated update service ([`crate::backend::installed`]), or none.
+    pub backend: Option<&'a dyn UpdateBackend>,
 }
 
 impl Client<'_> {
@@ -243,6 +262,71 @@ impl Client<'_> {
         StateStore::new(self.fs, &self.paths.state)
     }
 
+    /// The source for `channel`, as the backend (if any) wants it.
+    fn source(&self, channel: &str) -> UpdateSource {
+        let s = (self.source_for)(channel);
+        match self.backend {
+            Some(b) => b.extend_source(s),
+            None => s,
+        }
+    }
+
+    fn with_cx<T>(
+        &self,
+        source: &UpdateSource,
+        channel: &str,
+        f: impl FnOnce(&BackendCx<'_>) -> T,
+    ) -> T {
+        let cx = BackendCx {
+            http: self.http,
+            fs: self.fs,
+            clock: self.clock,
+            config_dir: self.paths.state.parent().unwrap_or_else(|| Path::new(".")),
+            app: APP,
+            channel,
+            source,
+            loopback: self.loopback,
+        };
+        f(&cx)
+    }
+
+    /// What may happen with `version`, whose file is `asset`: the backend decides when
+    /// there is one; otherwise the file may be fetched only from a host the source
+    /// allows, and anything else is left to the user.
+    fn gate(
+        &self,
+        source: &UpdateSource,
+        channel: &str,
+        version: &semver::Version,
+        asset: Option<&Asset>,
+        fresh: bool,
+    ) -> Gate {
+        if let Some(b) = self.backend
+            && let Some(g) = self.with_cx(source, channel, |cx| b.gate(cx, version, fresh))
+        {
+            return g;
+        }
+        if asset.is_none_or(|a| source.asset_host_allowed(&a.url)) {
+            return Gate {
+                auto_download: true,
+                note: None,
+                link: None,
+            };
+        }
+        Gate {
+            auto_download: false,
+            note: Some(format!(
+                "Helia {version} is available. This copy of Helia does not fetch installers by itself, so nothing was downloaded. Get the new version from the Helia page, or build it from source."
+            )),
+            link: Some(crate::helia::PAGE_URL.to_string()),
+        }
+    }
+
+    fn access(&self, source: &UpdateSource, channel: &str) -> Option<AssetAccess> {
+        let b = self.backend?;
+        self.with_cx(source, channel, |cx| b.asset_access(cx))
+    }
+
     fn apply_ctx(&self) -> Ctx<'_> {
         Ctx {
             fs: self.fs,
@@ -263,59 +347,66 @@ impl Client<'_> {
             return Ok(CheckReport::Disabled);
         }
         let channel = settings.channel.as_str();
-        let source = (self.source_for)(channel);
+        let source = self.source(channel);
         let store = self.store();
         let state = store.load_or_default(APP, channel);
         if !explicit && !state.check_due(self.clock.now_unix(), CHECK_INTERVAL_SECS) {
             return Ok(CheckReport::NotDue);
         }
-        let updater = Updater {
-            http: self.http,
-            fs: self.fs,
-            clock: self.clock,
-        };
         let opts = CheckOptions {
             allow_downgrade: false,
             allow_loopback_http: self.loopback,
         };
-        Ok(
-            match updater.check_stored(&source, self.version, &store, opts)? {
-                Outcome::UpToDate { manifest } => CheckReport::UpToDate {
-                    version: manifest.version.to_string(),
-                },
-                Outcome::OlderOnServer { manifest } => CheckReport::OlderOnServer {
-                    version: manifest.version.to_string(),
-                },
-                Outcome::SchemaTooNew { schema } => CheckReport::SchemaTooNew { schema },
-                Outcome::Available(update) => {
-                    let version = update.manifest.version.to_string();
-                    let state = store.load_or_default(APP, channel);
-                    if !explicit && state.skip_version.as_deref() == Some(version.as_str()) {
-                        // A version that failed to start here and was rolled back is not pushed again.
-                        return Ok(CheckReport::UpToDate {
-                            version: self.version.to_string(),
-                        });
-                    }
-                    let install = self.install_kind();
-                    let asset = self
-                        .platform
-                        .and_then(|p| update.asset(p, install.asset_kinds()))
-                        .cloned();
-                    let staged = state.staged.filter(|s| {
-                        s.version == version && self.fs.len(&s.path).ok().flatten() == Some(s.size)
-                    });
-                    CheckReport::Available(Box::new(Available {
-                        notes_url: update.manifest.notes_url.clone(),
-                        required: update.required,
-                        version,
-                        update,
-                        asset,
-                        install,
-                        staged,
-                    }))
-                }
+        let updater = Updater::new(self.http, self.fs, self.clock);
+        let outcome = updater.check_stored(&source, self.version, &store, opts)?;
+        let fresh = self.refresh_backend(&source, channel);
+        Ok(match outcome {
+            Outcome::UpToDate { manifest } => CheckReport::UpToDate {
+                version: manifest.version.to_string(),
             },
-        )
+            Outcome::OlderOnServer { manifest } => CheckReport::OlderOnServer {
+                version: manifest.version.to_string(),
+            },
+            Outcome::SchemaTooNew { schema } => CheckReport::SchemaTooNew { schema },
+            Outcome::Available(update) => {
+                let version = update.manifest.version.to_string();
+                let state = store.load_or_default(APP, channel);
+                if !explicit && state.skip_version.as_deref() == Some(version.as_str()) {
+                    // A version that failed to start here and was rolled back is not pushed again.
+                    return Ok(CheckReport::UpToDate {
+                        version: self.version.to_string(),
+                    });
+                }
+                let install = self.install_kind();
+                let asset = self
+                    .platform
+                    .and_then(|p| update.asset(p, install.asset_kinds()))
+                    .cloned();
+                let staged = state.staged.filter(|s| {
+                    s.version == version && self.fs.len(&s.path).ok().flatten() == Some(s.size)
+                });
+                let gate = match semver::Version::parse(&version) {
+                    Ok(v) => self.gate(&source, channel, &v, asset.as_ref(), fresh),
+                    Err(_) => Gate {
+                        auto_download: false,
+                        note: None,
+                        link: None,
+                    },
+                };
+                CheckReport::Available(Box::new(Available {
+                    auto_download: gate.auto_download,
+                    note: gate.note,
+                    link: gate.link,
+                    notes_url: update.manifest.notes_url.clone(),
+                    required: update.required,
+                    version,
+                    update,
+                    asset,
+                    install,
+                    staged,
+                }))
+            }
+        })
     }
 
     /// Download the file for `available`, resuming a partial one, and remember it.
@@ -331,14 +422,22 @@ impl Client<'_> {
         if let Some(s) = &available.staged {
             return Ok(s.clone());
         }
+        if available.note.is_some() && !available.auto_download {
+            // This copy is told to leave the download to the user.
+            return Err(Error::Refused(format!(
+                "{}{}",
+                available.note.as_deref().unwrap_or_default(),
+                available
+                    .link
+                    .as_ref()
+                    .map_or_else(String::new, |l| format!(" {l}"))
+            )));
+        }
         let asset = available.asset.as_ref().ok_or(Error::NoAsset)?;
         let channel = self.settings().channel.as_str();
-        let source = (self.source_for)(channel);
-        let updater = Updater {
-            http: self.http,
-            fs: self.fs,
-            clock: self.clock,
-        };
+        let source = self.source(channel);
+        let access = self.access(&source, channel);
+        let updater = Updater::new(self.http, self.fs, self.clock).with_access(access.as_ref());
         let staged = updater.download(
             &source,
             &available.update,
@@ -465,7 +564,55 @@ impl Client<'_> {
             highest_sequence: state.highest_sequence,
             staged: state.staged,
             previous: state.boot.previous,
+            backend: self.backend_status(),
         }
+    }
+
+    /// The backend's line for `status`, when a backend is installed.
+    #[must_use]
+    pub fn backend_status(&self) -> Option<BackendStatus> {
+        let b = self.backend?;
+        let channel = self.settings().channel.as_str();
+        let source = self.source(channel);
+        self.with_cx(&source, channel, |cx| b.status(cx))
+    }
+
+    /// The backend's settings block for the About page, when there is one.
+    #[must_use]
+    pub fn backend_panel(&self) -> Option<crate::backend::Panel> {
+        let b = self.backend?;
+        let channel = self.settings().channel.as_str();
+        let source = self.source(channel);
+        self.with_cx(&source, channel, |cx| b.panel(cx))
+    }
+
+    /// A button of the backend's panel was pressed.
+    ///
+    /// # Errors
+    /// The backend's error, whose text is for the user.
+    pub fn backend_action(&self, id: &str, input: &str) -> Result<crate::backend::PanelDone> {
+        let b = self.backend.ok_or_else(|| {
+            Error::Settings("this copy of Helia has nothing to set up here".into())
+        })?;
+        let channel = self.settings().channel.as_str();
+        let source = self.source(channel);
+        self.with_cx(&source, channel, |cx| b.panel_action(cx, id, input))
+    }
+
+    /// Let the backend read what it needs after a check; a notice it leaves is kept
+    /// for the next start. True only when its answer is fresh.
+    fn refresh_backend(&self, source: &UpdateSource, channel: &str) -> bool {
+        let Some(b) = self.backend else {
+            return false;
+        };
+        let r = self.with_cx(source, channel, |cx| b.refresh(cx));
+        if let Some(n) = r.notice {
+            let store = self.store();
+            let mut state = store.load_or_default(APP, channel);
+            state.notice = Some(n);
+            let _ = store.save(&state);
+        }
+        r.fresh
     }
 }
 
@@ -518,6 +665,7 @@ impl System {
             loopback: self.loopback,
             relaunch_gui: self.relaunch_gui,
             channel_override: None,
+            backend: crate::backend::installed(),
         };
         f(&client)
     }

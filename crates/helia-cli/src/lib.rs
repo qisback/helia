@@ -10,6 +10,7 @@
 mod edit_args;
 pub mod feedback;
 pub mod plugins;
+pub mod tools;
 pub mod update;
 
 use std::net::SocketAddr;
@@ -19,7 +20,7 @@ use clap::{Parser, Subcommand, ValueEnum};
 pub use edit_args::{EditArgs, EditCommandArgs};
 use helia_core::align::method::AlignMethod;
 use helia_core::io::solarnet::Site;
-use helia_core::io::source::{BayerSetting, Endian, OpenOptions};
+use helia_core::io::source::{BayerSetting, Endian, OpenOptions, RowOrder};
 use helia_core::truecolour::WhiteBalance;
 use helia_core::{Error, Keep, Preset};
 use helia_gpu::BackendChoice;
@@ -140,6 +141,10 @@ pub enum Command {
     /// Check for a newer Helia, download it and install it, or go back to the
     /// previous version. Contacts the update server only when you run it.
     Update(update::UpdateArgs),
+    /// Install, check and remove optional programs such as ffmpeg. Nothing is
+    /// installed without your say-so: the provider's full licence is shown and you
+    /// must type yes before anything is downloaded.
+    Tools(tools::ToolsArgs),
 }
 
 /// Options of `helia derotate`.
@@ -849,6 +854,14 @@ pub struct OpenArgs {
     /// given to --bayer describe the picture after the flip. SER only.
     #[arg(long)]
     pub flip_rows: bool,
+    /// Which way up the rows of FITS frames are stored: auto, top-down or
+    /// bottom-up. auto follows a ROWORDER card (TOP-DOWN or BOTTOM-UP) when
+    /// there is one; without it Seestar S50 frames (INSTRUME or TELESCOP names
+    /// an S50) are top-down and everything else is bottom-up, as the FITS
+    /// standard says. top-down and bottom-up override the header. --flip-v is
+    /// a separate edit applied to the result. FITS only.
+    #[arg(long, default_value = "auto", value_name = "ORDER", value_parser = clap::value_parser!(RowOrder))]
+    pub row_order: RowOrder,
 }
 
 impl OpenArgs {
@@ -860,6 +873,7 @@ impl OpenArgs {
             bit_depth: self.bit_depth,
             endian: self.endian,
             flip_rows: self.flip_rows,
+            row_order: self.row_order,
             ..OpenOptions::default()
         }
     }
@@ -1095,10 +1109,18 @@ pub struct StackArgs {
     /// the orientation of the middle of the capture (or --field-rotation-reference)
     /// from the parallactic angle of the Sun at the frame's SER timestamp, for
     /// the site given by --site or `HELIA_SITE`, before it is scored, aligned or
-    /// stacked. Needs a capture with timestamps (SER); not for an equatorial
-    /// mount, and not with `--colour true`.
+    /// stacked. Needs a capture with timestamps (SER, or FITS with DATE-OBS);
+    /// not for an equatorial mount. FITS subs from an altazimuth mount that
+    /// name their target, site and mount in the header (a Seestar's do) need no
+    /// flag: the correction is made by itself, about their target and site; stop
+    /// it with --no-field-rotation. Works with `--colour true`.
     #[arg(long)]
     pub field_rotation: bool,
+    /// Do not undo field rotation, even where the headers of FITS subs from an
+    /// altazimuth mount (`RA`, `DEC`, `SITELAT`, `SITELONG`, `EQMODE` 0, `DATE-OBS`)
+    /// would have it done by itself.
+    #[arg(long, conflicts_with = "field_rotation")]
+    pub no_field_rotation: bool,
     /// The orientation --field-rotation turns every frame to: middle (the
     /// default), first or last.
     #[arg(
@@ -1202,8 +1224,8 @@ pub struct StackArgs {
     #[arg(long)]
     pub no_multipoint: bool,
     /// Keep alignment and quality scoring off this rectangle, given as x,y,w,h
-    /// in pixels (top-left origin); repeat for several. The area is flattened in
-    /// every frame, so it is flat in the result too. Burned-in timestamps are
+    /// in pixels (top-left origin); repeat for several. The area is filled in
+    /// every frame from the sky around it, so no patch shows in the result. Burned-in timestamps are
     /// found automatically; use this for anything else (a logo, a hot pixel cluster).
     #[arg(long, value_name = "X,Y,W,H", value_parser = helia_core::mask::parse_region)]
     pub exclude: Vec<helia_core::Rect>,

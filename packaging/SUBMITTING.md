@@ -5,6 +5,13 @@ action and needs the owner's yes. Everything below is prepared from the real 0.7
 `python3 packaging/package_managers.py` (run it again after each release; it only writes
 files, and `python3 -m unittest discover -s packaging` checks it).
 
+> **Store era: parked.** Installers are now sold through the 12hobbies store and the public GitHub
+> release is source only, so there is no public installer URL. winget and Flathub both need a public
+> installer URL (winget fetches it to scan it; Flathub fetches it to build), and the manifests, the
+> Flatpak sources and `package_managers.py` below still point at GitHub release downloads from
+> 0.7.1. They are kept as they are and must not be submitted or refreshed. Whether to offer a
+> free build for these channels, build them from source, or drop them is an owner decision for later.
+
 | Channel | System | Files | State | Owner decision |
 |---|---|---|---|---|
 | winget | Windows 10 and 11 | `packaging/winget/manifests/l/LaurenceHorrocksBarlow/Helia/<version>/` | ready to validate and submit | submit it? |

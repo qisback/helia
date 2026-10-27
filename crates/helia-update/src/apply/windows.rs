@@ -70,6 +70,15 @@ fn helper_args(script: &str) -> Vec<OsString> {
     .collect()
 }
 
+/// Opens a `Log` function that appends to `helper.log` in the backup folder, so a failed
+/// update leaves a trace of what the helper did.
+fn log_prelude(backup_q: &str) -> String {
+    format!(
+        "$logFile = Join-Path {backup_q} 'helper.log'
+function Log($m) {{ try {{ Add-Content -LiteralPath $logFile -Value ((Get-Date -Format s) + ' ' + $m) }} catch {{ }} }}"
+    )
+}
+
 fn restore_line(dir: &str, backup: &str) -> String {
     let programs = PROGRAMS.map(ps_quote).join(",");
     format!(
@@ -92,12 +101,20 @@ pub fn install_script(
     let switch = ps_quote(&format!("/D={}", dir.to_string_lossy()));
     let mut lines = vec![
         "$ErrorActionPreference = 'Continue'".to_string(),
-        format!("try {{ Wait-Process -Id {pid} -Timeout 3600 }} catch {{ }}"),
-        "$ok = $false".to_string(),
+        log_prelude(&backup),
+        format!("Log 'waiting for process {pid}'"),
         format!(
-            "try {{ $p = Start-Process -FilePath {installer} -ArgumentList '/S',{switch} -Wait -PassThru; $ok = ($p.ExitCode -eq 0) }} catch {{ }}"
+            "try {{ Wait-Process -Id {pid} -Timeout 3600 }} catch {{ Log ('wait failed: ' + $_.Exception.Message) }}"
         ),
-        format!("if (-not $ok) {{ {} }}", restore_line(&dir_q, &backup)),
+        "$ok = $false".to_string(),
+        "Log 'running the installer'".to_string(),
+        format!(
+            "try {{ $p = Start-Process -FilePath {installer} -ArgumentList '/S',{switch} -Wait -PassThru; $ok = ($p.ExitCode -eq 0); Log ('installer exit code ' + $p.ExitCode) }} catch {{ Log ('installer did not run: ' + $_.Exception.Message) }}"
+        ),
+        format!(
+            "if (-not $ok) {{ Log 'putting the old programs back'; {} }}",
+            restore_line(&dir_q, &backup)
+        ),
     ];
     if relaunch {
         lines.push(format!(
@@ -359,6 +376,8 @@ mod tests {
         assert!(script.contains("-FilePath 'C:/data/updates/Helia 0.8.0-setup.exe'"));
         assert!(script.contains("if (-not $ok)"));
         assert!(script.contains("Copy-Item"));
+        assert!(script.contains("helper.log"));
+        assert!(script.contains("installer exit code"));
         assert!(script.trim_end().ends_with("'helia-gui.exe')"));
         let cli = install_script(1, Path::new("i.exe"), Path::new("d"), Path::new("b"), false);
         assert!(!cli.contains("Start-Process -FilePath (Join-Path 'd' 'helia-gui.exe')"));

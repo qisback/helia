@@ -107,7 +107,7 @@ differ in what they believe. Known ways it goes wrong:
 Run `helia info` on the first capture of a session: it prints every header field
 as written next to the values Helia will use, and says where each came from. If
 the header is wrong in a way Helia does not catch, `--bayer`, `--bit-depth`,
-`--endian` and `--flip-rows` on the command line (and the same choices in the
+`--endian`, `--flip-rows` and (for FITS) `--row-order` on the command line (and the same choices in the
 app's Open step and in the API) override it; the choice is recorded in the
 output file.
 

@@ -62,8 +62,14 @@ mod real_shots;
 mod science;
 #[cfg(test)]
 mod snapshots;
+// Screenshots of the official store build's settings block: the file is added by that build.
+#[cfg(all(test, feature = "store"))]
+mod store_shots;
 mod theme;
 mod timelapse;
+#[cfg(test)]
+mod tools_shots;
+mod tools_ui;
 mod topbar;
 mod update_ui;
 mod widgets;
@@ -74,6 +80,9 @@ use std::path::PathBuf;
 use eframe::egui;
 
 fn main() -> eframe::Result {
+    // An official store build plugs in a backend at start-up; a source build has none.
+    #[cfg(feature = "store")]
+    store_backend::install();
     let mut open: Option<PathBuf> = None;
     let mut shots: Option<PathBuf> = None;
     let mut size = prefs::Prefs::load_default()
@@ -95,6 +104,11 @@ fn main() -> eframe::Result {
                     "{}",
                     helia_core::about::long_version("helia-gui", version, helia_gpu::WGPU_VERSION)
                 );
+                if let Some(line) = helia_update::backend::installed()
+                    .and_then(helia_update::backend::UpdateBackend::build_line)
+                {
+                    println!("{line}");
+                }
                 return Ok(());
             }
             "--open" => open = args.next().map(PathBuf::from),
@@ -115,6 +129,7 @@ fn main() -> eframe::Result {
         }
     }
     plugins_page::set_cli_paths(plugin_paths);
+    helia_core::io::ffmpeg::set_installed_locator(tools_ui::installed_programs);
     helia_core::applog::init("helia-gui");
     helia_core::applog::info(&format!(
         "started {}",

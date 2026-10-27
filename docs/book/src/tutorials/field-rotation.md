@@ -69,7 +69,7 @@ Stack or crop afterwards: the corners the turn uncovers are filled with the edge
 |---|---|---|
 | `needs the time of each frame` | The capture has no timestamps (AVI, video) | Use a SER capture; or for stacked images give `--times` |
 | `needs the observing site` | No `--site` and no `HELIA_SITE` | Give the site |
-| `cannot be used with --colour true` | A raw mosaic cannot be turned before demosaicing | Stack one colour plane |
+| `the stars did not show which way the field turns` | A star field whose subs give no clear lock, or two that are too alike | Give `--field-rotation`, with `--field-rotation-mirror` if the picture is a mirror image, to name the sense yourself |
 | The limb is still smeared | Wrong turn direction, or a clock far off | Toggle the mirror setting; check the computer's clock when you captured |
 | Nothing changes | The capture is short, or the mount is equatorial | Nothing to correct |
 
@@ -80,6 +80,7 @@ Stack or crop afterwards: the corners the turn uncovers are filled with the edge
 | Correct the rotation | `helia stack --field-rotation` | `field_rotation` (an object; `{}` for the defaults) | Advanced settings, Field rotation: Off / Alt-az | on or off | off |
 | Reference orientation | `--field-rotation-reference` | `reference` | middle (fixed) | `middle`, `first`, `last` | `middle` |
 | Mirror image | `--field-rotation-mirror` | `mirror` | Mirror image | on or off | off |
+| Stop the automatic correction of FITS subs | `--no-field-rotation` | not offered | not offered | on or off | off (it is automatic when the header names target, site and mount) |
 | Site | `--site LAT,LON,ALT` or `HELIA_SITE` | `site` or the server's `HELIA_SITE` | Site (N, E, M) | latitude -90 to 90, longitude -180 to 180, height -1000 to 10000 m | none |
 | Time-lapse | `helia derotate IMAGES -o DIR` with `--site`, `--times`, `--reference` (`middle`, `first`, `last` or an image number), `--mirror`, `--overwrite` | not offered | not offered | | middle |
 

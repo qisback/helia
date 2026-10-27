@@ -17,7 +17,7 @@ use helia_core::debayer::{Channel, Debayer, Method};
 use helia_core::edit::store::{self, EditPreset};
 use helia_core::edit::{EditList, deconv};
 use helia_core::io::capture::{CaptureReport, Level};
-use helia_core::io::source::{BayerSetting, Endian, OpenOptions};
+use helia_core::io::source::{BayerSetting, Endian, OpenOptions, RowOrder};
 use helia_core::output::OutputPlan;
 use helia_core::pipeline::{StackConfig, StackOutput, Stage};
 use helia_core::quality::Metric;
@@ -80,6 +80,8 @@ pub struct Settings {
     pub endian: Option<Endian>,
     /// Read the rows bottom to top.
     pub flip_rows: bool,
+    /// Row order of FITS frames.
+    pub row_order: RowOrder,
     pub channel: Channel,
     /// The user picked the channel, so a clipped plane is not replaced.
     pub channel_chosen: bool,
@@ -150,6 +152,7 @@ impl Default for Settings {
             bit_depth: None,
             endian: None,
             flip_rows: false,
+            row_order: RowOrder::Auto,
             channel: Channel::Luminance,
             channel_chosen: false,
             method: Method::Mhc,
@@ -194,6 +197,7 @@ impl Settings {
             bit_depth: self.bit_depth,
             endian: self.endian,
             flip_rows: self.flip_rows,
+            row_order: self.row_order,
         }
     }
 
@@ -460,6 +464,8 @@ pub struct App {
     pub mo: crate::mosaic::MosaicState,
     /// Update checks and installs.
     pub update: crate::update_ui::UpdateUi,
+    /// Optional tools: the ffmpeg offer and the About block.
+    pub tools: crate::tools_ui::ToolsUi,
 }
 
 impl App {
@@ -486,6 +492,7 @@ impl App {
         let presets_dir = if probe { store::presets_dir() } else { None };
         let user_presets = presets_dir.as_deref().map(store::list).unwrap_or_default();
         let update = crate::update_ui::UpdateUi::new(ctx, probe && demo.is_none());
+        let tools = crate::tools_ui::ToolsUi::new(ctx, probe && demo.is_none());
         Self {
             workers,
             events,
@@ -597,6 +604,7 @@ impl App {
             tl: crate::timelapse::TimelapseState::default(),
             mo: crate::mosaic::MosaicState::default(),
             update,
+            tools,
         }
     }
 
@@ -660,6 +668,7 @@ impl App {
             self.settings.bit_depth = None;
             self.settings.endian = None;
             self.settings.flip_rows = false;
+            self.settings.row_order = RowOrder::Auto;
         }
         self.generation += 1;
         self.opening = true;
@@ -881,6 +890,8 @@ impl App {
                 },
                 mirror: s.field_rotation_mirror,
                 reference: helia_core::field_rotation::Reference::Middle,
+                target: None,
+                auto_mirror: false,
                 frame_unix: info.frame_unix,
             }
         })
@@ -1406,7 +1417,11 @@ impl App {
                         self.tasks.end(TaskKind::Transcoding);
                         self.open_progress = None;
                         self.open_cancel = None;
-                        self.toast(ToastKind::Error, format!("Could not open file: {e}"));
+                        if e.contains("ffmpeg was not found") {
+                            self.offer_ffmpeg_for_video();
+                        } else {
+                            self.toast(ToastKind::Error, format!("Could not open file: {e}"));
+                        }
                     }
                 },
                 Event::Opened(..) => {}
@@ -1730,6 +1745,13 @@ impl App {
         {
             self.show_plugins = false;
         }
+        if self.tools.open
+            && !self.tools.installing()
+            && !focused
+            && ctx.input_mut(|i| i.consume_key(Modifiers::NONE, Key::Escape))
+        {
+            self.tools.close();
+        }
         let big = if shift { 10 } else { 1 };
         if open && !self.busy() {
             self.pick_capture();
@@ -1837,6 +1859,7 @@ impl eframe::App for App {
         self.plugins.pump();
         self.feedback_pump(&ctx);
         self.update_poll();
+        self.tools_poll();
         self.prefs.remember_settings(&self.settings);
         let now = self.now();
         self.toasts.expire(now);

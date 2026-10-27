@@ -46,7 +46,8 @@ pub trait ApplyFs: Fs {
 impl ApplyFs for StdFs {
     fn copy_file(&self, from: &Path, to: &Path) -> io::Result<()> {
         fs::copy(from, to)?;
-        fs::File::open(to)?.sync_all()
+        // Write access: on Windows FlushFileBuffers fails on a read-only handle.
+        fs::OpenOptions::new().write(true).open(to)?.sync_all()
     }
 
     fn make_executable(&self, path: &Path) -> io::Result<()> {
@@ -86,8 +87,9 @@ impl Process for StdProcess {
         #[cfg(windows)]
         {
             use std::os::windows::process::CommandExt;
-            // DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP | CREATE_NO_WINDOW
-            c.creation_flags(0x0000_0008 | 0x0000_0200 | 0x0800_0000);
+            // CREATE_NEW_PROCESS_GROUP | CREATE_NO_WINDOW. Not DETACHED_PROCESS: the
+            // PowerShell helper needs a console, and a hidden one is what NO_WINDOW gives it.
+            c.creation_flags(0x0000_0200 | 0x0800_0000);
         }
         c.spawn().map(|_| ())
     }
@@ -253,8 +255,14 @@ pub fn rollback(ctx: &Ctx<'_>, kind: &InstallKind, health: &mut BootHealth) -> R
 }
 
 /// The test file system and process.
-#[cfg(test)]
-pub(crate) mod fake {
+#[cfg(any(test, feature = "testutil"))]
+#[allow(
+    clippy::unwrap_used,
+    clippy::missing_panics_doc,
+    missing_docs,
+    reason = "test doubles"
+)]
+pub mod fake {
     use std::collections::BTreeSet;
     use std::ffi::OsString;
     use std::io::{self, Read, Write};

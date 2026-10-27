@@ -70,6 +70,7 @@ pub fn stack_job(
         "autocrop": cfg.autocrop.is_some(),
         "bayer": bayer,
         "flip_rows": open.flip_rows,
+        "row_order": open.row_order.label(),
         "channel": channel,
         "debayer": match cfg.debayer.method {
             Method::Bilinear => "bilinear",

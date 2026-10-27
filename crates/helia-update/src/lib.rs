@@ -18,6 +18,8 @@
 //!   checked, atomic rename.
 //! * [`state`]: the small persisted state (last check, highest sequence, staged
 //!   file, start-up health flag for rollback).
+//! * [`backend`]: the one extension point for a gated update service (a no-op in
+//!   a source build).
 //! * [`traits`]: [`Clock`], [`Fs`] and [`Http`], so tests need no network, disk or
 //!   wall clock. [`mem`] holds in-memory versions of them.
 //! * `ureq_http` (feature `client`, on by default): the real [`Http`], rustls only.
@@ -42,6 +44,7 @@
 #![cfg_attr(test, allow(clippy::unwrap_used, reason = "tests"))]
 
 pub mod apply;
+pub mod backend;
 pub mod check;
 pub mod client;
 pub mod download;

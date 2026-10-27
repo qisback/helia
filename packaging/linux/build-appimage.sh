@@ -24,6 +24,15 @@ chmod 0755 "$app/AppRun"
 cp "$app/usr/share/applications/helia.desktop" "$app/helia.desktop"
 cp "$app/usr/share/icons/hicolor/256x256/apps/helia.png" "$app/helia.png"
 ln -s helia.png "$app/.DirIcon"
+# The runtime in front of the image statically links libfuse (LGPL-2.1): ship its notice, the
+# LGPL text and the source offer inside the image, next to the other third-party licences.
+here=$(cd "$(dirname "$0")" && pwd)
+doc="$app/usr/share/doc/helia"
+install -d "$doc"
+{ [ -f "$doc/THIRD-PARTY-LICENSES.txt" ] && cat "$doc/THIRD-PARTY-LICENSES.txt"; printf '
+'; cat "$here/appimage-runtime-notice.txt"; } > "$doc/THIRD-PARTY-LICENSES.new"
+mv "$doc/THIRD-PARTY-LICENSES.new" "$doc/THIRD-PARTY-LICENSES.txt"
+install -m 0644 "$here/licences/LGPL-2.1.txt" "$doc/LGPL-2.1.txt"
 install -d "$out"
 name="Helia-${ver}-${arch}.AppImage"
 args=()

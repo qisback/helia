@@ -12,3 +12,31 @@
 # issue   = "issue #123"
 # added   = "2026-10-22"
 # expires = "2026-12-20"
+
+[[waiver]]
+id      = "secrets/generic-api-key/*plugin_shots.rs/*"
+reason  = "Documentation fixture: a made-up hex string in a sample plugin manifest drawn for a screenshot. It is a public-key example, not a credential."
+issue   = "issue #355"
+added   = "2026-10-26"
+expires = "2026-12-24"
+
+[[waiver]]
+id      = "secrets/generic-api-key/*packaging/release.py/*"
+reason  = "The old throwaway minisign PUBLIC key (56 characters) that release.py recognises and refuses to ship. Public by nature, never a secret."
+issue   = "issue #355"
+added   = "2026-10-26"
+expires = "2026-12-24"
+
+[[waiver]]
+id      = "secrets/generic-api-key/*packaging/test_release.py/*"
+reason  = "The same throwaway minisign PUBLIC key used as a test input for the placeholder check. Public by nature, never a secret."
+issue   = "issue #355"
+added   = "2026-10-26"
+expires = "2026-12-24"
+
+[[waiver]]
+id      = "pii/email/crates/helia-update/tests/update.rs/*"
+reason  = "Test input: the look-alike URL downloads.example.org@evil.net that the host allow-list must refuse. It is a URL with userinfo, not an e-mail address."
+issue   = "issue #355"
+added   = "2026-10-26"
+expires = "2026-12-24"

@@ -13,12 +13,12 @@
 //! * [`fit_disc`] fits a circle to the limb of the reference image, robust to
 //!   prominences, flares and a limb cut by the frame edge.
 //! * [`MaskedSource`] wraps a capture and overwrites the masked rectangles with
-//!   one flat level in every frame it serves, so scoring, registration,
+//!   the plane that fits the sky around them ([`fill_planes`]) in every frame it serves, so scoring, registration,
 //!   alignment points and the stack all see the same thing, on the CPU and on
 //!   the GPU (which decode from the raw bytes this wrapper edits).
 //!
-//! Masked rectangles are therefore flat in the result: a timestamp is removed
-//! rather than smeared.
+//! A masked rectangle is therefore smooth and continuous with its surroundings
+//! in the result: a timestamp is removed rather than smeared, and leaves no bar.
 #![allow(
     clippy::many_single_char_names,
     reason = "x, y, w, h, r are the natural names in image maths"
@@ -136,14 +136,14 @@ pub fn detect_overlay(frames: &[Frame]) -> Vec<Rect> {
             lo[i] = lo[i].min(v);
         }
     }
-    let mut dynamic: Vec<bool> = (0..n)
+    let raw: Vec<bool> = (0..n)
         .map(|i| hi[i] >= 0.95 && hi[i] - lo[i] >= 0.6)
         .collect();
-    if !dynamic.iter().any(|&d| d) {
+    if !raw.iter().any(|&d| d) {
         return Vec::new();
     }
     // Join the glyphs of a line: grow 8 px sideways and 2 px vertically.
-    dynamic = dilate(&dynamic, w, h, 8, 2);
+    let dynamic = dilate(&raw, w, h, 8, 2);
     let max_h = (h / 20).max(24);
     let max_w = w / 2;
     // Burned-in text sits in the first or last few rows. A wider band let a
@@ -154,8 +154,23 @@ pub fn detect_overlay(frames: &[Frame]) -> Vec<Rect> {
     for comp in components(&dynamic, w, h) {
         let rect = comp.rect;
         let near_edge = rect.y1 <= strip || rect.y0 >= h - strip;
-        // Only the changing pixels themselves count, not the dilation.
-        if rect.height() > max_h || rect.width() > max_w || !near_edge || comp.pixels < 12 {
+        if rect.height() > max_h || rect.width() > max_w || !near_edge {
+            continue;
+        }
+        // Evidence of text: enough changing pixels (the dilation does not
+        // count: a handful of hot or flickering pixels grows into a
+        // text-sized blob), and pixels that flip often between white and
+        // dark, as changing digits do, rather than once as a drifting edge.
+        let (mut pixels, mut flips) = (0usize, 0usize);
+        for y in rect.y0..rect.y1 {
+            for x in rect.x0..rect.x1 {
+                if raw[y * w + x] {
+                    pixels += 1;
+                    flips += flips_of(frames, y * w + x);
+                }
+            }
+        }
+        if pixels < MIN_TEXT_PIXELS || (flips as f32) < MIN_TEXT_FLIPS * pixels as f32 {
             continue;
         }
         out.push(rect);
@@ -199,6 +214,38 @@ pub fn detect_overlay(frames: &[Frame]) -> Vec<Rect> {
         });
     }
     merge(grown)
+}
+
+/// Fewest changing pixels a region needs to pass for text. A line of changing
+/// digits has hundreds (330 on the `SharpCap` captures); a limb or sensor
+/// flicker that once passed for text had under a dozen.
+const MIN_TEXT_PIXELS: usize = 40;
+
+/// Fewest white/dark flips per changing pixel over the sampled frames (taken
+/// in capture order). Digits flip about five times in 16 frames; a drifting
+/// limb crosses a pixel about once.
+const MIN_TEXT_FLIPS: f32 = 2.0;
+
+/// Times pixel `i` flips between near-white (0.8 or more) and dark (0.4 or
+/// less) from one sampled frame to the next; in-between values are skipped.
+fn flips_of(frames: &[Frame], i: usize) -> usize {
+    let mut prev = None;
+    let mut flips = 0;
+    for f in frames {
+        let v = f.data[i];
+        let state = if v >= 0.8 {
+            true
+        } else if v <= 0.4 {
+            false
+        } else {
+            continue;
+        };
+        if prev.is_some_and(|p| p != state) {
+            flips += 1;
+        }
+        prev = Some(state);
+    }
+    flips
 }
 
 /// Merge rectangles that overlap.
@@ -272,7 +319,6 @@ fn dilate(mask: &[bool], w: usize, h: usize, rx: usize, ry: usize) -> Vec<bool> 
 
 struct Component {
     rect: Rect,
-    pixels: usize,
 }
 
 /// 4-connected components of `mask`.
@@ -290,12 +336,10 @@ fn components(mask: &[bool], w: usize, h: usize) -> Vec<Component> {
             x1: start % w + 1,
             y1: start / w + 1,
         };
-        let mut pixels = 0;
         seen[start] = true;
         stack.push(start);
         while let Some(p) = stack.pop() {
             let (x, y) = (p % w, p / w);
-            pixels += 1;
             rect.x0 = rect.x0.min(x);
             rect.y0 = rect.y0.min(y);
             rect.x1 = rect.x1.max(x + 1);
@@ -319,7 +363,7 @@ fn components(mask: &[bool], w: usize, h: usize) -> Vec<Component> {
                 push(p + w);
             }
         }
-        out.push(Component { rect, pixels });
+        out.push(Component { rect });
     }
     out
 }
@@ -498,58 +542,209 @@ fn kasa(pts: &[(f64, f64)]) -> Option<(f64, f64, f64)> {
     Some((uc + mx, vc + my, r))
 }
 
-/// Flat level for masked areas: the median of the pixels in a ring just
-/// outside `rects` (sky, normally), taken over the sample frames.
+/// Width of the ring around a masked rectangle that the fill is fitted to.
+const FILL_RING: usize = 12;
+
+/// What a masked rectangle is filled with: the plane that best fits the
+/// pixels in a ring just outside it (the sky, normally), so a removed
+/// timestamp leaves the local background, gradient included, rather than a
+/// flat bar against the scattered-light halo.
+///
+/// The plane is fitted once, to the mean of the sample frames, and is the
+/// same in every frame, so the alignment still sees a static region.
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct Fill {
+    cx: f32,
+    cy: f32,
+    a: f32,
+    b: f32,
+    c: f32,
+    lo: f32,
+    hi: f32,
+}
+
+impl Fill {
+    /// One flat level.
+    #[must_use]
+    pub fn flat(level: f32) -> Self {
+        Self {
+            cx: 0.0,
+            cy: 0.0,
+            a: level,
+            b: 0.0,
+            c: 0.0,
+            lo: level,
+            hi: level,
+        }
+    }
+
+    /// Value at pixel `(x, y)`, held within the range of the pixels it was
+    /// fitted to so a steep ring cannot extrapolate past it.
+    #[must_use]
+    pub fn at(&self, x: usize, y: usize) -> f32 {
+        let v = self.a + self.b * (x as f32 - self.cx) + self.c * (y as f32 - self.cy);
+        v.clamp(self.lo, self.hi)
+    }
+}
+
+/// One [`Fill`] per rectangle, from the ring of pixels around it in the
+/// sample `frames` (averaged). Pixels of other masked rectangles do not
+/// count. A plane is fitted by least squares, refitted twice without the
+/// pixels more than three robust sigma from it (a bright limb, a stray
+/// star); a ring with too few pixels gives a flat fill at its median.
 #[must_use]
-pub fn fill_level(frames: &[Frame], rects: &[Rect]) -> f32 {
-    let mut vals: Vec<f32> = Vec::new();
-    for f in frames {
-        for r in rects {
+pub fn fill_planes(frames: &[Frame], rects: &[Rect]) -> Vec<Fill> {
+    let Some(first) = frames.first() else {
+        return rects.iter().map(|_| Fill::flat(0.0)).collect();
+    };
+    let (w, h) = (first.width, first.height);
+    let inv = 1.0 / frames.len() as f32;
+    let mean = |i: usize| frames.iter().map(|f| f.data[i]).sum::<f32>() * inv;
+    rects
+        .iter()
+        .map(|r| {
             let ring = Rect {
-                x0: r.x0.saturating_sub(8),
-                y0: r.y0.saturating_sub(8),
-                x1: (r.x1 + 8).min(f.width),
-                y1: (r.y1 + 8).min(f.height),
+                x0: r.x0.saturating_sub(FILL_RING),
+                y0: r.y0.saturating_sub(FILL_RING),
+                x1: (r.x1 + FILL_RING).min(w),
+                y1: (r.y1 + FILL_RING).min(h),
             };
+            let (cx, cy) = ((r.x0 + r.x1) as f32 / 2.0, (r.y0 + r.y1) as f32 / 2.0);
+            let mut pts: Vec<(f32, f32, f32)> = Vec::new();
             for y in ring.y0..ring.y1 {
                 for x in ring.x0..ring.x1 {
                     let inside = rects
                         .iter()
                         .any(|q| x >= q.x0 && x < q.x1 && y >= q.y0 && y < q.y1);
                     if !inside {
-                        vals.push(f.data[y * f.width + x]);
+                        pts.push((x as f32 - cx, y as f32 - cy, mean(y * w + x)));
                     }
                 }
             }
-        }
-    }
-    if vals.is_empty() {
-        return 0.0;
-    }
-    let mid = vals.len() / 2;
-    *vals.select_nth_unstable_by(mid, f32::total_cmp).1
+            plane_fit(cx, cy, &pts)
+        })
+        .collect()
 }
 
-/// Write `level` (`0..=1`) into every plane of the masked pixels of the stored
-/// frame `raw`.
-fn fill_raw(layout: &RowLayout, raw: &mut [u8], rects: &[Rect], level: f32) {
+/// Robust least-squares plane `v = a + b x + c y` through `pts` (`x`, `y`
+/// relative to `(cx, cy)`).
+fn plane_fit(cx: f32, cy: f32, pts: &[(f32, f32, f32)]) -> Fill {
+    if pts.is_empty() {
+        return Fill::flat(0.0);
+    }
+    let mut vals: Vec<f32> = pts.iter().map(|p| p.2).collect();
+    vals.sort_by(f32::total_cmp);
+    let median = vals[vals.len() / 2];
+    let (lo, hi) = (
+        vals[vals.len() / 20],
+        vals[vals.len() - 1 - vals.len() / 20],
+    );
+    let mut best = Fill {
+        cx,
+        cy,
+        a: median,
+        b: 0.0,
+        c: 0.0,
+        lo,
+        hi,
+    };
+    if pts.len() < 24 {
+        return best;
+    }
+    let mut keep: Vec<bool> = vec![true; pts.len()];
+    for round in 0..3 {
+        // Normal equations over the kept points.
+        let (mut s, mut sx, mut sy, mut sxx, mut sxy, mut syy) = (0.0f64, 0.0, 0.0, 0.0, 0.0, 0.0);
+        let (mut sv, mut sxv, mut syv) = (0.0f64, 0.0, 0.0);
+        for (&(x, y, v), _) in pts.iter().zip(&keep).filter(|(_, k)| **k) {
+            let (x, y, v) = (f64::from(x), f64::from(y), f64::from(v));
+            s += 1.0;
+            sx += x;
+            sy += y;
+            sxx += x * x;
+            sxy += x * y;
+            syy += y * y;
+            sv += v;
+            sxv += x * v;
+            syv += y * v;
+        }
+        let m = [[s, sx, sy], [sx, sxx, sxy], [sy, sxy, syy]];
+        let Some([a, b, c]) = solve3(m, [sv, sxv, syv]) else {
+            return best;
+        };
+        best = Fill {
+            cx,
+            cy,
+            a: a as f32,
+            b: b as f32,
+            c: c as f32,
+            lo,
+            hi,
+        };
+        if round == 2 {
+            break;
+        }
+        let res: Vec<f32> = pts
+            .iter()
+            .map(|&(x, y, v)| (v - (best.a + best.b * x + best.c * y)).abs())
+            .collect();
+        let mut sorted = res.clone();
+        sorted.sort_by(f32::total_cmp);
+        let tol = (3.0 * 1.4826 * sorted[sorted.len() / 2]).max(0.01);
+        for (k, r) in keep.iter_mut().zip(&res) {
+            *k = *r <= tol;
+        }
+        if keep.iter().filter(|&&k| k).count() < 24 {
+            break;
+        }
+    }
+    best
+}
+
+/// Solve the 3 x 3 system `m x = v` by Cramer's rule; `None` when singular.
+fn solve3(m: [[f64; 3]; 3], v: [f64; 3]) -> Option<[f64; 3]> {
+    let det = |a: [[f64; 3]; 3]| {
+        a[0][0] * (a[1][1] * a[2][2] - a[1][2] * a[2][1])
+            - a[0][1] * (a[1][0] * a[2][2] - a[1][2] * a[2][0])
+            + a[0][2] * (a[1][0] * a[2][1] - a[1][1] * a[2][0])
+    };
+    let d = det(m);
+    if d.abs() < 1e-9 {
+        return None;
+    }
+    let mut out = [0.0; 3];
+    for (k, o) in out.iter_mut().enumerate() {
+        let mut t = m;
+        for (row, tv) in t.iter_mut().zip(v) {
+            row[k] = tv;
+        }
+        *o = det(t) / d;
+    }
+    Some(out)
+}
+
+/// Write each rectangle's fill (`0..=1`) into every plane of the masked
+/// pixels of the stored frame `raw`.
+fn fill_raw(layout: &RowLayout, raw: &mut [u8], rects: &[Rect], fills: &[Fill]) {
     let planes = match layout.planes {
         Planes::One => 1,
         _ => 3,
     };
     let sample = layout.sample;
-    let bytes: Vec<u8> = match sample {
-        Sample::U8 => vec![(level * 255.0).round().clamp(0.0, 255.0) as u8],
-        Sample::U16Le => ((level * 65535.0).round().clamp(0.0, 65535.0) as u16)
-            .to_le_bytes()
-            .to_vec(),
-        Sample::U16Be => ((level * 65535.0).round().clamp(0.0, 65535.0) as u16)
-            .to_be_bytes()
-            .to_vec(),
-        Sample::F32 => level.to_le_bytes().to_vec(),
+    let bytes = |level: f32| -> Vec<u8> {
+        match sample {
+            Sample::U8 => vec![(level * 255.0).round().clamp(0.0, 255.0) as u8],
+            Sample::U16Le => ((level * 65535.0).round().clamp(0.0, 65535.0) as u16)
+                .to_le_bytes()
+                .to_vec(),
+            Sample::U16Be => ((level * 65535.0).round().clamp(0.0, 65535.0) as u16)
+                .to_be_bytes()
+                .to_vec(),
+            Sample::F32 => level.to_le_bytes().to_vec(),
+        }
     };
     let step = sample.bytes();
-    for r in rects {
+    for (r, fill) in rects.iter().zip(fills) {
         for y in r.y0..r.y1.min(layout.height) {
             let sy = if layout.bottom_up {
                 layout.height - 1 - y
@@ -558,10 +753,11 @@ fn fill_raw(layout: &RowLayout, raw: &mut [u8], rects: &[Rect], level: f32) {
             };
             let row = sy * layout.stride;
             for x in r.x0..r.x1.min(layout.width) {
+                let b = bytes(fill.at(x, y));
                 for p in 0..planes {
                     let o = row + (x * planes + p) * step;
                     if let Some(dst) = raw.get_mut(o..o + step) {
-                        dst.copy_from_slice(&bytes);
+                        dst.copy_from_slice(&b);
                     }
                 }
             }
@@ -575,17 +771,25 @@ fn fill_raw(layout: &RowLayout, raw: &mut [u8], rects: &[Rect], level: f32) {
 pub struct MaskedSource<'a> {
     inner: &'a mut dyn FrameSource,
     rects: Vec<Rect>,
-    level: f32,
+    fills: Vec<Fill>,
     cache: crate::io::raw::DeviceCache,
 }
 
 impl<'a> MaskedSource<'a> {
     /// Wrap `inner`, flattening `rects` to `level`.
     pub fn new(inner: &'a mut dyn FrameSource, rects: Vec<Rect>, level: f32) -> Self {
+        let fills = rects.iter().map(|_| Fill::flat(level)).collect();
+        Self::with_fills(inner, rects, fills)
+    }
+
+    /// Wrap `inner`, filling each of `rects` with the matching entry of
+    /// `fills` (see [`fill_planes`]).
+    pub fn with_fills(inner: &'a mut dyn FrameSource, rects: Vec<Rect>, fills: Vec<Fill>) -> Self {
+        debug_assert_eq!(rects.len(), fills.len());
         Self {
             inner,
             rects,
-            level,
+            fills,
             cache: crate::io::raw::DeviceCache::default(),
         }
     }
@@ -606,10 +810,10 @@ impl FrameSource for MaskedSource<'_> {
     }
     fn read(&mut self, index: usize) -> Result<Frame> {
         let mut f = self.inner.read(index)?;
-        for r in &self.rects {
+        for (r, fill) in self.rects.iter().zip(&self.fills) {
             for y in r.y0..r.y1.min(f.height) {
                 for x in r.x0..r.x1.min(f.width) {
-                    f.data[y * f.width + x] = self.level;
+                    f.data[y * f.width + x] = fill.at(x, y);
                 }
             }
         }
@@ -654,7 +858,7 @@ impl SharedFrames for MaskedSource<'_> {
     fn read_raw(&self, index: usize, buf: &mut Vec<u8>) -> Result<()> {
         let inner = self.shared_inner()?;
         inner.read_raw(index, buf)?;
-        fill_raw(&inner.layout(), buf, &self.rects, self.level);
+        fill_raw(&inner.layout(), buf, &self.rects, &self.fills);
         Ok(())
     }
 }
@@ -779,6 +983,65 @@ mod tests {
             })
             .collect();
         assert_eq!(detect_overlay(&top).len(), 1);
+    }
+
+    #[test]
+    fn a_few_flickering_pixels_or_a_drifting_edge_are_not_text() {
+        let (w, h) = (320, 240);
+        // Three pixels flipping in the bottom strip (a hot pixel pair and a
+        // star), which the dilation grows to text size.
+        let flicker: Vec<Frame> = (0..8)
+            .map(|i| {
+                let mut f = Frame::zeros(w, h);
+                for x in [100, 103, 106] {
+                    f.data[(h - 10) * w + x] = if i % 2 == 0 { 1.0 } else { 0.0 };
+                }
+                f
+            })
+            .collect();
+        assert_eq!(detect_overlay(&flicker), Vec::<Rect>::new());
+        // A bright block whose top edge climbs 30 rows over the capture: many
+        // pixels change, but each crosses once, as a limb does.
+        let drift: Vec<Frame> = (0..8)
+            .map(|i| {
+                let mut f = Frame::zeros(w, h);
+                for y in (h - 4 * i - 2)..h {
+                    for x in 100..160 {
+                        f.data[y * w + x] = 1.0;
+                    }
+                }
+                f
+            })
+            .collect();
+        assert_eq!(detect_overlay(&drift), Vec::<Rect>::new());
+    }
+
+    #[test]
+    fn the_fill_follows_the_gradient_round_the_hole() {
+        // A sky that brightens to the right, a hole in it, a bright limb in
+        // one corner of the ring that the robust fit must ignore.
+        let (w, h) = (200, 100);
+        let sky = |x: usize| 0.1 + 0.002 * x as f32;
+        let mut data = vec![0.0; w * h];
+        for y in 0..h {
+            for x in 0..w {
+                data[y * w + x] = sky(x);
+            }
+        }
+        for y in 40..60 {
+            for x in 170..200 {
+                data[y * w + x] = 0.9;
+            }
+        }
+        let frames = vec![Frame::new(w, h, data).unwrap(); 3];
+        let hole = Rect::new(60, 40, 80, 20);
+        let fills = fill_planes(&frames, &[hole]);
+        for x in (60..140).step_by(10) {
+            let got = fills[0].at(x, 50);
+            assert!((got - sky(x)).abs() < 0.01, "x {x}: {got} vs {}", sky(x));
+        }
+        // Flat fill still serves a flat level.
+        assert!((Fill::flat(0.3).at(5, 5) - 0.3).abs() < 1e-9);
     }
 
     #[test]

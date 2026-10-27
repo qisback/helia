@@ -88,6 +88,7 @@ impl World {
             http: &self.http,
             fs: &self.fs,
             clock: &self.clock,
+            access: None,
         }
     }
 }
@@ -542,20 +543,39 @@ fn insecure_manifest_urls_are_refused() {
 }
 
 #[test]
-fn asset_on_another_host_is_refused() {
+fn asset_on_another_host_is_listed_but_never_downloaded() {
     let (k, w) = (KeyPair::generate().unwrap(), World::new());
     let mut d = doc("0.8.0", 5, 86_400);
     d.assets[0].url = "https://evil.example.net/app.AppImage".into();
     let b = json(&d);
     w.publish(&b, &sign(&k, &b));
+    let src = source(&[&k]);
     let r = check(
         &w,
-        &source(&[&k]),
+        &src,
         "0.7.1",
         &mut State::new("app", "stable"),
         CheckOptions::default(),
+    )
+    .expect("the signed manifest is accepted");
+    let Outcome::Available(u) = r else {
+        panic!("{r:?}")
+    };
+    let a = u
+        .asset(Platform::LinuxX86_64, &[Kind::Appimage])
+        .unwrap()
+        .clone();
+    let before = w.http.requests().len();
+    assert!(matches!(
+        w.updater()
+            .download(&src, &u, &a, Path::new("/s"), false, &mut |_, _| {}),
+        Err(Error::ForeignHost(_))
+    ));
+    assert_eq!(
+        w.http.requests().len(),
+        before,
+        "the host was never contacted"
     );
-    assert!(matches!(r, Err(Error::ForeignHost(_))), "{r:?}");
     // Look-alike hosts do not match: exact host only.
     for u in [
         "https://downloads.example.org.evil.net/a",
@@ -757,11 +777,15 @@ fn download_refuses_foreign_host_and_plain_http() {
 }
 
 #[test]
-fn placeholder_key_is_valid_but_verifies_nothing() {
+fn the_pinned_release_key_is_valid_and_rejects_other_signers() {
     let src = helia_update::helia::source("stable");
     src.validate(false).unwrap();
-    let placeholder = helia_update::helia::KEYS_ARE_PLACEHOLDER;
-    assert!(placeholder);
+    const { assert!(!helia_update::helia::KEYS_ARE_PLACEHOLDER) };
+    assert_eq!(
+        helia_update::helia::PINNED_KEYS,
+        ["RWQgIPQNjfglV5U0HSmFdRpTCMtwAuMrkaqgTANRv4KHD+ZRfen3Vw4J"]
+    );
+    // A key that is not the release key verifies nothing.
     let k = KeyPair::generate().unwrap();
     let b = json(&doc("0.8.0", 5, 86_400));
     assert!(verify_manifest(&src, &b, &sign(&k, &b), NOW, 0, false).is_err());
@@ -810,13 +834,11 @@ fn manifest_and_asset_hosts_are_separate_lists() {
     );
     assert!(t.validate(false).is_err());
     t.validate(true).unwrap();
-    // An asset on a manifest-only host is refused when the manifest is verified.
+    // An asset on a manifest-only host is accepted with the manifest; the download refuses it.
     let mut src = source(&[&k]).with_hosts(&[HOST], &["files.example.org"]);
     let b = json(&doc("0.8.0", 5, 86_400));
-    assert!(matches!(
-        verify_manifest(&src, &b, &sign(&k, &b), NOW, 0, false),
-        Err(Error::ForeignHost(_))
-    ));
+    assert!(verify_manifest(&src, &b, &sign(&k, &b), NOW, 0, false).is_ok());
+    assert!(!src.asset_host_allowed(&format!("https://{HOST}/x")));
     src.asset_hosts = vec![HOST.into()];
     assert!(verify_manifest(&src, &b, &sign(&k, &b), NOW, 0, false).is_ok());
 }

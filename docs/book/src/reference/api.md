@@ -2,7 +2,7 @@
 
 # API reference
 
-Solar lucky-imaging stacker. All paths are relative to the server's data root. Version 0.7.1 of the document; licence GPL-3.0-or-later.
+Solar lucky-imaging stacker. All paths are relative to the server's data root. Version 0.8.2 of the document; licence GPL-3.0-or-later.
 
 The narrative guide, with examples and the security model, is in [The API](../user-guide/api.md). The machine-readable document is [openapi.json](openapi.json), and a running server serves it at `/api/v1/openapi.json`.
 
@@ -24,6 +24,7 @@ All paths below are relative to `/api/v1`.
 | `bit_depth` | query | integer (int32) | no | Bits per sample instead of the SER header's. |
 | `endian` | query | string | no | `little` or `big`. |
 | `flip_rows` | query | boolean | no | Read the rows bottom to top. |
+| `row_order` | query | string | no | Row order of FITS frames: `auto` (default), `top-down` or `bottom-up`. |
 
 | Status | Meaning | Body |
 |---|---|---|
@@ -588,6 +589,7 @@ Liveness probe.
 | `endian` | string, may be null | no | `little` or `big`, instead of the SER header flag. |
 | `flip_rows` | boolean | no | Read the rows bottom to top. |
 | `path` | string | yes | Capture path relative to the data root. |
+| `row_order` | string, may be null | no | Row order of FITS frames: `auto` (default), `top-down` or `bottom-up`. |
 
 ### JobConfig
 
@@ -618,7 +620,7 @@ The same knobs as `helia stack`.
 | `disc_mask` | boolean | no | Fit the limb and place alignment points on the disc only. Default `true`. |
 | `edits` | array of object | no | Further edits, applied in order after `sharpen`: objects with an `op` of `unsharp`, `wavelet`, `deconvolve`, `denoise`, `levels`, `curve`, `crop`, `rotate`, `flip` or `resize` and that operation's parameters (see the sharpening and adjustments page of the user guide). Unset parameters take their defaults. Default `[]`. |
 | `endian` | string, may be null | no | Byte order of 16-bit samples instead of the SER header flag: `little` or `big`. SER only. |
-| `exclude` | array of [Region](#region) | no | Rectangles to keep alignment and scoring off. They are flattened in every frame and so are flat in the result. Burned-in timestamps are found automatically (see `detect_overlay`). Default `[]`. |
+| `exclude` | array of [Region](#region) | no | Rectangles to keep alignment and scoring off. They are filled in every frame from the sky around them, so no patch shows in the result. Burned-in timestamps are found automatically (see `detect_overlay`). Default `[]`. |
 | `field_rotation` | [FieldRotationConfig](#fieldrotationconfig) or null | no |  |
 | `flatten` | string, may be null | no | Flatten the disc's limb darkening before anything else: `model` (divide by the fitted law) or `profile` (divide by the measured azimuthal median). Outside the limb nothing changes. It runs first, so `sharpen` and `edits` see flat contrast. A capture with no clear disc is left as it is and `summary.limb_darkening` is absent. |
 | `flip_rows` | boolean | no | Read the rows bottom to top. SER only. Default `false`. |
@@ -635,6 +637,7 @@ The same knobs as `helia stack`.
 | `report` | boolean | no | Make the science report: the frame quality graphs (sorted and in capture order, with the keep threshold), the quality histogram, the global shift and drift and the seeing over the capture, as PNG with their data as CSV and JSON, and one self-contained HTML page. Turns the seeing probe on (about 120 more frames are read). The files are listed in `summary.report`; fetch them with `GET /jobs/{id}/report` and `GET /jobs/{id}/report/{file}`. Default `false`. |
 | `robust` | [RobustArg](#robustarg) or null | no |  |
 | `robust_k` | number (float), may be null | no | Threshold of `robust` in standard deviations. Default 2.5 for `sigma`, 1.345 for `huber`, 2 for `winsor`. |
+| `row_order` | string, may be null | no | Row order of FITS frames: `auto` (default), `top-down` or `bottom-up`. `auto` follows a `ROWORDER` card, else Seestar S50 frames are top-down and all others bottom-up. |
 | `seeing` | boolean | no | Estimate the seeing from the capture (`summary.seeing`): the Fried parameter from the spectral ratio, which needs `aperture_mm`, and a relative alignment point motion index. Default `false`. |
 | `sharpen` | string, may be null | no | Sharpening of the stack: `wavelet` (Registax-style layers, the usual choice), `unsharp`, `rl` (Richardson-Lucy) or `none`, with the recommended values of the filter in force. Absent: `none`. It runs first, on the mono image, before `edits` and before any colour. |
 | `sharpen_fits` | boolean | no | Apply `sharpen` and `edits` to FITS output too. By default a FITS file is the unsharpened stack. Default `false`. |

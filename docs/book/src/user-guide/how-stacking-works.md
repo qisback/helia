@@ -412,11 +412,16 @@ to align on at all. Before it scores anything, Helia therefore:
 
 * **Finds burned-in text.** It looks at about 16 frames spread over the capture
   for pixels that flip between white and dark, in a small area at a frame edge.
-  The unchanging part of the same line (the date) is added to it. The area is
-  then replaced by one flat level, the median of the pixels around it, in every
-  frame, so that scoring, global alignment, alignment points and the stack all
-  agree. A timestamp therefore disappears from the result instead of being
-  smeared. Switch this off with `--no-overlay-detect`.
+  A region counts as text only with enough such pixels (at least 40) that flip
+  often (at least twice each over the sample, as changing digits do; a limb that
+  drifts crosses a pixel about once). A few flickering pixels near the limb are
+  therefore not text. The unchanging part of the same line (the date) is added
+  to it. The area is then replaced, in every frame, by the plane that best fits
+  the pixels in a 12 pixel ring around it (the sky, with its scattered-light
+  gradient, ignoring a bright limb in the ring), so that scoring, global
+  alignment, alignment points and the stack all agree. A timestamp therefore
+  disappears from the result instead of being smeared, and leaves no dark bar
+  against the halo. Switch this off with `--no-overlay-detect`.
 * **Fits the limb.** A circle is fitted to the steepest edge between sky and
   disc on the reference image. The fit ignores points that disagree with the
   circle (a prominence, a flare) and works when the frame cuts off part of the
@@ -429,7 +434,7 @@ to align on at all. Before it scores anything, Helia therefore:
   `exclude` list of an API job, and the *Exclude regions* list in the app
   keep anything else out: a logo, a stray label, a hot pixel cluster. No
   alignment point window may overlap such a rectangle, and like detected text
-  the area is flat in the result.
+  the area is filled from the sky around it.
 
 ## 5. Stacking
 

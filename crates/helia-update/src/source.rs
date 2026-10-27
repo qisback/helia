@@ -9,7 +9,7 @@ use crate::manifest::{check_url, url_host};
 use crate::verify::parse_public_key;
 
 /// An update source. The same type serves Helia, Valerian, Annora, plugins and
-/// closed add-ons: each has its own manifest URL and its own pinned keys.
+/// add-ons: each has its own manifest URL and its own pinned keys.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct UpdateSource {
     /// App (or plugin) name as written in the manifest, for example `helia`.

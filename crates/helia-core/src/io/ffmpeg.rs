@@ -174,17 +174,70 @@ fn version_line(program: &Path) -> std::result::Result<String, FfmpegError> {
         .to_owned())
 }
 
+/// Copies of the programs that the user had installed through the application.
+#[derive(Clone, Debug, Default, PartialEq, Eq)]
+pub struct InstalledPrograms {
+    /// The installed `ffmpeg`, if any.
+    pub ffmpeg: Option<PathBuf>,
+    /// The installed `ffprobe`, if any.
+    pub ffprobe: Option<PathBuf>,
+}
+
+static INSTALLED_LOCATOR: OnceLock<fn() -> InstalledPrograms> = OnceLock::new();
+
+/// Register the function that finds programs installed through the application
+/// (`helia tools install ffmpeg` or the install button). The core stays free of the
+/// installer: each front end passes its own lookup once at start-up. [`Tools::locate`]
+/// asks it on every call, so an install made while the program runs is seen at once.
+/// A second registration is ignored.
+pub fn set_installed_locator(locate: fn() -> InstalledPrograms) {
+    let _ = INSTALLED_LOCATOR.set(locate);
+}
+
+/// Where the programs come from, in the order [`Tools::locate`] tries.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Source {
+    /// `HELIA_FFMPEG` / `HELIA_FFPROBE`.
+    Environment,
+    /// A copy installed through the application.
+    Installed,
+    /// The `PATH`.
+    Path,
+}
+
 impl Tools {
-    /// Find `ffmpeg` and `ffprobe` from the environment.
+    /// Find `ffmpeg` and `ffprobe`: the environment variables first, then a copy installed
+    /// through the application, then the `PATH`.
     ///
     /// # Errors
     /// [`FfmpegError::NotFound`] or [`FfmpegError::TooOld`].
     pub fn locate() -> std::result::Result<Self, FfmpegError> {
+        let installed = INSTALLED_LOCATOR.get().map(|f| f()).unwrap_or_default();
         Self::locate_with(
-            std::env::var_os(ENV_FFMPEG),
-            std::env::var_os(ENV_FFPROBE),
+            std::env::var_os(ENV_FFMPEG)
+                .filter(|v| !v.is_empty())
+                .or_else(|| installed.ffmpeg.map(PathBuf::into_os_string)),
+            std::env::var_os(ENV_FFPROBE)
+                .filter(|v| !v.is_empty())
+                .or_else(|| installed.ffprobe.map(PathBuf::into_os_string)),
             std::env::var_os("PATH"),
         )
+    }
+
+    /// Where [`Self::locate`] takes `ffmpeg` from right now, or `None` when it is nowhere.
+    #[must_use]
+    pub fn source_of_ffmpeg() -> Option<Source> {
+        if std::env::var_os(ENV_FFMPEG).is_some_and(|v| !v.is_empty()) {
+            return Some(Source::Environment);
+        }
+        if INSTALLED_LOCATOR
+            .get()
+            .is_some_and(|f| f().ffmpeg.is_some())
+        {
+            return Some(Source::Installed);
+        }
+        let path = std::env::var_os("PATH")?;
+        find_in_path("ffmpeg", &path).map(|_| Source::Path)
     }
 
     /// [`Self::locate`] with the environment given explicitly.

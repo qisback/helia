@@ -1,0 +1,18 @@
+FFmpeg from your system's package manager
+
+Helia does not download this. Your package manager downloads and installs FFmpeg from your
+distribution's own software repository (or from Homebrew), under that repository's rules. Helia
+runs the one command shown, with your permission and nothing else. If the command needs
+administrator rights, your system asks you for your password; Helia never sees it.
+
+FFmpeg is free software. Depending on how your distribution built it, it is licensed under the
+GNU Lesser General Public License (version 2.1 or later, or version 3 or later) or under the GNU
+General Public License (version 2 or later, or version 3 or later). Your package manager shows
+the exact licence of the package it installs, for example with `apt show ffmpeg`,
+`dnf info ffmpeg-free`, `pacman -Si ffmpeg` or `brew info ffmpeg`. The source code is available
+from the same repository and from https://ffmpeg.org/download.html.
+
+Some video formats are covered by patents in some countries. Whether that affects you is a matter
+between you and the people who supply the package, not Helia.
+
+Helia is not affiliated with FFmpeg or with your distribution.

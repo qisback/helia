@@ -104,6 +104,13 @@ pub enum Error {
         "these update details use format {0}, which this version cannot read; update the app by hand"
     )]
     SchemaTooNew(u32),
+    /// The download server refused the download, or a backend declined it. The text
+    /// says what happened, why and what to do.
+    #[error("{0}")]
+    Refused(String),
+    /// A backend could not do what it was asked. The text says what and why.
+    #[error("{0}")]
+    Backend(String),
     /// Installing the update failed; the text says what and what was left alone.
     #[error("could not install the update: {0}")]
     Apply(String),

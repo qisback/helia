@@ -73,7 +73,7 @@ a console program.
 To install for a whole lab without the pages, from a terminal:
 
 ```powershell
-.\helia-0.7.1-x86_64-pc-windows-msvc-setup.exe /S /ADDPATH /DESKTOP
+.\helia-0.8.2-x86_64-pc-windows-msvc-setup.exe /S /ADDPATH /DESKTOP
 ```
 
 The switches are `/S` (silent), `/AllUsers` (needs an administrator), `/ADDPATH`,
@@ -111,7 +111,7 @@ If you prefer no installer, unzip the `.zip` anywhere and run `helia-gui.exe`.
 ### Debian, Ubuntu and Raspberry Pi OS
 
 ```sh
-sudo apt install ./helia_0.7.1_amd64.deb      # arm64 on a Raspberry Pi
+sudo apt install ./helia_0.8.2_amd64.deb      # arm64 on a Raspberry Pi
 ```
 
 (`apt install ./file.deb` also pulls in the packages Helia recommends, such as
@@ -145,7 +145,7 @@ package keeps no configuration. Your settings are in `~/.config/helia`.)
 ### Fedora and other RPM systems
 
 ```sh
-sudo dnf install ./helia-0.7.1-1.x86_64.rpm   # aarch64 on ARM
+sudo dnf install ./helia-0.8.2-1.x86_64.rpm   # aarch64 on ARM
 ```
 
 It installs the same files in the same places, and the troubleshooting notes
@@ -160,12 +160,12 @@ has. It has not been installed on a Fedora machine by the project's own tests
 One file, no installation, runs on most Linux desktops:
 
 ```sh
-chmod +x Helia-0.7.1-x86_64.AppImage
-./Helia-0.7.1-x86_64.AppImage                  # the app
-./Helia-0.7.1-x86_64.AppImage --cli --version  # the command line tool
+chmod +x Helia-0.8.2-x86_64.AppImage
+./Helia-0.8.2-x86_64.AppImage                  # the app
+./Helia-0.8.2-x86_64.AppImage --cli --version  # the command line tool
 ```
 
-Pass a capture to open it: `./Helia-0.7.1-x86_64.AppImage capture.ser`. If it
+Pass a capture to open it: `./Helia-0.8.2-x86_64.AppImage capture.ser`. If it
 says it cannot mount itself, your system lacks FUSE; run it with
 `APPIMAGE_EXTRACT_AND_RUN=1` or install `libfuse2`. An AppImage does not add a
 menu entry by itself; tools such as AppImageLauncher do that, or copy the
@@ -181,7 +181,7 @@ menu entry by itself; tools such as AppImageLauncher do that, or copy the
   `noexec`, which stops AppImages and extracted copies. Put the file in a folder
   that is not mounted that way.
 * The command line tool is the same file with `--cli` first:
-  `./Helia-0.7.1-x86_64.AppImage --cli stack capture.ser -o out.tif`.
+  `./Helia-0.8.2-x86_64.AppImage --cli stack capture.ser -o out.tif`.
 * Open with is not set up: an AppImage does not register file types. Pass the capture
   on the command line, or integrate the AppImage with a tool such as AppImageLauncher.
 
@@ -267,6 +267,8 @@ not: Helia never bundles or links ffmpeg, and without it those files are refused
 with a message that says how to install it.
 
 You need `ffmpeg` and `ffprobe` (they come together) at **version 4.4 or newer**.
+
+**The easy way:** run `helia tools install ffmpeg` (or press **Install ffmpeg** when Helia asks). Helia shows the provider and the full licence, waits for your `yes`, then fetches ffmpeg from the provider into your own folder. Nothing installs without that. See [Optional tools](optional-tools.md). Or install it yourself:
 
 | System | Install |
 |---|---|

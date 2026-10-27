@@ -21,6 +21,10 @@ if [ -n "${GIT_CONFIG_GLOBAL:-}" ] && [ -f "$GIT_CONFIG_GLOBAL" ]; then
   extra+=(-v "$GIT_CONFIG_GLOBAL:/ci-gitconfig:ro" -e GIT_CONFIG_GLOBAL=/ci-gitconfig -e CARGO_NET_GIT_FETCH_WITH_CLI=true)
 fi
 run() { docker run --rm --user "$(id -u):$(id -g)" -e HOME=/ci-home -v "$home:/ci-home" \
-          -v "$PWD:/work" -w /work -e RUST_VERSION -e CARGO_TERM_COLOR=never "${extra[@]}" "$img" "$@"; }
+          -v "$PWD:/work" -w /work -e RUST_VERSION -e CARGO_TERM_COLOR=never -e HELIA_UPDATE_BACKEND_URL -e HELIA_UPDATE_ASSET_HOSTS "${extra[@]}" "$img" "$@"; }
 docker run --rm "$img" ldd --version | sed -n 1p
+# An official build adds the closed store crate (checked out in .store-src) before building.
+if [ -f .store-src/Cargo.toml ]; then
+  run bash -c 'packaging/setup-rust.sh >/dev/null && export PATH=$HOME/.cargo/bin:$PATH RUSTUP_TOOLCHAIN=$RUST_VERSION && cargo run -q --release --manifest-path .store-src/tools/overlay/Cargo.toml -- "$PWD" --store-dir "$PWD/.store-src"'
+fi
 run bash -c 'packaging/setup-rust.sh >/dev/null && export PATH=$HOME/.cargo/bin:$PATH RUSTUP_TOOLCHAIN=$RUST_VERSION && cargo build --release --locked "$@"' _ "$@"

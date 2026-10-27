@@ -41,7 +41,7 @@ use crate::io::fits::{
 };
 use crate::io::raw::{DeviceCache, Planes, RowLayout, Sample, SharedFrames, pread_exact};
 use crate::io::solarnet::unix_from_iso;
-use crate::io::source::FrameSource;
+use crate::io::source::{FrameSource, RowOrder};
 
 const BLOCK: u64 = 2880;
 /// Axes read from one header before it is refused.
@@ -73,10 +73,70 @@ pub struct Hdu {
     pub bayerpat: Option<String>,
     /// `ROWORDER` as written.
     pub roworder: Option<String>,
+    /// `INSTRUME` as written.
+    pub instrument: Option<String>,
+    /// `TELESCOP` as written.
+    pub telescope: Option<String>,
     /// The first of `DATE-AVG`, `DATE-OBS`, `DATE-BEG` this unit's header has.
     pub date: Option<String>,
     /// `EXPTIME`, else `EXPOSURE`, in seconds.
     pub exposure_s: Option<f64>,
+    /// Where the camera pointed and stood, when the header says.
+    pub pointing: Option<Pointing>,
+}
+
+/// Where a FITS frame was taken and what it points at, from `RA`, `DEC`,
+/// `SITELAT`, `SITELONG` and `EQMODE` (the keywords of a Seestar sub). The
+/// field rotation of an altazimuth mount follows from these and the time.
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct Pointing {
+    /// `RA`, degrees.
+    pub ra_deg: f64,
+    /// `DEC`, degrees.
+    pub dec_deg: f64,
+    /// `SITELAT`, degrees north, when given.
+    pub site_lat_deg: Option<f64>,
+    /// `SITELONG`, degrees east, when given.
+    pub site_lon_deg: Option<f64>,
+    /// `EQMODE`: `Some(0)` is an altazimuth mount, `Some(1)` an equatorial one.
+    pub eqmode: Option<i64>,
+}
+
+impl Pointing {
+    /// The observing site, when the header gave both coordinates.
+    #[must_use]
+    pub fn site(&self) -> Option<crate::io::solarnet::Site> {
+        Some(crate::io::solarnet::Site {
+            lat_deg: self.site_lat_deg?,
+            lon_deg: self.site_lon_deg?,
+            alt_m: 0.0,
+        })
+    }
+
+    /// The frames turn with the sky: an altazimuth mount.
+    #[must_use]
+    pub fn is_altazimuth(&self) -> bool {
+        self.eqmode == Some(0)
+    }
+}
+
+fn pointing_of(pick: &dyn Fn(&str) -> Option<String>) -> Option<Pointing> {
+    let num = |k: &str| {
+        pick(k)
+            .and_then(|v| v.trim().parse::<f64>().ok())
+            .filter(|v| v.is_finite())
+    };
+    let (ra_deg, dec_deg) = (num("RA")?, num("DEC")?);
+    if !(0.0..=360.0).contains(&ra_deg) || !(-90.0..=90.0).contains(&dec_deg) {
+        return None;
+    }
+    Some(Pointing {
+        ra_deg,
+        dec_deg,
+        site_lat_deg: num("SITELAT").filter(|v| v.abs() <= 90.0),
+        site_lon_deg: num("SITELONG").filter(|v| v.abs() <= 360.0),
+        eqmode: pick("EQMODE").and_then(|v| v.trim().parse().ok()),
+    })
 }
 
 impl Hdu {
@@ -196,11 +256,14 @@ pub fn scan_hdus<R: Read + Seek>(mut r: R) -> std::result::Result<Vec<Hdu>, Fits
                 bscale: float_or(&map, "BSCALE", 1.0),
                 bayerpat: pick("BAYERPAT"),
                 roworder: pick("ROWORDER"),
+                instrument: pick("INSTRUME"),
+                telescope: pick("TELESCOP"),
                 date: date_of(&map),
                 exposure_s: ["EXPTIME", "EXPOSURE"]
                     .iter()
                     .find_map(|k| pick(k).and_then(|v| v.parse::<f64>().ok()))
                     .filter(|e| e.is_finite() && *e > 0.0),
+                pointing: pointing_of(&pick),
             });
         }
         pos = data_start + data_len.div_ceil(BLOCK) * BLOCK;
@@ -384,6 +447,8 @@ pub struct Scan {
     /// The first stored row is the bottom of the image (the rows are flipped
     /// on reading).
     pub bottom_up: bool,
+    /// Why the rows are read that way.
+    pub row_rule: RowRule,
     /// The files were put in `DATE-OBS` order (else by name).
     pub by_time: bool,
     /// Time of each frame, unix seconds UTC, where the header gives one.
@@ -396,7 +461,60 @@ pub struct Scan {
     pub exposure_s: Option<f64>,
     /// Files that hold more than one frame (cubes, extensions).
     pub multi_frame_files: usize,
+    /// What the first frame's header says it points at and where it stood.
+    pub pointing: Option<Pointing>,
     items: Vec<Item>,
+}
+
+/// Why the rows of a FITS capture are read bottom-up or top-down.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum RowRule {
+    /// The user asked for it (`--row-order`).
+    Requested,
+    /// The header's `ROWORDER` card.
+    Card,
+    /// A Seestar S50 header (`INSTRUME` or `TELESCOP` names an S50) with no
+    /// `ROWORDER` card: the camera stores the top row first.
+    Seestar,
+    /// No card and not a Seestar: the FITS standard's bottom-up order.
+    Standard,
+}
+
+impl RowRule {
+    /// A short phrase for tables.
+    #[must_use]
+    pub fn label(self) -> &'static str {
+        match self {
+            Self::Requested => "requested with --row-order",
+            Self::Card => "ROWORDER card",
+            Self::Seestar => "Seestar S50 header, stored top row first",
+            Self::Standard => "no ROWORDER card, so bottom-up as the FITS standard says",
+        }
+    }
+}
+
+/// Seestar S50 frames name the camera in `INSTRUME` ("Seestar S50") and the
+/// unit in `TELESCOP` ("S50_" and a serial).
+fn is_seestar_s50(h: &Hdu) -> bool {
+    [&h.instrument, &h.telescope]
+        .into_iter()
+        .flatten()
+        .any(|v| v.to_ascii_uppercase().contains("S50"))
+}
+
+/// Whether frame header `h` is stored bottom-up, and why.
+fn resolve_rows(h: &Hdu, order: RowOrder) -> (bool, RowRule) {
+    match order {
+        RowOrder::TopDown => return (false, RowRule::Requested),
+        RowOrder::BottomUp => return (true, RowRule::Requested),
+        RowOrder::Auto => {}
+    }
+    match h.roworder.as_deref().map(|r| r.trim().to_ascii_uppercase()) {
+        Some(r) if r == "TOP-DOWN" => (false, RowRule::Card),
+        Some(r) if r == "BOTTOM-UP" => (true, RowRule::Card),
+        _ if is_seestar_s50(h) => (false, RowRule::Seestar),
+        _ => (true, RowRule::Standard),
+    }
 }
 
 fn flip_pattern(p: BayerPattern) -> BayerPattern {
@@ -422,6 +540,14 @@ impl Scan {
     /// I/O failure, a file that is not valid FITS, frames of different sizes
     /// or mosaic patterns, or no frames at all. The message says which file.
     pub fn read(path: &Path) -> Result<Self> {
+        Self::read_with(path, RowOrder::Auto)
+    }
+
+    /// As [`Scan::read`], with the row order the user asked for.
+    ///
+    /// # Errors
+    /// As [`Scan::read`].
+    pub fn read_with(path: &Path, order: RowOrder) -> Result<Self> {
         let mut found: Vec<(PathBuf, Vec<Hdu>)> = Vec::new();
         for f in expand(path)? {
             let file = File::open(&f)?;
@@ -456,10 +582,7 @@ impl Scan {
         let first = found[0].1[0].clone();
         let first = &first;
         let (width, height) = (first.width, first.height);
-        let bottom_up = !first
-            .roworder
-            .as_deref()
-            .is_some_and(|r| r.trim().eq_ignore_ascii_case("TOP-DOWN"));
+        let (bottom_up, row_rule) = resolve_rows(first, order);
         let mosaic = |h: &Hdu| {
             bayer_pattern(&BTreeMap::from_iter(
                 h.bayerpat
@@ -485,10 +608,7 @@ impl Scan {
                         name_of(&found[0].0)
                     )));
                 }
-                let order_up = !h
-                    .roworder
-                    .as_deref()
-                    .is_some_and(|r| r.trim().eq_ignore_ascii_case("TOP-DOWN"));
+                let order_up = resolve_rows(h, order).0;
                 if mosaic(h) != pattern || order_up != bottom_up {
                     return Err(Error::Invalid(format!(
                         "the frames disagree on their Bayer pattern or ROWORDER: {} has BAYERPAT {} and ROWORDER {}, but {} has BAYERPAT {} and ROWORDER {}; stack frames from one camera setup",
@@ -541,12 +661,14 @@ impl Scan {
             bayerpat: first.bayerpat.clone(),
             roworder: first.roworder.clone(),
             bottom_up,
+            row_rule,
             by_time,
             times: frame_times,
             first_date,
             last_date,
             exposure_s: first.exposure_s,
             multi_frame_files: multi,
+            pointing: first.pointing,
             items,
         })
     }
@@ -958,6 +1080,142 @@ mod tests {
             Scan::read(&d.file("c.fit")).expect("scan").read_pattern(),
             Some(BayerPattern::Rggb)
         );
+    }
+
+    fn flipped(f: &Frame) -> Vec<f32> {
+        f.data
+            .chunks(f.width)
+            .rev()
+            .flat_map(<[f32]>::to_vec)
+            .collect()
+    }
+
+    /// The writer stores the bottom row first, so `flipped` is the file as stored.
+    /// Rows as `Scan::read_with` hands them to the reader.
+    fn read_rows(path: &Path, order: RowOrder) -> (Scan, Vec<f32>) {
+        let scan = Scan::read_with(path, order).unwrap_or_else(|e| panic!("{e}"));
+        let mut src = scan.clone().into_source(scan.read_pattern());
+        let f = src.read(0).unwrap_or_else(|e| panic!("{e}"));
+        (scan, f.data)
+    }
+
+    #[test]
+    fn row_order_auto_reads_seestar_top_down_and_the_rest_bottom_up() {
+        let d = TempDir::new("roworder");
+        let f = frame(16, 10, 5);
+        let seestar = [
+            HeaderCard::string("INSTRUME", "Seestar S50", ""),
+            HeaderCard::string("TELESCOP", "S50_64dbf865", ""),
+            HeaderCard::string("BAYERPAT", "GRBG", ""),
+        ];
+        write(&d.file("s.fit"), &f, FitsFormat::Float32, &seestar);
+        // A Seestar header with no ROWORDER card: nothing is flipped.
+        let (scan, got) = read_rows(&d.file("s.fit"), RowOrder::Auto);
+        assert!(!scan.bottom_up);
+        assert_eq!(scan.row_rule, RowRule::Seestar);
+        assert_eq!(scan.read_pattern(), Some(BayerPattern::Grbg));
+        assert_eq!(got, flipped(&f));
+        // Only the telescope name says S50: same result.
+        write(
+            &d.file("t.fit"),
+            &f,
+            FitsFormat::Float32,
+            &[HeaderCard::string("TELESCOP", "S50_0123abcd", "")],
+        );
+        let (scan, got) = read_rows(&d.file("t.fit"), RowOrder::Auto);
+        assert_eq!((scan.bottom_up, scan.row_rule), (false, RowRule::Seestar));
+        assert_eq!(got, flipped(&f));
+        // Any other camera: bottom-up per the FITS standard, rows flipped.
+        write(
+            &d.file("o.fit"),
+            &f,
+            FitsFormat::Float32,
+            &[HeaderCard::string("INSTRUME", "ZWO ASI533MC", "")],
+        );
+        let (scan, got) = read_rows(&d.file("o.fit"), RowOrder::Auto);
+        assert_eq!((scan.bottom_up, scan.row_rule), (true, RowRule::Standard));
+        assert_eq!(got, f.data);
+        // No camera named at all is the same.
+        write(&d.file("n.fit"), &f, FitsFormat::Float32, &[]);
+        let (scan, got) = read_rows(&d.file("n.fit"), RowOrder::Auto);
+        assert!(scan.bottom_up);
+        assert_eq!(got, f.data);
+    }
+
+    #[test]
+    fn row_order_card_beats_the_seestar_rule_and_explicit_values_beat_both() {
+        let d = TempDir::new("roworder2");
+        let f = frame(16, 10, 6);
+        let seestar = |order: &str| {
+            vec![
+                HeaderCard::string("INSTRUME", "Seestar S50", ""),
+                HeaderCard::string("ROWORDER", order, ""),
+            ]
+        };
+        // The card wins in auto, either way.
+        write(
+            &d.file("up.fit"),
+            &f,
+            FitsFormat::Float32,
+            &seestar("BOTTOM-UP"),
+        );
+        let (scan, got) = read_rows(&d.file("up.fit"), RowOrder::Auto);
+        assert_eq!((scan.bottom_up, scan.row_rule), (true, RowRule::Card));
+        assert_eq!(got, f.data);
+        write(
+            &d.file("down.fit"),
+            &f,
+            FitsFormat::Float32,
+            &[
+                HeaderCard::string("INSTRUME", "ZWO ASI533MC", ""),
+                HeaderCard::string("ROWORDER", "top-down", ""),
+            ],
+        );
+        let (scan, got) = read_rows(&d.file("down.fit"), RowOrder::Auto);
+        assert_eq!((scan.bottom_up, scan.row_rule), (false, RowRule::Card));
+        assert_eq!(got, flipped(&f));
+        // An explicit value overrides the card, the Seestar rule and the standard.
+        let (scan, got) = read_rows(&d.file("up.fit"), RowOrder::TopDown);
+        assert_eq!((scan.bottom_up, scan.row_rule), (false, RowRule::Requested));
+        assert_eq!(got, flipped(&f));
+        let (scan, got) = read_rows(&d.file("down.fit"), RowOrder::BottomUp);
+        assert_eq!((scan.bottom_up, scan.row_rule), (true, RowRule::Requested));
+        assert_eq!(got, f.data);
+        write(
+            &d.file("s.fit"),
+            &f,
+            FitsFormat::Float32,
+            &[HeaderCard::string("INSTRUME", "Seestar S50", "")],
+        );
+        let (_, got) = read_rows(&d.file("s.fit"), RowOrder::BottomUp);
+        assert_eq!(got, f.data);
+        write(&d.file("n.fit"), &f, FitsFormat::Float32, &[]);
+        let (_, got) = read_rows(&d.file("n.fit"), RowOrder::TopDown);
+        assert_eq!(got, flipped(&f));
+        // An unrecognised card is ignored, so the Seestar rule still applies.
+        write(
+            &d.file("odd.fit"),
+            &f,
+            FitsFormat::Float32,
+            &seestar("SIDEWAYS"),
+        );
+        let (scan, _) = read_rows(&d.file("odd.fit"), RowOrder::Auto);
+        assert_eq!((scan.bottom_up, scan.row_rule), (false, RowRule::Seestar));
+        assert!(scan.roworder_unrecognised());
+    }
+
+    #[test]
+    fn row_order_parses_the_words_the_cli_and_api_use() {
+        for (s, want) in [
+            ("auto", RowOrder::Auto),
+            ("Top-Down", RowOrder::TopDown),
+            ("bottom-up", RowOrder::BottomUp),
+        ] {
+            assert_eq!(s.parse::<RowOrder>().expect("parse"), want);
+            assert_eq!(want.label().parse::<RowOrder>().expect("label"), want);
+        }
+        let err = "sideways".parse::<RowOrder>().expect_err("unknown");
+        assert!(err.to_string().contains("auto, top-down or bottom-up"));
     }
 
     #[test]

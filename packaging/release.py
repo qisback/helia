@@ -154,6 +154,7 @@ def short_changes(body):
             groups.setdefault(cur or "Changed", []).append(re.sub(r"^[-*]\s+", "", line))
         elif cur is not None and line.strip() and groups[cur] and line[0] in " \t":
             groups[cur][-1] += " " + line.strip()
+    groups.pop("Summary", None)  # the public Summary is not part of the forge notes
     names = [n for n in SECTION_ORDER if groups.get(n)] + [n for n in groups if n not in SECTION_ORDER and groups[n]]
     out = []
     for n in names:
@@ -202,8 +203,27 @@ def build_notes(version, tag, date, body, server, repo, macos=False):
     return "\n".join(out).replace("\n\n\n", "\n\n")
 
 
+def notes_with_macos(body):
+    """Release notes that list the macOS dmg: add its table row, drop the "no macOS build" line.
+
+    Everything else (changes, sums block, links) is left as written, so it is safe to run twice.
+    """
+    row = "| %s | %s |" % MACOS_ROW
+    if row not in body:
+        lines = body.split(chr(10))
+        at = max((i for i, l in enumerate(lines) if l.startswith("| ") and "Platform" not in l and "---" not in l), default=None)
+        if at is not None:
+            lines.insert(at + 1, row)
+        body = chr(10).join(lines)
+    body = body.replace(NO_MACOS + chr(10) + chr(10), "").replace(NO_MACOS + chr(10), "").replace(NO_MACOS, "")
+    return body
+
+
 def cmd_notes(a):
     body, date = changelog_entry(a.changelog, a.version)
+    if not re.search(r"(?m)^###\s+Summary\s*$", body):
+        die(f"CHANGELOG.md section {a.version} has no '### Summary' block: write 3 to 6 plain-English bullets for users "
+            "(what is new, what is fixed, anything they must do) before releasing; it becomes the public changelog entry")
     date = date or datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d")
     pathlib.Path(a.out).write_text(build_notes(a.version, a.tag, date, body, a.server, a.repo, a.macos), encoding="utf-8")
     print(f"wrote {a.out}")
@@ -340,6 +360,13 @@ def cmd_attach(a):
     for p in files:
         sums[p.name] = hashlib.sha256(p.read_bytes()).hexdigest()
         upload(p)
+    if any(p.name.endswith(".dmg") for p in files):
+        body = release.get("body") or ""
+        listed = notes_with_macos(body)
+        if listed != body:
+            forge.call("PATCH", f"/releases/{release['id']}", body={"body": listed})
+            release["body"] = listed
+            print("release notes now list the macOS dmg")
     out = pathlib.Path(a.assets) / "SHA256SUMS"
     out.write_text("".join(f"{sums[n]}  {n}"+chr(10) for n in sorted(sums)), encoding="utf-8")
     upload(out)
@@ -368,9 +395,11 @@ def cmd_probe(a):
 # ---------------------------------------------------------------------------------------------
 
 UPDATE_APP = "helia"
-# 0.8.0 hosting is the fallback: files at the GitHub release URLs, manifest on 12hobbies.studio.
-# R2 later: pass --base-url https://downloads.12hobbies.studio/<app>/<version>/ and the matching --floor-url.
-UPDATE_ASSET_BASE = "https://github.com/qisback/{app}/releases/download/v{version}/"
+# Installers are sold on 12hobbies.studio; the GitHub copy is source-only. The manifest's asset URLs
+# therefore point at the paid-download location, which the release workflow passes with --base-url
+# (repository variable UPDATE_ASSET_BASE, or the address its store tooling works out). There is no default.
+# An asset base on one of these hosts would hand out installers publicly: the release refuses it.
+PUBLIC_ASSET_HOST_MARKERS = ("github.com", "githubusercontent.com", "gitlab.com", "bitbucket.org", "sourceforge.net")
 UPDATE_FLOOR_URL = "https://12hobbies.studio/updates/{app}/{channel}/manifest.json"
 DEFAULT_EXPIRES_DAYS = 120
 # Platforms and kinds a manifest must carry unless --allow-missing is given.
@@ -464,6 +493,18 @@ def facts_from_release(forge, tag):
             for a in rel.get("assets", []) if a["name"] in sums]
 
 
+def refuse_public_asset_base(base):
+    """Installers are paid for: never publish a manifest that points at a public code host."""
+    host = (urllib.parse.urlsplit(base).hostname or "").lower()
+    if any(host == m or host.endswith("." + m) for m in PUBLIC_ASSET_HOST_MARKERS) or "/releases/download/" in base:
+        die(f"the asset base {base} is a public code host.\n"
+            "  What: the manifest would point updates at installers on a public release page.\n"
+            "  Why: installers are sold on 12hobbies.studio and the GitHub copy of a release is source-only, "
+            "so nothing here may link to an installer there.\n"
+            "  What to do: give the address of the paid-download location with --base-url "
+            "(the release workflow passes the repository variable UPDATE_ASSET_BASE).")
+
+
 def build_manifest(app, channel, version, date, sequence, expires, min_supported, notes_url, base_url, facts):
     """The manifest dict, field order as helia-manifest writes it. Unknown files are left out."""
     assets = []
@@ -546,7 +587,13 @@ def cmd_manifest(a):
             time.sleep(60)
     now = parse_stamp(a.date) if a.date else int(datetime.datetime.now(datetime.timezone.utc).timestamp())
     channels = a.channels.split(",") if a.channels else channels_for(version)
-    base = (a.base_url or UPDATE_ASSET_BASE.format(app=a.app, version=version)).rstrip("/") + "/"
+    if not a.base_url:
+        die("no asset base was given.\n"
+            "  What: the manifest needs the address its installer files are served from.\n"
+            "  Why: installers are sold on 12hobbies.studio, so there is no public default to fall back on.\n"
+            "  What to do: pass --base-url (the release workflow passes the repository variable UPDATE_ASSET_BASE).")
+    base = a.base_url.replace("{version}", version).replace("{tag}", a.tag or f"v{version}").rstrip("/") + "/"
+    refuse_public_asset_base(base)
     notes_url = a.notes_url if a.notes_url is not None else None
     for channel in channels:
         seq = a.sequence if a.sequence else now
@@ -750,7 +797,7 @@ def add_manifest_parsers(sub):
     m.add_argument("--repo", default="")
     m.add_argument("--assets-dir", default="", help="hash the files in this directory instead of reading the release")
     m.add_argument("--out", default="dist/update")
-    m.add_argument("--base-url", default="", help=f"URL prefix of the asset files (default {UPDATE_ASSET_BASE})")
+    m.add_argument("--base-url", default="", help="URL prefix of the asset files, required; may contain {version} and {tag}; a GitHub address is refused")
     m.add_argument("--notes-url", default=None)
     m.add_argument("--channels", default="", help="comma list; default from the version")
     m.add_argument("--expires-days", type=int, default=DEFAULT_EXPIRES_DAYS)

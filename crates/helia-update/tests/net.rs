@@ -182,6 +182,7 @@ fn check(srv: &Server, k: &KeyPair, http: &UreqHttp) -> Result<Outcome, Error> {
         http,
         fs: &fs,
         clock: &clock,
+        access: None,
     }
     .check(
         &src,
@@ -269,6 +270,7 @@ fn plain_http_is_refused_unless_loopback_is_allowed() {
         http: &UreqHttp::new(false),
         fs: &fs,
         clock: &clock,
+        access: None,
     }
     .check(
         &src,
@@ -339,6 +341,7 @@ fn real_download_is_cut_then_resumed() {
         http: &http,
         fs: &fs,
         clock: &clock,
+        access: None,
     };
     let src = UpdateSource::new(
         "app",

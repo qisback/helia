@@ -64,22 +64,31 @@ ImPPG is a trademark of its owner; Helia is not affiliated with it.
 3. **The signal.** The frame less that background, blurred by a Gaussian of 1.2
    pixels, less a gate, floored at zero. The gate is `--prominence-gate` noise
    sigmas (3 by default; the noise is the median absolute deviation of the outer
-   part of the field) and never less than 0.4% of the disc's brightness, below
-   which the background model's own error is as big as the noise and stretching it
-   would show the model.
+   part of the field) and never less than 1.5% of the disc's brightness, below
+   which the background model's own error and the ringing that sharpening leaves
+   outside the limb (about 1% of the disc, stronger on the stretch of limb where
+   the stack is sharper) are as big as the noise, and stretching them would show
+   the model or the sharpening, not the Sun.
 4. **The stretch.** The signal as a share of its own 99.5th percentile just outside
    the limb, through `asinh(k x) / asinh(k)` (`--prominence-stretch`, `k` = 6; 0 is
-   linear) and held at 1, scaled so the brightest prominences reach
-   `--prominence-level` (0.75) of the disc's brightness. The reference is never less
-   than 8 noise sigma, so a field with no prominences stays dark and is not
-   stretched into noise. `--prominence-strength` multiplies the signal before the
+   linear), scaled so the brightest prominences reach
+   `--prominence-level` (0.75) of the disc's brightness. Above the reference
+   the curve rolls off smoothly towards 1.35 instead of being cut at 1, and the
+   detail the layer holds on a scale of a few pixels (its deviation from its own
+   blurred tone, 6 px) is put back once, the way an unsharp mask does, so the
+   inside of a bright prominence is not a flat plate. The reference is never less
+   than 8 noise sigma or 8% of the disc's brightness, so a field with no
+   prominences stays dark and is not stretched into noise or ringing. (On real
+   H-alpha stacks the prominences start at about 15% of the disc and a field with
+   none leaves a residual of 0.5% or less, so real ones are not affected.) `--prominence-strength` multiplies the signal before the
    stretch.
 5. **The join.** Inside the limb the disc is untouched. Across a feather of
    `--prominence-feather` (1.2% of the radius) on each side of the limb the two are
    mixed by a smooth step. Outside, the layer replaces the picture, at the black
    level the stack had (the median beyond `--prominence-reach` radii, 1.4 by
    default, when the frame holds enough of it). The layer fades to black at the
-   reach.
+   reach. Outside the limb the result is never darker than the layer, so the
+   trough that sharpening digs just outside the limb does not show as a dark ring.
 
 The colour table is applied afterwards, so the layer takes the look of the filter.
 

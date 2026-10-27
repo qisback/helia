@@ -1,0 +1,77 @@
+================================================================================
+AppImage runtime (type2-runtime), embedded in Helia-*.AppImage only
+================================================================================
+
+A Helia AppImage is a small program (the "runtime") followed by a compressed
+file system that holds Helia. When you start the AppImage, the runtime mounts
+that file system and runs Helia from it. The runtime is not part of Helia and is
+not covered by Helia's licence. It is the AppImage project's type2-runtime,
+copied unchanged into the file by appimagetool 1.9.1 (for the aarch64 image it
+is the pinned file from release 20251108; the x86_64 image uses the runtime
+bundled in appimagetool, built from the same project and the same source tree):
+
+  https://github.com/AppImage/type2-runtime/releases/tag/20251108
+  Copyright (c) 2004-23 probonopd, MIT License (text below).
+
+The runtime is a single static program, so it contains code from these
+libraries. Their licences are those given by their own projects, listed in the
+runtime's LICENSE file at the URL above:
+
+  musl libc    MIT                      https://git.musl-libc.org/cgit/musl/tree/COPYRIGHT
+  libfuse 3    LGPL-2.1                 https://github.com/libfuse/libfuse/blob/master/LGPL2.txt
+  squashfuse   BSD-2-Clause             https://github.com/vasi/squashfuse/blob/master/LICENSE
+  libzstd      BSD-3-Clause (or GPL-2.0, at the user's choice)  https://github.com/facebook/zstd/blob/dev/LICENSE
+  zlib         zlib licence             https://zlib.net/zlib_license.html
+  mimalloc     MIT                      https://github.com/microsoft/mimalloc/blob/main/LICENSE
+
+(The runtime's own LICENSE file does not list mimalloc, but its Makefile links
+it, so it is listed here.)
+
+libfuse is licensed under the GNU Lesser General Public License, version 2.1.
+The AppImage runtime uses libfuse (with the small patch patches/libfuse/mount.c.diff
+from the type2-runtime source) and is linked with it statically. A copy of the
+LGPL 2.1 is in LGPL-2.1.txt, in the same folder as this file inside the
+AppImage (usr/share/doc/helia/), and in the Helia source repository at
+packaging/linux/licences/LGPL-2.1.txt.
+
+Your rights under the LGPL 2.1 for that part:
+
+  * Source. The complete source of the runtime, its build scripts and its
+    patches is at https://github.com/AppImage/type2-runtime (tag 20251108). The
+    libfuse source is at https://github.com/libfuse/libfuse and the build uses
+    the Alpine Linux fuse3 package recipe
+    (https://git.alpinelinux.org/aports/tree/main/fuse3/APKBUILD). If you cannot
+    get them from there, ask the Helia maintainer (see the project page) and a
+    copy of the exact source will be sent to you for the cost of copying, for
+    three years after the release.
+  * Replacing the runtime. The runtime is a separate program at the start of
+    the file, not mixed into Helia. You can build your own runtime from the
+    source above and make a new AppImage with it:
+      ./Helia-VERSION-ARCH.AppImage --appimage-extract
+      appimagetool --runtime-file YOUR-RUNTIME squashfs-root Helia-new.AppImage
+    You may modify the runtime for your own use and reverse engineer it to
+    debug such modifications.
+
+MIT licence of the runtime itself:
+
+  MIT License
+
+  Copyright (c) 2004-23 probonopd
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.

@@ -4,7 +4,7 @@ members = ["crates/*", "xtask", "examples/plugins/invert"]
 exclude = ["fuzz"]
 
 [workspace.package]
-version = "0.7.1"
+version = "0.8.2"
 edition = "2024"
 rust-version = "1.95"
 license = "GPL-3.0-or-later"
@@ -18,6 +18,10 @@ authors = ["Laurence Horrocks-Barlow"]
 [workspace.lints.rust]
 unsafe_code = "deny"
 missing_docs = "warn"
+# `store` is a cargo feature that exists only in the official store build: its tooling adds the
+# feature and the optional dependency to the manifests it builds. It is not declared here, so
+# `--all-features` never turns it on; this only tells rustc the name is intended.
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(feature, values("store"))'] }
 
 [workspace.lints.clippy]
 all = { level = "deny", priority = -1 }

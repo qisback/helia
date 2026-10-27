@@ -12,6 +12,7 @@
 
 use std::io::Read;
 
+use crate::backend::AssetAccess;
 use crate::error::{Error, Result};
 use crate::manifest::{self, Asset, Kind, MAX_MANIFEST_BYTES, Manifest, ParseOptions, Platform};
 use crate::source::UpdateSource;
@@ -103,9 +104,9 @@ pub fn verify_manifest(
             allow_loopback_http,
         },
     )?;
-    if let Some(a) = m.assets.iter().find(|a| !source.asset_host_allowed(&a.url)) {
-        return Err(Error::ForeignHost(a.url.chars().take(200).collect()));
-    }
+    // An asset on a host this source does not allow is not an error here: the signed manifest
+    // is still true, and a copy that cannot fetch from that host tells the user to get the file
+    // by hand. The download refuses it ([`Error::ForeignHost`]) and never contacts the host.
     if m.app != source.app || m.channel != source.channel {
         return Err(Error::WrongTarget {
             expected: format!("{}/{}", source.app, source.channel),
@@ -154,6 +155,30 @@ pub struct Updater<'a> {
     pub fs: &'a dyn Fs,
     /// Clock.
     pub clock: &'a dyn Clock,
+    /// Credentials for the asset download, from a [`crate::backend::UpdateBackend`].
+    /// Kept here and not in [`UpdateSource`], which is `Debug` and `Clone`.
+    pub access: Option<&'a AssetAccess>,
+}
+
+impl<'a> Updater<'a> {
+    /// An updater with no credentials (every request as before).
+    #[must_use]
+    pub fn new(http: &'a dyn Http, fs: &'a dyn Fs, clock: &'a dyn Clock) -> Self {
+        Self {
+            http,
+            fs,
+            clock,
+            access: None,
+        }
+    }
+
+    /// Use `access` for the asset download. The bearer is sent only to its host,
+    /// never on a manifest request and never after a redirect to another host.
+    #[must_use]
+    pub fn with_access(mut self, access: Option<&'a AssetAccess>) -> Self {
+        self.access = access;
+        self
+    }
 }
 
 impl Updater<'_> {
@@ -175,6 +200,8 @@ impl Updater<'_> {
                 url,
                 range_from: None,
                 allowed_hosts: &source.manifest_hosts,
+                bearer: None,
+                bearer_host: None,
             })?;
             if resp.status != 200 {
                 return Err(Error::HttpStatus(resp.status));

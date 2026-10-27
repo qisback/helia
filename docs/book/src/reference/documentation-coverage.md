@@ -74,6 +74,7 @@ there.
 | Troubleshooting: soft image, clipped red channel | Done: [The stack looks soft](../user-guide/troubleshooting.md#the-stack-looks-soft), [The red channel is clipped](../user-guide/troubleshooting.md#the-red-channel-is-clipped-or-the-disc-is-a-flat-white-plate), [FAQ](../user-guide/faq.md) | n/a | n/a | Done |  |
 | API server and scripting (`helia serve`) | Done: [Drive Helia from your own code with the API](../tutorials/api-server.md), [The API](../user-guide/api.md), the [recipe](../recipes/scripting-with-the-api.md) | Done: [API](api.md), [CLI](cli.md) | Done | Done | |
 | Plugins: stack elsewhere, pipeline steps and analysis from separate programs (`helia plugins`, `--plugin`, `--plugin-step`, `--stack-backend`, `plugin_steps` and `stack_backend` in the API) | Done: [Using plugins](../tutorials/plugins.md), [Writing a plugin](../tutorials/writing-plugins.md), [Plugins](../user-guide/plugins.md) | Done: [Plugins reference](plugins.md), [specification](../developer/plugins.md), [CLI](cli.md), [API](api.md) | Done: the Unreleased entries say how, with the standards cited | Done |  |
+| Installing ffmpeg for the user (`helia tools`, `helia-external`; signed tool list, licence shown and accepted first) | Done: [Optional tools](../user-guide/optional-tools.md), the command line and the window with screenshots | Done: [CLI](cli.md), [adoption guide](../developer/external-tools.md) | Done: the Unreleased entries say how | Done | #365 |
 
 ## The science outputs
 

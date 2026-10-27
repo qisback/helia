@@ -23,7 +23,9 @@ use helia_core::io::ImageFormat;
 use helia_core::io::capture::{CaptureReport, open_reported_with};
 use helia_core::io::ffmpeg::VideoOptions;
 use helia_core::io::solarnet::{CaptureInfo, FitsMeta, Site};
-use helia_core::io::source::{BayerSetting, Endian, FrameSource, MemorySource, OpenOptions};
+use helia_core::io::source::{
+    BayerSetting, Endian, FrameSource, MemorySource, OpenOptions, RowOrder,
+};
 use helia_core::mask::MaskConfig;
 use helia_core::output::{OutputPlan, finish, prepare};
 use helia_core::pipeline::{ApRefine, Pipeline, StackConfig, Stage};
@@ -343,6 +345,10 @@ pub struct JobConfig {
     pub endian: Option<String>,
     /// Read the rows bottom to top. SER only.
     pub flip_rows: bool,
+    /// Row order of FITS frames: `auto` (default), `top-down` or `bottom-up`.
+    /// `auto` follows a `ROWORDER` card, else Seestar S50 frames are
+    /// top-down and all others bottom-up.
+    pub row_order: Option<String>,
     /// Colour plane to stack from a Bayer capture. Absent: the preset's
     /// channel, else `lum`.
     pub channel: Option<ChannelArg>,
@@ -350,8 +356,8 @@ pub struct JobConfig {
     pub debayer: DebayerArg,
     /// Frame ranking metric.
     pub metric: MetricArg,
-    /// Rectangles to keep alignment and scoring off. They are flattened in
-    /// every frame and so are flat in the result. Burned-in timestamps are
+    /// Rectangles to keep alignment and scoring off. They are filled in
+    /// every frame from the sky around them, so no patch shows in the result. Burned-in timestamps are
     /// found automatically (see `detect_overlay`).
     pub exclude: Vec<Region>,
     /// Pixels outside the fitted limb where alignment points are still
@@ -532,6 +538,7 @@ impl Default for JobConfig {
             bit_depth: None,
             endian: None,
             flip_rows: false,
+            row_order: None,
             channel: None,
             debayer: DebayerArg::Mhc,
             metric: MetricArg::Gradient,
@@ -583,6 +590,7 @@ pub fn parse_open(
     bit_depth: Option<u32>,
     endian: Option<&str>,
     flip_rows: bool,
+    row_order: Option<&str>,
 ) -> ApiResult<OpenOptions> {
     if bit_depth.is_some_and(|d| !(1..=16).contains(&d)) {
         return Err(invalid("`bit_depth` must be between 1 and 16"));
@@ -596,6 +604,10 @@ pub fn parse_open(
             .map(|e| e.parse::<Endian>().map_err(|e| invalid(e.to_string())))
             .transpose()?,
         flip_rows,
+        row_order: row_order
+            .map(|r| r.parse::<RowOrder>().map_err(|e| invalid(e.to_string())))
+            .transpose()?
+            .unwrap_or_default(),
         ..OpenOptions::default()
     })
 }
@@ -756,11 +768,6 @@ impl JobConfig {
             .map_or(Ok(()), SunspotsConfig::check)?;
         if let Some(f) = &self.field_rotation {
             f.reference()?;
-            if self.colour_choice()? == Some(ColourChoice::True) {
-                return Err(invalid(
-                    "`field_rotation` cannot be used with `colour: \"true\"`: a raw mosaic cannot be turned before it is demosaiced",
-                ));
-            }
             if self.site()?.or_else(Site::from_env).is_none() {
                 return Err(invalid(
                     "`field_rotation` needs the observing site: give `site` (\"lat,lon,alt\") or set HELIA_SITE on the server",
@@ -926,6 +933,7 @@ impl JobConfig {
             self.bit_depth,
             self.endian.as_deref(),
             self.flip_rows,
+            self.row_order.as_deref(),
         )?;
         let align = self
             .align
@@ -2200,6 +2208,8 @@ fn field_rotation_for(
         reference: f
             .reference()
             .map_err(|e| failed("invalid_config", e.message))?,
+        target: None,
+        auto_mirror: false,
         frame_unix: info.frame_unix,
     }))
 }

@@ -32,11 +32,18 @@
 //! at, and uses Lanczos interpolation. Whatever shift it leaves in the disc (the
 //! disc is not exactly on the axis) is for the alignment that follows.
 //!
+//! The same angle serves a deep-sky capture: the target is then a fixed point
+//! (`RA` and `DEC` in the header of a Seestar sub, say) instead of the Sun, and
+//! a sequence of frames taken over half an hour on an altazimuth mount turns by
+//! several degrees about the field centre, which trails every star but those
+//! at the centre.
+//!
 //! An equatorial mount has no field rotation: do not use this with one.
 //!
 //! # References
 //!
 //! - Meeus, J. (1998), Astronomical Algorithms, 2nd ed., Willmann-Bell, chapter 14 (the parallactic angle).
+//! - Reddy, B. S. and Chatterji, B. N. (1996), An FFT-based technique for translation, rotation, and scale-invariant image registration, IEEE Trans. Image Processing 5(8), 1266-1271 (phase correlation).
 
 #![allow(
     clippy::cast_possible_wrap,
@@ -46,6 +53,7 @@
 
 use rayon::prelude::*;
 
+use crate::align::global::{PhaseCorrelator, PhaseOptions};
 use crate::debayer::Debayer;
 use crate::ephemeris::{julian_date, solar_ephemeris};
 use crate::error::{Error, Result};
@@ -90,15 +98,31 @@ pub fn sun_parallactic_angle_deg(site: &Site, unix: f64) -> f64 {
     parallactic_angle_deg(site.lat_deg, site.lon_deg, unix, e.ra_deg, e.dec_deg)
 }
 
+/// Altitude of a point at `ra_deg`, `dec_deg` above the horizon, degrees (no
+/// refraction), for `site`.
+#[must_use]
+pub fn altitude_deg(site: &Site, unix: f64, ra_deg: f64, dec_deg: f64) -> f64 {
+    let h = (gmst_deg(unix) + site.lon_deg - ra_deg).to_radians();
+    let (lat, dec) = (site.lat_deg.to_radians(), dec_deg.to_radians());
+    (lat.sin() * dec.sin() + lat.cos() * dec.cos() * h.cos())
+        .asin()
+        .to_degrees()
+}
+
 /// Altitude of the Sun above the horizon, degrees (no refraction), for `site`.
 #[must_use]
 pub fn sun_altitude_deg(site: &Site, unix: f64) -> f64 {
     let e = solar_ephemeris(unix);
-    let h = (gmst_deg(unix) + site.lon_deg - e.ra_deg).to_radians();
-    let (lat, dec) = (site.lat_deg.to_radians(), e.dec_deg.to_radians());
-    (lat.sin() * dec.sin() + lat.cos() * dec.cos() * h.cos())
-        .asin()
-        .to_degrees()
+    altitude_deg(site, unix, e.ra_deg, e.dec_deg)
+}
+
+/// A fixed point on the sky: the target of a deep-sky capture.
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct SkyPoint {
+    /// Right ascension, degrees.
+    pub ra_deg: f64,
+    /// Declination, degrees.
+    pub dec_deg: f64,
 }
 
 /// Which frame's orientation the others are turned to.
@@ -147,8 +171,15 @@ pub struct FieldRotation {
     pub site: Site,
     /// The picture is a mirror image (an odd number of reflections).
     pub mirror: bool,
+    /// Find out from the frames which way the picture turns, and ignore
+    /// `mirror`: see [`measure_parity`]. For FITS subs, whose row order the
+    /// header does not always tell truthfully.
+    pub auto_mirror: bool,
     /// The orientation to turn every frame to.
     pub reference: Reference,
+    /// What the camera points at: a fixed point of the sky (a deep-sky capture),
+    /// or `None` for the Sun, whose position comes from the ephemeris.
+    pub target: Option<SkyPoint>,
     /// When each frame began, unix seconds UTC; the capture's timestamps. A
     /// frame without one takes the nearest stamp.
     pub frame_unix: Vec<Option<f64>>,
@@ -172,8 +203,15 @@ pub struct Plan {
     pub span_deg: f64,
     /// Mean rate of rotation, degrees per minute.
     pub rate_deg_per_min: f64,
-    /// Altitude of the Sun at the reference, degrees.
+    /// Altitude of the Sun (or the target) at the reference, degrees.
     pub altitude_deg: f64,
+    /// The target was a point of the sky, not the Sun.
+    pub deep_sky: bool,
+    /// The picture is a mirror image, and the turns have the opposite sense.
+    pub mirror: bool,
+    /// How well the frames lined up turned each way, as peak-to-sidelobe
+    /// ratios (not mirrored, mirrored), when the sense was measured.
+    pub parity_psr: Option<[f32; 2]>,
     /// Frames with a timestamp of their own.
     pub stamped: usize,
 }
@@ -190,9 +228,10 @@ impl Plan {
     #[must_use]
     pub fn lines(&self, radius: Option<f32>) -> Vec<String> {
         let mut v = vec![format!(
-            "the parallactic angle runs {:.2} degrees over the capture ({:.3} degrees per minute, Sun at {:.0} degrees altitude); frames are turned by up to {:.2} degrees to the orientation at {}",
+            "the parallactic angle runs {:.2} degrees over the capture ({:.3} degrees per minute, {} at {:.0} degrees altitude); frames are turned by up to {:.2} degrees to the orientation at {}",
             self.span_deg,
             self.rate_deg_per_min,
+            if self.deep_sky { "target" } else { "Sun" },
             self.altitude_deg,
             self.max_turn_deg,
             crate::io::solarnet::iso_from_unix(self.reference_unix)
@@ -201,6 +240,12 @@ impl Plan {
             v.push(format!(
                 "at the limb that is up to {:.1} pixels",
                 self.limb_shift_px(r)
+            ));
+        }
+        if let Some([plain, mirrored]) = self.parity_psr {
+            v.push(format!(
+                "the stars line up best with the picture {} (lock {plain:.1} as it is, {mirrored:.1} mirrored), so the frames are turned that way",
+                if self.mirror { "mirrored" } else { "as it is" },
             ));
         }
         v
@@ -233,10 +278,13 @@ impl FieldRotation {
                 .or_else(|| stamps.iter().find(|s| s.0 > i).map(|s| s.1));
             times.push(t.unwrap_or(stamps[0].1));
         }
-        let q: Vec<f64> = times
-            .iter()
-            .map(|&t| sun_parallactic_angle_deg(&self.site, t))
-            .collect();
+        let angle = |t: f64| match self.target {
+            Some(p) => {
+                parallactic_angle_deg(self.site.lat_deg, self.site.lon_deg, t, p.ra_deg, p.dec_deg)
+            }
+            None => sun_parallactic_angle_deg(&self.site, t),
+        };
+        let q: Vec<f64> = times.iter().map(|&t| angle(t)).collect();
         // Unwrap, so that a capture across the +-180 degree jump is one run.
         let mut run = q.clone();
         for i in 1..run.len() {
@@ -281,9 +329,69 @@ impl FieldRotation {
             } else {
                 0.0
             },
-            altitude_deg: sun_altitude_deg(&self.site, times[ref_index]),
+            altitude_deg: match self.target {
+                Some(p) => altitude_deg(&self.site, times[ref_index], p.ra_deg, p.dec_deg),
+                None => sun_altitude_deg(&self.site, times[ref_index]),
+            },
+            deep_sky: self.target.is_some(),
+            mirror: self.mirror,
+            parity_psr: None,
             stamped: stamps.len(),
         })
+    }
+}
+
+/// Smallest turn between two frames from which [`measure_parity`] can tell the
+/// senses apart, degrees.
+pub const PARITY_MIN_TURN_DEG: f64 = 0.5;
+
+/// Weakest lock (peak-to-sidelobe ratio) at which a sense is believed.
+pub const PARITY_MIN_PSR: f32 = 5.0;
+
+/// How much better one sense must lock than the other to be believed.
+pub const PARITY_MARGIN: f32 = 1.5;
+
+/// How well two frames line up once each is turned to the common orientation,
+/// for each sense of the turn: `[not mirrored, mirrored]`, as the
+/// peak-to-sidelobe ratio of their phase correlation.
+///
+/// The parallactic angle says by how much the field turns but not which way a
+/// given file's rows run: a mirror image turns the other way, and whether a
+/// FITS sub is one depends on a row order its header may not give truthfully
+/// (a Seestar's does not). The stars say it: turned the right way the two
+/// frames show the same field, so their correlation has one sharp peak; turned
+/// the wrong way they differ by twice the angle and have none (Reddy and
+/// Chatterji 1996 for the correlation).
+///
+/// # Errors
+/// [`Error::Invalid`] when the frames differ in size.
+pub fn measure_parity(
+    a: &Frame,
+    from_deg: f64,
+    b: &Frame,
+    to_deg: f64,
+    opts: PhaseOptions,
+) -> Result<[f32; 2]> {
+    let mut psr = [0.0f32; 2];
+    for (k, sign) in [1.0, -1.0].into_iter().enumerate() {
+        let ra = rotate_ccw(a, sign * from_deg, Kernel::Bilinear);
+        let rb = rotate_ccw(b, sign * to_deg, Kernel::Bilinear);
+        psr[k] = PhaseCorrelator::new(&ra, opts)?.estimate(&rb)?.psr;
+    }
+    Ok(psr)
+}
+
+/// The sense that [`measure_parity`] found: `Some(true)` for a mirror image,
+/// or `None` when neither locks clearly better than the other.
+#[must_use]
+pub fn decide_parity(psr: [f32; 2]) -> Option<bool> {
+    let [plain, mirrored] = psr;
+    if mirrored >= PARITY_MIN_PSR && mirrored >= PARITY_MARGIN * plain {
+        Some(true)
+    } else if plain >= PARITY_MIN_PSR && plain >= PARITY_MARGIN * mirrored {
+        Some(false)
+    } else {
+        None
     }
 }
 
@@ -336,7 +444,9 @@ pub fn rotate_ccw(frame: &Frame, deg: f64, kernel: Kernel) -> Frame {
 /// A capture with every frame turned to one orientation, in everything it
 /// serves through [`FrameSource::read`]. It cannot be read from several threads
 /// at once (a frame is resampled, not just decoded), so [`FrameSource::shared`]
-/// is `None`.
+/// is `None`. A raw colour capture is demosaiced to the plane the debayer names
+/// before it is turned; [`FrameSource::select_channel`] picks another plane,
+/// which is how a true colour stack gets red, green and blue turned alike.
 pub struct DerotatedSource<'a> {
     inner: &'a mut dyn FrameSource,
     turn_deg: Vec<f64>,
@@ -387,12 +497,16 @@ impl FrameSource for DerotatedSource<'_> {
     fn quality_note(&self) -> Option<String> {
         self.inner.quality_note()
     }
+    fn select_channel(&mut self, channel: crate::debayer::Channel) {
+        self.debayer.channel = channel;
+    }
 }
 
 #[cfg(test)]
 mod tests {
     #![allow(clippy::unwrap_used, reason = "tests")]
     use super::*;
+    use crate::align::global::PhaseOptions;
     use crate::io::source::MemorySource;
     use crate::pipeline::{Pipeline, StackConfig};
     use crate::quality::{Metric, score};
@@ -450,7 +564,9 @@ mod tests {
         FieldRotation {
             site: SITE,
             mirror,
+            auto_mirror: false,
             reference: Reference::Middle,
+            target: None,
             frame_unix: (0..frames)
                 .map(|i| Some(NOON - 1800.0 + i as f64 * spacing_s))
                 .collect(),
@@ -662,6 +778,192 @@ mod tests {
             err(&fixed.image),
             err(&plain.image)
         );
+    }
+
+    /// A deep-sky target and the time of its sub-frames: 25 frames, one a
+    /// minute, from a site where the target is well up.
+    const TARGET: SkyPoint = SkyPoint {
+        ra_deg: 316.4,
+        dec_deg: -11.25,
+    };
+    const SEESTAR_SITE: Site = Site {
+        lat_deg: 36.386,
+        lon_deg: 28.04,
+        alt_m: 0.0,
+    };
+    /// 2025-09-21 19:30 UTC.
+    const SUB_START: f64 = 1_758_483_000.0;
+
+    fn deep_sky(mirror: bool) -> FieldRotation {
+        FieldRotation {
+            site: SEESTAR_SITE,
+            mirror,
+            auto_mirror: false,
+            reference: Reference::Middle,
+            target: Some(TARGET),
+            frame_unix: (0..25)
+                .map(|i| Some(SUB_START + f64::from(i) * 70.0))
+                .collect(),
+        }
+    }
+
+    /// A noiseless field of 70 Gaussian stars with a faint background.
+    fn star_field() -> Frame {
+        let (w, h) = (320usize, 320usize);
+        let mut rng = crate::testutil::Rng::new(33);
+        let mut data = vec![0.05f32; w * h];
+        for _ in 0..70 {
+            let (cx, cy) = (
+                10.0 + rng.uniform() * (w as f32 - 20.0),
+                10.0 + rng.uniform() * (h as f32 - 20.0),
+            );
+            let amp = 0.3 + 0.7 * rng.uniform();
+            for y in (cy as usize).saturating_sub(7)..(cy as usize + 8).min(h) {
+                for x in (cx as usize).saturating_sub(7)..(cx as usize + 8).min(w) {
+                    let r2 = (x as f32 - cx).powi(2) + (y as f32 - cy).powi(2);
+                    data[y * w + x] += amp * (-r2 / (2.0 * 1.4 * 1.4)).exp();
+                }
+            }
+        }
+        Frame::new(w, h, data).unwrap()
+    }
+
+    /// The field as a camera whose picture is (or is not) a mirror image saw it.
+    fn sky_frames(mirror: bool) -> Vec<Frame> {
+        let base = star_field();
+        let plan = deep_sky(mirror).plan().unwrap();
+        plan.turn_deg
+            .iter()
+            .map(|&t| rotate_ccw(&base, -t, Kernel::Lanczos3))
+            .collect()
+    }
+
+    #[test]
+    fn a_deep_sky_target_turns_at_the_rate_of_its_own_parallactic_angle() {
+        let p = deep_sky(false).plan().unwrap();
+        assert!(p.deep_sky);
+        // Measured on the real subs: 7.5 degrees in 29 minutes.
+        assert!(p.span_deg > 4.0 && p.span_deg < 8.0, "{}", p.span_deg);
+        assert!(
+            p.altitude_deg > 20.0 && p.altitude_deg < 70.0,
+            "{}",
+            p.altitude_deg
+        );
+        // The Sun is somewhere else, so it turns differently.
+        let mut sun = deep_sky(false);
+        sun.target = None;
+        let s = sun.plan().unwrap();
+        assert!(!s.deep_sky && (s.span_deg - p.span_deg).abs() > 0.01);
+        assert!(p.lines(None)[0].contains("target at"));
+    }
+
+    #[test]
+    fn the_stars_say_which_way_the_picture_turns() {
+        for mirror in [false, true] {
+            let frames = sky_frames(mirror);
+            let plan = deep_sky(false).plan().unwrap();
+            let (lo, hi) = (0, frames.len() - 1);
+            let psr = measure_parity(
+                &frames[lo],
+                plan.turn_deg[lo],
+                &frames[hi],
+                plan.turn_deg[hi],
+                PhaseOptions::default(),
+            )
+            .unwrap();
+            eprintln!("mirror {mirror}: locks {psr:?}");
+            assert_eq!(decide_parity(psr), Some(mirror), "{psr:?}");
+        }
+        // Neither sense wins, or neither locks: no answer.
+        assert_eq!(decide_parity([6.0, 7.0]), None);
+        assert_eq!(decide_parity([2.0, 1.0]), None);
+    }
+
+    fn stars_stack(
+        frames: Vec<Frame>,
+        rotation: Option<FieldRotation>,
+    ) -> crate::pipeline::StackOutput {
+        let cfg = StackConfig {
+            keep: crate::Keep::Fraction(0.8),
+            normalise: false,
+            multipoint: None,
+            field_rotation: rotation,
+            ..StackConfig::default()
+        };
+        Pipeline::new(cfg)
+            .run(
+                &mut MemorySource(frames),
+                &|_, _| {},
+                &std::sync::atomic::AtomicBool::new(false),
+            )
+            .unwrap()
+    }
+
+    /// The brightest star's peak over the field's flux near it: a trail spreads
+    /// a star and lowers this.
+    fn peakiness(f: &Frame) -> f32 {
+        let blurred = crate::filter::gaussian_blur(f, 1.0);
+        score(&blurred, Metric::GradientEnergy, None)
+    }
+
+    #[test]
+    fn a_rotating_star_field_stacks_sharp_in_either_sense_once_the_frames_settle_it() {
+        for mirror in [false, true] {
+            let frames = sky_frames(mirror);
+            let plain = stars_stack(frames.clone(), None);
+            let mut fr = deep_sky(false);
+            fr.auto_mirror = true;
+            let fixed = stars_stack(frames, Some(fr));
+            let (a, b) = (peakiness(&plain.image), peakiness(&fixed.image));
+            eprintln!("mirror {mirror}: sharpness {a:.5} uncorrected, {b:.5} corrected");
+            let p = fixed.field_rotation.as_ref().expect("a plan");
+            assert_eq!(p.mirror, mirror);
+            assert!(p.parity_psr.is_some());
+            assert!(fixed.field_rotation_note.is_none());
+            assert!(b > 1.3 * a, "{a} against {b}");
+        }
+    }
+
+    #[test]
+    fn a_field_that_hardly_turns_is_left_alone_and_the_note_says_why() {
+        let frames = sky_frames(false);
+        let mut fr = deep_sky(false);
+        fr.auto_mirror = true;
+        // Frames a second apart turn by hundredths of a degree.
+        fr.frame_unix = (0..25).map(|i| Some(SUB_START + f64::from(i))).collect();
+        let out = stars_stack(frames, Some(fr));
+        assert!(out.field_rotation.is_none());
+        let note = out.field_rotation_note.expect("a note");
+        assert!(note.contains("too little"), "{note}");
+        assert!(note.contains("--field-rotation"), "{note}");
+    }
+
+    #[test]
+    fn a_source_that_demosaics_serves_the_plane_it_is_asked_for() {
+        let mosaic = crate::testutil::colour_mosaic(
+            &[star_field()],
+            [0.4, 1.0, 0.7],
+            [crate::align::Shift::default(); 3],
+            crate::frame::BayerPattern::Rggb,
+        );
+        let mut plan = deep_sky(false).plan().unwrap();
+        plan.turn_deg = vec![0.0];
+        let mut raw = MemorySource(mosaic.clone());
+        let mut source = DerotatedSource::new(&mut raw, &plan, Debayer::default()).unwrap();
+        for channel in [
+            crate::debayer::Channel::Red,
+            crate::debayer::Channel::Green,
+            crate::debayer::Channel::Blue,
+        ] {
+            source.select_channel(channel);
+            let want = Debayer {
+                channel,
+                ..Debayer::default()
+            }
+            .apply_owned(mosaic[0].clone());
+            let got = source.read(0).unwrap();
+            assert_eq!(got.data, want.data, "{channel:?}");
+        }
     }
 
     #[test]

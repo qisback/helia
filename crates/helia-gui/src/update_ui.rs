@@ -19,8 +19,9 @@ use std::sync::OnceLock;
 use std::sync::mpsc::{Receiver, Sender, channel};
 use std::time::{Duration, Instant};
 
-use eframe::egui::{self, RichText, Ui};
+use eframe::egui::{self, RichText, TextEdit, Ui};
 use helia_update::apply::ApplyOutcome;
+use helia_update::backend::Panel;
 use helia_update::client::{Available, CheckReport, Client, System};
 use helia_update::download::Staged;
 use helia_update::install::InstallKind;
@@ -162,6 +163,10 @@ pub struct UpdateUi {
     queued_toasts: Vec<(ToastKind, String)>,
     /// The notice about a settings file from a newer Helia was shown.
     pub prefs_notice_sent: bool,
+    /// The settings block of the build's update backend (`None`: a source build has none).
+    pub panel: Option<Panel>,
+    /// What is typed in the panel's input. Cleared as soon as a button takes it.
+    pub panel_input: String,
 }
 
 impl UpdateUi {
@@ -180,7 +185,18 @@ impl UpdateUi {
         } else {
             UpdateSettings::default()
         };
+        #[allow(
+            clippy::redundant_closure_for_method_calls,
+            reason = "the borrow's lifetime needs the closure"
+        )]
+        let panel = if active {
+            System::new(true).and_then(|s| s.with_client(VERSION, |c| c.backend_panel()))
+        } else {
+            None
+        };
         let mut u = Self {
+            panel,
+            panel_input: String::new(),
             status: UpdateStatus::Idle,
             settings,
             visible: active,
@@ -207,8 +223,17 @@ impl UpdateUi {
     #[must_use]
     #[allow(dead_code, reason = "for the update screenshots")]
     pub fn showing(status: UpdateStatus) -> Self {
+        Self::showing_with_panel(status, None)
+    }
+
+    /// As [`Self::showing`], with a backend panel (screenshots).
+    #[must_use]
+    #[allow(dead_code, reason = "for the update screenshots")]
+    pub fn showing_with_panel(status: UpdateStatus, panel: Option<Panel>) -> Self {
         let (tx, rx) = channel();
         Self {
+            panel,
+            panel_input: String::new(),
             status,
             settings: UpdateSettings::default(),
             visible: true,
@@ -327,6 +352,43 @@ impl UpdateUi {
         true
     }
 
+    #[allow(
+        clippy::redundant_closure_for_method_calls,
+        reason = "the borrow's lifetime needs the closure"
+    )]
+    fn refresh_panel(&mut self) {
+        if self.active {
+            self.panel =
+                System::new(true).and_then(|s| s.with_client(VERSION, |c| c.backend_panel()));
+        }
+    }
+
+    /// A button of the backend's panel was pressed. What was typed goes to the backend
+    /// and is cleared at once; it is never logged or shown again. Errors name the
+    /// problem, not the text.
+    pub fn panel_action(&mut self, id: &str) {
+        let typed = std::mem::take(&mut self.panel_input);
+        if !self.active {
+            return;
+        }
+        let result =
+            System::new(true).map(|sys| sys.with_client(VERSION, |c| c.backend_action(id, &typed)));
+        match result {
+            Some(Ok(done)) => {
+                self.queued_toasts.push((ToastKind::Success, done.message));
+                self.refresh_panel();
+                if done.recheck {
+                    self.check_now();
+                }
+            }
+            Some(Err(e)) => {
+                self.queued_toasts.push((ToastKind::Error, e.to_string()));
+                self.refresh_panel();
+            }
+            None => {}
+        }
+    }
+
     /// Change the mode and save it.
     pub fn set_mode(&mut self, mode: UpdateMode) {
         self.settings.mode = mode;
@@ -385,14 +447,22 @@ impl UpdateUi {
         match m {
             Msg::Checked { explicit, result } => {
                 self.busy = false;
+                self.refresh_panel();
                 match result {
                     Ok(CheckReport::Available(a)) => {
-                        let auto = self.settings.mode == UpdateMode::Automatic && a.self_applies();
+                        let auto =
+                            self.settings.mode == UpdateMode::Automatic && a.may_auto_download();
                         if !explicit {
-                            self.queued_toasts.push((
-                                ToastKind::Info,
-                                format!("Helia {} is available. Open About to update.", a.version),
-                            ));
+                            let text = a.note.as_ref().map_or_else(
+                                || {
+                                    format!(
+                                        "Helia {} is available. Open About to update.",
+                                        a.version
+                                    )
+                                },
+                                |n| format!("{n} Open About for the link."),
+                            );
+                            self.queued_toasts.push((ToastKind::Info, text));
                         }
                         self.available = Some((*a).clone());
                         self.status = UpdateStatus::Available(a);
@@ -609,6 +679,14 @@ impl App {
                 ui.ctx().copy_text(c.clone());
             }
         }
+        if let UpdateStatus::Available(a) = &self.update.status
+            && let Some(n) = &a.note
+        {
+            ui.label(RichText::new(n).color(p.text));
+            if let Some(l) = &a.link {
+                ui.hyperlink_to("Open the store", l);
+            }
+        }
         let busy = matches!(
             self.update.status,
             UpdateStatus::Checking | UpdateStatus::Downloading { .. }
@@ -625,6 +703,7 @@ impl App {
             }
             if let UpdateStatus::Available(a) = &self.update.status
                 && a.asset.is_some()
+                && a.note.is_none()
             {
                 let label = if a.self_applies() {
                     "Download and install"
@@ -666,6 +745,41 @@ impl App {
                 Channel::Stable
             });
         }
+        let mut pressed: Option<String> = None;
+        if let Some(panel) = self.update.panel.clone() {
+            ui.add_space(4.0);
+            ui.label(RichText::new(&panel.heading).color(p.muted));
+            for line in &panel.lines {
+                let colour = if line.muted { p.muted } else { p.text };
+                ui.label(RichText::new(&line.text).color(colour));
+            }
+            if let Some((label, url)) = &panel.link {
+                ui.hyperlink_to(label, url);
+            }
+            ui.horizontal_wrapped(|ui| {
+                if let Some(input) = &panel.input {
+                    ui.add(
+                        TextEdit::singleline(&mut self.update.panel_input)
+                            .password(true)
+                            .hint_text(&input.hint)
+                            .desired_width(320.0),
+                    );
+                }
+                let typed = !self.update.panel_input.trim().is_empty();
+                for b in &panel.buttons {
+                    let enabled = typed || !b.needs_input;
+                    if widgets::button(ui, &b.label, Kind::Outline, enabled, 0.0)
+                        .on_hover_text(&b.hover)
+                        .clicked()
+                    {
+                        pressed = Some(b.id.clone());
+                    }
+                }
+            });
+            if let Some(f) = &panel.footer {
+                ui.label(RichText::new(f).color(p.muted));
+            }
+        }
         ui.label(
             RichText::new(format!(
                 "Privacy: Helia contacts only {} for updates. It fetches a small signed file that names the newest version, and the new version itself when you ask. It sends no identifiers, only the program name and version ({}), and nothing else leaves your computer.",
@@ -674,6 +788,14 @@ impl App {
             ))
             .color(p.muted),
         );
+        if let Some(text) = helia_update::backend::installed()
+            .and_then(helia_update::backend::UpdateBackend::privacy)
+        {
+            ui.label(RichText::new(text).color(p.muted));
+        }
+        if let Some(id) = pressed {
+            self.update.panel_action(&id);
+        }
         if check {
             self.update.check_now();
         }
@@ -688,13 +810,13 @@ impl App {
 }
 
 #[cfg(test)]
-mod tests {
+pub(crate) mod tests {
     #![allow(clippy::unwrap_used, clippy::assert_is_empty, reason = "tests")]
     use super::*;
     use helia_update::check::Update;
     use helia_update::manifest::{Asset, Kind as AssetKind, Manifest, Platform};
 
-    fn available(self_applies: bool) -> Available {
+    pub(crate) fn available(self_applies: bool) -> Available {
         let manifest = Manifest {
             schema: 1,
             app: "helia".into(),
@@ -732,6 +854,9 @@ mod tests {
                 InstallKind::Deb
             },
             staged: None,
+            auto_download: true,
+            note: None,
+            link: None,
         }
     }
 
@@ -785,6 +910,27 @@ mod tests {
             result: Ok(CheckReport::Available(Box::new(available(false)))),
         });
         assert!(matches!(d.status, UpdateStatus::Available(_)));
+    }
+
+    #[test]
+    fn a_plan_without_automatic_updates_stops_automatic_mode_and_explains() {
+        let mut u = ui();
+        u.settings.mode = UpdateMode::Automatic;
+        let mut a = available(true);
+        a.auto_download = false;
+        a.note = Some("Helia 9.9.9 is out. Your purchase covers 0.8 only.".into());
+        a.link = Some("https://12hobbies.studio/store/helia/".into());
+        u.handle(Msg::Checked {
+            explicit: false,
+            result: Ok(CheckReport::Available(Box::new(a))),
+        });
+        assert!(
+            matches!(u.status, UpdateStatus::Available(_)),
+            "no download"
+        );
+        let toasts = u.poll();
+        assert_eq!(toasts.len(), 1);
+        assert!(toasts[0].1.contains("covers 0.8 only"), "{}", toasts[0].1);
     }
 
     #[test]

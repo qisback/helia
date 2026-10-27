@@ -9,7 +9,7 @@
     "license": {
       "name": "GPL-3.0-or-later"
     },
-    "version": "0.7.1"
+    "version": "0.8.2"
   },
   "paths": {
     "/api/v1/captures/frame": {
@@ -94,6 +94,15 @@
             "required": false,
             "schema": {
               "type": "boolean"
+            }
+          },
+          {
+            "name": "row_order",
+            "in": "query",
+            "description": "Row order of FITS frames: `auto` (default), `top-down` or `bottom-up`.",
+            "required": false,
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -1868,6 +1877,13 @@
           "path": {
             "type": "string",
             "description": "Capture path relative to the data root."
+          },
+          "row_order": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Row order of FITS frames: `auto` (default), `top-down` or `bottom-up`."
           }
         },
         "additionalProperties": false
@@ -2045,7 +2061,7 @@
             "items": {
               "$ref": "#/components/schemas/Region"
             },
-            "description": "Rectangles to keep alignment and scoring off. They are flattened in\nevery frame and so are flat in the result. Burned-in timestamps are\nfound automatically (see `detect_overlay`).",
+            "description": "Rectangles to keep alignment and scoring off. They are filled in\nevery frame from the sky around them, so no patch shows in the result. Burned-in timestamps are\nfound automatically (see `detect_overlay`).",
             "default": []
           },
           "field_rotation": {
@@ -2167,6 +2183,14 @@
             ],
             "format": "float",
             "description": "Threshold of `robust` in standard deviations. Default 2.5 for `sigma`,\n1.345 for `huber`, 2 for `winsor`.",
+            "default": null
+          },
+          "row_order": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Row order of FITS frames: `auto` (default), `top-down` or `bottom-up`.\n`auto` follows a `ROWORDER` card, else Seestar S50 frames are\ntop-down and all others bottom-up.",
             "default": null
           },
           "seeing": {

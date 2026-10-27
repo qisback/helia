@@ -44,7 +44,7 @@
 //! - Holschneider, M., Kronland-Martinet, R., Morlet, J. and Tchamitchian, P. (1989), A real-time algorithm
 //!   for signal analysis with the help of the wavelet transform, in Wavelets: Time-Frequency Methods and
 //!   Phase Space, Springer, 286-297, doi:10.1007/978-3-642-75988-8_28 (the a-trous algorithm).
-//! - Starck, J.-L. and Murtagh, F. (1994), Image restoration with noise suppression using a wavelet
+//! - Starck, J.-L., Murtagh, F. and Bijaoui, A. (1994), Image restoration with noise suppression using a wavelet
 //!   transform and a multiresolution support constraint, Proc. SPIE 2302, 132-143, doi:10.1117/12.188035.
 //! - Donoho, D. L. (1995), De-noising by soft-thresholding, IEEE Trans. Inf. Theory 41, 613-627,
 //!   doi:10.1109/18.382009.

@@ -17,7 +17,7 @@
 #   settings under %APPDATA%\helia are untouched; update rollback --yes puts the
 #   old programs back.
 # Each check appends PASS or FAIL to the report; exit 1 if any failed. It needs
-# cargo, Python 3 (for the throwaway server) and NSIS (packaging\windows finds or
+# cargo, and NSIS (packaging\windows finds or
 # downloads it). Written for the helia-win-ci runner; it has not been run by its
 # author on Windows when this file was committed.
 param(
@@ -28,6 +28,7 @@ param(
 $ErrorActionPreference = 'Stop'
 $script:failed = 0
 New-Item -ItemType Directory -Force $Work | Out-Null
+if (-not $env:RUNNER_TEMP) { $env:RUNNER_TEMP = $Work }   # build-installer.ps1 stages under it
 $report = Join-Path $Work 'update-e2e.txt'
 Set-Content -Path $report -Value '' -Encoding ascii
 
@@ -85,31 +86,50 @@ $oldVersion = Build-Version $root $distOld
 $newSrc = Join-Path $Work 'src-new'
 robocopy $root $newSrc /E /XD target .git site _site node_modules /NFL /NDL /NJH /NJS /NP | Out-Null
 $m = [regex]::Match((Get-Content (Join-Path $newSrc 'Cargo.toml') -Raw), '(?m)^version = "(\d+)\.(\d+)\.(\d+)"')
-$newVersion = "$($m.Groups[1].Value).$($m.Groups[2].Value).$([int]$m.Groups[3].Value + 1)"
-if ($NewVersion) { $newVersion = $NewVersion }
+$toVersion = "$($m.Groups[1].Value).$($m.Groups[2].Value).$([int]$m.Groups[3].Value + 1)"
+if ($NewVersion) { $toVersion = $NewVersion }
 # Only the workspace version and the version requirements of its own path dependencies.
 $rootToml = Join-Path $newSrc 'Cargo.toml'
 $rt = [regex]::new('(?m)^version = "' + [regex]::Escape($oldVersion) + '"')
-Set-Content -Path $rootToml -Value $rt.Replace((Get-Content $rootToml -Raw), "version = `"$newVersion`"", 1) -NoNewline
-Get-ChildItem (Join-Path $newSrc 'crates') -Recurse -Filter Cargo.toml | ForEach-Object {
+Set-Content -Path $rootToml -Value $rt.Replace((Get-Content $rootToml -Raw), "version = `"$toVersion`"", 1) -NoNewline
+@(Get-ChildItem (Join-Path $newSrc 'crates') -Recurse -Filter Cargo.toml) + @(Get-Item (Join-Path $newSrc 'xtask\Cargo.toml')) | ForEach-Object {
     $t = Get-Content $_.FullName -Raw
-    $t = [regex]::Replace($t, '(?m)^(helia[a-z-]* = \{ version = ")' + [regex]::Escape($oldVersion) + '(", path)', ('${1}' + $newVersion + '${2}'))
+    $t = [regex]::Replace($t, '(?m)^(helia[a-z-]* = \{ version = ")' + [regex]::Escape($oldVersion) + '(", path)', ('${1}' + $toVersion + '${2}'))
     Set-Content -Path $_.FullName -Value $t -NoNewline
 }
 $distNew = Join-Path $Work 'dist-new'
 $built = Build-Version $newSrc $distNew
-Check "the new build is $newVersion" { $built -eq $newVersion }
+Check "the new build is $toVersion" { $built -eq $toVersion }
 
 # Serve.
 $serve = Join-Path $Work 'serve'
-$filesDir = Join-Path $serve "helia\$newVersion"
+$filesDir = Join-Path $serve "helia\$toVersion"
 New-Item -ItemType Directory -Force $filesDir, (Join-Path $serve 'helia\stable') | Out-Null
 $installerNew = Get-ChildItem $distNew -Filter '*-setup.exe' | Select-Object -First 1
 Copy-Item $installerNew.FullName $filesDir
 $manifest = Join-Path $serve 'helia\stable\manifest.json'
-& $tool build --app helia --channel stable --version $newVersion --sequence 1 --base-url "$base/helia/$newVersion/" --expires-days 30 --asset "windows-x86_64:nsis:$($installerNew.FullName)" --out $manifest --allow-loopback-http
+& $tool build --app helia --channel stable --version $toVersion --sequence 1 --base-url "$base/helia/$toVersion/" --expires-days 30 --asset "windows-x86_64:nsis:$($installerNew.FullName)" --out $manifest --allow-loopback-http
 & $tool sign --manifest $manifest --secret-key-file (Join-Path $Work 'keys\test.key')
-$server = Start-Process -FilePath python -ArgumentList @('-m', 'http.server', "$port", '--bind', '127.0.0.1', '--directory', $serve) -PassThru -WindowStyle Hidden
+# A small static file server in a background job (no Python needed on the Windows runner).
+$server = Start-Job -ArgumentList $serve, $port -ScriptBlock {
+    param($root, $port)
+    $l = [Net.HttpListener]::new()
+    $l.Prefixes.Add("http://127.0.0.1:$port/")
+    $l.Start()
+    while ($l.IsListening) {
+        $c = $l.GetContext()
+        try {
+            $rel = [Uri]::UnescapeDataString($c.Request.Url.AbsolutePath).TrimStart('/').Replace('/', '\')
+            $p = Join-Path $root $rel
+            if ($rel -notmatch '\.\.' -and (Test-Path -LiteralPath $p -PathType Leaf)) {
+                $b = [IO.File]::ReadAllBytes($p)
+                $c.Response.ContentLength64 = $b.Length
+                $c.Response.OutputStream.Write($b, 0, $b.Length)
+            } else { $c.Response.StatusCode = 404 }
+        } catch { $c.Response.StatusCode = 500 }
+        $c.Response.Close()
+    }
+}
 
 try {
     Start-Sleep -Seconds 2
@@ -127,20 +147,29 @@ try {
     $settings = Join-Path $env:APPDATA 'helia\gui.conf'
     $settingsBefore = if (Test-Path $settings) { (Get-FileHash $settings).Hash } else { $null }
 
+    # Native commands that exit non-zero by design write to stderr: do not stop on that.
+    $ErrorActionPreference = 'Continue'
     & $exe update check | Out-Null
     $rc = $LASTEXITCODE
     Check 'update check finds the update (exit 10)' { $rc -eq 10 }
-    & $exe update apply < $null | Out-Null
+    $null | & $exe update apply | Out-Null
     $rc = $LASTEXITCODE
     Check 'update apply without --yes does nothing (exit 3)' { $rc -eq 3 -and (Version-Of) -eq $oldVersion }
 
-    & $exe update apply --yes | Out-Null
+    $applyOut = & $exe update apply --yes 2>&1 | Out-String
     $rc = $LASTEXITCODE
+    Write-Output "update apply --yes said: $applyOut"
     Check 'update apply --yes schedules the install (exit 0)' { $rc -eq 0 }
     # The helper waits for this helia.exe to be gone (it is) and runs the installer.
     $deadline = (Get-Date).AddSeconds(180)
-    while ((Get-Date) -lt $deadline -and (Version-Of) -ne $newVersion) { Start-Sleep -Seconds 2 }
-    Check "the installed version becomes $newVersion" { (Version-Of) -eq $newVersion }
+    while ((Get-Date) -lt $deadline -and (Version-Of) -ne $toVersion) { Start-Sleep -Seconds 2 }
+    Check "the installed version becomes $toVersion" { (Version-Of) -eq $toVersion }
+    if ((Version-Of) -ne $toVersion) {
+        # Say what the helper did: its own log, and what is still running.
+        Get-ChildItem -Path (Join-Path $env:HELIA_UPDATE_DIR 'previous') -Recurse -Filter helper.log -ErrorAction SilentlyContinue |
+            ForEach-Object { Write-Output "---- $($_.FullName)"; Get-Content $_.FullName }
+        Get-Process powershell, *setup*, helia* -ErrorAction SilentlyContinue | Format-Table Id, ProcessName, StartTime -AutoSize | Out-String | Write-Output
+    }
     Check 'the settings file is untouched' { ($null -eq $settingsBefore) -or ((Get-FileHash $settings).Hash -eq $settingsBefore) }
     Check 'the old programs were kept for rollback' { Test-Path (Join-Path $env:HELIA_UPDATE_DIR "previous\$oldVersion\helia.exe") }
 
@@ -154,7 +183,7 @@ try {
     $uninstall = Join-Path $dir 'uninstall.exe'
     if (Test-Path $uninstall) { Start-Process -FilePath $uninstall -ArgumentList '/S' -Wait | Out-Null }
 } finally {
-    if ($server) { Stop-Process -Id $server.Id -Force -ErrorAction SilentlyContinue }
+    if ($server) { Stop-Job $server -ErrorAction SilentlyContinue; Remove-Job $server -Force -ErrorAction SilentlyContinue }
     Remove-Item Env:\HELIA_UPDATE_BASE_URL, Env:\HELIA_UPDATE_MANIFEST_HOSTS, Env:\HELIA_UPDATE_ASSET_HOSTS, Env:\HELIA_UPDATE_PINNED_KEYS, Env:\HELIA_UPDATE_DIR -ErrorAction SilentlyContinue
 }
 

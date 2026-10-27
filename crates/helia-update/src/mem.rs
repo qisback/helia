@@ -40,6 +40,9 @@ impl Clock for FixedClock {
 /// A request seen by [`MemHttp`]: URL and `Range` start.
 pub type Seen = (String, Option<u64>);
 
+/// A request seen by [`MemHttp`]: URL, bearer token and bearer host it asked with.
+pub type BearerSeen = (String, Option<String>, Option<String>);
+
 type Files = Arc<Mutex<BTreeMap<PathBuf, Vec<u8>>>>;
 
 /// A file system in memory.
@@ -165,6 +168,8 @@ pub struct MemRoute {
     pub ignore_range: bool,
     /// End the body after this many bytes (a dropped connection) on the next request only.
     pub cut_next_at: Option<usize>,
+    /// Answer with this status instead of 200 or 206.
+    pub status: Option<u16>,
 }
 
 /// A scripted HTTP server in memory.
@@ -173,6 +178,8 @@ pub struct MemHttp {
     routes: Arc<Mutex<BTreeMap<String, MemRoute>>>,
     log: Arc<Mutex<Vec<Seen>>>,
     redirects: Arc<Mutex<BTreeMap<String, String>>>,
+    bearers: Arc<Mutex<Vec<BearerSeen>>>,
+    fail: Arc<Mutex<std::collections::BTreeSet<String>>>,
 }
 
 impl MemHttp {
@@ -191,9 +198,36 @@ impl MemHttp {
                     body: body.to_vec(),
                     ignore_range: false,
                     cut_next_at: None,
+                    status: None,
                 },
             );
         }
+    }
+
+    /// Answer `url` with `status` and `body` (for example a 403 with a JSON reason).
+    pub fn serve_status(&self, url: &str, status: u16, body: &[u8]) {
+        self.serve(url, body);
+        self.tweak(url, |r| r.status = Some(status));
+    }
+
+    /// Make requests for `url` fail as if the network were down.
+    pub fn fail(&self, url: &str) {
+        if let Ok(mut f) = self.fail.lock() {
+            f.insert(url.to_string());
+        }
+    }
+
+    /// Let `url` work again.
+    pub fn heal(&self, url: &str) {
+        if let Ok(mut f) = self.fail.lock() {
+            f.remove(url);
+        }
+    }
+
+    /// The bearer token and bearer host each request carried, by URL.
+    #[must_use]
+    pub fn bearers(&self) -> Vec<BearerSeen> {
+        self.bearers.lock().map(|l| l.clone()).unwrap_or_default()
     }
 
     /// Make `url` answer with a redirect to `target` (the body is then `target`'s).
@@ -230,6 +264,14 @@ impl Http for MemHttp {
             .lock()
             .map_err(|_| poisoned())?
             .push((req.url.to_string(), req.range_from));
+        self.bearers.lock().map_err(|_| poisoned())?.push((
+            req.url.to_string(),
+            req.bearer.map(str::to_string),
+            req.bearer_host.map(str::to_string),
+        ));
+        if self.fail.lock().map_err(|_| poisoned())?.contains(req.url) {
+            return Err(Error::Http("the network is down".into()));
+        }
         if let Some(u) = self.redirects.lock().map_err(|_| poisoned())?.get(req.url) {
             // A redirect to another host is refused, as the real client does.
             let host = crate::manifest::url_host(u);
@@ -245,6 +287,13 @@ impl Http for MemHttp {
                 body: Box::new(Cursor::new(Vec::new())),
             });
         };
+        if let Some(s) = r.status {
+            return Ok(Response {
+                status: s,
+                content_range_start: None,
+                body: Box::new(Cursor::new(r.body.clone())),
+            });
+        }
         let (status, start) = match req.range_from {
             Some(n) if !r.ignore_range && (n as usize) < r.body.len() => (206, n as usize),
             Some(n) if !r.ignore_range && (n as usize) >= r.body.len() => {

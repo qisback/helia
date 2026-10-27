@@ -4,6 +4,8 @@
 # See ADDITIONAL-TERMS.md for terms added under GPLv3 section 7.
 
 """Tests for the release-notes generator (run: python3 -m unittest discover -s packaging)."""
+import contextlib
+import io
 import json
 import os
 import pathlib
@@ -23,6 +25,11 @@ CHANGELOG = """# Changelog
 - Not released yet.
 
 ## [1.2.3] - 2026-10-21
+
+### Summary
+
+- You can now do the new thing.
+- Fixed a crash on empty input.
 
 ### Fixed
 
@@ -62,6 +69,24 @@ class Notes(unittest.TestCase):
         self.date = date
         self.notes = release.build_notes("1.2.3", "v1.2.3", date, body, "https://example.invalid", "o/r")
 
+    def test_summary_is_for_the_public_changelog_not_the_forge_notes(self):
+        self.assertNotIn("### Summary", self.notes)
+        self.assertNotIn("You can now do the new thing", self.notes)
+
+    def test_notes_need_a_summary(self):
+        cl = self.cl.parent / "NOSUMMARY.md"
+        cl.write_text(CHANGELOG.replace("### Summary\n\n- You can now do the new thing.\n- Fixed a crash on empty input.\n\n", ""),
+                      encoding="utf-8")
+        args = type("A", (), {"changelog": str(cl), "version": "1.2.3", "tag": "v1.2.3", "server": "https://example.invalid",
+                              "repo": "o/r", "out": str(self.cl.parent / "notes.md"), "macos": False})()
+        err = io.StringIO()
+        with self.assertRaises(SystemExit), contextlib.redirect_stderr(err):
+            release.cmd_notes(args)
+        self.assertIn("### Summary", err.getvalue())
+        args.changelog = str(self.cl)
+        with contextlib.redirect_stdout(io.StringIO()):
+            release.cmd_notes(args)
+
     def test_date_from_changelog(self):
         self.assertEqual(self.date, "2026-10-21")
         self.assertIn("Released 2026-10-21.", self.notes)
@@ -95,6 +120,51 @@ class Notes(unittest.TestCase):
         self.assertIn("| macOS (Apple silicon) | dmg |", with_mac)
         self.assertNotIn(release.NO_MACOS, with_mac)
         self.assertIn("https://example.invalid/o/r/archive/v1.2.3.tar.gz", self.notes)
+
+    def test_attaching_a_dmg_edits_the_notes_into_the_macos_form(self):
+        body, _ = release.changelog_entry(self.cl, "1.2.3")
+        with_mac = release.build_notes("1.2.3", "v1.2.3", self.date, body, "https://example.invalid", "o/r", macos=True)
+        edited = release.notes_with_macos(self.notes)
+        self.assertEqual(edited, with_mac)
+        self.assertEqual(release.notes_with_macos(edited), edited)  # idempotent
+        kept = release.body_with_sums(self.notes, {"a.tar.gz": "0" * 64})
+        self.assertIn("a.tar.gz", release.notes_with_macos(kept))  # the sums block survives
+
+    def test_attach_a_dmg_updates_the_release_notes_and_sums(self):
+        # Regression: attaching used to stop after the upload with a TypeError (release[id]), leaving
+        # the notes without the macOS row and SHA256SUMS without the dmg line.
+        body, _ = release.changelog_entry(self.cl, "1.2.3")
+        notes = release.body_with_sums(
+            release.build_notes("1.2.3", "v1.2.3", self.date, body, "https://example.invalid", "o/r"), {"a.tar.gz": "0" * 64})
+        calls = []
+
+        class FakeForge:
+            def __init__(self, server, repo):
+                pass
+
+            def call(self, method, path, **kw):
+                calls.append((method, path, kw))
+                if method == "GET":
+                    return {"id": 7, "body": notes, "assets": []}
+                return {}
+
+        with tempfile.TemporaryDirectory() as d:
+            pathlib.Path(d, "Helia-1.2.3-macos.dmg").write_bytes(b"dmg")
+            args = type("A", (), {"tag": "v1.2.3", "assets": d, "server": "https://example.invalid", "repo": "o/r", "replace": False})()
+            real = release.Forge
+            release.Forge = FakeForge
+            try:
+                with contextlib.redirect_stdout(io.StringIO()):
+                    release.cmd_attach(args)
+            finally:
+                release.Forge = real
+        patches = [kw["body"]["body"] for m, _, kw in calls if m == "PATCH"]
+        self.assertEqual(len(patches), 2)
+        self.assertIn("| macOS (Apple silicon) | dmg |", patches[0])
+        self.assertIn("Helia-1.2.3-macos.dmg", patches[1])
+        self.assertIn("a.tar.gz", patches[1])
+        self.assertIn("| macOS (Apple silicon) | dmg |", patches[1])  # the sums write must keep the edited notes
+        self.assertNotIn(release.NO_MACOS, patches[1])
 
     def test_checksum_block_round_trip(self):
         # The release workflows (release.yml, release-windows.yml, release-macos.yml) parse these markers.
@@ -145,6 +215,7 @@ def manifest_args(**kw):
     release.add_manifest_parsers(sub)
     out = pathlib.Path(tempfile.mkdtemp())
     argv = ["manifest", "--out", str(out)]
+    kw.setdefault("base_url", "https://paid.example.org/dl/helia/{version}/")
     for k, v in kw.items():
         argv += [f"--{k.replace('_', '-')}"] + ([] if v is True else [str(v)])
     return ap.parse_args(argv), out
@@ -195,7 +266,7 @@ class UpdateManifest(unittest.TestCase):
         self.assertEqual(got, {("windows-x86_64", "nsis"), ("linux-x86_64", "appimage"), ("linux-aarch64", "appimage"),
                                ("linux-x86_64", "deb"), ("linux-aarch64", "rpm"), ("linux-x86_64", "targz")})
         win = next(x for x in doc["assets"] if x["kind"] == "nsis")
-        self.assertEqual(win["url"], f"https://github.com/qisback/helia/releases/download/v{V}/helia-{V}-x86_64-pc-windows-msvc-setup.exe")
+        self.assertEqual(win["url"], f"https://paid.example.org/dl/helia/{V}/helia-{V}-x86_64-pc-windows-msvc-setup.exe")
         self.assertEqual((win["size"], len(win["sha256"])), (3, 64))
         self.assertTrue((out / "helia" / "prerelease" / "manifest.json").is_file())
 
@@ -205,6 +276,29 @@ class UpdateManifest(unittest.TestCase):
                                allow_missing=True, date="2026-10-24T18:00:00Z")
         release.cmd_manifest(a)
         self.assertEqual(sorted(p.parent.name for p in out.glob("helia/*/manifest.json")), ["prerelease"])
+
+    def test_github_asset_base_is_refused_and_a_base_is_required(self):
+        for bad in (f"https://github.com/qisback/helia/releases/download/v{V}/",
+                    "https://objects.githubusercontent.com/x/", "https://example.org/releases/download/v1/"):
+            a, _ = manifest_args(tag=f"v{V}", assets_dir=write_assets(), base_url=bad)
+            with self.assertRaises(SystemExit):
+                with contextlib.redirect_stderr(io.StringIO()) as err:
+                    release.cmd_manifest(a)
+            self.assertIn("What:", err.getvalue())
+            self.assertIn("Why:", err.getvalue())
+            self.assertIn("What to do:", err.getvalue())
+        # No base, no manifest: there is no public default.
+        a, out = manifest_args(tag=f"v{V}", assets_dir=write_assets(), base_url="")
+        with self.assertRaises(SystemExit):
+            with contextlib.redirect_stderr(io.StringIO()) as err:
+                release.cmd_manifest(a)
+        self.assertIn("What to do:", err.getvalue())
+        self.assertFalse(list(out.glob("helia/*/manifest.json")))
+        # {version} and {tag} are filled in.
+        a, out = manifest_args(tag=f"v{V}", assets_dir=write_assets(), base_url="https://shop.example/dl/{version}/{tag}")
+        release.cmd_manifest(a)
+        doc = json.loads((out / "helia" / "stable" / "manifest.json").read_text())
+        self.assertTrue(all(x["url"].startswith(f"https://shop.example/dl/{V}/v{V}/") for x in doc["assets"]))
 
     def test_missing_required_asset_fails(self):
         files = {k: v for k, v in FILES.items() if "windows-msvc-setup" not in k}
@@ -411,7 +505,7 @@ class UpdateManifest(unittest.TestCase):
         ref = out / "ref.json"
         sh("build", "--app", "helia", "--channel", "stable", "--version", V, "--sequence", "42",
            "--date", "2026-10-24T18:00:00Z", "--expires-days", "120", "--min-supported", "0.7.0",
-           "--notes-url", "https://example.invalid/n", "--base-url", f"https://github.com/qisback/helia/releases/download/v{V}/",
+           "--notes-url", "https://example.invalid/n", "--base-url", f"https://paid.example.org/dl/helia/{V}/",
            "--out", str(ref), *specs)
         theirs = json.loads(ref.read_text())
         theirs["assets"].sort(key=lambda x: (x["platform"], x["kind"]))  # mine are sorted, the tool keeps the given order

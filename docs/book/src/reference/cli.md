@@ -31,6 +31,7 @@ Subcommands:
 * `feedback`: Send feedback (a bug, a feature request or a question). It is sent to the Helia developers and filed in the Helia issue tracker, through the feedback service
 * `plugins`: List, inspect, approve, set up and test plugins: programs that add a processing step or do the stacking elsewhere. Nothing runs until you enable it
 * `update`: Check for a newer Helia, download it and install it, or go back to the previous version. Contacts the update server only when you run it
+* `tools`: Install, check and remove optional programs such as ffmpeg. Nothing is installed without your say-so: the provider's full licence is shown and you must type yes before anything is downloaded
 
 Options:
 
@@ -63,7 +64,8 @@ Options:
 * `--autocrop`: Crop the result to the solar disc plus a margin (FITS too). A capture without a clear disc is left as it is, with a note
 * `--seeing`: Estimate the seeing from the capture: the Fried parameter r0 from the spectral ratio of tiles of the disc over a sample of all the frames (needs --aperture-mm), and a relative index from how much neighbouring alignment points move against each other. Printed after the stack and written into the FITS header. Reads about 120 more frames
 * `--report <DIR>`: Write the science outputs of the stack into this directory (created): the frame quality graphs sorted and in capture order with the keep threshold, the quality histogram, the global shift and drift, the seeing over the capture, the alignment point plots, the power spectrum, transfer curves, limb profile and blur, histograms and noise, and the Stonyhurst and Carrington grids (with --sunspots, the sunspot table too), each as a PNG with its numbers as CSV and JSON, and `report.html`, one self-contained page with the figures, tables and the settings used. Turns the seeing probe on (about 120 more frames are read). Redraw one figure with `helia plot`
-* `--field-rotation`: Undo the field rotation of an altazimuth mount: every frame is turned to the orientation of the middle of the capture (or --field-rotation-reference) from the parallactic angle of the Sun at the frame's SER timestamp, for the site given by --site or `HELIA_SITE`, before it is scored, aligned or stacked. Needs a capture with timestamps (SER); not for an equatorial mount, and not with `--colour true`
+* `--field-rotation`: Undo the field rotation of an altazimuth mount: every frame is turned to the orientation of the middle of the capture (or --field-rotation-reference) from the parallactic angle of the Sun at the frame's SER timestamp, for the site given by --site or `HELIA_SITE`, before it is scored, aligned or stacked. Needs a capture with timestamps (SER, or FITS with DATE-OBS); not for an equatorial mount. FITS subs from an altazimuth mount that name their target, site and mount in the header (a Seestar's do) need no flag: the correction is made by itself, about their target and site; stop it with --no-field-rotation. Works with `--colour true`
+* `--no-field-rotation`: Do not undo field rotation, even where the headers of FITS subs from an altazimuth mount (`RA`, `DEC`, `SITELAT`, `SITELONG`, `EQMODE` 0, `DATE-OBS`) would have it done by itself
 * `--field-rotation-reference <WHICH>`: The orientation --field-rotation turns every frame to: middle (the default), first or last (default `middle`)
 * `--field-rotation-mirror`: The picture is a mirror image (an odd number of reflections, a star diagonal for one): --field-rotation then turns the other way
 * `--sunspots`: Find the sunspots on the stack: groups, the relative Wolf number, areas corrected for foreshortening. Printed after the stack, written into the FITS header, and saved beside the output as NAME-sunspots.csv, .json and .png. For a white-light capture with the whole disc in view; the time is the capture's
@@ -122,12 +124,12 @@ Options:
 * `--crop <X,Y,W,H>`: Crop to X,Y,W,H in pixels (top-left origin)
 * `--rotate <DEG>`: Rotate clockwise by this many degrees (multiples of 90 are exact)
 * `--flip-h`: Mirror left to right
-* `--flip-v`: Mirror top to bottom
+* `--flip-v`: Mirror top to bottom. An edit on the finished picture, applied after the capture is read; to correct how FITS frames are read use --row-order
 * `--resize <SIZE>`: Resize: 50% or 0.5, 1200x800, 1200x (width) or x800 (height)
 * `--edits <NAME|FILE>`: Start from a saved edit preset (a name from the presets folder, or a .json file); the options above are added after it
 * `--save-edits <NAME>`: Save the resulting edit list as a preset under this name, for --edits
 * `--no-multipoint`: Skip multi-point alignment (global alignment only)
-* `--exclude <X,Y,W,H>`: Keep alignment and quality scoring off this rectangle, given as x,y,w,h in pixels (top-left origin); repeat for several. The area is flattened in every frame, so it is flat in the result too. Burned-in timestamps are found automatically; use this for anything else (a logo, a hot pixel cluster) (repeatable)
+* `--exclude <X,Y,W,H>`: Keep alignment and quality scoring off this rectangle, given as x,y,w,h in pixels (top-left origin); repeat for several. The area is filled in every frame from the sky around it, so no patch shows in the result. Burned-in timestamps are found automatically; use this for anything else (a logo, a hot pixel cluster) (repeatable)
 * `--prominence-band <PX>`: Place alignment points up to this many pixels outside the fitted limb, so they can follow prominences (0 keeps them on the disc) (default `0`)
 * `--no-disc-mask`: Do not fit the limb; alignment points may sit anywhere there is contrast
 * `--no-overlay-detect`: Do not look for burned-in text (a capture timestamp) to mask
@@ -153,6 +155,7 @@ Options:
 * `--bit-depth <BITS>`: Bits per sample, instead of the SER header's: 1 to 8 read one byte per pixel, 9 to 16 two bytes. For a header that gets the depth wrong. SER only
 * `--endian <ORDER>`: Byte order of 16-bit samples, instead of the SER header flag (little or big). SER only
 * `--flip-rows`: Read the rows bottom to top, for a file stored upside down. Patterns given to --bayer describe the picture after the flip. SER only
+* `--row-order <ORDER>`: Which way up the rows of FITS frames are stored: auto, top-down or bottom-up. auto follows a ROWORDER card (TOP-DOWN or BOTTOM-UP) when there is one; without it Seestar S50 frames (INSTRUME or TELESCOP names an S50) are top-down and everything else is bottom-up, as the FITS standard says. top-down and bottom-up override the header. --flip-v is a separate edit applied to the result. FITS only (default `auto`)
 * `--channel <CHANNEL>`: Colour channel to stack from a Bayer capture. Default: the preset's channel, else lum
   * `r`: Red plane only (usual for H-alpha)
   * `g`: Green plane only
@@ -203,6 +206,7 @@ Options:
 * `--bit-depth <BITS>`: Bits per sample, instead of the SER header's: 1 to 8 read one byte per pixel, 9 to 16 two bytes. For a header that gets the depth wrong. SER only
 * `--endian <ORDER>`: Byte order of 16-bit samples, instead of the SER header flag (little or big). SER only
 * `--flip-rows`: Read the rows bottom to top, for a file stored upside down. Patterns given to --bayer describe the picture after the flip. SER only
+* `--row-order <ORDER>`: Which way up the rows of FITS frames are stored: auto, top-down or bottom-up. auto follows a ROWORDER card (TOP-DOWN or BOTTOM-UP) when there is one; without it Seestar S50 frames (INSTRUME or TELESCOP names an S50) are top-down and everything else is bottom-up, as the FITS standard says. top-down and bottom-up override the header. --flip-v is a separate edit applied to the result. FITS only (default `auto`)
 * `-q, --quiet`: Hide the progress messages
 * `--plugin <PATH>`: A plugin to list for this run: a folder holding `plugin.toml`, or the manifest itself. Repeat for several. A plugin named here is only listed; it runs after you enable it (`helia plugins enable`). For plugins you are writing or keep outside the plugins folder (repeatable)
 
@@ -254,7 +258,7 @@ Options:
 * `--crop <X,Y,W,H>`: Crop to X,Y,W,H in pixels (top-left origin)
 * `--rotate <DEG>`: Rotate clockwise by this many degrees (multiples of 90 are exact)
 * `--flip-h`: Mirror left to right
-* `--flip-v`: Mirror top to bottom
+* `--flip-v`: Mirror top to bottom. An edit on the finished picture, applied after the capture is read; to correct how FITS frames are read use --row-order
 * `--resize <SIZE>`: Resize: 50% or 0.5, 1200x800, 1200x (width) or x800 (height)
 * `--edits <NAME|FILE>`: Start from a saved edit preset (a name from the presets folder, or a .json file); the options above are added after it
 * `--save-edits <NAME>`: Save the resulting edit list as a preset under this name, for --edits
@@ -282,6 +286,7 @@ Options:
 * `--bit-depth <BITS>`: Bits per sample, instead of the SER header's: 1 to 8 read one byte per pixel, 9 to 16 two bytes. For a header that gets the depth wrong. SER only
 * `--endian <ORDER>`: Byte order of 16-bit samples, instead of the SER header flag (little or big). SER only
 * `--flip-rows`: Read the rows bottom to top, for a file stored upside down. Patterns given to --bayer describe the picture after the flip. SER only
+* `--row-order <ORDER>`: Which way up the rows of FITS frames are stored: auto, top-down or bottom-up. auto follows a ROWORDER card (TOP-DOWN or BOTTOM-UP) when there is one; without it Seestar S50 frames (INSTRUME or TELESCOP names an S50) are top-down and everything else is bottom-up, as the FITS standard says. top-down and bottom-up override the header. --flip-v is a separate edit applied to the result. FITS only (default `auto`)
 * `--plugin <PATH>`: A plugin to list for this run: a folder holding `plugin.toml`, or the manifest itself. Repeat for several. A plugin named here is only listed; it runs after you enable it (`helia plugins enable`). For plugins you are writing or keep outside the plugins folder (repeatable)
 
 ### `helia measure`
@@ -793,5 +798,100 @@ Options:
 * `--channel <CHANNEL>`: Set the channel
   * `stable`: Released versions only
   * `prerelease`: Pre-release versions as well
+* `--plugin <PATH>`: A plugin to list for this run: a folder holding `plugin.toml`, or the manifest itself. Repeat for several. A plugin named here is only listed; it runs after you enable it (`helia plugins enable`). For plugins you are writing or keep outside the plugins folder (repeatable)
+
+### `helia tools`
+
+Install, check and remove optional programs such as ffmpeg. Nothing is installed without your say-so: the provider's full licence is shown and you must type yes before anything is downloaded
+
+```text
+helia tools [OPTIONS] <COMMAND>
+```
+
+Subcommands:
+
+* `status`: Show which optional tools are installed and where Helia finds ffmpeg
+* `licence`: Print the full licence text of a tool, with its provider and source link
+* `install`: Install a tool: show its licence, ask, then fetch it from the provider
+* `remove`: Remove an installed tool
+
+Options:
+
+* `--plugin <PATH>`: A plugin to list for this run: a folder holding `plugin.toml`, or the manifest itself. Repeat for several. A plugin named here is only listed; it runs after you enable it (`helia plugins enable`). For plugins you are writing or keep outside the plugins folder (repeatable)
+
+#### `helia tools status`
+
+Show which optional tools are installed and where Helia finds ffmpeg.
+
+Uses no network. Helia looks for ffmpeg in `HELIA_FFMPEG` and `HELIA_FFPROBE` first, then in a copy installed with `helia tools install`, then on the `PATH`.
+
+```text
+helia tools status [OPTIONS]
+```
+
+Options:
+
+* `--json`: Print as JSON
+* `--plugin <PATH>`: A plugin to list for this run: a folder holding `plugin.toml`, or the manifest itself. Repeat for several. A plugin named here is only listed; it runs after you enable it (`helia plugins enable`). For plugins you are writing or keep outside the plugins folder (repeatable)
+
+#### `helia tools licence`
+
+Print the full licence text of a tool, with its provider and source link.
+
+Fetches the signed list of tools to get the text. Nothing is installed.
+
+```text
+helia tools licence [OPTIONS] <ITEM>
+```
+
+Arguments:
+
+* `<ITEM>`: The tool: `ffmpeg` (required)
+
+Options:
+
+* `--plugin <PATH>`: A plugin to list for this run: a folder holding `plugin.toml`, or the manifest itself. Repeat for several. A plugin named here is only listed; it runs after you enable it (`helia plugins enable`). For plugins you are writing or keep outside the plugins folder (repeatable)
+
+#### `helia tools install`
+
+Install a tool: show its licence, ask, then fetch it from the provider.
+
+You are shown the provider, the size, the source link and the whole licence (in a pager when there is a terminal) and must type `yes`. Declining leaves everything as it was and Helia keeps working without the tool. Exit code 3: the licence was not accepted.
+
+```text
+helia tools install [OPTIONS] <ITEM>
+```
+
+Arguments:
+
+* `<ITEM>`: The tool: `ffmpeg` (installs `ffmpeg` and `ffprobe`) (required)
+
+Options:
+
+* `--method <METHOD>`: How to get it: the package manager, a download, or choose for me (default `auto`)
+  * `auto`: Use the system package manager when there is one (Linux, Homebrew), else download
+  * `package`: Use the system package manager; its command is shown and run only if you agree
+  * `download`: Download the provider's own build into your Helia tools folder
+* `--accept-licence <HASH>`: Accept the licence without a prompt, for scripts: the first 12 or more characters of the licence hash that `helia tools licence` prints. If the licence text has changed since you read it, the hash differs and nothing is installed
+* `--plugin <PATH>`: A plugin to list for this run: a folder holding `plugin.toml`, or the manifest itself. Repeat for several. A plugin named here is only listed; it runs after you enable it (`helia plugins enable`). For plugins you are writing or keep outside the plugins folder (repeatable)
+
+#### `helia tools remove`
+
+Remove an installed tool.
+
+Deletes the copy in your Helia tools folder. A tool installed by a package manager is left on the system (Helia says how to remove it); only Helia's note of it is dropped.
+
+```text
+helia tools remove [OPTIONS] <ITEM>
+```
+
+Arguments:
+
+* `<ITEM>`: The tool: `ffmpeg` (required)
+
+Options:
+
+* `--forget-licence`: Also forget that you accepted its licence, so installing again asks again
+* `-y, --yes`: Go ahead without asking
 * `--plugin <PATH>`: A plugin to list for this run: a folder holding `plugin.toml`, or the manifest itself. Repeat for several. A plugin named here is only listed; it runs after you enable it (`helia plugins enable`). For plugins you are writing or keep outside the plugins folder (repeatable)
 

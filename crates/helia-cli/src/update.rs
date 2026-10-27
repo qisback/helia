@@ -168,6 +168,9 @@ fn available_json(a: &Available) -> serde_json::Value {
             "sha256": f.sha256,
         })),
         "downloaded": a.staged.is_some(),
+        "automatic_download_allowed": a.may_auto_download(),
+        "note": a.note,
+        "link": a.link,
     })
 }
 
@@ -192,6 +195,12 @@ fn describe(a: &Available, out: &mut dyn Write) -> std::io::Result<()> {
     if let Some(u) = &a.notes_url {
         writeln!(out, "What changed: {u}")?;
     }
+    if let Some(n) = &a.note {
+        writeln!(out, "{n}")?;
+        if let Some(l) = &a.link {
+            writeln!(out, "More: {l}")?;
+        }
+    }
     match (&a.asset, a.self_applies()) {
         (None, _) => writeln!(
             out,
@@ -213,7 +222,7 @@ fn describe(a: &Available, out: &mut dyn Write) -> std::io::Result<()> {
     }
 }
 
-fn client_run<T>(
+pub(crate) fn client_run<T>(
     channel: Option<ChannelArg>,
     f: impl FnOnce(&Client<'_>) -> Result<T>,
 ) -> Result<T> {
@@ -299,6 +308,12 @@ fn apply(yes: bool, channel: Option<ChannelArg>) -> Result<i32> {
             }
         };
         describe(&a, &mut std::io::stdout())?;
+        if a.note.is_some() && !a.auto_download {
+            eprintln!(
+                "Helia does not download this version by itself. Get it from the link above."
+            );
+            return Ok(EXIT_DECLINED);
+        }
         if !confirm(&format!("Download and install Helia {}?", a.version), yes) {
             return Ok(EXIT_DECLINED);
         }
@@ -338,6 +353,7 @@ fn status(json: bool) -> Result<i32> {
                 "last_check_unix": (s.last_check != 0).then_some(s.last_check),
                 "downloaded": s.staged.as_ref().map(|d| d.version.clone()),
                 "previous_version_kept": s.previous,
+                "backend": s.backend.as_ref().map(|b| b.json.clone()),
             });
             println!("{}", json_string(&v));
             return Ok(0);
@@ -361,6 +377,9 @@ fn status(json: bool) -> Result<i32> {
                 "Last check: {}",
                 helia_update::time::format_utc(s.last_check)
             );
+        }
+        if let Some(b) = &s.backend {
+            println!("{}: {}", b.label, b.line);
         }
         if let Some(d) = &s.staged {
             println!("Downloaded and waiting: Helia {}", d.version);

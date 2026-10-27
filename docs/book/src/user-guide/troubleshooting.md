@@ -23,7 +23,7 @@ it.
 
 You opened an MP4, MOV, M4V, MKV or WebM file, or a compressed AVI, and Helia
 could not find `ffmpeg`. Those formats are read through the optional ffmpeg
-program. Install it (the message lists the command for each system, and
+program. The quickest fix is `helia tools install ffmpeg`, which shows the licence and asks before it fetches anything ([Optional tools](optional-tools.md)). Or install it yourself (the message lists the command for each system, and
 [Installation](installation.md#optional-ffmpeg-for-mp4-and-other-video) has
 them too), open a new terminal so `PATH` is refreshed, and try again. If it is
 installed somewhere unusual, set `HELIA_FFMPEG` and `HELIA_FFPROBE` to the full
@@ -96,7 +96,9 @@ what the pixels really are (any value from 1 to 8 reads one byte per pixel, 9 to
 16 two). A file stored with the bottom row first (rare in SER) is read the right
 way up with `--flip-rows`. All of these apply to SER files, and the same choices
 are in the Open step of the app and in the API (`bit_depth`, `endian`,
-`flip_rows`). See [Capturing for Helia](capturing.md#why-a-ser-header-can-be-wrong).
+`flip_rows`). FITS frames have their own switch, `--row-order`
+(`row_order` in the API): see
+[Stack FITS frames](../tutorials/stack-fits-frames.md#6-how-helia-reads-the-header). See [Capturing for Helia](capturing.md#why-a-ser-header-can-be-wrong).
 
 ### A grid or chessboard in the stack (a Bayer mosaic that was not removed)
 
@@ -201,6 +203,27 @@ the filter yourself: `--preset` on the command line, the filter buttons in the
 Quick stack card. A filter you choose always wins over the one detected.
 
 ## The result
+
+### "the stack is less sharp than the best single frame"
+
+`helia stack` prints this `warning:` when the stack's detail is under three quarters of
+its best frame's (the `detail:` line shows the ratio). Frames that do not line up
+smear each other. The usual cause is field rotation: an altazimuth mount turns the
+picture over a long capture. For FITS subs that name their target, site and mount, the
+correction is automatic (check the `rotation:` lines); otherwise add `--field-rotation`
+(see [Field rotation](field-rotation.md)). Also look at the `align:` line for a low
+confidence, and try keeping fewer frames with `--keep-frames`.
+### "this capture does not look like the Sun"
+
+`helia stack` prints this `warning:` when it finds no solar disc and no filter was
+named or recognised, for example a planet, the Moon or a star field. The stack is
+still made, but Helia's alignment, sharpening and levels are tuned for the Sun: the
+wavelet sharpening of a small bright object can saturate it into a flat blob. What to
+do: look at the plain stack first (leave `--sharpen` off); sharpen gently with
+`--sharpen unsharp`, or lower the wavelet gains with `--wavelet-gains`; and if it
+is a full disc of the Sun that Helia did not recognise, name the filter with
+`--preset`. Helia is not built for planets, so expect to finish them in other
+software.
 
 ### The stack looks soft
 

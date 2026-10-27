@@ -109,7 +109,7 @@ User-Agent: helia-update/0.7.1
 ```
 
 No user name, machine name, address you chose, capture name, licence, or any
-identifier is sent, and no cookies. Redirects are followed only between the servers
+identifier is sent, and no cookies. (An installer bought from the store has its own settings under Updates, and says there what they send.) Redirects are followed only between the servers
 named in the build (the manifest server for the manifest, the download servers for
 files), and every address must be https. The server sees your IP address, as any web
 server does; Helia does not send it anything else. To stop all of it, choose **Never

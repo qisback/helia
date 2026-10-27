@@ -275,6 +275,8 @@ pub struct CaptureInfo {
     pub exposure_s: Option<f64>,
     /// The filter preset the stack was made for.
     pub filter: Option<Preset>,
+    /// What a FITS capture's header says it points at, and where it stood.
+    pub pointing: Option<crate::io::fitsseq::Pointing>,
 }
 
 impl CaptureInfo {
@@ -317,6 +319,7 @@ impl CaptureInfo {
             info.frame_unix.clone_from(&scan.times);
             info.start_unix = scan.times.iter().flatten().copied().reduce(f64::min);
             info.exposure_s = info.exposure_s.or(scan.exposure_s);
+            info.pointing = scan.pointing;
         }
         info
     }

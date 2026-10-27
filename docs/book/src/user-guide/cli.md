@@ -15,6 +15,7 @@ description: "The Helia command line: stack, sharpen, colour, calibrate, measure
 | `helia serve` | Run the [HTTP API](api.md). |
 | `helia feedback` | Send a bug report, feature request or question, to the Helia issue tracker. See [Sending feedback](sending-feedback.md). |
 | `helia update` | Check for a newer Helia, install it, go back to the previous version, or change the update mode. Contacts the update server only when you run it. See [Updates](updates.md). |
+| `helia tools` | Install, check and remove optional programs such as ffmpeg. Shows the provider's full licence and waits for `yes` before anything is downloaded. See [Optional tools](optional-tools.md). |
 
 Every option is listed in the [CLI reference](../reference/cli.md), which is
 generated from the program itself. This page explains how to use them.
@@ -162,7 +163,7 @@ helia calibrate --darks darks.ser --flats flats.ser --flat-darks flat-darks.ser 
   the Sun covered and the scale above which the gain is not recovered well. See
   [A flat from the Sun itself](calibration.md#a-flat-from-the-sun-itself-displaced-disc-frames).
 * `--preset ha`: adds the advice for that filter to the warnings.
-* The same `--bayer`, `--bit-depth`, `--endian` and `--flip-rows` as `helia stack`.
+* The same `--bayer`, `--bit-depth`, `--endian`, `--flip-rows` and `--row-order` as `helia stack`.
 
 The flat is checked as it is made: the command prints how far the edge of the
 field falls below the centre, the size of any rings and how much of the field
@@ -418,8 +419,16 @@ For a SER file, to say what the header gets wrong (see
 * `--endian little|big` sets the byte order of 16-bit samples instead of the
   header flag and Helia's check of it.
 * `--flip-rows` reads the rows bottom to top.
+* `--row-order auto|top-down|bottom-up` sets which way up the rows of FITS frames
+  are stored. `auto` (the default) follows a `ROWORDER` card when there is one;
+  without one, Seestar S50 frames (`INSTRUME` or `TELESCOP` names an S50) are
+  read top-down and every other camera bottom-up, as the FITS standard says.
+  `top-down` and `bottom-up` override the header. `--flip-v` is a separate edit
+  of the finished picture, applied after the capture is read, so it turns over
+  whatever `--row-order` produced. FITS only.
 
-An AVI describes its own samples, so these three are refused for an AVI.
+An AVI describes its own samples, so the first three and `--row-order` are
+refused for an AVI.
 Whatever you give is printed as a `note:` and recorded in the output file, as the
 `Overrides:` line (see [What the files say](colourising.md#what-the-files-say)).
 * `--debayer mhc` (the default) or `bilinear` chooses the demosaicing method.
@@ -561,8 +570,21 @@ helia edit sun.tif -o sun2.tif --edits "H-alpha gentle" --gamma 1.1
 It takes the same sharpening and adjustment options as `helia stack`, plus
 `--preset <filter>` for the recommended values (the filter is otherwise read
 from the file name or folder). A colour image is edited channel by channel and
-stays colour. The output records what was done, with where it came from. With
-nothing to do it says so and exits with status 1.
+stays colour. The output records what was done, with where it came from.
+
+With no edit options at all, `helia edit` is a plain format converter: the image
+is written as it is in the format of the output name, with no processing.
+
+```sh
+helia edit stack.tif -o stack.png       # TIFF to PNG, nothing else changed
+helia edit stack.tif -o stack.fits      # TIFF to FITS
+```
+
+Expect the format's own rounding and nothing more: a PNG holds 8 bits per
+channel, so a 16-bit stack loses its fine tones (keep the TIFF or FITS as the
+master); a TIFF or FITS keeps the values to well under one part in fifty
+thousand. Colour stays colour. Asking only to save a preset (`--save-edits`)
+saves it and writes no image, as before.
 
 ## `helia serve`
 

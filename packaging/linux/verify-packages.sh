@@ -99,6 +99,10 @@ if [ -d "$ex/squashfs-root" ]; then
   desktop-file-validate "$ex/squashfs-root/helia.desktop"
   [ -s "$ex/squashfs-root/helia.png" ]
   [ -s "$ex/squashfs-root/usr/share/doc/helia/ADDITIONAL-TERMS.md" ]
+  # The runtime links libfuse (LGPL-2.1): the notice, the source offer and the licence text must be inside.
+  [ -s "$ex/squashfs-root/usr/share/doc/helia/LGPL-2.1.txt" ]
+  grep -q 'AppImage runtime (type2-runtime)' "$ex/squashfs-root/usr/share/doc/helia/THIRD-PARTY-LICENSES.txt"
+  grep -q 'libfuse is licensed under the GNU Lesser General Public License' "$ex/squashfs-root/usr/share/doc/helia/THIRD-PARTY-LICENSES.txt"
 else
   # A foreign-architecture image cannot be extracted by running it: check the ELF machine instead.
   readelf -h "$a" | grep -q "Machine:.*$([ "$arch" = aarch64 ] && echo AArch64 || echo X86-64)"

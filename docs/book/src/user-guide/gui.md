@@ -143,10 +143,13 @@ source:
 * **Bit depth**: Auto, 8-bit or 16-bit, instead of the header's.
 * **Byte order of 16-bit pixels**: Auto, Little-endian or Big-endian, instead of
   the header flag.
-* **Row order**: as stored, or bottom to top for a file stored upside down.
+* **Row order**: for a SER file, as stored or bottom to top (for a file stored
+  upside down). For FITS frames, Auto (a `ROWORDER` card if there is one, else
+  Seestar S50 frames top-down and everything else bottom-up, as the FITS
+  standard says), Top-down or Bottom-up.
 
-Bit depth, byte order and row order apply to SER files; their chips are greyed
-out for an AVI. The overrides belong to the file: opening a different capture
+Bit depth and byte order apply to SER files, and row order to SER and FITS; the
+chips that do not apply are greyed out for an AVI. The overrides belong to the file: opening a different capture
 starts again from Auto. They are written into the exported file (see
 [What the files say](colourising.md#what-the-files-say)).
 
@@ -238,7 +241,7 @@ stay off, for a logo or a stray label that the automatic text detection does
 not cover. *Add region* creates one at the top-left corner; set its `x`, `y`,
 width (`w`) and height (`h`) in pixels with the boxes, and use the minus button
 to remove it. Each rectangle is outlined in amber on the frame. Excluded areas
-are flat in the stacked result. Changing the list scores the capture again,
+are filled from the sky around them in the stacked result. Changing the list scores the capture again,
 because the scores depend on it.
 
 ## 5. Stack

@@ -413,6 +413,24 @@ fn large_opendml_avi_header_frames_and_stack() {
     avi_checks("14_42_57.avi", 1920, 1080);
 }
 
+/// `15_44_48.avi` (partial disc) carries no burned-in text. A handful of
+/// pixels flickering near the bottom limb once passed for a timestamp, and the
+/// flattened 137 x 71 patch it left read as a prominence (#329).
+#[test]
+fn no_text_is_found_on_a_capture_without_any() {
+    let Some(path) = capture("15_44_48.avi") else {
+        return;
+    };
+    let mut src = open_capture(&path, &OpenOptions::default()).expect("open");
+    let n = src.frame_count();
+    let d = StackConfig::default().debayer;
+    let frames: Vec<Frame> = mask::sample_indices(n, mask::OVERLAY_SAMPLES)
+        .into_iter()
+        .map(|i| d.apply_owned(src.read(i).expect("frame")))
+        .collect();
+    assert_eq!(mask::detect_overlay(&frames), Vec::<Rect>::new());
+}
+
 /// `SharpCap` burns "2022 07 17 14:32:09:647" into the top-left corner of
 /// `15_32_09.avi` (720 x 540). Without masking, alignment points sit on that text
 /// and on the empty sky around the disc.

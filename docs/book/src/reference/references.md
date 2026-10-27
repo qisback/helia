@@ -7,9 +7,11 @@ behaviour* of another program, the page says so and no code from that program
 was used.
 
 A DOI was checked against Crossref (and the arXiv listing for SOLARNET) when this
-page was written. An entry marked **to verify** has no DOI or has a detail that
-could not be confirmed from a primary source; treat it as a pointer, not a
-citation, until it is checked. Corrections are welcome: use
+page was written. Books were checked against publisher and library catalogue
+records, and the DCT energy ratio source against the reference list of Popowicz
+et al. An entry marked **to verify** has a detail that could not be confirmed
+from a primary source; treat it as a pointer, not a citation, until it is checked.
+At the last check (October 2026) no entry carries that marker. Corrections are welcome: use
 [Feedback](../user-guide/sending-feedback.md).
 
 ## Lucky imaging and seeing
@@ -115,14 +117,18 @@ citation, until it is checked. Corrections are welcome: use
   In *Wavelets: Time-Frequency Methods and Phase Space*, Springer, 286-297.
   [doi:10.1007/978-3-642-75988-8_28](https://doi.org/10.1007/978-3-642-75988-8_28).
   The a-trous ("with holes") algorithm.
-* Starck, J.-L., Murtagh, F. (1994). Image restoration with noise suppression
-  using a wavelet transform and a multiresolution support constraint. *Proc. SPIE*
-  2302, 132-143. [doi:10.1117/12.188035](https://doi.org/10.1117/12.188035).
-  Wavelet layers with a noise threshold per layer. (The same authors' article in
-  *Astron. Astrophys.* 288, 342 (1994) has no DOI: **to verify** the bibcode
-  1994A&A...288..342S before citing it.)
+* Starck, J.-L., Murtagh, F., Bijaoui, A. (1994). Image restoration with noise
+  suppression using a wavelet transform and a multiresolution support constraint.
+  *Proc. SPIE* 2302, 132-143.
+  [doi:10.1117/12.188035](https://doi.org/10.1117/12.188035).
+  Wavelet layers with a noise threshold per layer. (Starck and Murtagh's earlier
+  article, "Image restoration with noise suppression using the wavelet transform",
+  is *Astron. Astrophys.* 288, 342 (1994), bibcode 1994A&A...288..342S; it has no
+  DOI and Helia cites the SPIE paper, which has one.)
 * Starck, J.-L., Murtagh, F., Bijaoui, A. (1998). *Image Processing and Data
-  Analysis: The Multiscale Approach*. Cambridge University Press (ISBN **to verify**).
+  Analysis: The Multiscale Approach*. Cambridge University Press. ISBN
+  0-521-59084-1 (hardback; 978-0-521-59084-6) and 0-521-59914-8 (paperback;
+  978-0-521-59914-6). [doi:10.1017/CBO9780511564352](https://doi.org/10.1017/CBO9780511564352).
   The textbook treatment of the a-trous transform with the B3 spline.
 * Donoho, D. L. (1995). De-noising by soft-thresholding. *IEEE Trans. Inf. Theory*
   41, 613-627. [doi:10.1109/18.382009](https://doi.org/10.1109/18.382009).
@@ -151,15 +157,19 @@ citation, until it is checked. Corrections are welcome: use
   estimation in light microscopy. *Proc. 2nd Int. Symp. on Image and Signal
   Processing and Analysis (ISPA 2001)*, 188-193.
   [doi:10.1109/ISPA.2001.938626](https://doi.org/10.1109/ISPA.2001.938626).
-  The Helmli-Scherer measure (`quality_extra`). The DCT energy ratio is after Su
-  et al. as cited by Popowicz et al.; the original Su et al. reference is **to
-  verify**. The gradient-energy and Laplacian-variance metrics are textbook
+  The Helmli-Scherer measure (`quality_extra`).
+* Shen, C.-H., Chen, H. H. (2006). Robust focus measure for low-contrast images.
+  *2006 Digest of Technical Papers, Int. Conf. on Consumer Electronics (ICCE)*,
+  69-70. [doi:10.1109/ICCE.2006.1598314](https://doi.org/10.1109/ICCE.2006.1598314).
+  The DCT energy ratio, as named and evaluated by Popowicz et al. (2017). Helia
+  follows Popowicz et al.'s description of it; the earlier text of this page named
+  "Su et al.", which was wrong. The gradient-energy and Laplacian-variance metrics are textbook
   measures with no single source.
 
 ## The Sun
 
 * Meeus, J. (1998). *Astronomical Algorithms*, 2nd ed. Willmann-Bell, Richmond,
-  Virginia. ISBN 978-0-943396-61-3 (**to verify**). Chapter 14 (parallactic angle,
+  Virginia. ISBN 0-943396-61-1 (978-0-943396-61-3). Chapter 14 (parallactic angle,
   field rotation), chapters 25 and 29 (the Sun's position, `P`, `B0`, `L0`).
 * Thompson, W. T. (2006). Coordinate systems for solar image data. *Astron.
   Astrophys.* 449, 791-803.
@@ -168,7 +178,9 @@ citation, until it is checked. Corrections are welcome: use
   1099 nm). *Solar Phys.* 153, 91-114.
   [doi:10.1007/BF00712494](https://doi.org/10.1007/BF00712494).
 * Cox, A. N. (ed.) (2000). *Allen's Astrophysical Quantities*, 4th ed. Springer
-  (ISBN **to verify**). The quadratic limb-darkening law.
+  and AIP Press, New York, ISBN 0-387-98746-0; Springer's online edition is
+  [doi:10.1007/978-1-4612-1186-0](https://doi.org/10.1007/978-1-4612-1186-0)
+  (softcover ISBN 978-1-4612-7037-9). The quadratic limb-darkening law.
 * Howard, R. F., Harvey, J. W., Forgach, S. (1990). Solar surface velocity fields
   determined from small magnetic features. *Solar Phys.* 130, 295-311.
   [doi:10.1007/BF00156795](https://doi.org/10.1007/BF00156795).
@@ -193,6 +205,8 @@ citation, until it is checked. Corrections are welcome: use
   extensions and the bottom-row-first order that `helia stack` follows when it
   reads FITS frames (`io::fits`, `io::fitsseq`). `BAYERPAT` and `ROWORDER` are
   not in the standard; they are the convention of capture programs, described in
+  the file-format page of the Siril manual (`ROWORDER`, `BOTTOM-UP` or
+  `TOP-DOWN`; documentation only, no code is taken from it) and in
   [Stack FITS frames](../tutorials/stack-fits-frames.md#6-how-helia-reads-the-header).
 * Greisen, E. W., Calabretta, M. R. (2002). Representations of world coordinates in
   FITS. *Astron. Astrophys.* 395, 1061-1075.

@@ -62,7 +62,7 @@ quality scoring stay off it.
 
 ![The Align step with one exclusion rectangle drawn over the timestamp at the top left of the frame](../images/real/align-exclusion.png)
 
-Excluded areas are flat in the stacked result, so do not exclude part of the Sun
+Excluded areas are filled from the sky around them in the stacked result, so do not exclude part of the Sun
 you care about. Use the minus button to remove a region. Changing the list scores
 the capture again, because the scores depend on it.
 

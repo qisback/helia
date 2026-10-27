@@ -30,10 +30,16 @@ field rotation: leave this off.
   (`--field-rotation-reference first|last` chooses another) before it is scored,
   aligned or stacked. The capture needs timestamps, which SER files carry and AVI and
   video files do not. `--field-rotation-mirror` is for a mirror image (an odd number
-  of reflections, a star diagonal for one), where the turn is the other way. It does
-  not combine with `--colour true`: a raw mosaic cannot be turned before it is
-  demosaiced (stack one colour plane instead; a colour capture is demosaiced to the
-  plane the settings choose before it is turned).
+  of reflections, a star diagonal for one), where the turn is the other way. It
+  works with `--colour true`: a raw mosaic cannot be turned, so each of red, green and
+  blue is demosaiced and turned alike before it is stacked.
+* **Subs of a star field (a Seestar).** FITS subs whose header holds `RA`, `DEC`,
+  `SITELAT`, `SITELONG`, `EQMODE = 0` (altazimuth) and `DATE-OBS` need no flag:
+  `helia stack` turns them by the parallactic angle of the target in the header, about
+  the site in the header, and prints `rotation:` lines. `--no-field-rotation` stops
+  it; `--site` overrides the header's site; `--field-rotation` asks for it on subs
+  that lack `EQMODE`. See [Stack FITS frames](../tutorials/stack-fits-frames.md) for the
+  worked example.
 * **A time-lapse.** `helia derotate` turns stacked images of one session to one
   orientation, from the time each was taken:
 
@@ -56,6 +62,28 @@ field rotation: leave this off.
   [The API](api.md).
 * **App:** Advanced settings, Field rotation: Alt-az, the site and Mirror image.
   The line under the controls says how far the capture rotates.
+
+## Subs of a star field
+
+The same angle serves a target that is not the Sun: a fixed point of the sky, its
+right ascension and declination taken from the header. A sequence of subs over half an
+hour on an altazimuth mount turns by several degrees, which trails every star but
+those at the centre (7.5 degrees over 29 minutes for NGC 7009 from 36 degrees north).
+
+Which way the picture turns depends on how the rows of the file run, and the header does
+not always say so truthfully: a Seestar's rows are stored top-down with no `ROWORDER`
+(Helia now knows this and reads them as stored), and other programs' files may differ.
+Helia therefore reads the sense from the stars. The first and last sub (the two the field has turned between
+the most) are turned each way to the common orientation and phase-correlated; the
+sense in which they lock sharply is the right one. It is believed when the lock (the
+peak-to-sidelobe ratio) is at least 5 and at least half as much again as the other
+sense; otherwise nothing is turned and the `rotation:` line says so. A field that turns by under
+half a degree is left alone too, because the stars cannot tell the sense apart then. To
+settle it yourself, give `--field-rotation` (and `--field-rotation-mirror` if the picture
+is a mirror image); a named sense is not measured.
+
+Reference for the correlation: Reddy and Chatterji (1996), IEEE Transactions on Image
+Processing 5(8), 1266-1271.
 
 ## How it works
 
@@ -120,7 +148,7 @@ back.
 
 ## Limits
 
-* It needs a timestamp for every frame (SER) and the site, and the Sun's position
+* It needs a timestamp for every frame (SER, or FITS with `DATE-OBS`) and the site, and the Sun's position
   is the astronomical one: no refraction, and a time that is only as good as the
   computer's clock that wrote it.
 * The turn is by Lanczos interpolation, which costs a little detail (the corrected

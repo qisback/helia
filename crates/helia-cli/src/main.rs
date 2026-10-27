@@ -38,6 +38,7 @@ use helia_core::truecolour::{TrueColour, WhiteBalance};
 use helia_core::{ColourParams, Keep, Kernel, Metric, Preset, filter, quality};
 use helia_gpu::select_backend;
 use helia_plugin::StepStage;
+use helia_update::backend::UpdateBackend;
 use indicatif::{ProgressBar, ProgressStyle};
 
 fn main() {
@@ -48,7 +49,45 @@ fn main() {
     }
 }
 
+/// Parse the command line. A backend's own command (an official store build adds one) is run
+/// here and `None` is returned; everything else gives the parsed [`Cli`].
+fn parse_cli(long_version: &'static str) -> Option<Cli> {
+    let hook = helia_update::backend::installed().and_then(UpdateBackend::cli);
+    let mut command = Cli::command().long_version(long_version);
+    if let Some(h) = hook {
+        // The backend's command takes everything after its name and parses it itself.
+        command = command.subcommand(
+            clap::Command::new(h.name)
+                .about(h.about)
+                .disable_help_flag(true)
+                .disable_version_flag(true)
+                .arg(
+                    clap::Arg::new("args")
+                        .num_args(0..)
+                        .allow_hyphen_values(true)
+                        .trailing_var_arg(true)
+                        .value_parser(clap::value_parser!(std::ffi::OsString)),
+                ),
+        );
+    }
+    let matches = command.get_matches();
+    if let (Some(h), Some((name, sub))) = (hook, matches.subcommand())
+        && name == h.name
+    {
+        let args: Vec<std::ffi::OsString> = sub
+            .get_many::<std::ffi::OsString>("args")
+            .map(|v| v.cloned().collect())
+            .unwrap_or_default();
+        exit_unless_ok((h.run)(&args));
+        return None;
+    }
+    Some(Cli::from_arg_matches(&matches).unwrap_or_else(|e| e.exit()))
+}
+
 fn run() -> Result<()> {
+    // An official store build plugs in a backend at start-up; a source build has none.
+    #[cfg(feature = "store")]
+    store_backend::install();
     // `-V` stays one line; `--version` adds the build record and the copyright,
     // licence and warranty notices. clap prints "helia " itself, so drop ours.
     static LONG_VERSION: std::sync::OnceLock<String> = std::sync::OnceLock::new();
@@ -58,11 +97,18 @@ fn run() -> Result<()> {
             env!("CARGO_PKG_VERSION"),
             helia_gpu::WGPU_VERSION,
         );
-        text.strip_prefix("helia ").unwrap_or(&text).to_owned()
+        let mut text = text.strip_prefix("helia ").unwrap_or(&text).to_owned();
+        if let Some(line) = helia_update::backend::installed().and_then(UpdateBackend::build_line) {
+            text.push('\n');
+            text.push_str(&line);
+        }
+        text
     });
-    let cli = Cli::from_arg_matches(&Cli::command().long_version(long.as_str()).get_matches())
-        .unwrap_or_else(|e| e.exit());
+    let Some(cli) = parse_cli(long.as_str()) else {
+        return Ok(());
+    };
     helia_cli::plugins::set_paths(cli.plugin_paths.clone());
+    helia_core::io::ffmpeg::set_installed_locator(helia_cli::tools::installed_programs);
     let (program, what) = match &cli.command {
         Command::Stack(_) => ("helia", "stack"),
         Command::Calibrate(_) => ("helia", "calibrate"),
@@ -81,6 +127,7 @@ fn run() -> Result<()> {
         Command::Feedback(_) => ("helia", "feedback"),
         Command::Plugins(_) => ("helia", "plugins"),
         Command::Update(_) => ("helia", "update"),
+        Command::Tools(_) => ("helia", "tools"),
     };
     helia_core::applog::init(program);
     helia_core::applog::info(&format!(
@@ -125,13 +172,21 @@ fn run() -> Result<()> {
         Command::Feedback(a) => helia_cli::feedback::run(&a),
         Command::Plugins(a) => helia_cli::plugins::run(&a),
         Command::Update(a) => {
-            let code = helia_cli::update::run(&a)?;
-            if code != 0 {
-                let _ = std::io::stdout().flush();
-                std::process::exit(code);
-            }
+            exit_unless_ok(helia_cli::update::run(&a)?);
             Ok(())
         }
+        Command::Tools(a) => {
+            exit_unless_ok(helia_cli::tools::run(&a)?);
+            Ok(())
+        }
+    }
+}
+
+/// Exit with `code` when it is not zero, after flushing what was printed.
+fn exit_unless_ok(code: i32) {
+    if code != 0 {
+        let _ = std::io::stdout().flush();
+        std::process::exit(code);
     }
 }
 
@@ -1032,6 +1087,8 @@ fn derotate(a: &helia_cli::DerotateArgs) -> Result<()> {
         site,
         mirror: a.mirror,
         reference: rule,
+        target: None,
+        auto_mirror: false,
         frame_unix: times.iter().map(|&t| Some(t)).collect(),
     }
     .plan()?;
@@ -1411,35 +1468,67 @@ fn build_config(a: &StackArgs, rec: &Recommendation) -> Result<StackConfig> {
 
 /// The colouring `--preset`, `--colour`, `--invert` and `--colour-strength`
 /// ask for, given what was detected. A `None` preset is plain mono.
-/// The field rotation correction `--field-rotation` asks for.
+/// The field rotation correction for this stack: the one `--field-rotation`
+/// asks for, or, for FITS subs from an altazimuth mount (a Seestar), the one
+/// their headers call for unless `--no-field-rotation` says not to.
+///
+/// A header gives the target (`RA`, `DEC`), the site (`SITELAT`, `SITELONG`)
+/// and the mount (`EQMODE` 0, altazimuth); with the time of each frame that is
+/// the parallactic angle of every frame (see `helia_core::field_rotation`).
+/// Without `--field-rotation` it is applied only when the headers hold all of
+/// that and the field turns by more than a hundredth of a degree.
 fn field_rotation(
     a: &StackArgs,
     rec: &Recommendation,
 ) -> Result<Option<helia_core::field_rotation::FieldRotation>> {
-    if !a.field_rotation {
+    use helia_core::field_rotation::{FieldRotation, SkyPoint};
+    if a.no_field_rotation {
         return Ok(None);
     }
-    if a.colour == Some(ColourChoice::True) {
-        bail!(
-            "--field-rotation cannot be used with --colour true: a raw mosaic cannot be turned before it is demosaiced; stack one colour plane"
-        );
-    }
-    let site = a.site.or_else(Site::from_env).context(
-        "--field-rotation needs the observing site: give --site LAT,LON,ALT or set HELIA_SITE",
-    )?;
     let info = CaptureInfo::read(&a.input, rec.preset);
-    if info.frame_unix.iter().all(Option::is_none) {
+    let timed = info.frame_unix.iter().any(Option::is_some);
+    let header = info
+        .pointing
+        .filter(helia_core::io::fitsseq::Pointing::is_altazimuth);
+    if !a.field_rotation && (!timed || header.and_then(|p| p.site()).is_none()) {
+        return Ok(None);
+    }
+    // The header site serves a sub, but a site the user gave wins.
+    let site = a
+        .site
+        .or_else(|| header.and_then(|p| p.site()))
+        .or_else(Site::from_env)
+        .context(
+            "--field-rotation needs the observing site: give --site LAT,LON,ALT or set HELIA_SITE",
+        )?;
+    if !timed {
         bail!(
             "--field-rotation needs the time of each frame, and {} has none (SER files and FITS frames with a DATE-OBS carry them; AVI and video do not)",
             a.input.display()
         );
     }
-    Ok(Some(helia_core::field_rotation::FieldRotation {
+    let rotation = FieldRotation {
         site,
         mirror: a.field_rotation_mirror,
         reference: a.field_rotation_reference,
+        // Subs name their target: which way the picture turns is then read
+        // from the stars, unless --field-rotation-mirror says.
+        auto_mirror: info.pointing.is_some() && !a.field_rotation_mirror,
+        target: info.pointing.map(|p| SkyPoint {
+            ra_deg: p.ra_deg,
+            dec_deg: p.dec_deg,
+        }),
         frame_unix: info.frame_unix,
-    }))
+    };
+    if !a.field_rotation {
+        // Found from the headers: keep it only when the field really turns.
+        return Ok(rotation
+            .plan()
+            .ok()
+            .filter(|p| p.max_turn_deg >= 0.01)
+            .map(|_| rotation));
+    }
+    Ok(Some(rotation))
 }
 
 /// The job a stack-backend plugin gets: the API job vocabulary, built from what this run resolved.
@@ -1829,7 +1918,13 @@ fn stack(a: &StackArgs) -> Result<()> {
                 eprintln!("rotation: {l}");
             }
         }
+        if let Some(note) = &out.field_rotation_note {
+            eprintln!("rotation: {note}");
+        }
         eprintln!("wrote:   {}", a.output.display());
+    }
+    if let Some(w) = non_solar_warning(out.disc.is_some(), rec.preset.is_some()) {
+        eprintln!("warning: {w}");
     }
     if let Some(p) = &plugins {
         p.analyse(&prepared.image, &analysis_path(&a.output))?;
@@ -2187,7 +2282,8 @@ fn save_edit_preset(
     Ok(())
 }
 
-/// `helia edit`: sharpen and adjust an image that already exists.
+/// `helia edit`: sharpen and adjust an image that already exists. With no edit
+/// options it converts the image to the output's format and changes nothing else.
 #[allow(
     clippy::too_many_lines,
     reason = "one sequence: read, plan, plugins, write"
@@ -2201,14 +2297,10 @@ fn edit(a: &EditCommandArgs) -> Result<()> {
     let (width, height) = image.size();
     let rec = recommend(width, height, false, &capture_texts(&a.input), a.preset);
     let edits = a.edits.options()?.build(rec.preset, width, height)?;
-    if edits.is_empty() && a.edits.save_edits.is_none() && plugins.is_none() {
-        bail!(
-            "nothing to do: give --sharpen, --denoise, --black/--white/--gamma, --curve, --crop, \
-             --rotate, --flip-h/--flip-v, --resize, --edits or --plugin-step"
-        );
-    }
+    // No edit of any kind: convert the image to the output's format, unchanged.
+    let convert_only = edits.is_empty() && a.edits.save_edits.is_none() && plugins.is_none();
     save_edit_preset(&a.edits, &edits, rec.preset)?;
-    if edits.is_empty() && plugins.is_none() {
+    if edits.is_empty() && plugins.is_none() && !convert_only {
         return Ok(());
     }
     if let Some(p) = plugins.as_ref().filter(|p| p.has_image(StepStage::PreEdit)) {
@@ -2226,6 +2318,11 @@ fn edit(a: &EditCommandArgs) -> Result<()> {
         eprintln!("settings: {}", rec.summary());
         for l in edits.describe() {
             eprintln!("edit:     {l}");
+        }
+        if convert_only {
+            eprintln!(
+                "edit:     none given, so the image is only converted to the format of the output name"
+            );
         }
     }
     let mut lead = vec![format!(
@@ -2295,6 +2392,15 @@ fn edit(a: &EditCommandArgs) -> Result<()> {
         );
     }
     Ok(())
+}
+
+/// The plain-English warning for a capture that does not look like the Sun:
+/// no solar disc was found and no filter preset was named or recognised. The
+/// stack is made anyway, on the settings for the Sun, which may not suit it.
+fn non_solar_warning(disc_found: bool, preset_known: bool) -> Option<String> {
+    (!disc_found && !preset_known).then(|| {
+        "this capture does not look like the Sun: no solar disc was found and no filter was recognised. Helia's alignment, sharpening and levels are tuned for the Sun, so a planet, the Moon or a star field is stacked on settings that may clip bright detail or leave it soft (the wavelet sharpening of a small bright object can saturate). The stack was made anyway. What to do: check the stack on its own first (leave --sharpen off), sharpen gently with --sharpen unsharp, or lower the wavelet gains with --wavelet-gains; for a full disc of the Sun, name the filter with --preset.".to_string()
+    })
 }
 
 /// Frame counts, alignment points, the sharpness comparison and timings.
@@ -2378,7 +2484,7 @@ fn print_summary(
     }
     for r in &out.masked {
         eprintln!(
-            "masked:  {} x {} at ({}, {}), flat in the result",
+            "masked:  {} x {} at ({}, {}), filled from the sky around it",
             r.width(),
             r.height(),
             r.x0,
@@ -2396,6 +2502,9 @@ fn print_summary(
         "detail:  stack {stacked:.5} vs best single frame {single:.5} ({:.2}x)",
         stacked / single.max(1e-12)
     );
+    if let Some(w) = blurred_stack_warning(stacked / single.max(1e-12)) {
+        eprintln!("warning: {w}");
+    }
     if let Some(e) = edited {
         report_edit_effect(&out.image, e, edits);
     }
@@ -2406,6 +2515,21 @@ fn print_summary(
         .collect();
     eprintln!("timing:  {} (total {total_seconds:.2}s)", stages.join(", "));
     Ok(())
+}
+
+/// Below this ratio of the stack's detail to the best single frame's, the
+/// stack is called blurrier than its own input.
+const BLURRED_STACK_RATIO: f32 = 0.75;
+
+/// The plain-English warning for a stack that is less sharp than the best frame
+/// that went into it, or `None` when it is not. Adding frames that do not line
+/// up smears them, so the usual causes are named with what to do about each.
+fn blurred_stack_warning(ratio: f32) -> Option<String> {
+    (ratio < BLURRED_STACK_RATIO).then(|| {
+        format!(
+            "the stack is less sharp than the best single frame it was made from ({ratio:.2}x). Frames that do not line up smear each other when they are added; the usual causes are field rotation (an altazimuth mount turns the picture over a long capture) and frames that could not be matched. What to do: for FITS subs, check the rotation line above (the correction is automatic when the headers name the target, site and mount, and --field-rotation asks for it otherwise); look at the align line for a low confidence; or keep fewer frames with --keep-frames."
+        )
+    })
 }
 
 /// How much finer detail an edit list gave a stack, and what it did to the
@@ -2706,6 +2830,15 @@ mod tests {
     use std::sync::Arc;
     use std::sync::atomic::{AtomicBool, Ordering};
     use std::time::Duration;
+
+    #[test]
+    fn a_stack_blurrier_than_its_best_frame_gets_a_plain_warning() {
+        let w = super::blurred_stack_warning(0.53).expect("a warning");
+        assert!(w.contains("0.53x") && w.contains("What to do:"), "{w}");
+        assert!(w.contains("--field-rotation"), "{w}");
+        assert!(super::blurred_stack_warning(1.05).is_none());
+        assert!(super::blurred_stack_warning(0.8).is_none());
+    }
 
     #[test]
     fn dropping_a_started_job_waits_for_it() {

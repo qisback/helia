@@ -47,6 +47,11 @@ pub trait FrameSource: Send + Sync {
     fn keep_alive(&self) -> Option<Arc<dyn Any + Send + Sync>> {
         None
     }
+    /// Serve the colour plane `channel` from now on, for a source that
+    /// demosaics its frames itself (one that turns them first, see
+    /// [`crate::field_rotation::DerotatedSource`]). Other sources serve raw
+    /// frames that the caller demosaics, so this does nothing.
+    fn select_channel(&mut self, _channel: crate::debayer::Channel) {}
 }
 
 impl FrameSource for Box<dyn FrameSource> {
@@ -70,6 +75,9 @@ impl FrameSource for Box<dyn FrameSource> {
     }
     fn keep_alive(&self) -> Option<Arc<dyn Any + Send + Sync>> {
         (**self).keep_alive()
+    }
+    fn select_channel(&mut self, channel: crate::debayer::Channel) {
+        (**self).select_channel(channel);
     }
 }
 
@@ -137,6 +145,55 @@ impl std::str::FromStr for Endian {
     }
 }
 
+/// Which way up the rows of a FITS frame are stored.
+///
+/// The FITS standard (Pence et al. 2010, A&A 524, A42) stores the bottom row
+/// of the image first. Capture programs that write the top row first say so
+/// with a `ROWORDER = TOP-DOWN` card, a convention rather than part of the
+/// standard (described in the file-format page of the Siril manual, and written
+/// by `SharpCap`).
+/// The Seestar S50 writes its frames top row first and no `ROWORDER` card;
+/// that was measured against the preview JPG the Seestar saves beside each
+/// sub, not read from any manual.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub enum RowOrder {
+    /// A `ROWORDER` card when there is one; else Seestar S50 headers are
+    /// top-down; else bottom-up, as the FITS standard says.
+    #[default]
+    Auto,
+    /// The first stored row is the top of the picture.
+    TopDown,
+    /// The first stored row is the bottom of the picture (the FITS standard).
+    BottomUp,
+}
+
+impl RowOrder {
+    /// `auto`, `top-down` or `bottom-up`, as `--row-order` spells it.
+    #[must_use]
+    pub fn label(self) -> &'static str {
+        match self {
+            Self::Auto => "auto",
+            Self::TopDown => "top-down",
+            Self::BottomUp => "bottom-up",
+        }
+    }
+}
+
+impl std::str::FromStr for RowOrder {
+    type Err = Error;
+
+    fn from_str(s: &str) -> Result<Self> {
+        match s.trim().to_ascii_lowercase().as_str() {
+            "auto" => Ok(Self::Auto),
+            "top-down" | "topdown" | "top" => Ok(Self::TopDown),
+            "bottom-up" | "bottomup" | "bottom" => Ok(Self::BottomUp),
+            other => Err(Error::Invalid(format!(
+                "unknown row order {other:?}; use auto, top-down or bottom-up"
+            ))),
+        }
+    }
+}
+
 /// Options for [`open_capture`]: what the user says about a file, to be used
 /// instead of what its header says. The default trusts the file, checking a
 /// mono-labelled SER file for a hidden Bayer mosaic.
@@ -152,6 +209,8 @@ pub struct OpenOptions {
     pub endian: Option<Endian>,
     /// Read the rows bottom to top. SER only.
     pub flip_rows: bool,
+    /// Row order of FITS frames; `Auto` follows the header. FITS only.
+    pub row_order: RowOrder,
     /// Colour channel to extract from compressed video (`ffmpeg` does it, so
     /// the decoded copy holds one plane). Other containers ignore it: their
     /// channel is chosen later, when the frames are converted to mono.

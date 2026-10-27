@@ -50,7 +50,7 @@ use crate::frame::{Frame, Rect};
 use crate::io::solarnet::{ProvStep, pipeline_steps};
 use crate::io::source::FrameSource;
 use crate::limbdark::{self, Law, LimbFit};
-use crate::mask::{self, Disc, MaskConfig, MaskedSource};
+use crate::mask::{self, Disc, Fill, MaskConfig, MaskedSource};
 use crate::profile::{Category, Profile};
 use crate::quality::{self, Keep, Metric};
 use crate::resample::{Kernel, resample_region};
@@ -310,6 +310,8 @@ pub struct StackOutput {
     pub channel_note: Option<String>,
     /// What the field rotation correction did, when it ran.
     pub field_rotation: Option<FieldRotationPlan>,
+    /// Why the field rotation asked for was not made, in plain words.
+    pub field_rotation_note: Option<String>,
     /// The processing steps that ran, in order, for FITS provenance.
     pub provenance: Vec<ProvStep>,
     /// One line per calibration master applied (and any caveat), for the
@@ -354,6 +356,7 @@ impl StackOutput {
             channel: Channel::default(),
             channel_note: None,
             field_rotation: None,
+            field_rotation_note: None,
             provenance: Vec::new(),
             calibration_notes: Vec::new(),
             alignment: AlignReport {
@@ -499,6 +502,9 @@ fn batch_size() -> usize {
     (rayon::current_num_threads() * 2).max(4)
 }
 
+/// A field rotation with its sense settled, and the locks that settled it.
+type SettledRotation = (FieldRotation, Option<[f32; 2]>);
+
 impl Pipeline {
     /// Pipeline on the CPU backend.
     #[must_use]
@@ -598,12 +604,12 @@ impl Pipeline {
             }
             None => src,
         };
-        let (rects, level) = self.plan_mask(src, &ctx)?;
+        let (rects, fills) = self.plan_mask(src, &ctx)?;
         let mut masked;
         let src: &mut dyn FrameSource = if rects.is_empty() {
             src
         } else {
-            masked = MaskedSource::new(src, rects, level);
+            masked = MaskedSource::with_fills(src, rects, fills);
             &mut masked
         };
         let rotation_plan = self
@@ -647,7 +653,7 @@ impl Pipeline {
 
     /// Rectangles to flatten (the user's exclusions plus detected burned-in
     /// text) and the level to flatten them to.
-    fn plan_mask(&self, src: &mut dyn FrameSource, ctx: &Ctx) -> Result<(Vec<Rect>, f32)> {
+    fn plan_mask(&self, src: &mut dyn FrameSource, ctx: &Ctx) -> Result<(Vec<Rect>, Vec<Fill>)> {
         let (w, h) = src.dimensions();
         let n = src.frame_count();
         let mut rects: Vec<Rect> = self
@@ -659,7 +665,8 @@ impl Pipeline {
             .filter(|r| !r.is_empty())
             .collect();
         if !self.cfg.mask.overlay && rects.is_empty() || n == 0 {
-            return Ok((rects, 0.0));
+            let fills = rects.iter().map(|_| Fill::flat(0.0)).collect();
+            return Ok((rects, fills));
         }
         let want = if self.cfg.mask.overlay {
             mask::OVERLAY_SAMPLES.min(n)
@@ -671,8 +678,8 @@ impl Pipeline {
         if self.cfg.mask.overlay {
             rects.extend(mask::detect_overlay(&frames));
         }
-        let level = mask::fill_level(&frames, &rects);
-        Ok((rects, level))
+        let fills = mask::fill_planes(&frames, &rects);
+        Ok((rects, fills))
     }
 
     fn score_ctx(&self, src: &mut dyn FrameSource, ctx: &Ctx) -> Result<Vec<f32>> {
@@ -723,11 +730,6 @@ impl Pipeline {
         progress: &dyn Fn(Stage, f32),
         cancel: &AtomicBool,
     ) -> Result<StackOutput> {
-        if self.cfg.true_colour.is_some() && self.cfg.field_rotation.is_some() {
-            return Err(Error::Invalid(
-                "field rotation cannot be corrected in true colour: the mosaic cannot be turned before it is demosaiced; stack one colour plane instead".into(),
-            ));
-        }
         // True colour aligns on the luminance, whatever channel was named.
         if self.cfg.true_colour.is_some() && self.cfg.debayer.channel != Channel::Luminance {
             return self
@@ -822,22 +824,37 @@ impl Pipeline {
 
         // Burned-in text and user exclusions are flattened in every frame the
         // stages below read.
-        let (masked_rects, level) = self.plan_mask(src, &ctx)?;
+        let (masked_rects, fills) = self.plan_mask(src, &ctx)?;
         let mut masked_src;
         let src: &mut dyn FrameSource = if masked_rects.is_empty() {
             src
         } else {
-            masked_src = MaskedSource::new(src, masked_rects.clone(), level);
+            masked_src = MaskedSource::with_fills(src, masked_rects.clone(), fills);
             &mut masked_src
         };
 
         // The field rotation of an altazimuth mount is undone last of the
         // per-frame corrections: the mask rectangles are in the capture's
         // coordinates, and everything below wants one orientation.
-        let rotation_plan = cfg
-            .field_rotation
-            .as_ref()
-            .map(FieldRotation::plan)
+        let mut rotation_note = None;
+        let rotation = match &cfg.field_rotation {
+            Some(fr) if fr.auto_mirror => match self.settle_parity(src, fr, &ctx)? {
+                Ok(found) => Some(found),
+                Err(note) => {
+                    rotation_note = Some(note);
+                    None
+                }
+            },
+            Some(fr) => Some((fr.clone(), None)),
+            None => None,
+        };
+        let rotation_plan = rotation
+            .map(|(fr, psr)| {
+                fr.plan().map(|mut p| {
+                    p.parity_psr = psr;
+                    p
+                })
+            })
             .transpose()?;
         let mut derotated;
         let src: &mut dyn FrameSource = match &rotation_plan {
@@ -1135,6 +1152,7 @@ impl Pipeline {
             channel: self.cfg.debayer.channel,
             channel_note: None,
             field_rotation: rotation_plan,
+            field_rotation_note: rotation_note,
             alignment,
             backend: self.backend.name(),
             timings: tl.timings,
@@ -1246,6 +1264,9 @@ impl Pipeline {
                 cancel: ctx.cancel,
                 profile: ctx.profile,
             };
+            // A source that turns the frames demosaics them itself: ask it for
+            // this plane (the others serve the raw mosaic and ignore this).
+            src.select_channel(channel);
             let (plane, g) = self.with_channel(channel).stack_plane(src, st, &sub)?;
             grid = g;
             planes.push(plane);
@@ -1412,6 +1433,60 @@ impl Pipeline {
             AlignReport::sampled(align, &sample, cand.len())
         };
         Ok((shifts, table, report))
+    }
+
+    /// Settle which way the field turns, for a [`FieldRotation`] that leaves
+    /// it to the frames: the plan, with `mirror` set, and the locks it was
+    /// settled by. The inner `Err` says, in plain words, why it could not be
+    /// settled (and so why no correction was made).
+    fn settle_parity(
+        &self,
+        src: &mut dyn FrameSource,
+        fr: &FieldRotation,
+        ctx: &Ctx,
+    ) -> Result<std::result::Result<SettledRotation, String>> {
+        let plan = FieldRotation {
+            mirror: false,
+            ..fr.clone()
+        }
+        .plan()?;
+        let by = |a: &usize, b: &usize| plan.turn_deg[*a].total_cmp(&plan.turn_deg[*b]);
+        let all = 0..plan.turn_deg.len();
+        let (lo, hi) = (
+            all.clone().min_by(by).unwrap_or(0),
+            all.max_by(by).unwrap_or(0),
+        );
+        let (turn_lo, turn_hi) = (plan.turn_deg[lo], plan.turn_deg[hi]);
+        if turn_hi - turn_lo < crate::field_rotation::PARITY_MIN_TURN_DEG {
+            return Ok(Err(format!(
+                "the field turns by only {:.2} degrees over this capture, too little to tell which way from the stars, so it was left as it is; if it matters, give --field-rotation (and --field-rotation-mirror if the picture is a mirror image)",
+                turn_hi - turn_lo
+            )));
+        }
+        let frames = self.load(src, &[lo, hi], ctx)?;
+        let psr = crate::field_rotation::measure_parity(
+            &frames[0],
+            turn_lo,
+            &frames[1],
+            turn_hi,
+            self.cfg.phase,
+        )?;
+        Ok(match crate::field_rotation::decide_parity(psr) {
+            Some(mirror) => Ok((
+                FieldRotation {
+                    mirror,
+                    auto_mirror: false,
+                    ..fr.clone()
+                },
+                Some(psr),
+            )),
+            None => Err(format!(
+                "the stars did not show which way the field turns (lock {:.1} one way, {:.1} the other; a clear answer needs one of at least {:.0} and half as much again as the other), so the frames were not turned; try --field-rotation, with --field-rotation-mirror if the picture is a mirror image",
+                psr[0],
+                psr[1],
+                crate::field_rotation::PARITY_MIN_PSR
+            )),
+        })
     }
 
     /// Re-measure a few evenly spread candidates with the CPU phase
@@ -2731,6 +2806,45 @@ mod tests {
         let top = rgb.data.iter().copied().fold(0.0f32, f32::max);
         assert!((0.95..1.3).contains(&top), "{top}");
         assert!(auto.provenance.iter().any(|p| p.step == "WHITE-BALANCE"));
+    }
+
+    #[test]
+    fn true_colour_stacks_a_capture_whose_field_rotation_is_corrected() {
+        use crate::field_rotation::{FieldRotation, Reference};
+        use crate::truecolour::WhiteBalance;
+        let cap = colour_capture([0.5, 1.0, 0.7], [Shift::default(); 3]);
+        let plain = run(&cap, true_colour(WhiteBalance::Off, false), &quiet).expect("run");
+        // Stamps a second apart: the field turns by a few thousandths of a
+        // degree, so the stack must come out as the uncorrected one does, in
+        // colour, rather than being refused.
+        let cfg = StackConfig {
+            field_rotation: Some(FieldRotation {
+                site: crate::io::solarnet::Site {
+                    lat_deg: 51.5,
+                    lon_deg: 0.0,
+                    alt_m: 0.0,
+                },
+                mirror: false,
+                auto_mirror: false,
+                reference: Reference::Middle,
+                target: None,
+                frame_unix: (0..cap.frames.len())
+                    .map(|i| Some(1_774_008_000.0 + i as f64))
+                    .collect(),
+            }),
+            ..true_colour(WhiteBalance::Off, false)
+        };
+        let turned = run(&cap, cfg, &quiet).expect("true colour with field rotation");
+        assert!(turned.field_rotation.is_some());
+        let (a, b) = (
+            disc_colour(&plain.colour.as_ref().expect("colour").rgb),
+            disc_colour(&turned.colour.as_ref().expect("colour").rgb),
+        );
+        for c in 0..3 {
+            assert!((a[c] - b[c]).abs() < 0.03, "{a:?} against {b:?}");
+        }
+        // The planes are told apart: red is half the green, as put in.
+        assert!((b[0] / b[1] - 0.5).abs() < 0.05, "{b:?}");
     }
 
     #[test]

@@ -100,7 +100,7 @@ fn version_flag_prints_name_and_version() {
         .arg("--version")
         .assert()
         .success()
-        .stdout(predicate::str::starts_with("helia 0.7.1"));
+        .stdout(predicate::str::starts_with("helia 0.8.2"));
 }
 
 #[test]
@@ -122,7 +122,7 @@ fn short_version_is_one_line() {
         .arg("-V")
         .assert()
         .success()
-        .stdout(predicate::eq("helia 0.7.1\n"));
+        .stdout(predicate::eq("helia 0.8.2\n"));
 }
 
 #[test]
@@ -1131,19 +1131,54 @@ fn edit_keeps_colour_and_can_run_a_saved_preset() {
 }
 
 #[test]
-fn edit_with_nothing_to_do_says_so() {
+fn edit_without_options_converts_the_format_and_changes_nothing() {
     let dir = tempfile::tempdir().expect("tempdir");
     let ser = capture(dir.path());
     let img = dir.path().join("i.tif");
     stack_args(&ser, &img).assert().success();
-    helia()
-        .arg("edit")
-        .arg(&img)
-        .arg("-o")
-        .arg(dir.path().join("o.tif"))
-        .assert()
-        .failure()
-        .stderr(predicate::str::contains("nothing to do"));
+    let before = helia_core::io::any::read_any(&img).expect("read").0;
+    for name in ["o.png", "o.fits", "o.tif"] {
+        let out = dir.path().join(name);
+        helia()
+            .arg("edit")
+            .arg(&img)
+            .arg("-o")
+            .arg(&out)
+            .assert()
+            .success()
+            .stderr(predicate::str::contains("only converted"));
+        let after = helia_core::io::any::read_any(&out).expect("read").0;
+        let (helia_core::io::any::Loaded::Mono(a), helia_core::io::any::Loaded::Mono(b)) =
+            (&before, &after)
+        else {
+            panic!("a mono stack stays mono");
+        };
+        assert_eq!((a.width, a.height), (b.width, b.height), "{name}");
+        // A PNG is 8-bit (half a step is 0.002); TIFF and FITS keep far more.
+        let allowed = if out
+            .extension()
+            .is_some_and(|e| e.eq_ignore_ascii_case("png"))
+        {
+            0.0025
+        } else {
+            2.0e-5
+        };
+        let worst = a
+            .data
+            .iter()
+            .zip(&b.data)
+            .map(|(x, y)| (x - y).abs())
+            .fold(0.0f32, f32::max);
+        assert!(worst < allowed, "{name}: worst difference {worst}");
+    }
+}
+
+#[test]
+fn edit_with_a_missing_input_or_bad_edit_fails_plainly() {
+    let dir = tempfile::tempdir().expect("tempdir");
+    let ser = capture(dir.path());
+    let img = dir.path().join("i.tif");
+    stack_args(&ser, &img).assert().success();
     helia()
         .arg("edit")
         .arg(dir.path().join("missing.tif"))
@@ -2515,4 +2550,50 @@ fn stack_settings_line_shows_the_values_it_uses_not_the_preset() {
     assert!(given.contains("alignment points 32 px"), "{given}");
     let frames = run(&["--keep-frames", "4"]);
     assert!(frames.contains("keep 4 frames"), "{frames}");
+}
+
+/// A small bright disc on black, as a planet looks: not the Sun.
+fn planet_capture(dir: &Path) -> PathBuf {
+    let frames: Vec<helia_core::Frame> = (0..12)
+        .map(|k| {
+            let (w, h) = (96usize, 80usize);
+            let mut data = vec![0.02f32; w * h];
+            for y in 0..h {
+                for x in 0..w {
+                    let r2 = (x as f32 - 48.0 - 0.1 * k as f32).powi(2) + (y as f32 - 40.0).powi(2);
+                    data[y * w + x] += 0.7 * (-r2 / 50.0).exp();
+                }
+            }
+            helia_core::Frame::new(w, h, data).expect("frame")
+        })
+        .collect();
+    let path = dir.join("planet.ser");
+    std::fs::write(&path, ser_bytes(&frames)).expect("write ser");
+    path
+}
+
+#[test]
+fn a_capture_that_is_not_the_sun_is_stacked_with_a_plain_warning() {
+    let dir = tempfile::tempdir().expect("tempdir");
+    let planet = planet_capture(dir.path());
+    let out = dir.path().join("planet.tif");
+    stack_args(&planet, &out)
+        .assert()
+        .success()
+        .stderr(predicate::str::contains(
+            "warning: this capture does not look like the Sun",
+        ))
+        .stderr(predicate::str::contains("What to do:"));
+    assert!(out.exists(), "the stack is made anyway");
+    // The Sun itself, and a named filter, stay quiet.
+    let sun = capture(dir.path());
+    stack_args(&sun, &dir.path().join("sun.tif"))
+        .assert()
+        .success()
+        .stderr(predicate::str::contains("does not look like the Sun").not());
+    stack_args(&planet, &dir.path().join("p2.tif"))
+        .args(["--preset", "white"])
+        .assert()
+        .success()
+        .stderr(predicate::str::contains("does not look like the Sun").not());
 }

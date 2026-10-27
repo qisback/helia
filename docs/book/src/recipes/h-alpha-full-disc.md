@@ -52,7 +52,7 @@ edit:     1. wavelet sharpen, 6 layers (dyadic from layer 1), default filter, am
 frames:  100 total, 25 kept, 50 registered
 points:  615 of 2135 alignment points active
 align:   phase correlation (limb fit not confident enough, 0.42); confidence mean 1.00, least 1.00 (sampled)
-masked:  196 x 20 at (0, 0), flat in the result
+masked:  196 x 20 at (0, 0), filled from the sky around it
 disc:    centre (788.4, 553.1), radius 447.2 px
 detail:  stack 0.00106 vs best single frame 0.00115 (0.92x)
 sharpened: detail 0.00137 after the edits, 0.00106 before (1.29x)

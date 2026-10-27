@@ -30,13 +30,22 @@ accepted = ["GPL-3.0-or-later"]
 [helia-gpu]
 accepted = ["GPL-3.0-or-later"]
 
+[helia-external]
+accepted = ["GPL-3.0-or-later"]
+
 [helia-gui]
+accepted = ["GPL-3.0-or-later"]
+
+[helia-plugin]
 accepted = ["GPL-3.0-or-later"]
 
 [helia-report]
 accepted = ["GPL-3.0-or-later"]
 
 [helia-server]
+accepted = ["GPL-3.0-or-later"]
+
+[helia-update]
 accepted = ["GPL-3.0-or-later"]
 
 [xtask]

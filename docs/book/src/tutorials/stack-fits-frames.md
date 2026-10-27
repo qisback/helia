@@ -59,7 +59,8 @@ Header, as written in the file
   BZERO:             32768
   BSCALE:            1
   BAYERPAT:          GBRG
-  ROWORDER:          absent (bottom-up, as the FITS standard says)
+  ROWORDER:          absent
+  Rows read:         no ROWORDER card, so bottom-up as the FITS standard says
   Frame order:       by DATE-OBS
   First frame time:  2022-07-17T14:20:10.000
   Last frame time:   2022-07-17T14:20:13.688
@@ -79,10 +80,13 @@ what Helia will use. Three things to check:
 * **BAYERPAT** is the mosaic *as stored*, the first stored row first. Here it is
   `GBRG`, yet Helia will use `RGGB`. Section 6 explains why.
 * **Row order**: FITS stores the bottom row first, so Helia flips the rows
-  unless the header says `ROWORDER = TOP-DOWN`.
+  unless the header says `ROWORDER = TOP-DOWN`, or the file comes from a Seestar
+  S50, which stores its rows top-down without saying so. **Rows read** says which
+  rule was used. Section 6 has the details and `--row-order` to override it.
 
 For the Seestar subs, `helia info seestar-subs` shows `BAYERPAT: GRBG`, 1080 x
-1920, and Helia will use `BGGR` for the same reason.
+1920, `Rows read: Seestar S50 header, stored top row first`, and Helia will use
+`GRBG` and read the rows as stored.
 
 ## 3. Stack a folder
 
@@ -143,6 +147,7 @@ helia stack seestar-subs -o seestar.tif
 
 ```text
 input:    FITS 1080x1920 16-bit, 60 frames in 60 files
+note:     Seestar S50 frames are stored top row first and carry no ROWORDER card, so the rows are read as stored. Use --row-order bottom-up to flip them.
 settings: filter not recognised; luminance channel, keep 25%, alignment points 64 px
 frames:  60 total, 15 kept, 30 registered
 align:   phase correlation (no solar disc found); confidence mean 1.00, least 1.00
@@ -157,6 +162,53 @@ recommendation for deep-sky stacking. For a Seestar solar run saved as FITS subs
 the steps are the same, with `--preset white` or the filter you used. Any
 `SITELAT` or `SITELONG` in the subs is **not** copied into what Helia writes.
 
+### Subs from an altazimuth mount: the field turns
+
+A Seestar keeps its camera level while the sky turns, so over half an hour the star
+field rotates in the frame. Stacked as plain shifts, every star but those at the
+centre becomes an arc. Real example: 49 subs of NGC 7009
+(`Light_NGC 7009_20.0s_IRCUT_*.fit`, 20 s each, 29 minutes).
+
+```sh
+helia stack ngc7009 -o ngc7009.tif
+```
+
+```text
+input:    FITS 1080x1920 16-bit, 49 frames in 49 files
+frames:  49 total, 12 kept, 24 registered
+detail:  stack 0.22368 vs best single frame 0.21454 (1.04x)
+rotation: the parallactic angle runs 7.51 degrees over the capture (0.264 degrees per minute, target at 42 degrees altitude); frames are turned by up to 3.85 degrees to the orientation at 2025-09-21T19:45:01.109
+rotation: the stars line up best with the picture as it is (lock 295.8 as it is, 130.8 mirrored), so the frames are turned that way
+```
+
+Nothing was asked for: the header names the target (`RA`, `DEC`), the site (`SITELAT`,
+`SITELONG`), the mount (`EQMODE = 0`) and the time of each sub, so Helia turns every sub
+to the middle one before it aligns them. The second `rotation:` line is how it found
+which way the picture turns: it tries both senses on the first and last sub and keeps
+the one whose stars line up. Because Helia now reads a Seestar's rows as stored, the
+picture is the right way up and the sense is "as it is"; with `--row-order bottom-up`
+(the old reading, an upside-down picture) the same command finds "mirrored" with the
+two locks swapped. Without the correction at all the same command printed
+`detail: stack 0.11005 vs best single frame 0.21345 (0.52x)`.
+
+![The lower right of the NGC 7009 stack, brightened, before (left) and after (right): short arcs from the field rotation become points](../images/tutorials/fits-field-rotation-before-after.png)
+
+*Left: shifts only. Right: with the field rotation corrected. The median peak-to-flux of
+the 48 brightest stars, which is higher the more point-like they are, goes from 0.065 to
+0.104. Measured on the CPU backend of a loaded shared machine; the run takes 6.7 s
+instead of 2.0 s, because turned frames are not decoded in parallel.*
+
+Settings: none. To stop it, add `--no-field-rotation`; to give the site yourself,
+`--site LAT,LON,ALT`. The 60 subs of IC 5070 turn by only 0.41 degrees, too little for the
+stars to say which way, so they are left as they are and the line says so (the stack is
+unchanged). If your subs lack `EQMODE`, or the lines say the stars did not show the sense,
+add `--field-rotation`, and `--field-rotation-mirror` if the picture is a mirror image.
+It works with `--colour true`. The method is in
+[Field rotation](../user-guide/field-rotation.md#subs-of-a-star-field).
+
+If a stack is still less sharp than its best single frame (under 0.75), `helia stack`
+prints a `warning:` line that names the usual causes and what to do.
+
 ## 6. How Helia reads the header
 
 * **Scaling.** The stored value is turned into `BZERO + BSCALE * stored`, then
@@ -167,14 +219,27 @@ the steps are the same, with `--preset white` or the filter you used. Any
   Astrophysics 524, A42,
   [doi:10.1051/0004-6361/201015362](https://doi.org/10.1051/0004-6361/201015362).
 * **Row order.** The standard puts the first stored row at the bottom of the
-  picture. `ROWORDER = TOP-DOWN` (a convention of capture programs, not of the
-  standard) says the first stored row is the top. Without it Helia flips the rows
-  on reading.
+  picture. `ROWORDER = TOP-DOWN` or `BOTTOM-UP` (a convention of capture programs,
+  not of the standard; the Siril manual's FITS page describes it) says which way
+  the rows run. `--row-order auto`, the default, decides in this order: a
+  `ROWORDER` card; else a Seestar S50 header (`INSTRUME` or `TELESCOP` contains
+  `S50`), which is read top-down; else bottom-up, as the standard says. The
+  Seestar rule rests on measurement, not on a manual: for 39 raw subs, one per
+  target folder of a Seestar S50 library, the stored row order agreed better with
+  the preview JPG the Seestar saves beside each sub than the flipped one did (39
+  of 39; for example a correlation of 0.98 as stored against -0.55 flipped on a C 39
+  sub), and the one Seestar stacked FITS file checked behaves the same. `--row-order
+  top-down` or `bottom-up` overrides all of that, for example for a file another
+  program rewrote. `--flip-v` is a different thing: an edit of the finished
+  picture, applied after the read, so `--row-order bottom-up --flip-v` gives the
+  same picture as the default on a Seestar sub. The GUI's Open step has the same
+  choice (Auto, Top-down, Bottom-up) and the API takes `row_order`.
 * **Mosaic.** `BAYERPAT` is also a capture-program convention. Helia takes it to
   name the 2x2 pattern *as stored*. Flipping the rows of a mosaic of even height
-  swaps its two row types, so the stored `GRBG` of a Seestar sub reads as `BGGR`
-  once the rows are flipped, and the stored `GBRG` above reads as `RGGB`. For an
-  odd height, or `ROWORDER = TOP-DOWN`, the pattern is used as written. This was
+  swaps its two row types, so the stored `GBRG` above reads as `RGGB` once the
+  rows are flipped (and a Seestar's `GRBG` would read as `BGGR` under
+  `--row-order bottom-up`). For an odd height, or rows read top-down (a
+  `ROWORDER = TOP-DOWN` card, or a Seestar), the pattern is used as written. This was
   checked on real Seestar subs: in the stored data the two greens of `GRBG` sit on
   the diagonal, as the mean levels of the four pixel positions show.
   If a file's pattern is simply wrong, name the right one with `--bayer`; a
@@ -212,9 +277,15 @@ slow network share, for a long run.
 * **Coloured grid or a green cast on a colour sensor**: the pattern is wrong.
   Check `helia info`, then try each of `--bayer rggb|grbg|gbrg|bggr` on a few
   frames.
-* **The picture is upside down**: the file is top-down without `ROWORDER`. FITS
-  viewers will show it the same way; add `--flip-v` to the stack.
+* **The picture is upside down (or, for a Seestar, you want the old bottom-up
+  reading)**: Seestar S50 frames are read top-down automatically. Another camera
+  that stores its rows top-down without a `ROWORDER` card is read bottom-up, as
+  the standard says; add `--row-order top-down` (and `--row-order bottom-up` for
+  the opposite case). Use `--flip-v` only to turn the finished picture over.
 * **Frames are in the wrong order**: only some files have `DATE-OBS`, so the file
   name decides. Rename so the names sort, or add the times.
+* **Stars are short arcs, and `detail:` is below 1x**: the field rotated during the
+  capture. See "Subs from an altazimuth mount" above: check the `rotation:` lines, and
+  give `--field-rotation` if there are none.
 * **Only one frame**: a single FITS image cannot be stacked. Helia says so in a
   warning.

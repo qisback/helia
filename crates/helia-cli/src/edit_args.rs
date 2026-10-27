@@ -234,7 +234,9 @@ pub struct EditArgs {
     /// Mirror left to right.
     #[arg(long, help_heading = "Adjustments")]
     pub flip_h: bool,
-    /// Mirror top to bottom.
+    /// Mirror top to bottom. An edit on the finished picture, applied after
+    /// the capture is read; to correct how FITS frames are read use
+    /// --row-order.
     #[arg(long, help_heading = "Adjustments")]
     pub flip_v: bool,
     /// Resize: 50% or 0.5, 1200x800, 1200x (width) or x800 (height).

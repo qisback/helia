@@ -52,12 +52,20 @@ impl App {
         if let Some(text) = &self.version_override {
             return text.clone();
         }
-        about::version_block(
+        let mut block = about::version_block(
             "helia-gui",
             ui_version(),
             helia_gpu::WGPU_VERSION,
             Some(&self.gpu_description()),
-        )
+        );
+        // An official store build names its update backend in the build record.
+        if let Some(line) = helia_update::backend::installed()
+            .and_then(helia_update::backend::UpdateBackend::build_line)
+        {
+            block.push('\n');
+            block.push_str(&line);
+        }
+        block
     }
 
     /// Draw the page in `ui` (the centre panel).
@@ -175,6 +183,7 @@ impl App {
                     feedback = true;
                 }
                 self.update_about_section(ui);
+                self.tools_about_section(ui);
 
                 ui.add_space(6.0);
                 widgets::overline(ui, "Copyright and licence");

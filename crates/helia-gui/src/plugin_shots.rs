@@ -43,7 +43,11 @@ fn plugin(root: &Path, name: &str, manifest: &str, files: &[(&str, &str)]) {
 fn fixtures() -> (PathBuf, Registry) {
     use std::sync::atomic::{AtomicUsize, Ordering};
     static N: AtomicUsize = AtomicUsize::new(0);
-    let root = std::env::temp_dir().join(format!(
+    // Canonical from the start: on Windows the registry spells the plugin file as given and the
+    // program canonicalised (8.3 short name against the verbatim form), so the mask only
+    // matches both when the root already is the canonical path.
+    let tmp = std::env::temp_dir();
+    let root = tmp.canonicalize().unwrap_or(tmp).join(format!(
         "helia-plugin-shots-{}-{}",
         std::process::id(),
         N.fetch_add(1, Ordering::Relaxed)

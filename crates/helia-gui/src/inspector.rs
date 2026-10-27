@@ -493,7 +493,7 @@ impl App {
         ui.add_space(2.0);
         ui.add(
             Label::new(mono_text(
-                "Burned-in timestamps are found automatically. Add a rectangle for anything else to keep alignment away from. Regions are flat in the result.",
+                "Burned-in timestamps are found automatically. Add a rectangle for anything else to keep alignment away from. Regions are filled from the sky around them in the result.",
                 12.0,
                 p.faint,
             ))

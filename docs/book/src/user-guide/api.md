@@ -139,7 +139,7 @@ each value came from, and what to tell the user. Video needs the optional
 `ffmpeg` on the server; only `ffprobe` runs for an inspect, so it is quick. For a
 SER file that says it is mono, a few frames are read to check the pixels for a
 Bayer mosaic. The body may also carry the overrides `bayer`, `bit_depth`,
-`endian` and `flip_rows` (as in a job's `config`, below) to see what they would
+`endian`, `flip_rows` and `row_order` (as in a job's `config`, below) to see what they would
 change.
 
 ```sh
@@ -230,7 +230,7 @@ An 8-bit greyscale PNG of one frame, auto-stretched (0.1 to 99.9 percentiles).
 | `index` | `0` | frame number |
 | `channel` | `lum` | `r`, `g`, `b` or `lum`, for Bayer captures and video |
 | `max_width` | none | downscale to at most this width, 16 to 8192 |
-| `bayer`, `bit_depth`, `endian`, `flip_rows` | as for a job | how to read the capture, as in a job's `config` |
+| `bayer`, `bit_depth`, `endian`, `flip_rows`, `row_order` | as for a job | how to read the capture, as in a job's `config` |
 
 ```sh
 curl -H "$H" -o frame.png \
@@ -260,7 +260,7 @@ curl -H "$H" -H 'Content-Type: application/json' -d '{
 | `ap_passes` | 1 | `--ap-passes` (1 or 2; needs `multipoint`) |
 | `ap_smooth` | `false` | `--ap-smooth on`; needs `multipoint` |
 | `aperture_mm` | none | `--aperture-mm`; adds the diffraction cut-off to `summary.granulation` |
-| `field_rotation` | none | `--field-rotation`; an object (empty for the defaults) with `mirror` and `reference` (`middle`, `first`, `last`); needs `site` (or the server's `HELIA_SITE`) and a SER capture with timestamps; what it did is in `summary.field_rotation`; see [Field rotation](field-rotation.md) |
+| `field_rotation` | none | `--field-rotation`; an object (empty for the defaults) with `mirror` and `reference` (`middle`, `first`, `last`); needs `site` (or the server's `HELIA_SITE`) and a capture with timestamps (SER, or FITS with `DATE-OBS`); works with `colour: "true"`; solar only (the automatic correction of FITS subs is a command-line feature); what it did is in `summary.field_rotation`; see [Field rotation](field-rotation.md) |
 | `sunspots` | none | `--sunspots`; an object (empty for the defaults) with `umbra`, `penumbra`, `min_area`, `max_area`, `group_gap_deg`, `wolf_k`, `north_angle_deg`, `celestial_north_up`, `mirror`; the result is in `summary.sunspots`, `GET /jobs/{id}/sunspots.csv` and `sunspots.png`, and the `SPOT*` FITS cards; see [Sunspots](sunspots.md) |
 | `seeing` | `false` | `--seeing`; the estimate is in `summary.seeing`, `r0` needs `aperture_mm` |
 | `autocrop` | `false` | `--autocrop`; the region kept is in `summary.crop` |
@@ -279,6 +279,7 @@ curl -H "$H" -H 'Content-Type: application/json' -d '{
 | `bit_depth` | the SER header's | `--bit-depth` (1 to 16; SER only) |
 | `endian` | the header flag, checked | `--endian` (`little`, `big`; SER only) |
 | `flip_rows` | `false` | `--flip-rows` (SER only) |
+| `row_order` | `"auto"` | `--row-order` (`auto`, `top-down`, `bottom-up`; FITS only). `auto` follows a `ROWORDER` card, else Seestar S50 frames are top-down and all others bottom-up |
 | `channel` | the preset's, else `"lum"` | `--channel` (`r`, `g`, `b`, `lum`) |
 | `debayer` | `"mhc"` | `--debayer` (`bilinear`, `mhc`) |
 | `metric` | `"gradient"` | `--metric` (`gradient`, `laplacian`, `helmli`, `mfgs`, `dct`, `fourier`, `contrast`) |

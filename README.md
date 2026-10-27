@@ -6,7 +6,7 @@
 
 [![CI](https://github.com/qisback/helia/actions/workflows/ci.yml/badge.svg)](https://github.com/qisback/helia/actions/workflows/ci.yml)
 [![Documentation](https://img.shields.io/badge/docs-qisback.github.io%2Fhelia-blue)](https://qisback.github.io/helia/)
-[![Latest release](https://img.shields.io/github/v/release/qisback/helia?include_prereleases)](https://github.com/qisback/helia/releases)
+[![Get Helia](https://img.shields.io/badge/get-the%20store%20or%20build%20from%20source-blue)](https://qisback.github.io/helia/getting-started/download/)
 [![Licence: GPL-3.0-or-later](https://img.shields.io/badge/licence-GPL--3.0--or--later-blue)](LICENSE)
 
 <a href="https://ko-fi.com/qisback"><img src="docs/book/src/images/kofi.png" alt="Buy me a coffee at ko-fi.com" height="36"></a>

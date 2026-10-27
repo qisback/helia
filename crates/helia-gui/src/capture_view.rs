@@ -10,7 +10,7 @@
 use eframe::egui::{Align, CornerRadius, Frame, Label, Layout, Margin, RichText, Stroke, Ui};
 use helia_core::BayerPattern;
 use helia_core::io::capture::{Level, Origin};
-use helia_core::io::source::{BayerSetting, Endian};
+use helia_core::io::source::{BayerSetting, Endian, RowOrder};
 
 use crate::app::App;
 use crate::theme::{RADIUS_LARGE, palette, semibold};
@@ -122,12 +122,17 @@ impl App {
             .capture
             .as_ref()
             .is_some_and(|c| c.meta.container == "SER");
+        let is_fits = self
+            .capture
+            .as_ref()
+            .is_some_and(|c| c.meta.container == "FITS");
         let idle = !self.busy();
         let before = (
             self.settings.bayer,
             self.settings.bit_depth,
             self.settings.endian,
             self.settings.flip_rows,
+            self.settings.row_order,
         );
 
         widgets::overline(ui, "Bayer pattern");
@@ -187,20 +192,53 @@ impl App {
         });
 
         widgets::overline(ui, "Row order");
-        ui.horizontal_wrapped(|ui| {
-            for (label, value) in [("As stored", false), ("Bottom to top", true)] {
-                if widgets::chip(ui, label, self.settings.flip_rows == value, idle && is_ser)
-                    .on_hover_text("Read the rows upside down, for a file stored flipped")
-                    .clicked()
-                {
-                    self.settings.flip_rows = value;
+        if is_fits {
+            ui.horizontal_wrapped(|ui| {
+                for (label, value, tip) in [
+                    (
+                        "Auto",
+                        RowOrder::Auto,
+                        "ROWORDER card if there is one; Seestar S50 frames top-down; otherwise bottom-up as the FITS standard says",
+                    ),
+                    (
+                        "Top-down",
+                        RowOrder::TopDown,
+                        "The first stored row is the top of the picture",
+                    ),
+                    (
+                        "Bottom-up",
+                        RowOrder::BottomUp,
+                        "The first stored row is the bottom of the picture (the FITS standard)",
+                    ),
+                ] {
+                    if widgets::chip(ui, label, self.settings.row_order == value, idle)
+                        .on_hover_text(tip)
+                        .clicked()
+                    {
+                        self.settings.row_order = value;
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            ui.horizontal_wrapped(|ui| {
+                for (label, value) in [("As stored", false), ("Bottom to top", true)] {
+                    if widgets::chip(ui, label, self.settings.flip_rows == value, idle && is_ser)
+                        .on_hover_text("Read the rows upside down, for a file stored flipped")
+                        .clicked()
+                    {
+                        self.settings.flip_rows = value;
+                    }
+                }
+            });
+        }
         if !is_ser && self.capture.is_some() {
             ui.add(
                 Label::new(mono_text(
-                    "Bit depth, byte order and row order apply to SER files.",
+                    if is_fits {
+                        "Bit depth and byte order apply to SER files."
+                    } else {
+                        "Bit depth, byte order and row order apply to SER files."
+                    },
                     11.5,
                     palette().faint,
                 ))
@@ -213,6 +251,7 @@ impl App {
             self.settings.bit_depth,
             self.settings.endian,
             self.settings.flip_rows,
+            self.settings.row_order,
         );
         if after != before {
             self.reopen();

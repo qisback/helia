@@ -19,7 +19,8 @@
 //!   doi:10.1007/s11207-017-1211-3.
 //! - Helmli, F. S. and Scherer, S. (2001), Adaptive shape from focus with an error estimation in light
 //!   microscopy, Proc. ISPA 2001, 188-193, doi:10.1109/ISPA.2001.938626.
-//! - The DCT energy ratio is after Su et al. as cited by Popowicz et al. (original reference to verify).
+//! - Shen, C.-H. and Chen, H. H. (2006), Robust focus measure for low-contrast images, Proc. ICCE 2006,
+//!   69-70, doi:10.1109/ICCE.2006.1598314 (the DCT energy ratio, as evaluated by Popowicz et al.).
 
 #![allow(
     clippy::many_single_char_names,
@@ -190,7 +191,7 @@ fn dct8_basis() -> [[f32; 8]; 8] {
     b
 }
 
-/// DCT energy ratio (after Su et al. and Popowicz et al.): over all 8x8 blocks,
+/// DCT energy ratio (after Shen and Chen, as evaluated by Popowicz et al.): over all 8x8 blocks,
 /// the energy of the coefficients with `u + v >= 4` as a share of all the
 /// alternating-current energy (`(u, v) != (0, 0)`). Block energies are summed
 /// before the ratio, so flat sky blocks weigh nothing.

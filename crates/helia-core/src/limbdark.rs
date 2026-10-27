@@ -37,7 +37,8 @@
 //!
 //! - Neckel, H. and Labs, D. (1994), Solar limb darkening 1986-1990 (lambda 303 to 1099 nm), Solar Phys.
 //!   153, 91-114, doi:10.1007/BF00712494.
-//! - Cox, A. N. (ed.) (2000), Allen's Astrophysical Quantities, 4th ed., Springer (ISBN to verify).
+//! - Cox, A. N. (ed.) (2000), Allen's Astrophysical Quantities, 4th ed., Springer and AIP Press
+//!   (ISBN 0-387-98746-0, doi:10.1007/978-1-4612-1186-0).
 
 use serde::{Deserialize, Serialize};
 

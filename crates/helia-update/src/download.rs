@@ -129,7 +129,14 @@ impl Updater<'_> {
                 url: &asset.url,
                 range_from: (have > 0).then_some(have),
                 allowed_hosts: &source.asset_hosts,
+                bearer: self.access.map(|a| a.bearer.as_str()),
+                bearer_host: self.access.map(|a| a.bearer_host.as_str()),
             })?;
+            if let Some(a) = self.access
+                && matches!(resp.status, 401 | 403)
+            {
+                return Err((a.refusal)(resp.status, resp.body));
+            }
             match resp.status {
                 206 if resp.content_range_start == Some(have) => {}
                 200 => {

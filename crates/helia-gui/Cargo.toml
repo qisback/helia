@@ -25,20 +25,21 @@ path = "src/main.rs"
 # default_fonts is off: egui bundles the Ubuntu font, whose licence is not GPL-compatible.
 # IBM Plex Sans and Mono (SIL OFL 1.1) are embedded instead, see assets/fonts.
 eframe = { version = "0.36", default-features = false, features = ["accesskit", "links", "wayland", "wgpu", "x11"] }
-helia-core = { version = "0.7.1", path = "../helia-core" }
-helia-feedback = { version = "0.7.1", path = "../helia-feedback" }
-helia-gpu = { version = "0.7.1", path = "../helia-gpu" }
-helia-plugin = { version = "0.7.1", path = "../helia-plugin" }
+helia-core = { version = "0.8.2", path = "../helia-core" }
+helia-feedback = { version = "0.8.2", path = "../helia-feedback" }
+helia-gpu = { version = "0.8.2", path = "../helia-gpu" }
+helia-plugin = { version = "0.8.2", path = "../helia-plugin" }
 helia-plugin-sdk = { version = "0.1.0", path = "../helia-plugin-sdk" }
-helia-report = { version = "0.7.1", path = "../helia-report" }
-helia-update = { version = "0.7.1", path = "../helia-update" }
+helia-report = { version = "0.8.2", path = "../helia-report" }
+helia-external = { version = "0.8.2", path = "../helia-external" }
+helia-update = { version = "0.8.2", path = "../helia-update" }
 rfd = "0.17.2"
 serde_json = "1.0.154"
 png = "0.18.1"
 
 [dev-dependencies]
 egui_kittest = { version = "0.36", features = ["wgpu", "snapshot", "eframe"] }
-helia-core = { version = "0.7.1", path = "../helia-core", features = ["testutil"] }
+helia-core = { version = "0.8.2", path = "../helia-core", features = ["testutil"] }
 semver = "1.0.28"
 
 # --version from a terminal with the windows subsystem; see src/console.rs.

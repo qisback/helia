@@ -3,13 +3,19 @@
 // See ADDITIONAL-TERMS.md for terms added under GPLv3 section 7.
 
 //! The client flow end to end with an in-memory server, disk and clock.
-#![allow(clippy::single_match_else, clippy::assert_is_empty, reason = "tests")]
+#![allow(
+    clippy::single_match_else,
+    clippy::assert_is_empty,
+    clippy::many_single_char_names,
+    reason = "tests"
+)]
 
 use std::path::{Path, PathBuf};
 
 use crate::apply::ApplyOutcome;
 use crate::apply::fake::{FakeProcess, TestFs};
 use crate::client::{CheckReport, Client, Paths};
+use crate::error::Error;
 use crate::install::fake::FakeProbe;
 use crate::install::{HostOs, PackageManager};
 use crate::manifest::{AssetDoc, Kind, ManifestDoc, Platform};
@@ -69,6 +75,11 @@ impl World {
 
     /// Serve `version`, signed, valid for a day from the clock's now.
     fn publish(&self, version: &str, sequence: u64) -> Vec<u8> {
+        self.publish_at(version, sequence, BASE)
+    }
+
+    /// As [`Self::publish`], with the asset files at `asset_base`.
+    fn publish_at(&self, version: &str, sequence: u64, asset_base: &str) -> Vec<u8> {
         let now = self.clock.now_unix();
         let body = elf(&format!("new-{version}"));
         let asset = |kind: &str, url: String| AssetDoc {
@@ -89,8 +100,8 @@ impl World {
             min_supported: None,
             notes_url: Some("https://downloads.example.org/notes".into()),
             assets: vec![
-                asset("appimage", format!("{BASE}/{version}/Helia.AppImage")),
-                asset("deb", format!("{BASE}/{version}/helia.deb")),
+                asset("appimage", format!("{asset_base}/{version}/Helia.AppImage")),
+                asset("deb", format!("{asset_base}/{version}/helia.deb")),
             ],
         };
         let json = serde_json::to_vec_pretty(&doc).unwrap();
@@ -103,9 +114,9 @@ impl World {
                 .as_bytes(),
         );
         self.http
-            .serve(&format!("{BASE}/{version}/Helia.AppImage"), &body);
+            .serve(&format!("{asset_base}/{version}/Helia.AppImage"), &body);
         self.http
-            .serve(&format!("{BASE}/{version}/helia.deb"), &body);
+            .serve(&format!("{asset_base}/{version}/helia.deb"), &body);
         body
     }
 
@@ -131,6 +142,7 @@ impl World {
             loopback: false,
             relaunch_gui: true,
             channel_override: None,
+            backend: None,
         }
     }
 }
@@ -248,7 +260,9 @@ fn deb_install_shows_the_command_and_touches_nothing() {
     assert!(
         command
             .unwrap()
+            // On Windows the path has backslashes, so the real command quotes it: compare the bare path.
             .replace('\\', "/")
+            .replace('\'', "")
             .starts_with("sudo apt install /cfg/helia/updates/")
     );
     assert_eq!(w.fs.mem.get(Path::new(TARGET)).unwrap(), elf("old"));
@@ -272,4 +286,173 @@ fn settings_from_a_newer_helia_are_kept() {
         w.fs.mem.get(&w.paths.settings).unwrap(),
         b"schema=7\nmode=off\n"
     );
+}
+
+// ---- the backend hook: a source build has none, an official build plugs one in ----
+
+const OTHER_DL: &str = "https://gated.example.org/dl/helia";
+
+/// A stand-in for a gated update service: it opens one more host, sends a bearer to it,
+/// decides downloads are allowed, leaves a notice and adds a status line.
+struct StubBackend {
+    allow: bool,
+}
+
+impl crate::backend::UpdateBackend for StubBackend {
+    fn extend_source(&self, mut s: UpdateSource) -> UpdateSource {
+        s.asset_hosts.push("gated.example.org".into());
+        s
+    }
+    fn asset_access(
+        &self,
+        _cx: &crate::backend::BackendCx<'_>,
+    ) -> Option<crate::backend::AssetAccess> {
+        Some(crate::backend::AssetAccess {
+            bearer: "stub-bearer-0123456789".into(),
+            bearer_host: "gated.example.org".into(),
+            refusal: Box::new(|status, _| Error::Refused(format!("refused with {status}"))),
+        })
+    }
+    fn refresh(&self, _cx: &crate::backend::BackendCx<'_>) -> crate::backend::Refresh {
+        crate::backend::Refresh {
+            fresh: true,
+            notice: Some("the stub left a notice".into()),
+        }
+    }
+    fn gate(
+        &self,
+        _cx: &crate::backend::BackendCx<'_>,
+        _v: &semver::Version,
+        fresh: bool,
+    ) -> Option<crate::backend::Gate> {
+        Some(crate::backend::Gate {
+            auto_download: self.allow && fresh,
+            note: (!self.allow).then(|| "the stub says no".to_string()),
+            link: None,
+        })
+    }
+    fn status(&self, _cx: &crate::backend::BackendCx<'_>) -> Option<crate::backend::BackendStatus> {
+        Some(crate::backend::BackendStatus {
+            label: "Stub".into(),
+            line: "all good".into(),
+            json: serde_json::json!({ "ok": true }),
+        })
+    }
+}
+
+fn with_backend<'a>(
+    w: &'a World,
+    src: &'a dyn Fn(&str) -> UpdateSource,
+    b: &'a StubBackend,
+) -> Client<'a> {
+    let mut c = w.client("0.8.0", src);
+    c.backend = Some(b);
+    c
+}
+
+#[test]
+fn without_a_backend_a_file_off_the_allowed_hosts_is_left_to_the_user() {
+    let w = World::new("appimage");
+    w.publish_at("0.8.1", 1, OTHER_DL);
+    let src = w.source();
+    let c = w.client("0.8.0", &src);
+    let CheckReport::Available(a) = c.check(true).unwrap() else {
+        panic!()
+    };
+    assert!(!a.auto_download && !a.may_auto_download());
+    assert!(
+        a.note
+            .as_deref()
+            .unwrap()
+            .contains("does not fetch installers by itself")
+    );
+    assert_eq!(a.link.as_deref(), Some(crate::helia::PAGE_URL));
+    let before = w.http.requests().len();
+    let e = c.download(&a, &mut |_, _| {}).unwrap_err();
+    assert!(matches!(e, Error::Refused(_)), "{e}");
+    assert_eq!(w.http.requests().len(), before, "nothing was fetched");
+    assert!(c.backend_panel().is_none() && c.backend_status().is_none());
+}
+
+#[test]
+fn a_file_on_an_allowed_host_downloads_without_a_backend() {
+    let w = World::new("appimage");
+    w.publish("0.8.1", 1);
+    let src = w.source();
+    let c = w.client("0.8.0", &src);
+    let CheckReport::Available(a) = c.check(true).unwrap() else {
+        panic!()
+    };
+    assert!(a.auto_download && a.note.is_none());
+    c.download(&a, &mut |_, _| {}).unwrap();
+    assert!(w.http.bearers().iter().all(|(_, t, _)| t.is_none()));
+}
+
+#[test]
+fn a_backend_opens_its_host_sends_its_bearer_only_there_and_leaves_a_notice() {
+    let w = World::new("appimage");
+    w.publish_at("0.8.1", 1, OTHER_DL);
+    let src = w.source();
+    let b = StubBackend { allow: true };
+    let c = with_backend(&w, &src, &b);
+    let CheckReport::Available(a) = c.check(true).unwrap() else {
+        panic!()
+    };
+    assert!(a.auto_download && a.may_auto_download());
+    c.download(&a, &mut |_, _| {}).unwrap();
+    let seen = w.http.bearers();
+    let asset: Vec<_> = seen
+        .iter()
+        .filter(|(u, _, _)| u.starts_with(OTHER_DL))
+        .collect();
+    assert!(!asset.is_empty());
+    for (_, token, host) in &asset {
+        assert_eq!(token.as_deref(), Some("stub-bearer-0123456789"));
+        assert_eq!(host.as_deref(), Some("gated.example.org"));
+    }
+    for (u, token, _) in &seen {
+        assert!(
+            token.is_none() || u.starts_with(OTHER_DL),
+            "the bearer went to {u}"
+        );
+    }
+    assert_eq!(
+        c.status().backend.map(|s| (s.label, s.line)),
+        Some(("Stub".into(), "all good".into()))
+    );
+    // The notice the backend left is shown once at the next start.
+    let n = w.client("0.8.0", &src).startup().unwrap().notice;
+    assert_eq!(n.as_deref(), Some("the stub left a notice"));
+}
+
+#[test]
+fn a_backend_can_say_no_and_the_note_reaches_the_user() {
+    let w = World::new("appimage");
+    w.publish_at("0.8.1", 1, OTHER_DL);
+    let src = w.source();
+    let b = StubBackend { allow: false };
+    let c = with_backend(&w, &src, &b);
+    let CheckReport::Available(a) = c.check(true).unwrap() else {
+        panic!()
+    };
+    assert!(!a.auto_download);
+    assert_eq!(a.note.as_deref(), Some("the stub says no"));
+    let e = c.download(&a, &mut |_, _| {}).unwrap_err();
+    assert!(e.to_string().contains("the stub says no"), "{e}");
+}
+
+#[test]
+fn a_refused_download_is_explained_by_the_backend() {
+    let w = World::new("appimage");
+    w.publish_at("0.8.1", 1, OTHER_DL);
+    w.http
+        .serve_status(&format!("{OTHER_DL}/0.8.1/Helia.AppImage"), 403, b"{}");
+    let src = w.source();
+    let b = StubBackend { allow: true };
+    let c = with_backend(&w, &src, &b);
+    let CheckReport::Available(a) = c.check(true).unwrap() else {
+        panic!()
+    };
+    let e = c.download(&a, &mut |_, _| {}).unwrap_err();
+    assert_eq!(e.to_string(), "refused with 403");
 }

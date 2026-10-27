@@ -49,6 +49,11 @@ pub trait Fs {
     fn rename(&self, from: &Path, to: &Path) -> io::Result<()>;
     /// Remove a file; a missing file is not an error.
     fn remove_file(&self, path: &Path) -> io::Result<()>;
+    /// [`Self::write_atomic`] for a secret: readable by the owner only where the
+    /// platform has file modes (0600). The default is `write_atomic`.
+    fn write_private(&self, path: &Path, data: &[u8]) -> io::Result<()> {
+        self.write_atomic(path, data)
+    }
 }
 
 /// The real file system.
@@ -101,6 +106,25 @@ impl Fs for StdFs {
         fs::rename(from, to)
     }
 
+    fn write_private(&self, path: &Path, data: &[u8]) -> io::Result<()> {
+        let mut tmp = path.as_os_str().to_owned();
+        tmp.push(".tmp");
+        let tmp = std::path::PathBuf::from(tmp);
+        {
+            let mut o = fs::OpenOptions::new();
+            o.write(true).create(true).truncate(true);
+            #[cfg(unix)]
+            {
+                use std::os::unix::fs::OpenOptionsExt;
+                o.mode(0o600);
+            }
+            let mut f = o.open(&tmp)?;
+            f.write_all(data)?;
+            f.sync_all()?;
+        }
+        fs::rename(&tmp, path)
+    }
+
     fn remove_file(&self, path: &Path) -> io::Result<()> {
         match fs::remove_file(path) {
             Err(e) if e.kind() != io::ErrorKind::NotFound => Err(e),
@@ -110,7 +134,7 @@ impl Fs for StdFs {
 }
 
 /// One `GET`.
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy)]
 pub struct Request<'a> {
     /// The URL.
     pub url: &'a str,
@@ -119,6 +143,25 @@ pub struct Request<'a> {
     /// Hosts the request and every redirect hop may go to. An implementation must
     /// refuse a redirect to any other host.
     pub allowed_hosts: &'a [String],
+    /// A bearer token to send as `Authorization: Bearer ...`, only on the hop whose
+    /// host is `bearer_host`. `None` sends no `Authorization` header at all.
+    pub bearer: Option<&'a str>,
+    /// The one host the token may be sent to. A redirect hop to any other host
+    /// carries no token. A value with a port (tests) must match host and port.
+    pub bearer_host: Option<&'a str>,
+}
+
+impl std::fmt::Debug for Request<'_> {
+    // The token is never printed.
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("Request")
+            .field("url", &self.url)
+            .field("range_from", &self.range_from)
+            .field("allowed_hosts", &self.allowed_hosts)
+            .field("bearer", &self.bearer.map(|_| "<redacted>"))
+            .field("bearer_host", &self.bearer_host)
+            .finish()
+    }
 }
 
 /// The answer to a [`Request`].

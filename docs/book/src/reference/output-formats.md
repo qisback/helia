@@ -23,7 +23,9 @@ Colour captures are reduced to one plane for stacking; see `--channel` and
 `--debayer` in the [CLI reference](cli.md).
 
 Helia also reads FITS images (`BITPIX` 8, 16 and -32, with `BZERO` and `BSCALE`,
-and the `BAYERPAT` and `ROWORDER` keywords). `helia stack` takes FITS frames as a
+and the `BAYERPAT` and `ROWORDER` keywords; Seestar S50 frames, which are stored
+top row first without a `ROWORDER` card, are recognised from their header, and
+`--row-order` overrides all of it). `helia stack` takes FITS frames as a
 capture: a folder or pattern of single-frame files such as a Seestar's
 `Light_*.fit`, a cube with one frame per plane, or a file with one image per
 extension; see [Stack FITS frames](../tutorials/stack-fits-frames.md). `helia

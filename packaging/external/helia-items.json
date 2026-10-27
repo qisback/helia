@@ -1,0 +1,276 @@
+{
+  "app": "helia",
+  "licences": [
+    {
+      "id": "lgpl-3.0",
+      "name": "GNU Lesser General Public License, version 3 or later",
+      "spdx": "LGPL-3.0-or-later",
+      "file": "licences/LGPL-3.0-or-later.txt",
+      "source_url": "https://github.com/BtbN/FFmpeg-Builds",
+      "attribution": "FFmpeg is a trademark of Fabrice Bellard, originator of the FFmpeg project. This build of FFmpeg is made by the BtbN FFmpeg-Builds project and is used under the GNU Lesser General Public License, version 3 or later. Source code and build scripts: https://github.com/BtbN/FFmpeg-Builds and https://ffmpeg.org/download.html. Helia is not affiliated with FFmpeg or BtbN.",
+      "show_attribution": true
+    },
+    {
+      "id": "gpl-3.0",
+      "name": "GNU General Public License, version 3 or later",
+      "spdx": "GPL-3.0-or-later",
+      "file": "licences/GPL-3.0-or-later.txt",
+      "source_url": "https://evermeet.cx/ffmpeg/",
+      "attribution": "FFmpeg is a trademark of Fabrice Bellard, originator of the FFmpeg project. This build of FFmpeg is made by evermeet.cx (Intel Macs) or Martin Riedl (Apple silicon) and is used under the GNU General Public License, version 3 or later. Source code and build information: https://evermeet.cx/ffmpeg/, https://ffmpeg.martin-riedl.de/ and https://ffmpeg.org/download.html. Helia is not affiliated with FFmpeg evermeet.cx or Martin Riedl.",
+      "show_attribution": true
+    },
+    {
+      "id": "package-manager",
+      "name": "FFmpeg from your package manager (licence set by the package)",
+      "spdx": null,
+      "file": "licences/package-manager.txt",
+      "source_url": "https://ffmpeg.org/download.html",
+      "attribution": "FFmpeg is a trademark of Fabrice Bellard, originator of the FFmpeg project. Installed from your package manager under the licence of that package. Helia is not affiliated with FFmpeg.",
+      "show_attribution": true
+    }
+  ],
+  "items": [
+    {
+      "id": "ffmpeg",
+      "name": "FFmpeg",
+      "version": "9.0.2",
+      "provider": "the FFmpeg project's build providers",
+      "provider_url": "https://ffmpeg.org/",
+      "description": "FFmpeg and FFprobe read compressed video (MP4, MOV, MKV, WebM). Helia uses them only to decode your own video files on this computer; nothing is encoded or sent anywhere.",
+      "required": false,
+      "licence": "lgpl-3.0",
+      "downloads": [
+        {
+          "platform": "windows-x86_64",
+          "url": "https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2026-10-26-14-25/ffmpeg-n9.0.2-36-g6882969ce9-win64-lgpl-9.0.zip",
+          "sha256": "6005d82061921faee9a6bfe22861c70e842e88bedf32b05f867180347944c8a2",
+          "size": 171482931,
+          "archive": "zip",
+          "members": [
+            {
+              "find": "bin/ffmpeg.exe",
+              "save_as": "ffmpeg.exe",
+              "provides": "ffmpeg",
+              "executable": true
+            },
+            {
+              "find": "bin/ffprobe.exe",
+              "save_as": "ffprobe.exe",
+              "provides": "ffprobe",
+              "executable": true
+            }
+          ],
+          "provider": "BtbN FFmpeg-Builds"
+        },
+        {
+          "platform": "linux-x86_64",
+          "url": "https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2026-10-26-14-25/ffmpeg-n9.0.2-36-g6882969ce9-linux64-lgpl-9.0.tar.xz",
+          "sha256": "c4d884a13b3a87ab3e954be08a20a2219d9cb59c76f199b4d34b34c36031151a",
+          "size": 137933780,
+          "archive": "tar.xz",
+          "members": [
+            {
+              "find": "bin/ffmpeg",
+              "save_as": "ffmpeg",
+              "provides": "ffmpeg",
+              "executable": true
+            },
+            {
+              "find": "bin/ffprobe",
+              "save_as": "ffprobe",
+              "provides": "ffprobe",
+              "executable": true
+            }
+          ],
+          "provider": "BtbN FFmpeg-Builds"
+        },
+        {
+          "platform": "linux-aarch64",
+          "url": "https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2026-10-26-14-25/ffmpeg-n9.0.2-36-g6882969ce9-linuxarm64-lgpl-9.0.tar.xz",
+          "sha256": "902e23b6442941799e50592f6f9e08b5a9d7227398b1831addfd5c4507ba03f9",
+          "size": 117034492,
+          "archive": "tar.xz",
+          "members": [
+            {
+              "find": "bin/ffmpeg",
+              "save_as": "ffmpeg",
+              "provides": "ffmpeg",
+              "executable": true
+            },
+            {
+              "find": "bin/ffprobe",
+              "save_as": "ffprobe",
+              "provides": "ffprobe",
+              "executable": true
+            }
+          ],
+          "provider": "BtbN FFmpeg-Builds"
+        },
+        {
+          "platform": "macos-x86_64",
+          "url": "https://evermeet.cx/ffmpeg/ffmpeg-9.0.2.zip",
+          "sha256": "4acc0be580f9b2788029eb7bd4d645ff87968911b0a62aeeb3940d42d54558d5",
+          "size": 26198325,
+          "archive": "zip",
+          "licence": "gpl-3.0",
+          "members": [
+            {
+              "find": "ffmpeg",
+              "save_as": "ffmpeg",
+              "provides": "ffmpeg",
+              "executable": true
+            }
+          ],
+          "provider": "evermeet.cx"
+        },
+        {
+          "platform": "macos-x86_64",
+          "url": "https://evermeet.cx/ffmpeg/ffprobe-9.0.2.zip",
+          "sha256": "24a9c968cd4da72d99c7245e914b921815835eb6dff01d99868031aebaf1d439",
+          "size": 26104193,
+          "archive": "zip",
+          "licence": "gpl-3.0",
+          "members": [
+            {
+              "find": "ffprobe",
+              "save_as": "ffprobe",
+              "provides": "ffprobe",
+              "executable": true
+            }
+          ],
+          "provider": "evermeet.cx"
+        },
+        {
+          "platform": "macos-aarch64",
+          "url": "https://ffmpeg.martin-riedl.de/download/macos/arm64/1789931890_9.0.2/ffmpeg.zip",
+          "sha256": "c8ed4c4e6978a03c485edbfe4e0a5dc2380f8a30bba5150531b31b094492d924",
+          "size": 28395699,
+          "archive": "zip",
+          "licence": "gpl-3.0",
+          "provider": "Martin Riedl (ffmpeg.martin-riedl.de)",
+          "members": [
+            {
+              "find": "ffmpeg",
+              "save_as": "ffmpeg",
+              "provides": "ffmpeg",
+              "executable": true
+            }
+          ]
+        },
+        {
+          "platform": "macos-aarch64",
+          "url": "https://ffmpeg.martin-riedl.de/download/macos/arm64/1789931890_9.0.2/ffprobe.zip",
+          "sha256": "fcbe839537485eaee7a7a8bc5cbc0f90d53617e80943e8a5b2e31cb851197ea6",
+          "size": 28317701,
+          "archive": "zip",
+          "licence": "gpl-3.0",
+          "provider": "Martin Riedl (ffmpeg.martin-riedl.de)",
+          "members": [
+            {
+              "find": "ffprobe",
+              "save_as": "ffprobe",
+              "provides": "ffprobe",
+              "executable": true
+            }
+          ]
+        }
+      ],
+      "packages": [
+        {
+          "platform": "linux-x86_64",
+          "manager": "apt",
+          "argv": [
+            "sudo",
+            "apt",
+            "install",
+            "ffmpeg"
+          ],
+          "licence": "package-manager",
+          "provider": "your system's package manager"
+        },
+        {
+          "platform": "linux-x86_64",
+          "manager": "dnf",
+          "argv": [
+            "sudo",
+            "dnf",
+            "install",
+            "ffmpeg-free"
+          ],
+          "licence": "package-manager",
+          "provider": "your system's package manager"
+        },
+        {
+          "platform": "linux-x86_64",
+          "manager": "pacman",
+          "argv": [
+            "sudo",
+            "pacman",
+            "-S",
+            "ffmpeg"
+          ],
+          "licence": "package-manager",
+          "provider": "your system's package manager"
+        },
+        {
+          "platform": "linux-aarch64",
+          "manager": "apt",
+          "argv": [
+            "sudo",
+            "apt",
+            "install",
+            "ffmpeg"
+          ],
+          "licence": "package-manager",
+          "provider": "your system's package manager"
+        },
+        {
+          "platform": "linux-aarch64",
+          "manager": "dnf",
+          "argv": [
+            "sudo",
+            "dnf",
+            "install",
+            "ffmpeg-free"
+          ],
+          "licence": "package-manager",
+          "provider": "your system's package manager"
+        },
+        {
+          "platform": "linux-aarch64",
+          "manager": "pacman",
+          "argv": [
+            "sudo",
+            "pacman",
+            "-S",
+            "ffmpeg"
+          ],
+          "licence": "package-manager",
+          "provider": "your system's package manager"
+        },
+        {
+          "platform": "macos-aarch64",
+          "manager": "brew",
+          "argv": [
+            "brew",
+            "install",
+            "ffmpeg"
+          ],
+          "licence": "package-manager",
+          "provider": "Homebrew"
+        },
+        {
+          "platform": "macos-x86_64",
+          "manager": "brew",
+          "argv": [
+            "brew",
+            "install",
+            "ffmpeg"
+          ],
+          "licence": "package-manager",
+          "provider": "Homebrew"
+        }
+      ]
+    }
+  ]
+}

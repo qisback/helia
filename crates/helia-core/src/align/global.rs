@@ -24,7 +24,7 @@
 //! # References
 //!
 //! - Kuglin, C. D. and Hines, D. C. (1975), The phase correlation image alignment method, Proc. IEEE Int.
-//!   Conf. on Cybernetics and Society, 163-165 (no DOI; page range to verify).
+//!   Conf. on Cybernetics and Society, 163-165 (no DOI).
 //! - Harris, F. J. (1978), On the use of windows for harmonic analysis with the discrete Fourier transform,
 //!   Proc. IEEE 66, 51-83, doi:10.1109/PROC.1978.10837 (the Hann window).
 

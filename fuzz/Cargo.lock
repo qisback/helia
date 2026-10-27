@@ -222,7 +222,7 @@ checksum = "ed5909b6e89a2db4456e54cd5f673791d7eca6732202bbf2a9cc504fe2f9b84a"
 
 [[package]]
 name = "helia-core"
-version = "0.7.1"
+version = "0.8.2"
 dependencies = [
  "fs4",
  "png",
@@ -249,7 +249,7 @@ dependencies = [
 
 [[package]]
 name = "helia-plugin"
-version = "0.7.1"
+version = "0.8.2"
 dependencies = [
  "helia-core",
  "helia-plugin-sdk",
@@ -271,7 +271,7 @@ dependencies = [
 
 [[package]]
 name = "helia-update"
-version = "0.7.1"
+version = "0.8.2"
 dependencies = [
  "minisign-verify",
  "semver",

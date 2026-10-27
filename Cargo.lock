@@ -705,6 +705,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "byteorder"
+version = "1.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1fd0f2584146f6f2ef48085050886acf353beff7305ebd1ae69500e27c67f64b"
+
+[[package]]
 name = "byteorder-lite"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1028,6 +1034,21 @@ checksum = "5ca28b0ae3115b884660db4118d803791fd6756b6e88f39c0f3f7859060d7566"
 dependencies = [
  "libc",
 ]
+
+[[package]]
+name = "crc"
+version = "3.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5eb8a2a1cd12ab0d987a5d5e825195d372001a4094a0376319d5a0ad71c1ba0d"
+dependencies = [
+ "crc-catalog",
+]
+
+[[package]]
+name = "crc-catalog"
+version = "2.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "217698eaf96b4a3f0bc4f3662aaa55bdf913cd54d7204591faa790070c6d0853"
 
 [[package]]
 name = "crc32fast"
@@ -1596,6 +1617,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "64cd1e32ddd350061ae6edb1b082d7c54915b5c672c389143b9a63403a109f24"
 
 [[package]]
+name = "filetime"
+version = "0.2.29"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5c287a33c7f0a620c38e641e7f60827713987b3c0f26e8ddc9462cc69cf75759"
+dependencies = [
+ "cfg-if",
+ "libc",
+]
+
+[[package]]
 name = "find-msvc-tools"
 version = "0.1.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1994,12 +2025,13 @@ checksum = "2304e00983f87ffb38b55b444b5e3b60a884b5d30c0fca7d82fe33449bbe55ea"
 
 [[package]]
 name = "helia-cli"
-version = "0.7.1"
+version = "0.8.2"
 dependencies = [
  "anyhow",
  "assert_cmd",
  "clap",
  "helia-core",
+ "helia-external",
  "helia-feedback",
  "helia-gpu",
  "helia-plugin",
@@ -2015,11 +2047,12 @@ dependencies = [
  "tiff",
  "tokio",
  "winresource",
+ "zip",
 ]
 
 [[package]]
 name = "helia-core"
-version = "0.7.1"
+version = "0.8.2"
 dependencies = [
  "criterion",
  "fs4",
@@ -2043,8 +2076,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "helia-external"
+version = "0.8.2"
+dependencies = [
+ "helia-update",
+ "lzma-rs",
+ "serde",
+ "serde_json",
+ "sha2",
+ "tar",
+ "tempfile",
+ "thiserror 2.0.21",
+ "zip",
+]
+
+[[package]]
 name = "helia-feedback"
-version = "0.7.1"
+version = "0.8.2"
 dependencies = [
  "png",
  "serde",
@@ -2057,7 +2105,7 @@ dependencies = [
 
 [[package]]
 name = "helia-gpu"
-version = "0.7.1"
+version = "0.8.2"
 dependencies = [
  "bytemuck",
  "criterion",
@@ -2070,11 +2118,12 @@ dependencies = [
 
 [[package]]
 name = "helia-gui"
-version = "0.7.1"
+version = "0.8.2"
 dependencies = [
  "eframe",
  "egui_kittest",
  "helia-core",
+ "helia-external",
  "helia-feedback",
  "helia-gpu",
  "helia-plugin",
@@ -2091,7 +2140,7 @@ dependencies = [
 
 [[package]]
 name = "helia-plugin"
-version = "0.7.1"
+version = "0.8.2"
 dependencies = [
  "helia-core",
  "helia-plugin-sdk",
@@ -2114,7 +2163,7 @@ dependencies = [
 
 [[package]]
 name = "helia-report"
-version = "0.7.1"
+version = "0.8.2"
 dependencies = [
  "helia-core",
  "plotters",
@@ -2126,7 +2175,7 @@ dependencies = [
 
 [[package]]
 name = "helia-server"
-version = "0.7.1"
+version = "0.8.2"
 dependencies = [
  "axum",
  "futures-util",
@@ -2152,7 +2201,7 @@ dependencies = [
 
 [[package]]
 name = "helia-update"
-version = "0.7.1"
+version = "0.8.2"
 dependencies = [
  "blake2",
  "clap",
@@ -2668,6 +2717,16 @@ name = "log"
 version = "0.4.34"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f9f8bd3e56ce4dfc153cf470fffbfa98c7620958b312ca5c3a4b8d5181fd13c6"
+
+[[package]]
+name = "lzma-rs"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "297e814c836ae64db86b36cf2a557ba54368d03f6afcd7d947c266692f71115e"
+dependencies = [
+ "byteorder",
+ "crc",
+]
 
 [[package]]
 name = "matchit"
@@ -4424,13 +4483,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "tar"
+version = "0.4.46"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3f6221d9a6003c78398e3b239969f352578258df48c8eb051caadae0015bc840"
+dependencies = [
+ "filetime",
+ "libc",
+]
+
+[[package]]
 name = "tempfile"
 version = "3.27.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "32497e9a4c7b38532efcdebeef879707aa9f794296a4f0244f6f69e9bc8574bd"
 dependencies = [
  "fastrand",
- "getrandom 0.3.4",
+ "getrandom 0.4.3",
  "once_cell",
  "rustix 1.1.5",
  "windows-sys 0.61.2",
@@ -5825,7 +5894,7 @@ checksum = "ec7a2a501ed189703dba8b08142f057e887dfc4b2cc4db2d343ac6376ba3e0b9"
 
 [[package]]
 name = "xtask"
-version = "0.7.1"
+version = "0.8.2"
 dependencies = [
  "anyhow",
  "clap",
@@ -6054,10 +6123,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6e04976da629d3b04204ba8105b396a193af8ad2583b2c79bfb3ab8af580a11e"
 dependencies = [
  "crc32fast",
+ "flate2",
  "indexmap",
  "memchr",
  "nix",
  "typed-path",
+ "zopfli",
 ]
 
 [[package]]
@@ -6071,6 +6142,18 @@ name = "zmij"
 version = "1.0.23"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "29666d0abbfad1e3dc4dcf6144730dd3a3ab225bbbdac83319345b1b44ccfc1b"
+
+[[package]]
+name = "zopfli"
+version = "0.8.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "aaf7fc5d30c28483d93805c4a5e12b05bbb52407fa67c5f8bd552374cd01fb11"
+dependencies = [
+ "bumpalo",
+ "crc32fast",
+ "log",
+ "simd-adler32",
+]
 
 [[package]]
 name = "zune-core"

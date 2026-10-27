@@ -14,7 +14,7 @@ checked.
   checklist for keeping it current at each release. It also lists corrections to
   the first document.
 
-Both name other programs, their authors and their licences from public sources. Helia is not
+Both name other programs, their authors and their licences from public sources, and were re-checked against each program's own site or repository in October 2026. Anything that could not be checked there was removed. Helia is not
 affiliated with any of them, their names are trademarks of their owners, and what is said
 about them may be out of date or wrong (see
 [Credits, licences and trademarks](../reference/credits-and-trademarks.md)).

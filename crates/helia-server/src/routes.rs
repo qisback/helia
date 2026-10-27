@@ -364,6 +364,9 @@ pub struct InspectRequest {
     /// Read the rows bottom to top.
     #[serde(default)]
     pub flip_rows: bool,
+    /// Row order of FITS frames: `auto` (default), `top-down` or `bottom-up`.
+    #[serde(default)]
+    pub row_order: Option<String>,
 }
 
 impl InspectRequest {
@@ -373,6 +376,7 @@ impl InspectRequest {
             self.bit_depth,
             self.endian.as_deref(),
             self.flip_rows,
+            self.row_order.as_deref(),
         )
     }
 }
@@ -899,6 +903,8 @@ pub struct FrameQuery {
     /// Read the rows bottom to top.
     #[serde(default)]
     pub flip_rows: bool,
+    /// Row order of FITS frames: `auto` (default), `top-down` or `bottom-up`.
+    pub row_order: Option<String>,
 }
 
 fn check_width(w: Option<usize>) -> ApiResult<Option<usize>> {
@@ -937,6 +943,7 @@ pub(crate) async fn frame(
         q.bit_depth,
         q.endian.as_deref(),
         q.flip_rows,
+        q.row_order.as_deref(),
     )?;
     let png = tokio::task::spawn_blocking(move || -> ApiResult<Vec<u8>> {
         // A video is not decoded whole for one preview frame.

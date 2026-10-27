@@ -17,7 +17,7 @@ publish = false
 workspace = true
 
 [dependencies]
-helia-core = { version = "0.7.1", path = "../helia-core" }
+helia-core = { version = "0.8.2", path = "../helia-core" }
 plotters = { version = "0.3.7", default-features = false, features = ["bitmap_backend", "ab_glyph", "line_series", "point_series", "area_series"] }
 png = "0.18.1"
 serde = { version = "1.0.229", features = ["derive"] }
@@ -25,4 +25,4 @@ serde_json = "1.0.154"
 thiserror = "2.0.21"
 
 [dev-dependencies]
-helia-core = { version = "0.7.1", path = "../helia-core", features = ["testutil"] }
+helia-core = { version = "0.8.2", path = "../helia-core", features = ["testutil"] }

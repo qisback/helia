@@ -537,11 +537,10 @@ AutoStakkert!'s author publishes no timings: the
 large files" (4.0.1), "additional performance improvements" (4.0.5) and a
 faster memory manager (4.0.7), without a figure. A search of the forums turned
 up no report of stacking time against frame count and size either. The
-[state-of-the-art review](../developer/research/state-of-the-art-2026.md) records a beta
-tester's "about 2 to 3 times faster than AS!3" for AS!4 stacking, which is
-second-hand and unverified. AutoStakkert is Windows-only, closed source and was
-not run for this page, so there is no like-for-like comparison to give, and
-none is claimed. What can be said is Helia's own: the stacks above, including a
+[state-of-the-art review](../developer/research/state-of-the-art-2026.md) no longer
+repeats a beta tester's second-hand speed remark, because it could not be checked.
+AutoStakkert was not run for this page, so there is no like-for-like comparison to
+give, and none is claimed. What can be said is Helia's own: the stacks above, including a
 5.6 GB, 2713-frame 1080p capture in 8 seconds on a data-centre GPU and 28
 seconds on 24 CPU cores.
 

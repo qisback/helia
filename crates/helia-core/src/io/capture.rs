@@ -31,7 +31,9 @@ use crate::io::fitsseq::{self, Scan};
 use crate::io::raw::{FileFrames, Sample};
 use crate::io::ser::{ColorId, SerOverrides, SerReader, ticks_to_text};
 use crate::io::sidecar::CameraSettings;
-use crate::io::source::{AviSource, BayerSetting, Endian, FrameSource, OpenOptions, SerSource};
+use crate::io::source::{
+    AviSource, BayerSetting, Endian, FrameSource, OpenOptions, RowOrder, SerSource,
+};
 use crate::recommend::capture_texts;
 
 /// Where a value Helia uses came from.
@@ -201,6 +203,8 @@ pub struct FitsFacts {
     pub bayerpat: Option<String>,
     /// `ROWORDER` as written.
     pub roworder: Option<String>,
+    /// Why the rows are read bottom-up or top-down.
+    pub row_rule: &'static str,
     /// How the files were put in order: `"DATE-OBS"` or `"file name"`.
     pub order: &'static str,
     /// Time header text of the first frame.
@@ -345,10 +349,9 @@ impl CaptureReport {
             ));
             out.push(row(
                 "ROWORDER",
-                f.roworder
-                    .clone()
-                    .unwrap_or_else(|| "absent (bottom-up, as the FITS standard says)".into()),
+                f.roworder.clone().unwrap_or_else(|| "absent".into()),
             ));
+            out.push(row("Rows read", f.row_rule.to_string()));
             out.push(row("Frame order", format!("by {}", f.order)));
             out.push(row(
                 "First frame time",
@@ -692,6 +695,12 @@ fn ser_notices(
     out
 }
 
+fn not_fits_row_order(what: &str) -> Error {
+    Error::Invalid(format!(
+        "--row-order applies to FITS frames; {what} states its own row order (a SER file can be turned over with --flip-rows)"
+    ))
+}
+
 fn override_phrases(opts: &OpenOptions) -> Vec<String> {
     let mut v = Vec::new();
     match opts.bayer {
@@ -715,6 +724,9 @@ fn override_phrases(opts: &OpenOptions) -> Vec<String> {
     }
     if opts.flip_rows {
         v.push("--flip-rows".into());
+    }
+    if opts.row_order != RowOrder::Auto {
+        v.push(format!("--row-order {}", opts.row_order.label()));
     }
     v
 }
@@ -879,11 +891,12 @@ fn open_fits(path: &Path, opts: &OpenOptions) -> Result<(Box<dyn FrameSource>, C
     if opts.bit_depth.is_some() || opts.endian.is_some() || opts.flip_rows {
         return Err(Error::Invalid(
             "--bit-depth, --endian and --flip-rows apply to SER files; a FITS file states its \
-             sample type, byte order and row order in its header (BITPIX, ROWORDER)"
+             sample type and byte order in its header (BITPIX), and its row order is set with \
+             --row-order"
                 .into(),
         ));
     }
-    let scan = Scan::read(path)?;
+    let scan = Scan::read_with(path, opts.row_order)?;
     let (pattern, origin) = match opts.bayer {
         BayerSetting::Auto => (scan.read_pattern(), Origin::Header),
         BayerSetting::Mono => (None, Origin::Override),
@@ -903,7 +916,7 @@ fn open_fits(path: &Path, opts: &OpenOptions) -> Result<(Box<dyn FrameSource>, C
         notices.push(warn(
             "ROWORDER not understood".into(),
             format!(
-                "ROWORDER is {:?}, which is not TOP-DOWN or BOTTOM-UP, so the rows are read bottom-up as the FITS standard says.",
+                "ROWORDER is {:?}, which is not TOP-DOWN or BOTTOM-UP, so it is ignored. Seestar S50 frames are read top row first and all others bottom-up, as the FITS standard says; --row-order overrides.",
                 scan.roworder.as_deref().unwrap_or("")
             ),
         ));
@@ -929,6 +942,7 @@ fn open_fits(path: &Path, opts: &OpenOptions) -> Result<(Box<dyn FrameSource>, C
         bscale: scan.bscale,
         bayerpat: scan.bayerpat.clone(),
         roworder: scan.roworder.clone(),
+        row_rule: scan.row_rule.label(),
         order: if scan.by_time {
             "DATE-OBS"
         } else {
@@ -944,8 +958,20 @@ fn open_fits(path: &Path, opts: &OpenOptions) -> Result<(Box<dyn FrameSource>, C
         },
         bit_depth: from_header(scan.bitpix.unsigned_abs() as u32),
         endian: from_header(Endian::Big),
-        flip_rows: from_header(scan.bottom_up),
+        flip_rows: Sourced {
+            value: scan.bottom_up,
+            origin: if scan.row_rule == fitsseq::RowRule::Requested {
+                Origin::Override
+            } else {
+                Origin::Header
+            },
+        },
     };
+    if scan.row_rule == fitsseq::RowRule::Seestar {
+        notices.push(note(
+            "Seestar S50 frames are stored top row first and carry no ROWORDER card, so the rows are read as stored. Use --row-order bottom-up to flip them.".into(),
+        ));
+    }
     let report = CaptureReport {
         path: path.to_path_buf(),
         container: "FITS",
@@ -1038,6 +1064,9 @@ fn avi_detection_notice(pattern: Option<BayerPattern>, detection: Option<&Detect
 }
 
 fn open_avi(path: &Path, opts: &OpenOptions) -> Result<(Box<dyn FrameSource>, CaptureReport)> {
+    if opts.row_order != RowOrder::Auto {
+        return Err(not_fits_row_order("an AVI"));
+    }
     if opts.bit_depth.is_some() || opts.endian.is_some() || opts.flip_rows {
         return Err(Error::Invalid(
             "--bit-depth, --endian and --flip-rows apply to SER files; an AVI describes its \
@@ -1180,6 +1209,9 @@ fn open_video_reported(
     opts: &OpenOptions,
     video: &VideoOptions,
 ) -> Result<(Box<dyn FrameSource>, CaptureReport)> {
+    if opts.row_order != RowOrder::Auto {
+        return Err(not_fits_row_order("a video"));
+    }
     if opts.bit_depth.is_some() || opts.endian.is_some() || opts.flip_rows {
         return Err(Error::Invalid(
             "--bit-depth, --endian and --flip-rows apply to SER files; a video is decoded by \

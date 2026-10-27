@@ -72,6 +72,8 @@ fn field_rotation_on_the_real_capture() {
         site: SITE,
         mirror: false,
         reference: Reference::Middle,
+        target: None,
+        auto_mirror: false,
         frame_unix: info.frame_unix.clone(),
     }
     .plan()
@@ -104,6 +106,8 @@ fn field_rotation_on_the_real_capture() {
         site: SITE,
         mirror: false,
         reference: Reference::Middle,
+        target: None,
+        auto_mirror: false,
         frame_unix: times,
     };
     let plan = rotation.plan().expect("plan");

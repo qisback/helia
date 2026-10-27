@@ -19,14 +19,17 @@
 //!    multiple of the noise (measured as the median absolute deviation in
 //!    the outer part of the field), floored at zero.
 //! 3. **Stretch.** The signal as a share of its own 99.5th percentile just
-//!    above the limb, through `asinh(k x) / asinh(k)` (held at 1), then scaled
+//!    above the limb, through `asinh(k x) / asinh(k)` (rolled off smoothly above 1, never cut), then scaled
 //!    so the brightest prominences reach `level` of the disc's brightness.
 //! 4. **Join.** Inside the limb the disc is untouched; across the feather the
 //!    two are mixed; outside the layer replaces the picture, with the black
-//!    level the stack had.
+//!    level the stack had. Outside the limb the result is never below the
+//!    layer, so the undershoot of a sharpened limb leaves no dark rim.
 //!
-//! A stack with no prominences stays dark: the stretch is referred to at
-//! least four times the noise, so noise is not lifted to look like structure.
+//! A stack with no prominences stays dark: the gate is at least 1.5% of the
+//! disc's brightness and the stretch is referred to at least 8% of it, so
+//! noise, the model's error and the ringing of a sharpened limb are not
+//! lifted to look like structure.
 //!
 //! # References
 //!
@@ -64,9 +67,48 @@ const MIN_REFERENCE_SIGMA: f32 = 8.0;
 
 /// The gate is never below this share of the disc's brightness: below it the
 /// background model's own error (the glow's curvature, a flat that is not
-/// flat) is as big as the noise, and stretching it shows the model, not the
-/// Sun.
-const MIN_GATE_SHARE: f32 = 0.004;
+/// flat) and the ringing of a sharpened limb, about 1% of the disc and
+/// stronger on the stretch of limb where the stack is sharper, are as big as
+/// the noise, and stretching them shows the model, not the Sun. Prominences
+/// measured on real H-alpha stacks start at about 15% of the disc; a stack
+/// with none leaves a residual of 0.5% or less.
+const MIN_GATE_SHARE: f32 = 0.015;
+
+/// The brightest prominence is taken to be at least this share of the disc's
+/// brightness when the stretch is referred to it. The stretch lifts a small
+/// signal strongly, so a reference near the gate would show a residual of one
+/// per cent as a bright prominence.
+const MIN_REFERENCE_SHARE: f32 = 0.08;
+
+/// Standard deviation in pixels of the blur that gives the layer's base
+/// tone; what the layer holds above it is local detail.
+const DETAIL_SIGMA: f32 = 6.0;
+
+/// How much of the layer's local detail is put back after the stretch. The
+/// `asinh` stretch compresses the bright parts about threefold, which is what
+/// lifts the faint ones but also flattens the inside of a bright prominence
+/// (#364); the deviation of the stretched layer from the stretch of its own
+/// base tone is multiplied by `1 + DETAIL_GAIN`, the way an unsharp mask
+/// restores contrast.
+const DETAIL_GAIN: f32 = 1.0;
+
+/// Headroom above the reference that the tone curve rolls off into.
+const SHOULDER: f32 = 0.35;
+
+/// Roll the stretched signal off above 1 instead of cutting it there.
+///
+/// A prominence brighter than the reference was held at 1 and read as a flat
+/// plate with its structure gone (#364: on a real H-alpha stack a fifth of
+/// the layer's pixels sat at the ceiling). Below 1 the curve is the identity;
+/// above it the curve bends smoothly towards 1 + `SHOULDER` and stays
+/// strictly increasing, so the brightest parts keep their relative detail.
+fn shoulder(y: f32) -> f32 {
+    if y <= 1.0 {
+        y
+    } else {
+        1.0 + SHOULDER * ((y - 1.0) / SHOULDER).tanh()
+    }
+}
 
 /// Composite a stretched prominence layer with the disc.
 #[derive(Clone, Copy, Debug, PartialEq, Serialize, Deserialize)]
@@ -318,14 +360,19 @@ impl Prominence {
         };
         let reference = p99
             .max(MIN_REFERENCE_SIGMA * sigma)
-            .max(2.0 * MIN_GATE_SHARE * disc_level)
+            .max(MIN_REFERENCE_SHARE * disc_level)
             .max(1e-9);
         let k = self.stretch;
         let norm = if k > 0.0 { k.asinh() } else { 1.0 };
-        let lift = |s: f32| -> f32 {
+        let stretch = |s: f32| -> f32 {
             let x = (s / reference * self.strength).max(0.0);
-            let y = if k > 0.0 { (k * x).asinh() / norm } else { x };
-            y.min(1.0)
+            if k > 0.0 { (k * x).asinh() / norm } else { x }
+        };
+        let base = conv::separable(&signal, w, h, &gaussian_taps(DETAIL_SIGMA), 1);
+        let lift = |i: usize| -> f32 {
+            let y = stretch(signal[i]);
+            let detail = y - stretch(base[i]);
+            shoulder((y + DETAIL_GAIN * detail).max(0.0))
         };
 
         // 4. The join.
@@ -347,9 +394,17 @@ impl Prominence {
                     continue;
                 }
                 let faded = 1.0 - smoothstep(reach_px * 0.9, reach_px, r);
-                let s = signal[y * w + x];
-                let layer = sky + self.level * disc_level * lift(s).powf(self.layer_gamma) * faded;
-                *v = inside * toned + (1.0 - inside) * layer;
+                let layer =
+                    sky + self.level * disc_level * lift(y * w + x).powf(self.layer_gamma) * faded;
+                let blended = inside * toned + (1.0 - inside) * layer;
+                // Outside the limb nothing is darker than the layer's own
+                // floor, the sky: the undershoot that sharpening leaves just
+                // outside the limb is not sky and would show as a dark rim.
+                *v = if r > radius {
+                    blended.max(layer)
+                } else {
+                    blended
+                };
             }
         });
         out
@@ -535,6 +590,46 @@ mod tests {
     }
 
     #[test]
+    fn the_ringing_of_a_sharpened_limb_is_not_stretched_into_slabs() {
+        // No prominence at all, but a lobe of ringing outside the limb, as
+        // wavelet sharpening leaves, about 1% of the disc and stronger on one
+        // stretch of the limb where the stack is sharper. The layer lifted
+        // the stronger stretch into a slab with straight sides (a real H-alpha
+        // stack, #330).
+        let mut img = scene(0.0, &[], 0.0005, 12);
+        let c = N as f32 / 2.0;
+        for y in 0..N {
+            for x in 0..N {
+                let (dx, dy) = (x as f32 - c, y as f32 - c);
+                let r = dx.hypot(dy);
+                if r > R + 8.0 && r < R + 24.0 {
+                    let ang = dx.atan2(-dy).to_degrees();
+                    let sharper = (-((ang - 160.0) / 8.0).powi(2)).exp();
+                    let lobe = (0.004 + 0.008 * sharper)
+                        * (((r - R - 8.0) / 16.0) * std::f32::consts::PI).sin();
+                    img.data[y * N + x] += lobe;
+                }
+            }
+        }
+        let out = Prominence::default().apply(&img);
+        let disc = 0.8 * 0.9;
+        let mut worst = 0.0f32;
+        for y in 0..N {
+            for x in 0..N {
+                let r = (x as f32 - c).hypot(y as f32 - c);
+                if r > R + 8.0 && r < R * 1.3 {
+                    worst = worst.max(out.get(x, y) - SKY);
+                }
+            }
+        }
+        assert!(
+            worst < 0.05 * disc,
+            "a ringing lobe shows at {:.0}% of the disc",
+            100.0 * worst / disc
+        );
+    }
+
+    #[test]
     fn the_glow_is_taken_off_and_the_sky_is_black() {
         let img = scene(0.04, &[(140.0, 0.1)], 0.003, 6);
         let out = Prominence::default().apply(&img);
@@ -579,6 +674,22 @@ mod tests {
     }
 
     #[test]
+    fn a_bright_prominence_keeps_its_structure_and_is_not_cut_to_a_plate() {
+        // A small prominence far brighter than the reference (the 99.5th
+        // percentile of the ring above the limb, which a small one barely
+        // moves) was held at 1 everywhere and came out as a flat plate with
+        // hard edges (#364, a real H-alpha stack).
+        let img = scene(0.3, &[(140.0, 0.1)], 0.001, 21);
+        let out = Prominence::default().apply(&img);
+        let a = at(&out, R + 2.0, 140.0);
+        let b = at(&out, R + 6.0, 140.0);
+        let c = at(&out, R + 10.0, 140.0);
+        assert!(a > b + 0.005 && b > c + 0.005, "plateau: {a} {b} {c}");
+        let disc = 0.8 * 0.9;
+        assert!(a < 1.05 * disc, "brighter than the disc: {a}");
+    }
+
+    #[test]
     fn the_join_has_no_rim_and_no_overshoot_across_the_limb() {
         let img = scene(0.04, &[(140.0, 0.1)], 0.002, 8);
         let out = Prominence::default().apply(&img);
@@ -591,6 +702,40 @@ mod tests {
             assert!(v >= SKY - 0.01, "below the sky at {k}");
             prev = v;
         }
+    }
+
+    #[test]
+    fn the_undershoot_of_a_sharpened_limb_leaves_no_dark_rim() {
+        // Wavelet sharpening digs a trough just outside the limb, below the
+        // sky. The join kept part of it across the feather and drew a dark
+        // ring round the disc (a real H-alpha stack, #331).
+        let mut img = scene(0.0, &[], 0.0005, 13);
+        let c = N as f32 / 2.0;
+        for y in 0..N {
+            for x in 0..N {
+                let r = (x as f32 - c).hypot(y as f32 - c);
+                if r > R + 1.0 && r < R + 8.0 {
+                    img.data[y * N + x] -=
+                        0.25 * (((r - R - 1.0) / 7.0) * std::f32::consts::PI).sin();
+                }
+            }
+        }
+        // A feather of 5% of the radius, as 1.2% of a real disc 4 times this size is.
+        let out = Prominence {
+            feather: 0.05,
+            ..Prominence::default()
+        }
+        .apply(&img);
+        let mut worst = 0.0f32;
+        for y in 0..N {
+            for x in 0..N {
+                let r = (x as f32 - c).hypot(y as f32 - c);
+                if r > R + 1.0 && r < R * 1.3 {
+                    worst = worst.min(out.get(x, y) - SKY);
+                }
+            }
+        }
+        assert!(worst > -0.004, "a dark rim of {worst}");
     }
 
     #[test]
@@ -634,7 +779,7 @@ mod tests {
             ..Prominence::default()
         }
         .apply(&img);
-        assert!(at(&dark, R + 14.0, 140.0) < at(&base, R + 14.0, 140.0));
+        assert!(at(&dark, R + 8.0, 140.0) < at(&base, R + 8.0, 140.0));
         // A disc gamma above 1 darkens the disc's mid tones and leaves the sky.
         let toned = Prominence {
             disc_gamma: 2.0,

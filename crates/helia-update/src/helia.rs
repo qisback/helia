@@ -26,6 +26,9 @@ use crate::source::UpdateSource;
 
 pub use crate::pinned_keys::{KEYS_ARE_PLACEHOLDER, PINNED_KEYS};
 
+/// The public Helia page: where a build that cannot download an update by itself points.
+pub const PAGE_URL: &str = "https://12hobbies.studio/store/helia/";
+
 /// Default base URL.
 pub const DEFAULT_BASE_URL: &str = "https://12hobbies.studio/updates";
 
@@ -126,6 +129,7 @@ pub fn source_from(
 
 #[cfg(test)]
 mod tests {
+    #![allow(clippy::unwrap_used, reason = "tests")]
     use super::*;
 
     #[test]

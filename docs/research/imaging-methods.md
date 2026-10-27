@@ -13,6 +13,14 @@ Where I looked and found nothing, the text says so. Notably, **I found no peer-r
 
 The section order follows the brief (1 to 10), then the recommended pipeline and test plan.
 
+### Statements about other programs (checked October 2026)
+
+This review names other programs only to say what they do, in the nominative sense. Helia is not affiliated with,
+endorsed by or sponsored by any of them, and their names belong to their owners. Statements about a living product
+were re-checked against its own site or repository in October 2026 and are tagged [V] only then. Licence, price,
+platform and speed claims that could not be checked there were removed or reduced to "see the vendor's site", so
+this page does not rely on memory for them. Programs change: check the vendor before relying on any line below.
+
 ---
 
 ## 1. Atmospheric model
@@ -179,10 +187,10 @@ Implementation note: compute all patch metrics from one shared pass over the fra
 
 | Tool | Global alignment | Local method | Notes |
 |---|---|---|---|
-| **AutoStakkert!3** | Disc centroid or surface correlation [M] | AP grid, per-AP correlation; local (AP) quality; sub-pixel; drizzle 1.5x and 3x [M] | Closed source, freeware [M]; no official algorithm doc retrieved. |
-| **Registax** | Alignment on a chosen reference region; "optimise" stage [M] | Limited local alignment | Largely superseded for alignment; still used for wavelets [M]. |
+| **AutoStakkert!3** | Disc centroid or surface correlation [M] | AP grid, per-AP correlation; local (AP) quality; sub-pixel; drizzle 1.5x and 3x [M] | Licence terms: see autostakkert.com. No official algorithm description was retrieved. |
+| **Registax** | Alignment on a chosen reference region; "optimise" stage [M] | Limited local alignment | Final release 6.1.0.8 (May 2011) per astronomie.be [V]; its wavelet sharpening continues in waveSharp. |
 | **PlanetarySystemStacker** | Rank all frames by global quality, then align globally on a high-structure patch using the chosen method ([README](https://github.com/Rolf-Hempel/PlanetarySystemStacker)) [V] | AP mesh with brightness/contrast/structure rejection; per-AP ranking; multi-level correlation: phase 1 on a half-resolution box with a wide search, phase 2 on full resolution with a small search around the phase-1 result, optional sub-pixel quadratic fit; alternates: "Subpixel", "CrossCorrelation", "RadialSearch", "SteepestDescent" [V code] | Python 3, OpenCV, numpy, Qt5; GPLv3 per the source header [V]. Patch accumulation is in a separate module (not read). |
-| **Siril** (multipoint) | Planet mode: brightness centroid; Surface mode: cross-correlation on an auto-picked patch; reference built from best 5 per cent of frames [V] | AP spacing default 2.25 x the correlation half-width (54 px at the default half-width of 24); search width 14 px; zero-mean option; two-pass refinement against a sharper local reference; robust local smoothing across neighbouring APs (default radius 2.5 grid steps); patch engine with raised-cosine blending and brightness matching, and an experimental warp engine that interpolates AP shifts to a single smooth field and resamples each frame once [V] | GPLv3 [M]. Output scale 1x, 1.5x, 2x, 3x; 32-bit float accumulation [V]. |
+| **Siril** (multipoint) | Planet mode: brightness centroid; Surface mode: cross-correlation on an auto-picked patch; reference built from best 5 per cent of frames [V] | AP spacing default 2.25 x the correlation half-width (54 px at the default half-width of 24); search width 14 px; zero-mean option; two-pass refinement against a sharper local reference; robust local smoothing across neighbouring APs (default radius 2.5 grid steps); patch engine with raised-cosine blending and brightness matching, and an experimental warp engine that interpolates AP shifts to a single smooth field and resamples each frame once [V] | GPLv3 (Siril repository LICENSE.md, checked October 2026) [V]. Output scale 1x, 1.5x, 2x, 3x; 32-bit float accumulation [V]. |
 | **ImPPG** | Phase correlation or solar limb stabilisation, sub-pixel option [V] | None (alignment of sequences, not lucky imaging) | GPLv3, C++, OpenGL [V]. |
 
 Two design lessons are worth copying from Siril: (1) the **refinement pass**, where the best frames at each AP are stacked into a sharper local reference and shifts are re-measured against it (the first reference is blurred, which biases shifts toward the mean); (2) **robust smoothing of the shift field**, which cuts measurement noise while preserving genuine warp.
@@ -226,7 +234,7 @@ Stacking N independent frames reduces noise by sqrt(N), but the gain from seeing
 
 Fruchter & Hook (2002), ["Drizzle: A Method for the Linear Reconstruction of Undersampled Images", PASP 114, 144](https://arxiv.org/abs/astro-ph/9808087) [V]: input pixels are shrunk to "drops" (parameter pixfrac) and mapped onto a finer output grid with geometric transformation, preserving photometry and resolution and avoiding further convolution, with per-pixel weights. It was developed for dithered HST data.
 
-When it helps: only if the data are *undersampled* (q = lambda F / (2p) < 1 in Section 2.2) *and* the shifts are diverse in the sub-pixel sense. Lucky imaging satisfies the second condition for free, because seeing jitter provides random sub-pixel dither. For oversampled or Nyquist-sampled solar data drizzle gains nothing but costs noise correlation (adjacent output pixels share input pixels) and holes at small pixfrac with few frames. Siril offers 1x, 1.5x, 2x, 3x output scale, with 32-bit accumulation [V]; PSS has a drizzle factor and sizes its stacking buffer accordingly [V code]. AutoStakkert offers drizzle at 1.5x and 3x [M].
+When it helps: only if the data are *undersampled* (q = lambda F / (2p) < 1 in Section 2.2) *and* the shifts are diverse in the sub-pixel sense. Lucky imaging satisfies the second condition for free, because seeing jitter provides random sub-pixel dither. For oversampled or Nyquist-sampled solar data drizzle gains nothing but costs noise correlation (adjacent output pixels share input pixels) and holes at small pixfrac with few frames. Siril offers 1x, 1.5x, 2x, 3x output scale, with 32-bit accumulation [V]; PSS has a drizzle factor and sizes its stacking buffer accordingly [V code]. AutoStakkert offers drizzle (its site describes it as Variable Pixel Linear Reconstruction) [V].
 
 Implementation hint: design the accumulator as "splat each (frame, AP) sample with a position and a weight into a float buffer plus a weight buffer, then divide". Then drizzle is only a different splat kernel (drop footprint) and scale factor, and "mean" with bilinear or Lanczos resampling is another. This makes the MVP drizzle stub a real option rather than a rewrite.
 
@@ -369,13 +377,13 @@ There is no standard "true colour" for monochrome H-alpha; conventions are orang
 
 ### 8.5 Derotation and animation
 
-The Sun rotates differentially; the Snodgrass & Ulrich (1990, ApJ 351, 309) sidereal rate is approximately 14.713 - 2.396 sin^2(φ) - 1.787 sin^4(φ) degrees per day [M, confirm coefficients]. My arithmetic for the equator at disc centre: 14.713 deg/day is 0.01022 deg/min or 1.78e-4 rad/min, and times a solar radius of about 960 arcsec that is roughly 0.17 arcsec per minute. A 10 minute capture therefore moves features by about 1.7 arcsec at disc centre (more of the disc's apparent motion is foreshortened near the limb), comparable to the seeing, so rotation matters only for captures of several minutes at high sampling. Helia should therefore stack bursts of at most a few minutes unless it derotates by projecting to heliographic coordinates. Derotation of mosaic panels and time-lapse is a standard operation in amateur tools (WinJUPOS for planets and Sun, which is closed source and Windows-only [M]). This needs the position angle (P), B0, L0 from ephemeris (can use an SPICE or low-precision formulae; a mature Rust ephemeris crate was not verified [unverified]).
+The Sun rotates differentially; the Snodgrass & Ulrich (1990, ApJ 351, 309) sidereal rate is approximately 14.713 - 2.396 sin^2(φ) - 1.787 sin^4(φ) degrees per day [M, confirm coefficients]. My arithmetic for the equator at disc centre: 14.713 deg/day is 0.01022 deg/min or 1.78e-4 rad/min, and times a solar radius of about 960 arcsec that is roughly 0.17 arcsec per minute. A 10 minute capture therefore moves features by about 1.7 arcsec at disc centre (more of the disc's apparent motion is foreshortened near the limb), comparable to the seeing, so rotation matters only for captures of several minutes at high sampling. Helia should therefore stack bursts of at most a few minutes unless it derotates by projecting to heliographic coordinates. Derotation of mosaic panels and time-lapse is a standard operation in amateur tools (WinJUPOS is the usual amateur tool for planets; its download page lists Windows, or Linux through WineHQ [V]). This needs the position angle (P), B0, L0 from ephemeris (can use an SPICE or low-precision formulae; a mature Rust ephemeris crate was not verified [unverified]).
 
 Time-lapse: align frames to a limb-fit circle, apply a consistent tone map, and optionally derotate; export through ffmpeg. Keep this later.
 
 ### 8.6 Full-disc mosaics
 
-A full disc at fine sampling needs panels. A pipeline: capture overlapping panels (20 to 30 per cent), stack each, flatten each radially, estimate pairwise translations in the overlaps (phase correlation; includes small rotation/scale from lens distortions as a refinement), solve a global least-squares for panel positions, blend with feathering or multi-band (Burt-Adelson [M]) in linear space. Alternatives to Microsoft ICE (which I recall as discontinued by Microsoft [M, unverified]) are Hugin with Enblend/Enfuse (GPL, cross-platform), PTGui (commercial), and Siril's own mosaic features. Solar disc mosaics have an easy geometry: the limb provides global constraints, so a limb-circle prior can regularise panel positions. Evolution of the Sun between panels (minutes) is the main inconsistency, which argues for fast panel acquisition and a consistent seeing selection per panel.
+A full disc at fine sampling needs panels. A pipeline: capture overlapping panels (20 to 30 per cent), stack each, flatten each radially, estimate pairwise translations in the overlaps (phase correlation; includes small rotation/scale from lens distortions as a refinement), solve a global least-squares for panel positions, blend with feathering or multi-band (Burt-Adelson [M]) in linear space. Programs that stitch mosaics include Microsoft ICE, Hugin with Enblend/Enfuse and PTGui; their current licences and availability are not restated here (see each vendor), and Siril has its own mosaic features. Solar disc mosaics have an easy geometry: the limb provides global constraints, so a limb-circle prior can regularise panel positions. Evolution of the Sun between panels (minutes) is the main inconsistency, which argues for fast panel acquisition and a consistent seeing selection per panel.
 
 ---
 
@@ -414,26 +422,28 @@ A learned frame-quality scorer can use the synthetic harness (Section 12) for su
 
 ## 10. Existing tools comparison
 
-Licence and platform data not verified in this session are tagged [M]. Where I only know a tool from background knowledge I say so.
+Facts below come from each program's own site or repository, checked in October 2026 [V]. Where a site does not state
+the licence, price or platform, the table says "see the vendor's site" rather than guessing. The last column is a design
+aim for Helia, not a criticism of any program.
 
-| Tool | Licence | Platforms | Strengths | Gaps Helia can fill |
+| Tool | Licence | Platforms | What it does | Where Helia aims to differ |
 |---|---|---|---|---|
-| **AutoStakkert!3** | Freeware, closed source [M] | Windows (works under Wine) [M] | Fast, robust AP-based stacking, local AP quality, noise-robust gradient metrics, drizzle, de-rotation of planets [M]; the de facto standard | Closed; Windows-only; limited solar-specific tools (no limb-aware processing, no flats built in for solar rings); no transparent algorithm description |
-| **Registax 6** | Freeware, closed source [M] | Windows [M] | Wavelets sharpening; long-established | Old alignment, no modern multipoint; Windows only |
-| **PlanetarySystemStacker** | GPLv3 (source header) [V] | Python 3 with Qt5; Windows, Linux, macOS [V partial] | Open, multilevel correlation, AP rejection, per-AP ranking, optional sharpening, drizzle option [V] | Pure-Python/OpenCV speed; planetary focus; GUI heavy; no solar-specific limb handling |
-| **Siril** (multipoint) | GPLv3 [M] | Windows, Linux, macOS | AP engine with refinement, smoothing, warp engine (experimental), SER support, scripting, 32-bit pipeline [V] | Primarily deep-sky workflow; multipoint is new; no solar flat/limb tools; CPU-oriented; no deconvolution tuned for solar [M] |
-| **ImPPG** | GPLv3 [V] | Windows, Linux, macOS (OpenGL) [V partial] | Interactive GPU RL + unsharp + tone curve; sequence alignment by phase correlation or solar limb; batch; Lua scripting [V] | Not a stacker; Gaussian-only PSF; limited limb-ringing control |
-| **AstroSurface** | Freeware [M] | Windows [M] | All-in-one: stack, wavelets, RL [M] | Closed source; unverified details |
-| **FireCapture** | Proprietary, free (aggregator listing) [V, secondary] | Windows, macOS, Linux, Raspberry Pi [V, secondary] | Capture (with SER), planetary and solar ROI, plugins | Capture only |
-| **SharpCap** | Mostly free, Pro paid (about £14 per year per FAQ) [V] | Windows | Capture, live flats and live stacking [V] | Capture-side; Windows only |
-| **KISIP / SSTRED / MOMFBD** | Professional; availability per observatory; MOMFBD code released by Löfdahl [M]; torchmfbd open (PyTorch) [V] | Linux / IDL / C++ / Python | Speckle and MFBD at professional quality | Not packaged for amateurs; no GUI; calibration-heavy |
+| **AutoStakkert!3 / 4** | See autostakkert.com | The site mentions Windows codecs; see the vendor's site | AP-based lucky-imaging stacking; its site describes drizzle (Variable Pixel Linear Reconstruction) and, for AS!2, alt-az derotation as a beta feature [V] | Solar-specific steps (limb-aware alignment, flats) and a published algorithm description |
+| **Registax 6** | Site header: "Free image processing software" [V] | Downloads are Windows .exe files [V]; a Linux article is linked | Wavelet sharpening; final release 6.1.0.8 (May 2011), "the end of development" per astronomie.be [V] | Maintained multipoint stacking in the same program |
+| **PlanetarySystemStacker** | GPLv3 (source header) [V] | Python 3 with Qt5; Windows, Linux, macOS [V partial] | Multilevel correlation, AP rejection, per-AP ranking, optional sharpening, drizzle option [V] | GPU stages and solar-specific handling |
+| **Siril** (multipoint) | GPLv3 (repository LICENSE.md) [V] | Windows, Linux, macOS (siril.org) [V] | AP engine with refinement, smoothing, warp engine (experimental), SER support, scripting, 32-bit pipeline [V] | Solar-first workflow (limb, flats, prominences) |
+| **ImPPG** | GPLv3 [V] | Windows, Linux, macOS (OpenGL) [V partial] | Interactive RL + unsharp + tone curve on the GPU; sequence alignment by phase correlation or solar limb; batch; Lua scripting [V] | Stacking and sharpening in one program |
+| **AstroSurface** | Site: "experimental, non-commercial use" (translated from French); no further terms stated [V] | Site: 64-bit Windows [V] | Image and video processing; a wavelet-deconvolution tool is mentioned [V] | None compared; details beyond the site are not claimed |
+| **FireCapture** | Licence agreement on its site; see the vendor's site [V] | Windows, macOS, Linux, Raspberry Pi (firecapture.de) [V] | Capture software | Helia does not capture |
+| **SharpCap** | A Pro edition exists; see sharpcap.co.uk | See the vendor's site | Capture; its feature list names live stacking and flat frame correction [V] | Helia does not capture |
+| **KISIP / SSTRED / MOMFBD** | Professional; availability per observatory; torchmfbd is open (PyTorch) [V] | Linux / IDL / C++ / Python | Speckle and MFBD at professional quality | Packaged for amateurs |
 
 Gaps in the open landscape that Helia can address, by priority:
 
 1. **Solar-specific stack**: limb-aware alignment and flats, limb-darkening and radial flattening, and prominence compositing as first-class features.
-2. **GPU throughput** for the AP stage and live parameter preview (only ImPPG currently uses a GPU, and only for sharpening).
+2. **GPU throughput** for the AP stage and live parameter preview (of the tools compared here, ImPPG's README is the one that describes GPU use, for sharpening [V]).
 3. **Transparent, reproducible** algorithms with deterministic CPU reference (PSS has it in Python, but slowly).
-4. **Metrics and diagnostics**: quality-versus-time plots, per-AP stack-depth maps, shift-field maps (none of the free tools expose these well).
+4. **Metrics and diagnostics**: quality-versus-time plots, per-AP stack-depth maps, shift-field maps.
 5. **Optional research-grade restoration** (per-sub-field MFBD) behind a flag.
 
 ---
@@ -548,7 +558,7 @@ Build a generator in the repository (Rust or Python tooling) producing sequences
 - Daytime r0 and coherence-time tables (Rimmele & Marino 2011) not retrieved; numbers in Section 1 are order-of-magnitude.
 - No solar frame-metric comparison with ground truth found (Section 3.2); Denker et al. (2018) full text not read; MFGS authorship and definition are [M].
 - No amateur speckle or MFBD results found (Section 6.4).
-- Licence and platform data for AutoStakkert!, Registax and AstroSurface unverified; Siril's GPLv3 licence is from background knowledge.
+- Licence terms and price of AutoStakkert!, SharpCap and FireCapture are not stated on the pages read and are not claimed. Siril's GPLv3 licence, Registax's end of development, AstroSurface's site terms and WinJUPOS's platforms were checked in October 2026.
 - Whether a mature wgpu FFT crate, Rust ephemeris crate, or ONNX WebGPU execution provider is production-ready was not checked.
 - Uitenbroek et al. G-band contrast numbers come from a search snippet and should be confirmed in the paper before quoting.
 - Snodgrass & Ulrich coefficients, Neckel-Labs coefficients, Noll 87 per cent tilt figure, the Fried-1978 constants, and Registax's internal wavelet definition should be re-checked at the source.

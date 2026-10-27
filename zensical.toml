@@ -111,6 +111,8 @@ nav = [
     { "Choosing a quality metric" = "user-guide/choosing-a-quality-metric.md" },
     { "Sending feedback" = "user-guide/sending-feedback.md" },
     { "Updates" = "user-guide/updates.md" },
+    { "Optional tools: installing ffmpeg" = "user-guide/optional-tools.md" },
+    { "Buying Helia and updates" = "user-guide/store-plans.md" },
     { "Troubleshooting and FAQ" = "user-guide/troubleshooting.md" },
     { "Frequently asked questions" = "user-guide/faq.md" },
   ] },
@@ -133,6 +135,7 @@ nav = [
     { "The GPU parity rule" = "developer/gpu-parity.md" },
     { "Plugins: design and protocol" = "developer/plugins.md" },
     { "Automatic updates: design" = "developer/updates.md" },
+    { "Installing external tools: adoption guide" = "developer/external-tools.md" },
     { "Research" = [
       { "Research" = "developer/research.md" },
       { "Imaging methods" = "developer/research/imaging-methods.md" },

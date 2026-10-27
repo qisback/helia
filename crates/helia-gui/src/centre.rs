@@ -21,6 +21,10 @@ impl App {
         CentralPanel::default()
             .frame(Frame::new().fill(p.ground).inner_margin(Margin::same(16)))
             .show(ui, |ui| {
+                if self.tools.open {
+                    self.tools_page(ui);
+                    return;
+                }
                 if self.show_about {
                     self.about_page(ui);
                     return;

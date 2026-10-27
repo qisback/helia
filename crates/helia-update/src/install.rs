@@ -246,8 +246,9 @@ pub fn detect(probe: &dyn Probe, os: HostOs) -> InstallKind {
     }
 }
 
-#[cfg(test)]
-pub(crate) mod fake {
+#[cfg(any(test, feature = "testutil"))]
+#[allow(missing_docs, clippy::wildcard_imports, reason = "test doubles")]
+pub mod fake {
     use super::*;
     use std::collections::{BTreeMap, BTreeSet};
 

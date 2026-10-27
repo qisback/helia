@@ -15,7 +15,7 @@
 //! # References
 //!
 //! - Meeus, J. (1998), Astronomical Algorithms, 2nd ed., Willmann-Bell, chapters 25 and 29
-//!   (ISBN 978-0-943396-61-3, to verify).
+//!   (ISBN 0-943396-61-1, 978-0-943396-61-3).
 //! - Thompson, W. T. (2006), Coordinate systems for solar image data, Astron. Astrophys. 449, 791-803,
 //!   doi:10.1051/0004-6361:20054262 (the conventions for `P`, `B0` and `L0`).
 
