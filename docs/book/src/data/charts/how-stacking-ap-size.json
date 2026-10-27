@@ -1,0 +1,83 @@
+{
+ "id": "how-stacking-ap-size",
+ "page": "user-guide/how-stacking-works.md",
+ "kind": "lines",
+ "title": "Granulation by window size",
+ "caption": "Granulation band at the disc centre for each alignment point window, from the table and the 24 px figures below it.",
+ "alt": "Granulation band in per cent by window size. Sun_Test 1.878 at 24 px, 1.843 at 32, 1.816 at 48, 1.787 at 64, 1.775 at 96. 15_20_57 2.064, 2.050, 2.041, 2.039, 2.036. 15_32_09 0.980, 0.971, 0.962, 0.957, 0.951. 14_42_57 0.192, 0.155, 0.141, 0.140, 0.140.",
+ "series": [
+  {
+   "name": "Sun_Test.ser",
+   "x": [
+    24,
+    32,
+    48,
+    64,
+    96
+   ],
+   "values": [
+    1.878,
+    1.843,
+    1.816,
+    1.787,
+    1.775
+   ]
+  },
+  {
+   "name": "15_20_57.ser",
+   "x": [
+    24,
+    32,
+    48,
+    64,
+    96
+   ],
+   "values": [
+    2.064,
+    2.05,
+    2.041,
+    2.039,
+    2.036
+   ]
+  },
+  {
+   "name": "15_32_09.avi",
+   "x": [
+    24,
+    32,
+    48,
+    64,
+    96
+   ],
+   "values": [
+    0.98,
+    0.971,
+    0.962,
+    0.957,
+    0.951
+   ]
+  },
+  {
+   "name": "14_42_57.avi",
+   "x": [
+    24,
+    32,
+    48,
+    64,
+    96
+   ],
+   "values": [
+    0.192,
+    0.155,
+    0.141,
+    0.14,
+    0.14
+   ]
+  }
+ ],
+ "xlabel": "Alignment point window, pixels",
+ "ylabel": "Granulation band, per cent (higher is more contrast)",
+ "log": true,
+ "dp": 3,
+ "note": "how-stacking-works.md, automatic alignment point size"
+}

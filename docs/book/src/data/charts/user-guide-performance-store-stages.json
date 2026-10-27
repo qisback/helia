@@ -1,0 +1,37 @@
+{
+ "id": "user-guide-performance-store-stages",
+ "page": "user-guide/performance.md",
+ "kind": "hbars",
+ "title": "Frame store: time by stage",
+ "caption": "Wall seconds of four stages on the 5.6 GB capture before and after, best of three, from the table above (lower is better).",
+ "alt": "Horizontal grouped bars of wall seconds before and after: score all frames 3.42 to 3.50, global alignment 1.56 to 1.22, alignment points 3.91 to 3.81, stack 1.04 to 0.98.",
+ "categories": [
+  "score all 2713 frames",
+  "global alignment, 1628",
+  "alignment points, 635",
+  "stack"
+ ],
+ "series": [
+  {
+   "name": "Before",
+   "values": [
+    3.42,
+    1.56,
+    3.91,
+    1.04
+   ]
+  },
+  {
+   "name": "After",
+   "values": [
+    3.5,
+    1.22,
+    3.81,
+    0.98
+   ]
+  }
+ ],
+ "value_axis": "Wall-clock time, seconds",
+ "dp": 2,
+ "note": "'Measured effect', stage table"
+}

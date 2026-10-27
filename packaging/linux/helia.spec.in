@@ -1,0 +1,48 @@
+# SPDX-FileCopyrightText: 2026 Laurence Horrocks-Barlow
+# SPDX-License-Identifier: GPL-3.0-or-later
+# See ADDITIONAL-TERMS.md for terms added under GPLv3 section 7.
+#
+# Packs an already staged tree (packaging/linux/stage-fhs.sh); nothing is built
+# here. @VERSION@ is the RPM version (a pre-release suffix becomes ~).
+
+%global debug_package %{nil}
+%global __os_install_post %{nil}
+%global _build_id_links none
+
+Name:           helia
+Version:        @VERSION@
+Release:        1
+Summary:        Solar lucky-imaging stacker
+License:        GPL-3.0-or-later
+URL:            https://github.com/qisback/helia
+Recommends:     vulkan-loader
+Recommends:     mesa-vulkan-drivers
+Suggests:       ffmpeg
+
+%description
+Helia stacks video of the Sun into one sharp image. It scores every frame,
+aligns the best on the whole disc, stacks them, then sharpens and colours the
+result. This package has the desktop app (helia-gui) and the command line tool
+(helia). It reads SER and AVI captures; install ffmpeg for MP4 and MOV.
+
+Helia is dedicated to the author's daughter, the light of his life.
+
+%install
+mkdir -p %{buildroot}
+cp -a %{stage}/. %{buildroot}/
+
+%files
+%{_bindir}/helia
+%{_bindir}/helia-gui
+%{_datadir}/applications/helia.desktop
+%{_datadir}/icons/hicolor/*/apps/helia.png
+%{_datadir}/mime/packages/casa.discworld.helia.xml
+%{_datadir}/metainfo/casa.discworld.helia.metainfo.xml
+%doc %{_docdir}/helia
+%license %{_docdir}/helia/LICENSE
+%license %{_docdir}/helia/ADDITIONAL-TERMS.md
+%license %{_docdir}/helia/LOGO-LICENCE.md
+
+%changelog
+* Tue Oct 20 2026 Laurence Horrocks-Barlow <9962027+qisback@users.noreply.github.com> - @VERSION@-1
+- See /usr/share/doc/helia/changelog.gz

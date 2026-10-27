@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="186" viewBox="0 0 480 186" role="img" aria-labelledby="t d">
+<title id="t">Brightest 1% of the prominence ring</title><desc id="d">Dumbbell chart: brightness of the brightest 1% of the ring from 1.02 to 1.15 radii, as a share of the disc&#x27;s, before and after. 15_32_09: 0.33 to 0.69. 15_37_19: 0.25 to 0.71.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="185" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">Brightest 1% of the prominence ring</text>
+<rect x="16" y="38" width="12" height="12" rx="2" fill="#0072B2"/>
+<text x="34.0" y="49.0" class="ink" text-anchor="start">Before</text>
+<rect x="94.0" y="38" width="12" height="12" rx="2" fill="#D55E00"/>
+<text x="112.0" y="49.0" class="ink" text-anchor="start">After</text>
+<text x="158.0" y="89.0" class="ink" text-anchor="end">15_32_09</text>
+<line x1="287.3" x2="419.6" y1="85.0" y2="85.0" stroke="#999999" stroke-width="3"/>
+<circle cx="287.3" cy="85.0" r="6" fill="#0072B2"/>
+<rect x="413.6" y="79.0" width="12" height="12" fill="#D55E00"/>
+<text x="429.6" y="89.0" class="sub" text-anchor="start" style="font-size:11px">0.69</text>
+<text x="277.3" y="89.0" class="sub" text-anchor="end" style="font-size:11px">0.33</text>
+<text x="158.0" y="119.0" class="ink" text-anchor="end">15_37_19</text>
+<line x1="257.9" x2="426.9" y1="115.0" y2="115.0" stroke="#999999" stroke-width="3"/>
+<circle cx="257.9" cy="115.0" r="6" fill="#0072B2"/>
+<rect x="420.9" y="109.0" width="12" height="12" fill="#D55E00"/>
+<text x="436.9" y="119.0" class="sub" text-anchor="start" style="font-size:11px">0.71</text>
+<text x="247.9" y="119.0" class="sub" text-anchor="end" style="font-size:11px">0.25</text>
+<line class="grid" x1="166.0" x2="166.0" y1="68" y2="130"/>
+<text x="166.0" y="146.0" class="sub" text-anchor="middle" style="font-size:11px">0</text>
+<line class="grid" x1="239.5" x2="239.5" y1="68" y2="130"/>
+<text x="239.5" y="146.0" class="sub" text-anchor="middle" style="font-size:11px">0.2</text>
+<line class="grid" x1="313.0" x2="313.0" y1="68" y2="130"/>
+<text x="313.0" y="146.0" class="sub" text-anchor="middle" style="font-size:11px">0.4</text>
+<line class="grid" x1="386.5" x2="386.5" y1="68" y2="130"/>
+<text x="386.5" y="146.0" class="sub" text-anchor="middle" style="font-size:11px">0.6</text>
+<line class="grid" x1="460.0" x2="460.0" y1="68" y2="130"/>
+<text x="460.0" y="146.0" class="sub" text-anchor="middle" style="font-size:11px">0.8</text>
+<text x="313.0" y="164.0" class="sub" text-anchor="middle">Share of the disc&#x27;s brightness</text>
+</svg>

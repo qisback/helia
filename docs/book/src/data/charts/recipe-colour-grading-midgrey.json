@@ -1,0 +1,34 @@
+{
+ "id": "recipe-colour-grading-midgrey",
+ "page": "recipes/colour-grading.md",
+ "kind": "dumbbell",
+ "title": "Mid-grey through the H-alpha look",
+ "caption": "RGB value a mid-grey maps to in the old and the new H-alpha look, as printed on the page.",
+ "alt": "Dumbbells of the output level, old then new: red 169 then 169, green 90 then 68, blue 33 then 11.",
+ "categories": [
+  "Red",
+  "Green",
+  "Blue"
+ ],
+ "series": [
+  {
+   "name": "Old look",
+   "values": [
+    169,
+    90,
+    33
+   ]
+  },
+  {
+   "name": "New look",
+   "values": [
+    169,
+    68,
+    11
+   ]
+  }
+ ],
+ "value_axis": "Output level, 0 to 255",
+ "note": "recipes/colour-grading.md, 'The new H-alpha look'",
+ "dp": 0
+}

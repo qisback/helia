@@ -1,0 +1,46 @@
+{
+ "id": "quality-report-captures-contrast",
+ "page": "user-guide/quality-report.md",
+ "kind": "hbars",
+ "title": "RMS contrast per stack",
+ "caption": "RMS contrast of each sodium capture stacked three ways, from the table above (ASI482MC, Na D preset).",
+ "alt": "Grouped bars for four captures and three stacks. 15_20_57.ser: Best 12%, points 4.17, All frames 3.99, Best 12%, global 4.14; Sun_Test.ser: Best 12%, points 3.76, All frames 3.44, Best 12%, global 3.64; 15_32_09.avi: Best 12%, points 1.95, All frames 1.86, Best 12%, global 1.91; 14_42_57.avi: Best 12%, points 1.39, All frames 0.53, Best 12%, global 0.55.",
+ "categories": [
+  "15_20_57.ser",
+  "Sun_Test.ser",
+  "15_32_09.avi",
+  "14_42_57.avi"
+ ],
+ "series": [
+  {
+   "name": "Best 12%, points",
+   "values": [
+    4.17,
+    3.76,
+    1.95,
+    1.39
+   ]
+  },
+  {
+   "name": "All frames",
+   "values": [
+    3.99,
+    3.44,
+    1.86,
+    0.53
+   ]
+  },
+  {
+   "name": "Best 12%, global",
+   "values": [
+    4.14,
+    3.64,
+    1.91,
+    0.55
+   ]
+  }
+ ],
+ "value_axis": "RMS contrast, per cent (higher is better)",
+ "dp": 2,
+ "note": "quality-report.md, table of the four sodium captures"
+}

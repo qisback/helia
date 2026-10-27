@@ -1,0 +1,27 @@
+{
+ "id": "calibration-selfflat-frames",
+ "page": "user-guide/calibration.md",
+ "kind": "lines",
+ "title": "Self-flat error against frames",
+ "caption": "RMS error of the flat recovered from the Sun's own drift (displacements from the limb), by number of frames, from the validation table above.",
+ "alt": "Line chart: error 0.54 per cent with 10 frames, 0.11 with 25 and 0.08 with 50.",
+ "series": [
+  {
+   "name": "Error",
+   "x": [
+    10,
+    25,
+    50
+   ],
+   "values": [
+    0.54,
+    0.11,
+    0.08
+   ]
+  }
+ ],
+ "xlabel": "Frames",
+ "ylabel": "RMS error of the gain, per cent (lower is better)",
+ "dp": 2,
+ "note": "calibration.md, 'How well it works', first row"
+}

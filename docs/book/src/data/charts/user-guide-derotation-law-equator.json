@@ -1,0 +1,24 @@
+{
+ "id": "user-guide-derotation-law-equator",
+ "page": "user-guide/derotation.md",
+ "kind": "hbars",
+ "title": "Equator rate of the two laws",
+ "caption": "Sidereal rotation rate at the equator of the two published laws, from the table of laws above.",
+ "alt": "Horizontal bars of the equator rate in degrees a day: howard 14.33, snodgrass 14.11.",
+ "categories": [
+  "howard",
+  "snodgrass"
+ ],
+ "series": [
+  {
+   "name": "Equator rate",
+   "values": [
+    14.33,
+    14.11
+   ]
+  }
+ ],
+ "value_axis": "Equator rate, degrees a day",
+ "dp": 2,
+ "note": "'How it works' table of laws; A, B, C not combined here"
+}

@@ -1,0 +1,45 @@
+{
+ "id": "sharpening-real-detail",
+ "page": "user-guide/sharpening.md",
+ "kind": "bars",
+ "title": "Detail gain on real captures",
+ "caption": "Detail metric as a ratio to the stack for three methods on four 2022-07-17 captures, from the table above.",
+ "alt": "Detail ratio, wavelets, unsharp mask, deconvolution: 15_20_57 1.25, 1.03, 1.03; 15_32_09 1.25, 1.03, 1.03; 14_42_57 1.22, 1.03, 1.02; Sun_Test 1.24, 1.04, 1.02.",
+ "categories": [
+  "15_20_57.ser",
+  "15_32_09.avi",
+  "14_42_57.avi",
+  "Sun_Test.ser"
+ ],
+ "series": [
+  {
+   "name": "Wavelets",
+   "values": [
+    1.25,
+    1.25,
+    1.22,
+    1.24
+   ]
+  },
+  {
+   "name": "Unsharp mask",
+   "values": [
+    1.03,
+    1.03,
+    1.03,
+    1.04
+   ]
+  },
+  {
+   "name": "Deconvolution",
+   "values": [
+    1.03,
+    1.03,
+    1.02,
+    1.02
+   ]
+  }
+ ],
+ "value_axis": "Detail, ratio to the stack",
+ "note": "user-guide/sharpening.md, On real captures"
+}

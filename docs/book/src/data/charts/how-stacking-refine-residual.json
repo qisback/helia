@@ -1,0 +1,56 @@
+{
+ "id": "how-stacking-refine-residual",
+ "page": "user-guide/how-stacking-works.md",
+ "kind": "hbars",
+ "title": "Residual shift by setting",
+ "caption": "Residual shift (RMS pixels against the finished stack) for each refinement setting, from the table above; lower is better.",
+ "alt": "Residual in pixels. 15_20_57: one pass 0.045, two passes 0.018. Sun_Test: one pass 0.389, smoothing 0.390, two passes 0.107, both 0.112. 14_42_57: 1.417, 1.387, 0.730, 0.752. 15_32_09: one pass 0.056, two passes 0.020.",
+ "categories": [
+  "15_20_57.ser",
+  "Sun_Test.ser",
+  "14_42_57.avi",
+  "15_32_09.avi"
+ ],
+ "series": [
+  {
+   "name": "One pass",
+   "values": [
+    0.045,
+    0.389,
+    1.417,
+    0.056
+   ]
+  },
+  {
+   "name": "Smoothing",
+   "values": [
+    null,
+    0.39,
+    1.387,
+    null
+   ]
+  },
+  {
+   "name": "Two passes",
+   "values": [
+    0.018,
+    0.107,
+    0.73,
+    0.02
+   ]
+  },
+  {
+   "name": "Both",
+   "values": [
+    null,
+    0.112,
+    0.752,
+    null
+   ]
+  }
+ ],
+ "value_axis": "Residual, pixels (lower is better)",
+ "log": true,
+ "dp": 3,
+ "note": "how-stacking-works.md, refining the shifts table; blank where the setting was not run"
+}

@@ -1,0 +1,45 @@
+{
+ "id": "recipe-sharpening-contrast",
+ "page": "recipes/sharpening-like-registax.md",
+ "kind": "bars",
+ "title": "Band-pass contrast by sharpening",
+ "caption": "Band-pass contrast of the disc centre in three bands for the stack and three wavelet settings, from `helia measure`.",
+ "alt": "Grouped bars of band-pass contrast in per cent of the mean. Pixel scale: stack 0.30, old wavelets 0.40, new wavelets 0.62, this recipe 0.72. 1 to 4 px: 0.96, 1.22, 2.17, 2.05. 4 to 12 px: 0.79, 0.92, 1.62, 1.23.",
+ "categories": [
+  "Stack",
+  "Old wavelets",
+  "New wavelets",
+  "This recipe"
+ ],
+ "series": [
+  {
+   "name": "Pixel scale (noise)",
+   "values": [
+    0.3,
+    0.4,
+    0.62,
+    0.72
+   ]
+  },
+  {
+   "name": "1 to 4 px",
+   "values": [
+    0.96,
+    1.22,
+    2.17,
+    2.05
+   ]
+  },
+  {
+   "name": "4 to 12 px",
+   "values": [
+    0.79,
+    0.92,
+    1.62,
+    1.23
+   ]
+  }
+ ],
+ "value_axis": "Band-pass contrast, per cent of the mean",
+ "note": "recipes/sharpening-like-registax.md, What you will get"
+}

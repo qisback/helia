@@ -1,0 +1,28 @@
+{
+ "id": "user-guide-sunspots-stability-wolf",
+ "page": "user-guide/sunspots.md",
+ "kind": "bars",
+ "title": "Wolf number by share of frames kept",
+ "caption": "Wolf number (k = 1) for the same four stacks, from the text.",
+ "alt": "Bars of the Wolf number: 84 at 6% of the frames kept, 84 at 12%, 83 at 25% and 83 at 50%.",
+ "categories": [
+  "6%",
+  "12%",
+  "25%",
+  "50%"
+ ],
+ "series": [
+  {
+   "name": "Wolf number",
+   "values": [
+    84,
+    84,
+    83,
+    83
+   ]
+  }
+ ],
+ "value_axis": "Wolf number (k = 1)",
+ "dp": 0,
+ "note": "'A real white-light disc'"
+}

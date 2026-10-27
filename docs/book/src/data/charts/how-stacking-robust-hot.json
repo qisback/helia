@@ -1,0 +1,56 @@
+{
+ "id": "how-stacking-robust-hot",
+ "page": "user-guide/how-stacking-works.md",
+ "kind": "hbars",
+ "title": "Robust stacking error: hot pixels",
+ "caption": "RMSE against the truth, times 1000, for hot pixels at each share of samples, from the table above; lower is better.",
+ "alt": "RMSE times 1000 for hot pixels. mean: 1.52, 3.42, 15.1, 63.35. sigma: 1.57, 1.53, 1.49, 2.58. huber: 1.53, 1.5, 2.85, 21.45. winsor: 1.52, 1.51, 3.99, 32.2.",
+ "categories": [
+  "Clean",
+  "0.1% of samples",
+  "1%",
+  "5%"
+ ],
+ "series": [
+  {
+   "name": "mean",
+   "values": [
+    1.52,
+    3.42,
+    15.1,
+    63.35
+   ]
+  },
+  {
+   "name": "sigma",
+   "values": [
+    1.57,
+    1.53,
+    1.49,
+    2.58
+   ]
+  },
+  {
+   "name": "huber",
+   "values": [
+    1.53,
+    1.5,
+    2.85,
+    21.45
+   ]
+  },
+  {
+   "name": "winsor",
+   "values": [
+    1.52,
+    1.51,
+    3.99,
+    32.2
+   ]
+  }
+ ],
+ "value_axis": "RMSE times 1000 (lower is better)",
+ "log": true,
+ "dp": 2,
+ "note": "how-stacking-works.md, robust stacking comparison table, Hot pixels (+1.2)"
+}

@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="331" viewBox="0 0 480 331" role="img" aria-labelledby="t d">
+<title id="t">Self-flat, two halves of a capture</title><desc id="d">Grouped bars: 15_32_09.avi flat RMS 0.66 per cent and difference between halves 0.31; Sun_Test.ser 1.42 and 0.22.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="330" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">Self-flat, two halves of a capture</text>
+<rect x="16" y="38" width="12" height="12" rx="2" fill="#0072B2"/>
+<text x="34.0" y="49.0" class="ink" text-anchor="start">Flat RMS</text>
+<rect x="108.0" y="38" width="12" height="12" rx="2" fill="#D55E00"/>
+<text x="126.0" y="49.0" class="ink" text-anchor="start">Difference between halves</text>
+<line class="grid" x1="58" x2="468" y1="268.0" y2="268.0"/>
+<text x="52.0" y="272.0" class="sub" text-anchor="end" style="font-size:11px">0</text>
+<line class="grid" x1="58" x2="468" y1="236.3" y2="236.3"/>
+<text x="52.0" y="240.3" class="sub" text-anchor="end" style="font-size:11px">0.25</text>
+<line class="grid" x1="58" x2="468" y1="204.7" y2="204.7"/>
+<text x="52.0" y="208.7" class="sub" text-anchor="end" style="font-size:11px">0.5</text>
+<line class="grid" x1="58" x2="468" y1="173.0" y2="173.0"/>
+<text x="52.0" y="177.0" class="sub" text-anchor="end" style="font-size:11px">0.75</text>
+<line class="grid" x1="58" x2="468" y1="141.3" y2="141.3"/>
+<text x="52.0" y="145.3" class="sub" text-anchor="end" style="font-size:11px">1</text>
+<line class="grid" x1="58" x2="468" y1="109.7" y2="109.7"/>
+<text x="52.0" y="113.7" class="sub" text-anchor="end" style="font-size:11px">1.25</text>
+<line class="grid" x1="58" x2="468" y1="78.0" y2="78.0"/>
+<text x="52.0" y="82.0" class="sub" text-anchor="end" style="font-size:11px">1.5</text>
+<rect x="126.5" y="184.4" width="33.0" height="83.6" fill="#0072B2"/>
+<text x="143.0" y="181.4" class="sub" text-anchor="middle" style="font-size:11px">0.66</text>
+<rect x="160.5" y="228.7" width="33.0" height="39.3" fill="#D55E00"/>
+<text x="177.0" y="225.7" class="sub" text-anchor="middle" style="font-size:11px">0.31</text>
+<text x="160.5" y="284.0" class="ink" text-anchor="middle">15_32_09.avi (84 px)</text>
+<rect x="331.5" y="88.1" width="33.0" height="179.9" fill="#0072B2"/>
+<text x="348.0" y="85.1" class="sub" text-anchor="middle" style="font-size:11px">1.42</text>
+<rect x="365.5" y="240.1" width="33.0" height="27.9" fill="#D55E00"/>
+<text x="382.0" y="237.1" class="sub" text-anchor="middle" style="font-size:11px">0.22</text>
+<text x="365.5" y="284.0" class="ink" text-anchor="middle">Sun_Test.ser (16 px)</text>
+<line class="axis" x1="58" x2="468" y1="268.0" y2="268.0"/>
+<line class="axis" x1="58" x2="58" y1="78" y2="268"/>
+<text x="240.0" y="309.0" class="sub" text-anchor="middle">Per cent (lower difference is better)</text>
+</svg>

@@ -1,0 +1,48 @@
+[graph]
+all-features = true
+
+[advisories]
+version = 2
+yanked = "deny"
+# Unmaintained-crate notices only, all transitive via eframe. Dropping the
+# features that pull them in loses screen-reader support (accesskit) and native
+# Wayland. Re-check on every eframe bump.
+ignore = [
+    { id = "RUSTSEC-2026-0192", reason = "ttf-parser unmaintained; via winit wayland decorations" },
+    { id = "RUSTSEC-2026-0370", reason = "zvariant unmaintained; via accesskit (Linux AT-SPI)" },
+    { id = "RUSTSEC-2026-0371", reason = "zbus_names unmaintained; via accesskit (Linux AT-SPI)" },
+    { id = "RUSTSEC-2026-0372", reason = "zvariant_derive unmaintained; via accesskit (Linux AT-SPI)" },
+]
+
+[licenses]
+version = 2
+# Permissive licences only, so that no copyleft dependency can enter without a CI failure
+# (it would block a closed edition). The workspace crates are GPL-3.0-or-later and
+# unpublished, which `private.ignore` covers.
+allow = [
+    "MIT",
+    "Apache-2.0",
+    "Apache-2.0 WITH LLVM-exception",
+    "BSD-2-Clause",
+    "BSD-3-Clause",
+    "ISC",
+    "Zlib",
+    "Unicode-3.0",
+    "BSL-1.0",
+    "CC0-1.0",
+    # webpki-roots (Mozilla CA list) for the feedback client's TLS; permissive, no copyleft.
+    "CDLA-Permissive-2.0",
+    "OFL-1.1",
+]
+confidence-threshold = 0.9
+
+[licenses.private]
+ignore = true
+
+[bans]
+multiple-versions = "warn"
+wildcards = "deny"
+
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"

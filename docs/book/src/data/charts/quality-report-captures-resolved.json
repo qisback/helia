@@ -1,0 +1,46 @@
+{
+ "id": "quality-report-captures-resolved",
+ "page": "user-guide/quality-report.md",
+ "kind": "hbars",
+ "title": "Resolved period per stack",
+ "caption": "Resolved of each sodium capture stacked three ways, from the table above (ASI482MC, Na D preset).",
+ "alt": "Grouped bars for four captures and three stacks. 15_20_57.ser: Best 12%, points 3.0, All frames 3.1, Best 12%, global 3.0; Sun_Test.ser: Best 12%, points 3.4, All frames 4.3, Best 12%, global 3.4; 15_32_09.avi: Best 12%, points 6.3, All frames 6.5, Best 12%, global 6.5; 14_42_57.avi: Best 12%, points 26.7, All frames 21.8, Best 12%, global 12.0.",
+ "categories": [
+  "15_20_57.ser",
+  "Sun_Test.ser",
+  "15_32_09.avi",
+  "14_42_57.avi"
+ ],
+ "series": [
+  {
+   "name": "Best 12%, points",
+   "values": [
+    3.0,
+    3.4,
+    6.3,
+    26.7
+   ]
+  },
+  {
+   "name": "All frames",
+   "values": [
+    3.1,
+    4.3,
+    6.5,
+    21.8
+   ]
+  },
+  {
+   "name": "Best 12%, global",
+   "values": [
+    3.0,
+    3.4,
+    6.5,
+    12.0
+   ]
+  }
+ ],
+ "value_axis": "Resolved period, px (lower is sharper)",
+ "dp": 1,
+ "note": "quality-report.md, table of the four sodium captures"
+}

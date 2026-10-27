@@ -1,0 +1,25 @@
+# SPDX-FileCopyrightText: 2026 Laurence Horrocks-Barlow
+# SPDX-License-Identifier: GPL-3.0-or-later
+# See ADDITIONAL-TERMS.md for terms added under GPLv3 section 7.
+# yaml-language-server: $schema=https://aka.ms/winget-manifest.defaultLocale.1.6.0.schema.json
+PackageIdentifier: LaurenceHorrocksBarlow.Helia
+PackageVersion: 0.7.1
+PackageLocale: en-GB
+Publisher: Laurence Horrocks-Barlow
+PublisherUrl: https://12hobbies.studio
+PackageName: Helia
+PackageUrl: https://12hobbies.studio/projects/helia/
+License: GPL-3.0-or-later
+LicenseUrl: https://github.com/qisback/helia/blob/main/LICENSE
+Copyright: Copyright (C) 2026 Laurence Horrocks-Barlow
+ShortDescription: Sharp pictures of the Sun from a video.
+Description: Helia turns a video of the Sun into one sharp picture. It finds the clearest moments in thousands of blurry frames, lines them up and combines them, then sharpens and colours the result.
+Moniker: helia
+Tags:
+- astronomy
+- astrophotography
+- image-processing
+- solar
+ReleaseNotesUrl: https://github.com/qisback/helia/releases/tag/v0.7.1
+ManifestType: defaultLocale
+ManifestVersion: 1.6.0

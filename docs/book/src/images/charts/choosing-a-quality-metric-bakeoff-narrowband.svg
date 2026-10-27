@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="770" viewBox="0 0 480 770" role="img" aria-labelledby="t d">
+<title id="t">Metrics against gradient energy, 4-12 px</title><desc id="d">Grouped bars for six H-alpha and Ca K captures; every metric lies between 92 and 106 per cent of gradient energy, with no consistent winner.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="769" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">Metrics against gradient energy, 4-12 px</text>
+<rect x="16" y="38" width="12" height="12" rx="2" fill="#0072B2"/>
+<text x="34.0" y="49.0" class="ink" text-anchor="start">laplacian</text>
+<rect x="115.0" y="38" width="12" height="12" rx="2" fill="#D55E00"/>
+<text x="133.0" y="49.0" class="ink" text-anchor="start">helmli</text>
+<rect x="193.0" y="38" width="12" height="12" rx="2" fill="#009E73"/>
+<text x="211.0" y="49.0" class="ink" text-anchor="start">mfgs</text>
+<rect x="257.0" y="38" width="12" height="12" rx="2" fill="#CC79A7"/>
+<text x="275.0" y="49.0" class="ink" text-anchor="start">dct</text>
+<rect x="314.0" y="38" width="12" height="12" rx="2" fill="#E69F00"/>
+<text x="332.0" y="49.0" class="ink" text-anchor="start">fourier</text>
+<rect x="16" y="58" width="12" height="12" rx="2" fill="#56B4E9"/>
+<text x="34.0" y="69.0" class="ink" text-anchor="start">contrast</text>
+<text x="158.0" y="138.5" class="ink" text-anchor="end">owner 15_32_09,</text>
+<text x="158.0" y="153.5" class="ink" text-anchor="end">H-alpha</text>
+<rect x="166.0" y="95.0" width="220.5" height="14" fill="#0072B2"/>
+<text x="390.5" y="107.0" class="sub" text-anchor="start" style="font-size:11px">101</text>
+<rect x="166.0" y="111.0" width="227.1" height="14" fill="#D55E00"/>
+<text x="397.1" y="123.0" class="sub" text-anchor="start" style="font-size:11px">104</text>
+<rect x="166.0" y="127.0" width="220.5" height="14" fill="#009E73"/>
+<text x="390.5" y="139.0" class="sub" text-anchor="start" style="font-size:11px">101</text>
+<rect x="166.0" y="143.0" width="220.5" height="14" fill="#CC79A7"/>
+<text x="390.5" y="155.0" class="sub" text-anchor="start" style="font-size:11px">101</text>
+<rect x="166.0" y="159.0" width="218.3" height="14" fill="#E69F00"/>
+<text x="388.3" y="171.0" class="sub" text-anchor="start" style="font-size:11px">100</text>
+<rect x="166.0" y="175.0" width="218.3" height="14" fill="#56B4E9"/>
+<text x="388.3" y="187.0" class="sub" text-anchor="start" style="font-size:11px">100</text>
+<text x="158.0" y="242.5" class="ink" text-anchor="end">owner 15_37_19,</text>
+<text x="158.0" y="257.5" class="ink" text-anchor="end">H-alpha</text>
+<rect x="166.0" y="199.0" width="214.0" height="14" fill="#0072B2"/>
+<text x="384.0" y="211.0" class="sub" text-anchor="start" style="font-size:11px">98</text>
+<rect x="166.0" y="215.0" width="211.8" height="14" fill="#D55E00"/>
+<text x="381.8" y="227.0" class="sub" text-anchor="start" style="font-size:11px">97</text>
+<rect x="166.0" y="231.0" width="216.1" height="14" fill="#009E73"/>
+<text x="386.1" y="243.0" class="sub" text-anchor="start" style="font-size:11px">99</text>
+<rect x="166.0" y="247.0" width="214.0" height="14" fill="#CC79A7"/>
+<text x="384.0" y="259.0" class="sub" text-anchor="start" style="font-size:11px">98</text>
+<rect x="166.0" y="263.0" width="220.5" height="14" fill="#E69F00"/>
+<text x="390.5" y="275.0" class="sub" text-anchor="start" style="font-size:11px">101</text>
+<rect x="166.0" y="279.0" width="216.1" height="14" fill="#56B4E9"/>
+<text x="386.1" y="291.0" class="sub" text-anchor="start" style="font-size:11px">99</text>
+<text x="158.0" y="346.5" class="ink" text-anchor="end">2022 15_20_57,</text>
+<text x="158.0" y="361.5" class="ink" text-anchor="end">H-alpha</text>
+<rect x="166.0" y="303.0" width="218.3" height="14" fill="#0072B2"/>
+<text x="388.3" y="315.0" class="sub" text-anchor="start" style="font-size:11px">100</text>
+<rect x="166.0" y="319.0" width="216.1" height="14" fill="#D55E00"/>
+<text x="386.1" y="331.0" class="sub" text-anchor="start" style="font-size:11px">99</text>
+<rect x="166.0" y="335.0" width="211.8" height="14" fill="#009E73"/>
+<text x="381.8" y="347.0" class="sub" text-anchor="start" style="font-size:11px">97</text>
+<rect x="166.0" y="351.0" width="211.8" height="14" fill="#CC79A7"/>
+<text x="381.8" y="363.0" class="sub" text-anchor="start" style="font-size:11px">97</text>
+<rect x="166.0" y="367.0" width="216.1" height="14" fill="#E69F00"/>
+<text x="386.1" y="379.0" class="sub" text-anchor="start" style="font-size:11px">99</text>
+<rect x="166.0" y="383.0" width="218.3" height="14" fill="#56B4E9"/>
+<text x="388.3" y="395.0" class="sub" text-anchor="start" style="font-size:11px">100</text>
+<text x="158.0" y="450.5" class="ink" text-anchor="end">2022 Sun_Test,</text>
+<text x="158.0" y="465.5" class="ink" text-anchor="end">H-alpha</text>
+<rect x="166.0" y="407.0" width="220.5" height="14" fill="#0072B2"/>
+<text x="390.5" y="419.0" class="sub" text-anchor="start" style="font-size:11px">101</text>
+<rect x="166.0" y="423.0" width="218.3" height="14" fill="#D55E00"/>
+<text x="388.3" y="435.0" class="sub" text-anchor="start" style="font-size:11px">100</text>
+<rect x="166.0" y="439.0" width="218.3" height="14" fill="#009E73"/>
+<text x="388.3" y="451.0" class="sub" text-anchor="start" style="font-size:11px">100</text>
+<rect x="166.0" y="455.0" width="211.8" height="14" fill="#CC79A7"/>
+<text x="381.8" y="467.0" class="sub" text-anchor="start" style="font-size:11px">97</text>
+<rect x="166.0" y="471.0" width="216.1" height="14" fill="#E69F00"/>
+<text x="386.1" y="483.0" class="sub" text-anchor="start" style="font-size:11px">99</text>
+<rect x="166.0" y="487.0" width="218.3" height="14" fill="#56B4E9"/>
+<text x="388.3" y="499.0" class="sub" text-anchor="start" style="font-size:11px">100</text>
+<text x="158.0" y="562.0" class="ink" text-anchor="end">owner 15_36_42, Ca K</text>
+<rect x="166.0" y="511.0" width="214.0" height="14" fill="#0072B2"/>
+<text x="384.0" y="523.0" class="sub" text-anchor="start" style="font-size:11px">98</text>
+<rect x="166.0" y="527.0" width="231.4" height="14" fill="#D55E00"/>
+<text x="401.4" y="539.0" class="sub" text-anchor="start" style="font-size:11px">106</text>
+<rect x="166.0" y="543.0" width="209.6" height="14" fill="#009E73"/>
+<text x="379.6" y="555.0" class="sub" text-anchor="start" style="font-size:11px">96</text>
+<rect x="166.0" y="559.0" width="205.2" height="14" fill="#CC79A7"/>
+<text x="375.2" y="571.0" class="sub" text-anchor="start" style="font-size:11px">94</text>
+<rect x="166.0" y="575.0" width="216.1" height="14" fill="#E69F00"/>
+<text x="386.1" y="587.0" class="sub" text-anchor="start" style="font-size:11px">99</text>
+<rect x="166.0" y="591.0" width="205.2" height="14" fill="#56B4E9"/>
+<text x="375.2" y="603.0" class="sub" text-anchor="start" style="font-size:11px">94</text>
+<text x="158.0" y="658.5" class="ink" text-anchor="end">owner 15_44_48, Ca K</text>
+<text x="158.0" y="673.5" class="ink" text-anchor="end">mono</text>
+<rect x="166.0" y="615.0" width="218.3" height="14" fill="#0072B2"/>
+<text x="388.3" y="627.0" class="sub" text-anchor="start" style="font-size:11px">100</text>
+<rect x="166.0" y="631.0" width="218.3" height="14" fill="#D55E00"/>
+<text x="388.3" y="643.0" class="sub" text-anchor="start" style="font-size:11px">100</text>
+<rect x="166.0" y="647.0" width="220.5" height="14" fill="#009E73"/>
+<text x="390.5" y="659.0" class="sub" text-anchor="start" style="font-size:11px">101</text>
+<rect x="166.0" y="663.0" width="200.9" height="14" fill="#CC79A7"/>
+<text x="370.9" y="675.0" class="sub" text-anchor="start" style="font-size:11px">92</text>
+<rect x="166.0" y="679.0" width="218.3" height="14" fill="#E69F00"/>
+<text x="388.3" y="691.0" class="sub" text-anchor="start" style="font-size:11px">100</text>
+<rect x="166.0" y="695.0" width="214.0" height="14" fill="#56B4E9"/>
+<text x="384.0" y="707.0" class="sub" text-anchor="start" style="font-size:11px">98</text>
+<line class="grid" x1="166.0" x2="166.0" y1="88" y2="714"/>
+<text x="166.0" y="730.0" class="sub" text-anchor="middle" style="font-size:11px">0</text>
+<line class="grid" x1="209.7" x2="209.7" y1="88" y2="714"/>
+<text x="209.7" y="730.0" class="sub" text-anchor="middle" style="font-size:11px">20</text>
+<line class="grid" x1="253.3" x2="253.3" y1="88" y2="714"/>
+<text x="253.3" y="730.0" class="sub" text-anchor="middle" style="font-size:11px">40</text>
+<line class="grid" x1="297.0" x2="297.0" y1="88" y2="714"/>
+<text x="297.0" y="730.0" class="sub" text-anchor="middle" style="font-size:11px">60</text>
+<line class="grid" x1="340.7" x2="340.7" y1="88" y2="714"/>
+<text x="340.7" y="730.0" class="sub" text-anchor="middle" style="font-size:11px">80</text>
+<line class="grid" x1="384.3" x2="384.3" y1="88" y2="714"/>
+<text x="384.3" y="730.0" class="sub" text-anchor="middle" style="font-size:11px">100</text>
+<line class="grid" x1="428.0" x2="428.0" y1="88" y2="714"/>
+<text x="428.0" y="730.0" class="sub" text-anchor="middle" style="font-size:11px">120</text>
+<line class="axis" x1="166" x2="166" y1="88" y2="714"/>
+<text x="297.0" y="748.0" class="sub" text-anchor="middle">Per cent of gradient energy (100 = equal)</text>
+</svg>

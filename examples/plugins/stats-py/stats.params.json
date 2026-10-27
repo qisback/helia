@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "properties": {
+    "threshold": {
+      "type": "number",
+      "title": "Bright part threshold",
+      "description": "Pixels above this share of the maximum count as bright.",
+      "minimum": 0,
+      "maximum": 1,
+      "default": 0.5
+    }
+  }
+}

@@ -1,0 +1,7 @@
+# Release scripts run on Linux runners; keep LF endings when checked out on Windows.
+packaging/*.sh text eol=lf
+packaging/*.py text eol=lf
+
+# Packaging scripts and the files they template run on Linux runners.
+packaging/linux/* text eol=lf
+packaging/macos/* text eol=lf

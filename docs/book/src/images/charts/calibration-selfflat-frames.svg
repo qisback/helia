@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="340" viewBox="0 0 480 340" role="img" aria-labelledby="t d">
+<title id="t">Self-flat error against frames</title><desc id="d">Line chart: error 0.54 per cent with 10 frames, 0.11 with 25 and 0.08 with 50.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="339" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">Self-flat error against frames</text>
+<line class="grid" x1="58" x2="462" y1="266.0" y2="266.0"/>
+<text x="52.0" y="270.0" class="sub" text-anchor="end" style="font-size:11px">0</text>
+<line class="grid" x1="58" x2="462" y1="231.0" y2="231.0"/>
+<text x="52.0" y="235.0" class="sub" text-anchor="end" style="font-size:11px">0.1</text>
+<line class="grid" x1="58" x2="462" y1="196.0" y2="196.0"/>
+<text x="52.0" y="200.0" class="sub" text-anchor="end" style="font-size:11px">0.2</text>
+<line class="grid" x1="58" x2="462" y1="161.0" y2="161.0"/>
+<text x="52.0" y="165.0" class="sub" text-anchor="end" style="font-size:11px">0.3</text>
+<line class="grid" x1="58" x2="462" y1="126.0" y2="126.0"/>
+<text x="52.0" y="130.0" class="sub" text-anchor="end" style="font-size:11px">0.4</text>
+<line class="grid" x1="58" x2="462" y1="91.0" y2="91.0"/>
+<text x="52.0" y="95.0" class="sub" text-anchor="end" style="font-size:11px">0.5</text>
+<line class="grid" x1="58" x2="462" y1="56.0" y2="56.0"/>
+<text x="52.0" y="60.0" class="sub" text-anchor="end" style="font-size:11px">0.6</text>
+<line class="grid" x1="58.0" x2="58.0" y1="56" y2="266"/>
+<text x="58.0" y="282.0" class="sub" text-anchor="middle" style="font-size:11px">10</text>
+<line class="grid" x1="159.0" x2="159.0" y1="56" y2="266"/>
+<text x="159.0" y="282.0" class="sub" text-anchor="middle" style="font-size:11px">20</text>
+<line class="grid" x1="260.0" x2="260.0" y1="56" y2="266"/>
+<text x="260.0" y="282.0" class="sub" text-anchor="middle" style="font-size:11px">30</text>
+<line class="grid" x1="361.0" x2="361.0" y1="56" y2="266"/>
+<text x="361.0" y="282.0" class="sub" text-anchor="middle" style="font-size:11px">40</text>
+<line class="grid" x1="462.0" x2="462.0" y1="56" y2="266"/>
+<text x="462.0" y="282.0" class="sub" text-anchor="middle" style="font-size:11px">50</text>
+<line class="axis" x1="58" x2="462" y1="266" y2="266"/>
+<line class="axis" x1="58" x2="58" y1="56" y2="266"/>
+<path class="ln" d="M58.0,77.0 L209.5,227.5 L462.0,238.0" stroke="#0072B2" stroke-width="2"/>
+<circle cx="58.0" cy="77.0" r="4.5" fill="#0072B2"/>
+<circle cx="209.5" cy="227.5" r="4.5" fill="#0072B2"/>
+<circle cx="462.0" cy="238.0" r="4.5" fill="#0072B2"/>
+<text x="260.0" y="302.0" class="sub" text-anchor="middle">Frames</text>
+<text x="260.0" y="318.0" class="sub" text-anchor="middle">Vertical: RMS error of the gain, per cent (lower is better)</text>
+</svg>

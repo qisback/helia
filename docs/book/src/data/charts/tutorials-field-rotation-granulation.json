@@ -1,0 +1,38 @@
+{
+ "id": "tutorials-field-rotation-granulation",
+ "page": "tutorials/field-rotation.md",
+ "kind": "bars",
+ "title": "Granulation kept with field rotation",
+ "caption": "Granulation band at the disc centre for 100 frames of `15_20_57.ser` given the timestamps of an hour, from the table above (higher is better).",
+ "alt": "Grouped bars of the granulation band (1 to 4 px) at the disc centre in per cent of the mean. Global alignment: frames as they were 1.286, rotating capture 0.706, corrected 1.296. Alignment points: 1.311, 0.915 and 1.321.",
+ "categories": [
+  "Global alignment",
+  "Alignment points"
+ ],
+ "series": [
+  {
+   "name": "Frames as they were",
+   "values": [
+    1.286,
+    1.311
+   ]
+  },
+  {
+   "name": "Rotating capture",
+   "values": [
+    0.706,
+    0.915
+   ]
+  },
+  {
+   "name": "Corrected",
+   "values": [
+    1.296,
+    1.321
+   ]
+  }
+ ],
+ "value_axis": "Granulation band (1 to 4 px), per cent of the mean",
+ "dp": 3,
+ "note": "step 2, table after 'What to expect'"
+}

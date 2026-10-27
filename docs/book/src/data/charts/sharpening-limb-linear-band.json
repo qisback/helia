@@ -1,0 +1,34 @@
+{
+ "id": "sharpening-limb-linear-band",
+ "page": "user-guide/sharpening.md",
+ "kind": "hbars",
+ "title": "Linear limb darkening by band",
+ "caption": "Linear `u` of the unsharpened stacks in three bands, from the 2026-10-20 captures in the table above.",
+ "alt": "Linear u: H-alpha 0.495, 0.552, 0.537 and 0.498; Ca K 0.435 and 0.428; white light 0.612.",
+ "categories": [
+  "H-alpha 15_37_19",
+  "H-alpha 15_32_09",
+  "H-alpha Sun_Test",
+  "H-alpha 15_20_57",
+  "Ca K 15_36_42",
+  "Ca K 15_44_48",
+  "White light Seestar"
+ ],
+ "series": [
+  {
+   "name": "Linear u",
+   "values": [
+    0.495,
+    0.552,
+    0.537,
+    0.498,
+    0.435,
+    0.428,
+    0.612
+   ]
+  }
+ ],
+ "value_axis": "Linear coefficient u",
+ "dp": 3,
+ "note": "user-guide/sharpening.md, Limb darkening per band"
+}

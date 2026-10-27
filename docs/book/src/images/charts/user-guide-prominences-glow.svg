@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="331" viewBox="0 0 480 331" role="img" aria-labelledby="t d">
+<title id="t">Glow in the prominence ring</title><desc id="d">Grouped bars of the ring median as a share of the disc&#x27;s brightness, before and after. 15_32_09: 0.087 to 0.000. 15_37_19: 0.020 to 0.000.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="330" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">Glow in the prominence ring</text>
+<rect x="16" y="38" width="12" height="12" rx="2" fill="#0072B2"/>
+<text x="34.0" y="49.0" class="ink" text-anchor="start">Before</text>
+<rect x="94.0" y="38" width="12" height="12" rx="2" fill="#D55E00"/>
+<text x="112.0" y="49.0" class="ink" text-anchor="start">After</text>
+<line class="grid" x1="58" x2="468" y1="268.0" y2="268.0"/>
+<text x="52.0" y="272.0" class="sub" text-anchor="end" style="font-size:11px">0</text>
+<line class="grid" x1="58" x2="468" y1="230.0" y2="230.0"/>
+<text x="52.0" y="234.0" class="sub" text-anchor="end" style="font-size:11px">0.02</text>
+<line class="grid" x1="58" x2="468" y1="192.0" y2="192.0"/>
+<text x="52.0" y="196.0" class="sub" text-anchor="end" style="font-size:11px">0.04</text>
+<line class="grid" x1="58" x2="468" y1="154.0" y2="154.0"/>
+<text x="52.0" y="158.0" class="sub" text-anchor="end" style="font-size:11px">0.06</text>
+<line class="grid" x1="58" x2="468" y1="116.0" y2="116.0"/>
+<text x="52.0" y="120.0" class="sub" text-anchor="end" style="font-size:11px">0.08</text>
+<line class="grid" x1="58" x2="468" y1="78.0" y2="78.0"/>
+<text x="52.0" y="82.0" class="sub" text-anchor="end" style="font-size:11px">0.1</text>
+<rect x="126.5" y="102.7" width="33.0" height="165.3" fill="#0072B2"/>
+<text x="143.0" y="99.7" class="sub" text-anchor="middle" style="font-size:11px">0.087</text>
+<rect x="160.5" y="268.0" width="33.0" height="1.0" fill="#D55E00"/>
+<text x="177.0" y="265.0" class="sub" text-anchor="middle" style="font-size:11px">0.000</text>
+<text x="160.5" y="284.0" class="ink" text-anchor="middle">15_32_09</text>
+<rect x="331.5" y="230.0" width="33.0" height="38.0" fill="#0072B2"/>
+<text x="348.0" y="227.0" class="sub" text-anchor="middle" style="font-size:11px">0.020</text>
+<rect x="365.5" y="268.0" width="33.0" height="1.0" fill="#D55E00"/>
+<text x="382.0" y="265.0" class="sub" text-anchor="middle" style="font-size:11px">0.000</text>
+<text x="365.5" y="284.0" class="ink" text-anchor="middle">15_37_19</text>
+<line class="axis" x1="58" x2="468" y1="268.0" y2="268.0"/>
+<line class="axis" x1="58" x2="58" y1="78" y2="268"/>
+<text x="240.0" y="309.0" class="sub" text-anchor="middle">Share of the disc&#x27;s brightness</text>
+</svg>

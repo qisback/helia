@@ -1,0 +1,46 @@
+{
+ "id": "quality-report-captures-rolloff",
+ "page": "user-guide/quality-report.md",
+ "kind": "hbars",
+ "title": "Roll-off period per stack",
+ "caption": "Roll-off of each sodium capture stacked three ways, from the table above (ASI482MC, Na D preset).",
+ "alt": "Grouped bars for four captures and three stacks. 15_20_57.ser: Best 12%, points 6.7, All frames 7.1, Best 12%, global 6.7; Sun_Test.ser: Best 12%, points 6.9, All frames 8.3, Best 12%, global 6.9; 15_32_09.avi: Best 12%, points 13.3, All frames 14.1, Best 12%, global 15.0; 14_42_57.avi: Best 12%, points 34.3, All frames 48.0, Best 12%, global 34.3.",
+ "categories": [
+  "15_20_57.ser",
+  "Sun_Test.ser",
+  "15_32_09.avi",
+  "14_42_57.avi"
+ ],
+ "series": [
+  {
+   "name": "Best 12%, points",
+   "values": [
+    6.7,
+    6.9,
+    13.3,
+    34.3
+   ]
+  },
+  {
+   "name": "All frames",
+   "values": [
+    7.1,
+    8.3,
+    14.1,
+    48.0
+   ]
+  },
+  {
+   "name": "Best 12%, global",
+   "values": [
+    6.7,
+    6.9,
+    15.0,
+    34.3
+   ]
+  }
+ ],
+ "value_axis": "Roll-off period, px (lower is sharper)",
+ "dp": 1,
+ "note": "quality-report.md, table of the four sodium captures"
+}

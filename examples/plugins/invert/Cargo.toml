@@ -1,0 +1,24 @@
+[package]
+name = "helia-example-invert"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+# Permissive on purpose: a plugin built from this example may have any licence.
+license = "MIT OR Apache-2.0"
+authors.workspace = true
+description = "Example Helia plugin in Rust: inverts the brightness of an image"
+publish = false
+
+[lints]
+workspace = true
+
+[[bin]]
+name = "helia-example-invert"
+path = "src/main.rs"
+
+[dependencies]
+helia-plugin-sdk = { version = "0.1.0", path = "../../../crates/helia-plugin-sdk" }
+
+[dev-dependencies]
+serde_json = "1.0.154"
+tempfile = "3.27.0"

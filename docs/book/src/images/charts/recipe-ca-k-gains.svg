@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="331" viewBox="0 0 480 331" role="img" aria-labelledby="t d">
+<title id="t">Old and new gains on Ca K</title><desc id="d">Bars, old then new: the 4 to 12 px band rises 16 then 24 per cent; pixel noise rises 29 then 25 per cent.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="330" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">Old and new gains on Ca K</text>
+<rect x="16" y="38" width="12" height="12" rx="2" fill="#0072B2"/>
+<text x="34.0" y="49.0" class="ink" text-anchor="start">Old gains</text>
+<rect x="115.0" y="38" width="12" height="12" rx="2" fill="#D55E00"/>
+<text x="133.0" y="49.0" class="ink" text-anchor="start">New gains</text>
+<line class="grid" x1="58" x2="468" y1="268.0" y2="268.0"/>
+<text x="52.0" y="272.0" class="sub" text-anchor="end" style="font-size:11px">0</text>
+<line class="grid" x1="58" x2="468" y1="236.3" y2="236.3"/>
+<text x="52.0" y="240.3" class="sub" text-anchor="end" style="font-size:11px">5</text>
+<line class="grid" x1="58" x2="468" y1="204.7" y2="204.7"/>
+<text x="52.0" y="208.7" class="sub" text-anchor="end" style="font-size:11px">10</text>
+<line class="grid" x1="58" x2="468" y1="173.0" y2="173.0"/>
+<text x="52.0" y="177.0" class="sub" text-anchor="end" style="font-size:11px">15</text>
+<line class="grid" x1="58" x2="468" y1="141.3" y2="141.3"/>
+<text x="52.0" y="145.3" class="sub" text-anchor="end" style="font-size:11px">20</text>
+<line class="grid" x1="58" x2="468" y1="109.7" y2="109.7"/>
+<text x="52.0" y="113.7" class="sub" text-anchor="end" style="font-size:11px">25</text>
+<line class="grid" x1="58" x2="468" y1="78.0" y2="78.0"/>
+<text x="52.0" y="82.0" class="sub" text-anchor="end" style="font-size:11px">30</text>
+<rect x="126.5" y="166.7" width="33.0" height="101.3" fill="#0072B2"/>
+<text x="143.0" y="163.7" class="sub" text-anchor="middle" style="font-size:11px">16</text>
+<rect x="160.5" y="116.0" width="33.0" height="152.0" fill="#D55E00"/>
+<text x="177.0" y="113.0" class="sub" text-anchor="middle" style="font-size:11px">24</text>
+<text x="160.5" y="284.0" class="ink" text-anchor="middle">4 to 12 px band lift</text>
+<rect x="331.5" y="84.3" width="33.0" height="183.7" fill="#0072B2"/>
+<text x="348.0" y="81.3" class="sub" text-anchor="middle" style="font-size:11px">29</text>
+<rect x="365.5" y="109.7" width="33.0" height="158.3" fill="#D55E00"/>
+<text x="382.0" y="106.7" class="sub" text-anchor="middle" style="font-size:11px">25</text>
+<text x="365.5" y="284.0" class="ink" text-anchor="middle">Extra pixel noise</text>
+<line class="axis" x1="58" x2="468" y1="268.0" y2="268.0"/>
+<line class="axis" x1="58" x2="58" y1="78" y2="268"/>
+<text x="240.0" y="309.0" class="sub" text-anchor="middle">Increase, per cent</text>
+</svg>

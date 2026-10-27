@@ -1,0 +1,33 @@
+{
+ "id": "recipe-granulation-band",
+ "page": "recipes/white-light-granulation.md",
+ "kind": "hbars",
+ "title": "Band 1 to 4 px, before and after",
+ "caption": "Band 1 to 4 px before and after the white-light settings on three H-alpha captures, from the table above.",
+ "alt": "Band 1 to 4 px in per cent, before then after, for Sun_Test 8-bit: 1.54 to 2.94; 15_20_57 16-bit: 1.98 to 3.23; 15_32_09 8-bit: 0.55 to 1.52.",
+ "categories": [
+  "Sun_Test.ser",
+  "15_20_57.ser",
+  "15_32_09.avi"
+ ],
+ "series": [
+  {
+   "name": "Before",
+   "values": [
+    1.54,
+    1.98,
+    0.55
+   ]
+  },
+  {
+   "name": "After",
+   "values": [
+    2.94,
+    3.23,
+    1.52
+   ]
+  }
+ ],
+ "value_axis": "Band 1 to 4 px, per cent",
+ "note": "recipes/white-light-granulation.md, What was measured, and on what"
+}

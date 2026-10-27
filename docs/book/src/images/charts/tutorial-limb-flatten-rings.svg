@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="309" viewBox="0 0 480 309" role="img" aria-labelledby="t d">
+<title id="t">Rings off the law, flattening</title><desc id="d">Rings off the law in per cent: unflattened 0.66, flatten model 0.74, flatten profile 0.34.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="308" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">Rings off the law, flattening</text>
+<line class="grid" x1="58" x2="468" y1="246.0" y2="246.0"/>
+<text x="52.0" y="250.0" class="sub" text-anchor="end" style="font-size:11px">0</text>
+<line class="grid" x1="58" x2="468" y1="198.5" y2="198.5"/>
+<text x="52.0" y="202.5" class="sub" text-anchor="end" style="font-size:11px">0.2</text>
+<line class="grid" x1="58" x2="468" y1="151.0" y2="151.0"/>
+<text x="52.0" y="155.0" class="sub" text-anchor="end" style="font-size:11px">0.4</text>
+<line class="grid" x1="58" x2="468" y1="103.5" y2="103.5"/>
+<text x="52.0" y="107.5" class="sub" text-anchor="end" style="font-size:11px">0.6</text>
+<line class="grid" x1="58" x2="468" y1="56.0" y2="56.0"/>
+<text x="52.0" y="60.0" class="sub" text-anchor="end" style="font-size:11px">0.8</text>
+<rect x="109.3" y="89.2" width="33.0" height="156.8" fill="#0072B2"/>
+<text x="125.8" y="86.2" class="sub" text-anchor="middle" style="font-size:11px">0.66</text>
+<text x="126.3" y="262.0" class="ink" text-anchor="middle">Unflattened</text>
+<rect x="246.0" y="70.2" width="33.0" height="175.8" fill="#0072B2"/>
+<text x="262.5" y="67.2" class="sub" text-anchor="middle" style="font-size:11px">0.74</text>
+<text x="263.0" y="262.0" class="ink" text-anchor="middle">Model</text>
+<rect x="382.7" y="165.2" width="33.0" height="80.8" fill="#0072B2"/>
+<text x="399.2" y="162.2" class="sub" text-anchor="middle" style="font-size:11px">0.34</text>
+<text x="399.7" y="262.0" class="ink" text-anchor="middle">Profile</text>
+<line class="axis" x1="58" x2="468" y1="246.0" y2="246.0"/>
+<line class="axis" x1="58" x2="58" y1="56" y2="246"/>
+<text x="240.0" y="287.0" class="sub" text-anchor="middle">Rings off the law, per cent (lower is better)</text>
+</svg>

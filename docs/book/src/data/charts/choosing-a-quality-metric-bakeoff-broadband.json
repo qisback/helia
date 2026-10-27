@@ -1,0 +1,59 @@
+{
+ "id": "choosing-a-quality-metric-bakeoff-broadband",
+ "page": "user-guide/choosing-a-quality-metric.md",
+ "kind": "hbars",
+ "title": "Broad band 14_42_57 against gradient",
+ "caption": "Contrast of the 2022 broad-band capture 14_42_57 stacked by each metric, per cent of the gradient-energy stack, from the table above.",
+ "alt": "Grouped bars for two bands: in the 4 to 12 px band helmli reads 148 and mfgs 163 per cent of gradient energy while dct is 88, fourier 81 and contrast 73.",
+ "categories": [
+  "1-4 px band",
+  "4-12 px band"
+ ],
+ "series": [
+  {
+   "name": "laplacian",
+   "values": [
+    99,
+    89
+   ]
+  },
+  {
+   "name": "helmli",
+   "values": [
+    127,
+    148
+   ]
+  },
+  {
+   "name": "mfgs",
+   "values": [
+    135,
+    163
+   ]
+  },
+  {
+   "name": "dct",
+   "values": [
+    98,
+    88
+   ]
+  },
+  {
+   "name": "fourier",
+   "values": [
+    97,
+    81
+   ]
+  },
+  {
+   "name": "contrast",
+   "values": [
+    93,
+    73
+   ]
+  }
+ ],
+ "value_axis": "Per cent of gradient energy (100 = equal)",
+ "dp": 0,
+ "note": "choosing-a-quality-metric.md, 'Step 3', 14_42_57 rows"
+}

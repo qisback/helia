@@ -1,0 +1,43 @@
+[package]
+name = "helia-core"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+keywords.workspace = true
+categories.workspace = true
+authors.workspace = true
+description = "Helia lucky-imaging core: SER/FITS IO, quality, alignment, stacking"
+publish = false
+build = "build.rs"
+
+[lints]
+workspace = true
+
+# The lib's libtest harness would reject criterion's flags (`cargo bench -- --output-format bencher`).
+[lib]
+bench = false
+
+[dependencies]
+fs4 = "1.1.0"
+png = "0.18.1"
+rayon = "1.12.0"
+realfft = "3.5.0"
+rustfft = "6.4.1"
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.154"
+thiserror = "2.0.21"
+tiff = { version = "0.11.3", default-features = false }
+
+[dev-dependencies]
+criterion = "0.7.0"
+
+[features]
+testutil = []
+
+[[bench]]
+name = "core"
+harness = false

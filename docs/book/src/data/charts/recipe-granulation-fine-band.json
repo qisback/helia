@@ -1,0 +1,33 @@
+{
+ "id": "recipe-granulation-fine-band",
+ "page": "recipes/white-light-granulation.md",
+ "kind": "hbars",
+ "title": "Fine band, before and after",
+ "caption": "Fine band before and after the white-light settings on three H-alpha captures, from the table above.",
+ "alt": "Fine band in per cent, before then after, for Sun_Test 8-bit: 1.64 to 1.48; 15_20_57 16-bit: 2.95 to 2.13; 15_32_09 8-bit: 0.23 to 0.45.",
+ "categories": [
+  "Sun_Test.ser",
+  "15_20_57.ser",
+  "15_32_09.avi"
+ ],
+ "series": [
+  {
+   "name": "Before",
+   "values": [
+    1.64,
+    2.95,
+    0.23
+   ]
+  },
+  {
+   "name": "After",
+   "values": [
+    1.48,
+    2.13,
+    0.45
+   ]
+  }
+ ],
+ "value_axis": "Fine band, per cent",
+ "note": "recipes/white-light-granulation.md, What was measured, and on what"
+}

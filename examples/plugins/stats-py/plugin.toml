@@ -1,0 +1,22 @@
+# An analyse plugin in plain Python: metrics and overlays, nothing changed.
+name = "stats-py"
+version = "0.1.0"
+api_version = 1
+title = "Image statistics (Python)"
+description = "Reports the mean, range and spread of an image and outlines its bright part."
+author = "Laurence Horrocks-Barlow"
+licence = "MIT OR Apache-2.0"
+capabilities = ["analyse"]
+executable = "stats.py"
+interpreter = "python3"
+
+[resources]
+gpu = false
+memory_mb = 256
+
+[[steps]]
+id = "stats"
+capability = "analyse"
+title = "Statistics"
+description = "Mean, minimum, maximum and standard deviation, and a box round the bright part."
+params_schema = "stats.params.json"

@@ -1,0 +1,42 @@
+{
+ "id": "true-colour-white-balance",
+ "page": "tutorials/true-colour.md",
+ "kind": "bars",
+ "title": "Gains per white balance",
+ "caption": "Red, green and blue gains printed for the three `--white-balance` options on 14_42_57.avi, from the table above.",
+ "alt": "Grouped bars of red, green and blue gains: auto 0.950, 1.226, 1.076; off 0.998 for all three; manual 1.9,1,1.5 gives 0.998, 0.525, 0.788.",
+ "categories": [
+  "auto",
+  "off",
+  "1.9,1,1.5"
+ ],
+ "series": [
+  {
+   "name": "Red",
+   "values": [
+    0.95,
+    0.998,
+    0.998
+   ]
+  },
+  {
+   "name": "Green",
+   "values": [
+    1.226,
+    0.998,
+    0.525
+   ]
+  },
+  {
+   "name": "Blue",
+   "values": [
+    1.076,
+    0.998,
+    0.788
+   ]
+  }
+ ],
+ "value_axis": "Gain",
+ "dp": 3,
+ "note": "true-colour.md, section 3"
+}

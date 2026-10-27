@@ -1,0 +1,85 @@
+{
+ "tag_name": "v0.7.1",
+ "html_url": "https://github.com/qisback/helia/releases/tag/v0.7.1",
+ "published_at": "2026-10-22T07:50:13Z",
+ "created_at": "2026-10-21T20:50:03Z",
+ "prerelease": false,
+ "draft": false,
+ "assets": [
+  {
+   "name": "helia-0.7.1-1.aarch64.rpm",
+   "size": 10131693,
+   "browser_download_url": "https://github.com/qisback/helia/releases/download/v0.7.1/helia-0.7.1-1.aarch64.rpm"
+  },
+  {
+   "name": "helia-0.7.1-1.x86_64.rpm",
+   "size": 11398001,
+   "browser_download_url": "https://github.com/qisback/helia/releases/download/v0.7.1/helia-0.7.1-1.x86_64.rpm"
+  },
+  {
+   "name": "helia-0.7.1-aarch64-unknown-linux-gnu.tar.gz",
+   "size": 18452089,
+   "browser_download_url": "https://github.com/qisback/helia/releases/download/v0.7.1/helia-0.7.1-aarch64-unknown-linux-gnu.tar.gz"
+  },
+  {
+   "name": "Helia-0.7.1-aarch64.AppImage",
+   "size": 18041352,
+   "browser_download_url": "https://github.com/qisback/helia/releases/download/v0.7.1/Helia-0.7.1-aarch64.AppImage"
+  },
+  {
+   "name": "helia-0.7.1-cli.cdx.json",
+   "size": 330529,
+   "browser_download_url": "https://github.com/qisback/helia/releases/download/v0.7.1/helia-0.7.1-cli.cdx.json"
+  },
+  {
+   "name": "helia-0.7.1-gui.cdx.json",
+   "size": 541063,
+   "browser_download_url": "https://github.com/qisback/helia/releases/download/v0.7.1/helia-0.7.1-gui.cdx.json"
+  },
+  {
+   "name": "helia-0.7.1-x86_64-pc-windows-msvc-setup.exe",
+   "size": 14171597,
+   "browser_download_url": "https://github.com/qisback/helia/releases/download/v0.7.1/helia-0.7.1-x86_64-pc-windows-msvc-setup.exe"
+  },
+  {
+   "name": "helia-0.7.1-x86_64-pc-windows-msvc-setup.exe.sha256",
+   "size": 111,
+   "browser_download_url": "https://github.com/qisback/helia/releases/download/v0.7.1/helia-0.7.1-x86_64-pc-windows-msvc-setup.exe.sha256"
+  },
+  {
+   "name": "helia-0.7.1-x86_64-pc-windows-msvc.zip",
+   "size": 18981149,
+   "browser_download_url": "https://github.com/qisback/helia/releases/download/v0.7.1/helia-0.7.1-x86_64-pc-windows-msvc.zip"
+  },
+  {
+   "name": "helia-0.7.1-x86_64-pc-windows-msvc.zip.sha256",
+   "size": 105,
+   "browser_download_url": "https://github.com/qisback/helia/releases/download/v0.7.1/helia-0.7.1-x86_64-pc-windows-msvc.zip.sha256"
+  },
+  {
+   "name": "helia-0.7.1-x86_64-unknown-linux-gnu.tar.gz",
+   "size": 20036836,
+   "browser_download_url": "https://github.com/qisback/helia/releases/download/v0.7.1/helia-0.7.1-x86_64-unknown-linux-gnu.tar.gz"
+  },
+  {
+   "name": "Helia-0.7.1-x86_64.AppImage",
+   "size": 19491320,
+   "browser_download_url": "https://github.com/qisback/helia/releases/download/v0.7.1/Helia-0.7.1-x86_64.AppImage"
+  },
+  {
+   "name": "helia_0.7.1_amd64.deb",
+   "size": 14809480,
+   "browser_download_url": "https://github.com/qisback/helia/releases/download/v0.7.1/helia_0.7.1_amd64.deb"
+  },
+  {
+   "name": "helia_0.7.1_arm64.deb",
+   "size": 12979308,
+   "browser_download_url": "https://github.com/qisback/helia/releases/download/v0.7.1/helia_0.7.1_arm64.deb"
+  },
+  {
+   "name": "SHA256SUMS",
+   "size": 1167,
+   "browser_download_url": "https://github.com/qisback/helia/releases/download/v0.7.1/SHA256SUMS"
+  }
+ ]
+}

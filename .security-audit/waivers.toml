@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: 2026 Laurence Horrocks-Barlow
+# SPDX-License-Identifier: GPL-3.0-or-later
+# See ADDITIONAL-TERMS.md for terms added under GPLv3 section 7.
+
+# Accepted security-audit findings (the CI repository handbook chapter 66). One entry per finding id, each
+# with a reason, the tracking issue and an expiry at most 90 days after `added`. An expired entry stops
+# applying and the finding blocks the release again. Changes go through a reviewed pull request.
+#
+# [[waiver]]
+# id      = "deps/RUSTSEC-2099-0001/foo@1.2.3"   # from report.md; fnmatch wildcards allowed
+# reason  = "foo::parse is never called here: only foo::encode is used."
+# issue   = "issue #123"
+# added   = "2026-10-22"
+# expires = "2026-12-20"

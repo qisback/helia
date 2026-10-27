@@ -1,0 +1,46 @@
+{
+ "id": "colourising-gains",
+ "page": "user-guide/colourising.md",
+ "kind": "bars",
+ "title": "Colour gains per capture",
+ "caption": "Red, green and blue gains of `helia stack --colour true --preset white --keep 12%` on the four 2022-07-17 captures, from the table above.",
+ "alt": "Grouped bars of red, green and blue gains: Sun_Test 0.96, 1.02, 4.10; 15_20_57 1.07, 1.00, 3.99; 15_32_09 0.82, 1.31, 5.23; 14_42_57 0.76, 1.09, 0.96. Blue is held at the cap on the three H-alpha captures.",
+ "categories": [
+  "Sun_Test",
+  "15_20_57",
+  "15_32_09",
+  "14_42_57"
+ ],
+ "series": [
+  {
+   "name": "Red",
+   "values": [
+    0.96,
+    1.07,
+    0.82,
+    0.76
+   ]
+  },
+  {
+   "name": "Green",
+   "values": [
+    1.02,
+    1.0,
+    1.31,
+    1.09
+   ]
+  },
+  {
+   "name": "Blue",
+   "values": [
+    4.1,
+    3.99,
+    5.23,
+    0.96
+   ]
+  }
+ ],
+ "value_axis": "Gain (common scale included)",
+ "dp": 2,
+ "note": "colourising.md, 'What the real captures say'"
+}

@@ -1,0 +1,22 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: Helia
+Source: https://github.com/qisback/helia
+
+Files: *
+Copyright: 2026 Laurence Horrocks-Barlow
+License: GPL-3.0-or-later
+ Helia is free software under the GNU General Public License version 3 or (at
+ your option) any later version, with the additional terms in ADDITIONAL-TERMS.md
+ (section 7 of the GPL). On Debian systems the licence text is in
+ /usr/share/common-licenses/GPL-3, and a copy is in /usr/share/doc/helia/LICENSE.
+
+Files: usr/share/icons/* usr/share/doc/helia/LOGO-LICENCE.md
+Copyright: 2026 Laurence Horrocks-Barlow
+License: All-rights-reserved
+ The Helia logo and icons are not covered by the GPL. See LOGO-LICENCE.md.
+
+Files: usr/share/doc/helia/THIRD-PARTY-LICENSES.txt
+Copyright: various
+License: see-file
+ The libraries inside the programs, and the IBM Plex fonts (SIL OFL 1.1), keep
+ their own licences. They are listed in THIRD-PARTY-LICENSES.txt.

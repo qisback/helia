@@ -1,0 +1,28 @@
+{
+ "id": "tutorials-derotation-surface-motion",
+ "page": "tutorials/derotation.md",
+ "kind": "hbars",
+ "title": "Surface motion and the correlation",
+ "caption": "Pixel figures quoted in the text for the two-frame time-lapse: the correlation's correction to the limb fit, and the model's surface motion.",
+ "alt": "Horizontal bars in pixels. Correlation correction without derotation 0.18, with derotation 0.35, their difference 0.17, and the derotation model's prediction 0.185.",
+ "categories": [
+  "Correction, no derotation",
+  "Correction, derotated",
+  "Difference",
+  "Model (derotated_px)"
+ ],
+ "series": [
+  {
+   "name": "Pixels",
+   "values": [
+    0.18,
+    0.35,
+    0.17,
+    0.185
+   ]
+  }
+ ],
+ "value_axis": "Pixels at the disc centre",
+ "dp": 3,
+ "note": "step 1 prose after the derotated_px column"
+}

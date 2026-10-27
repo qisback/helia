@@ -1,0 +1,28 @@
+{
+ "id": "capturing-nyquist-focal-ratio",
+ "page": "user-guide/capturing.md",
+ "kind": "hbars",
+ "title": "Focal ratio for Nyquist sampling",
+ "caption": "Focal ratio at which the pixel is half the diffraction scale (2 x pixel / wavelength), from the worked values above; a calculation, not a measurement.",
+ "alt": "Bars: 550 nm with 3.76 micron pixels f/13.7, 550 nm with 2.4 micron f/8.7, 656.3 nm with 3.76 micron f/11.5, 393.4 nm with 3.76 micron f/19.1.",
+ "categories": [
+  "550 nm, 3.76 um",
+  "550 nm, 2.4 um",
+  "656.3 nm, 3.76 um",
+  "393.4 nm, 3.76 um"
+ ],
+ "series": [
+  {
+   "name": "Focal ratio",
+   "values": [
+    13.7,
+    8.7,
+    11.5,
+    19.1
+   ]
+  }
+ ],
+ "value_axis": "Focal ratio, f/ (minimum for Nyquist)",
+ "dp": 1,
+ "note": "capturing.md, 'Sampling: focal ratio and pixel size'"
+}

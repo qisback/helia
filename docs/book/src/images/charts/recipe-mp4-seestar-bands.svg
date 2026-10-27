@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="188" viewBox="0 0 480 188" role="img" aria-labelledby="t d">
+<title id="t">Granulation band of a Seestar video</title><desc id="d">Horizontal bars of granulation-band contrast: green 1.53, luminance 1.18, red 0.76 per cent.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="187" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">Granulation band of a Seestar video</text>
+<text x="158.0" y="66.0" class="ink" text-anchor="end">Green</text>
+<rect x="166.0" y="53.0" width="200.4" height="18" fill="#0072B2"/>
+<text x="370.4" y="69.0" class="sub" text-anchor="start" style="font-size:11px">1.53</text>
+<text x="158.0" y="94.0" class="ink" text-anchor="end">Luminance</text>
+<rect x="166.0" y="81.0" width="154.6" height="18" fill="#0072B2"/>
+<text x="324.6" y="97.0" class="sub" text-anchor="start" style="font-size:11px">1.18</text>
+<text x="158.0" y="122.0" class="ink" text-anchor="end">Red</text>
+<rect x="166.0" y="109.0" width="99.6" height="18" fill="#0072B2"/>
+<text x="269.6" y="125.0" class="sub" text-anchor="start" style="font-size:11px">0.76</text>
+<line class="grid" x1="166.0" x2="166.0" y1="46" y2="132"/>
+<text x="166.0" y="148.0" class="sub" text-anchor="middle" style="font-size:11px">0</text>
+<line class="grid" x1="231.5" x2="231.5" y1="46" y2="132"/>
+<text x="231.5" y="148.0" class="sub" text-anchor="middle" style="font-size:11px">0.5</text>
+<line class="grid" x1="297.0" x2="297.0" y1="46" y2="132"/>
+<text x="297.0" y="148.0" class="sub" text-anchor="middle" style="font-size:11px">1</text>
+<line class="grid" x1="362.5" x2="362.5" y1="46" y2="132"/>
+<text x="362.5" y="148.0" class="sub" text-anchor="middle" style="font-size:11px">1.5</text>
+<line class="grid" x1="428.0" x2="428.0" y1="46" y2="132"/>
+<text x="428.0" y="148.0" class="sub" text-anchor="middle" style="font-size:11px">2</text>
+<line class="axis" x1="166" x2="166" y1="46" y2="132"/>
+<text x="297.0" y="166.0" class="sub" text-anchor="middle">Band-pass contrast, per cent (higher is more detail)</text>
+</svg>

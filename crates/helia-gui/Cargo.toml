@@ -1,0 +1,50 @@
+[package]
+name = "helia-gui"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+keywords.workspace = true
+categories.workspace = true
+authors.workspace = true
+description = "Helia graphical stacker"
+publish = false
+build = "build.rs"
+
+[lints]
+workspace = true
+
+[[bin]]
+name = "helia-gui"
+path = "src/main.rs"
+
+[dependencies]
+# default_fonts is off: egui bundles the Ubuntu font, whose licence is not GPL-compatible.
+# IBM Plex Sans and Mono (SIL OFL 1.1) are embedded instead, see assets/fonts.
+eframe = { version = "0.36", default-features = false, features = ["accesskit", "links", "wayland", "wgpu", "x11"] }
+helia-core = { version = "0.7.1", path = "../helia-core" }
+helia-feedback = { version = "0.7.1", path = "../helia-feedback" }
+helia-gpu = { version = "0.7.1", path = "../helia-gpu" }
+helia-plugin = { version = "0.7.1", path = "../helia-plugin" }
+helia-plugin-sdk = { version = "0.1.0", path = "../helia-plugin-sdk" }
+helia-report = { version = "0.7.1", path = "../helia-report" }
+helia-update = { version = "0.7.1", path = "../helia-update" }
+rfd = "0.17.2"
+serde_json = "1.0.154"
+png = "0.18.1"
+
+[dev-dependencies]
+egui_kittest = { version = "0.36", features = ["wgpu", "snapshot", "eframe"] }
+helia-core = { version = "0.7.1", path = "../helia-core", features = ["testutil"] }
+semver = "1.0.28"
+
+# --version from a terminal with the windows subsystem; see src/console.rs.
+[target.'cfg(windows)'.dependencies]
+windows-sys = { version = "0.61.2", default-features = false, features = ["Win32_Foundation", "Win32_System_Console"] }
+
+# VersionInfo resource in the Windows executables; see build.rs.
+[target.'cfg(windows)'.build-dependencies]
+winresource = { version = "0.1.31", default-features = false }

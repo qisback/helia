@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="362" viewBox="0 0 480 362" role="img" aria-labelledby="t d">
+<title id="t">Sharpen value to gain</title><desc id="d">Lines on log axes of gain against sharpen. At 100 per cent: 1.25 at 0.05, 2.0 at 0.10, 3.0 at 0.14, 7.3 at 0.25, 26 at 0.50, 101 at 1.00. At 200 per cent: 1.5, 3.0, 4.9, 13.5, 51 and 201.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="361" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">Sharpen value to gain</text>
+<rect x="16" y="38" width="12" height="12" rx="2" fill="#0072B2"/>
+<text x="34.0" y="49.0" class="ink" text-anchor="start">Amount 100%</text>
+<rect x="129.0" y="38" width="12" height="12" rx="2" fill="#D55E00"/>
+<text x="147.0" y="49.0" class="ink" text-anchor="start">Amount 200%</text>
+<line class="grid" x1="58" x2="462" y1="288.0" y2="288.0"/>
+<text x="52.0" y="292.0" class="sub" text-anchor="end" style="font-size:11px">1</text>
+<line class="grid" x1="58" x2="462" y1="218.0" y2="218.0"/>
+<text x="52.0" y="222.0" class="sub" text-anchor="end" style="font-size:11px">10</text>
+<line class="grid" x1="58" x2="462" y1="148.0" y2="148.0"/>
+<text x="52.0" y="152.0" class="sub" text-anchor="end" style="font-size:11px">100</text>
+<line class="grid" x1="58" x2="462" y1="78.0" y2="78.0"/>
+<text x="52.0" y="82.0" class="sub" text-anchor="end" style="font-size:11px">1000</text>
+<line class="grid" x1="58.0" x2="58.0" y1="78" y2="288"/>
+<text x="58.0" y="304.0" class="sub" text-anchor="middle" style="font-size:11px">0.01</text>
+<line class="grid" x1="260.0" x2="260.0" y1="78" y2="288"/>
+<text x="260.0" y="304.0" class="sub" text-anchor="middle" style="font-size:11px">0.1</text>
+<line class="grid" x1="462.0" x2="462.0" y1="78" y2="288"/>
+<text x="462.0" y="304.0" class="sub" text-anchor="middle" style="font-size:11px">1</text>
+<line class="axis" x1="58" x2="462" y1="288" y2="288"/>
+<line class="axis" x1="58" x2="58" y1="78" y2="288"/>
+<path class="ln" d="M199.2,281.2 L260.0,266.9 L289.5,254.6 L340.4,227.6 L401.2,189.0 L462.0,147.7" stroke="#0072B2" stroke-width="2"/>
+<circle cx="199.2" cy="281.2" r="4.5" fill="#0072B2"/>
+<circle cx="260.0" cy="266.9" r="4.5" fill="#0072B2"/>
+<circle cx="289.5" cy="254.6" r="4.5" fill="#0072B2"/>
+<circle cx="340.4" cy="227.6" r="4.5" fill="#0072B2"/>
+<circle cx="401.2" cy="189.0" r="4.5" fill="#0072B2"/>
+<circle cx="462.0" cy="147.7" r="4.5" fill="#0072B2"/>
+<path class="ln" d="M199.2,275.7 L260.0,254.6 L289.5,239.7 L340.4,208.9 L401.2,168.5 L462.0,126.8" stroke="#D55E00" stroke-width="2"/>
+<rect x="194.7" y="271.2" width="9.0" height="9.0" fill="#D55E00"/>
+<rect x="255.5" y="250.1" width="9.0" height="9.0" fill="#D55E00"/>
+<rect x="285.0" y="235.2" width="9.0" height="9.0" fill="#D55E00"/>
+<rect x="335.9" y="204.4" width="9.0" height="9.0" fill="#D55E00"/>
+<rect x="396.7" y="164.0" width="9.0" height="9.0" fill="#D55E00"/>
+<rect x="457.5" y="122.3" width="9.0" height="9.0" fill="#D55E00"/>
+<text x="260.0" y="324.0" class="sub" text-anchor="middle">Sharpen value</text>
+<text x="260.0" y="340.0" class="sub" text-anchor="middle">Vertical: Gain (times), log scale</text>
+</svg>

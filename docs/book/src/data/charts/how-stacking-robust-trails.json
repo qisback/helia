@@ -1,0 +1,56 @@
+{
+ "id": "how-stacking-robust-trails",
+ "page": "user-guide/how-stacking-works.md",
+ "kind": "hbars",
+ "title": "Robust stacking error: plane trails",
+ "caption": "RMSE against the truth, times 1000, for plane trails at each share of samples, from the table above; lower is better.",
+ "alt": "RMSE times 1000 for plane trails. mean: 1.52, 2.06, 5.74, 25.37. sigma: 1.57, 1.53, 1.49, 1.51. huber: 1.53, 1.49, 1.7, 9.21. winsor: 1.52, 1.5, 1.94, 13.71.",
+ "categories": [
+  "Clean",
+  "0.1% of samples",
+  "1%",
+  "5%"
+ ],
+ "series": [
+  {
+   "name": "mean",
+   "values": [
+    1.52,
+    2.06,
+    5.74,
+    25.37
+   ]
+  },
+  {
+   "name": "sigma",
+   "values": [
+    1.57,
+    1.53,
+    1.49,
+    1.51
+   ]
+  },
+  {
+   "name": "huber",
+   "values": [
+    1.53,
+    1.49,
+    1.7,
+    9.21
+   ]
+  },
+  {
+   "name": "winsor",
+   "values": [
+    1.52,
+    1.5,
+    1.94,
+    13.71
+   ]
+  }
+ ],
+ "value_axis": "RMSE times 1000 (lower is better)",
+ "log": true,
+ "dp": 2,
+ "note": "how-stacking-works.md, robust stacking comparison table, Plane trails (+0.5, 2 px wide)"
+}

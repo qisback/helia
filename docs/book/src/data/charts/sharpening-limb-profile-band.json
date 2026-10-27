@@ -1,0 +1,46 @@
+{
+ "id": "sharpening-limb-profile-band",
+ "page": "user-guide/sharpening.md",
+ "kind": "hbars",
+ "title": "Measured profile by band",
+ "caption": "Measured profile at mu 0.5 and mu 0.3 as a share of the centre, from the table above; lower means more darkening.",
+ "alt": "Share of the centre at mu 0.5 and 0.3: H-alpha 0.761 and 0.660, 0.732 and 0.614, 0.743 and 0.626, 0.762 and 0.650; Ca K 0.791 and 0.678, 0.797 and 0.678; white light 0.704 and 0.547.",
+ "categories": [
+  "H-alpha 15_37_19",
+  "H-alpha 15_32_09",
+  "H-alpha Sun_Test",
+  "H-alpha 15_20_57",
+  "Ca K 15_36_42",
+  "Ca K 15_44_48",
+  "White light Seestar"
+ ],
+ "series": [
+  {
+   "name": "mu 0.5",
+   "values": [
+    0.761,
+    0.732,
+    0.743,
+    0.762,
+    0.791,
+    0.797,
+    0.704
+   ]
+  },
+  {
+   "name": "mu 0.3",
+   "values": [
+    0.66,
+    0.614,
+    0.626,
+    0.65,
+    0.678,
+    0.678,
+    0.547
+   ]
+  }
+ ],
+ "value_axis": "Profile, share of the centre (lower is darker)",
+ "dp": 3,
+ "note": "user-guide/sharpening.md, Limb darkening per band"
+}

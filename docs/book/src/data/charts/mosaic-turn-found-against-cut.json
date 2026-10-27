@@ -1,0 +1,48 @@
+{
+ "id": "mosaic-turn-found-against-cut",
+ "page": "tutorials/mosaic.md",
+ "kind": "scatter",
+ "title": "Turn found against cut",
+ "caption": "Turn found for each panel against the turn it was cut with, from the table above; the line of equality is cut against cut.",
+ "alt": "Scatter of found against cut turn in degrees: 1.1 found as 1.106, -0.7 as -0.698, -1.0 as -0.998, 0.6 as 0.605 and 0.9 as 0.895, on the line of equality.",
+ "series": [
+  {
+   "name": "Equal to cut",
+   "x": [
+    1.1,
+    -0.7,
+    -1.0,
+    0.6,
+    0.9
+   ],
+   "values": [
+    1.1,
+    -0.7,
+    -1.0,
+    0.6,
+    0.9
+   ]
+  },
+  {
+   "name": "Found",
+   "x": [
+    1.1,
+    -0.7,
+    -1.0,
+    0.6,
+    0.9
+   ],
+   "values": [
+    1.106,
+    -0.698,
+    -0.998,
+    0.605,
+    0.895
+   ]
+  }
+ ],
+ "xlabel": "Turn cut, degrees",
+ "ylabel": "Turn found, degrees",
+ "dp": 3,
+ "note": "mosaic.md tutorial, comparison table"
+}

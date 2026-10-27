@@ -1,0 +1,88 @@
+{
+ "id": "choosing-a-quality-metric-bakeoff-narrowband",
+ "page": "user-guide/choosing-a-quality-metric.md",
+ "kind": "hbars",
+ "title": "Metrics against gradient energy, 4-12 px",
+ "caption": "Contrast in the 4 to 12 px band of stacks ranked by each metric, per cent of the gradient-energy stack, from the table above.",
+ "alt": "Grouped bars for six H-alpha and Ca K captures; every metric lies between 92 and 106 per cent of gradient energy, with no consistent winner.",
+ "categories": [
+  "owner 15_32_09, H-alpha",
+  "owner 15_37_19, H-alpha",
+  "2022 15_20_57, H-alpha",
+  "2022 Sun_Test, H-alpha",
+  "owner 15_36_42, Ca K",
+  "owner 15_44_48, Ca K mono"
+ ],
+ "series": [
+  {
+   "name": "laplacian",
+   "values": [
+    101,
+    98,
+    100,
+    101,
+    98,
+    100
+   ]
+  },
+  {
+   "name": "helmli",
+   "values": [
+    104,
+    97,
+    99,
+    100,
+    106,
+    100
+   ]
+  },
+  {
+   "name": "mfgs",
+   "values": [
+    101,
+    99,
+    97,
+    100,
+    96,
+    101
+   ]
+  },
+  {
+   "name": "dct",
+   "values": [
+    101,
+    98,
+    97,
+    97,
+    94,
+    92
+   ]
+  },
+  {
+   "name": "fourier",
+   "values": [
+    100,
+    101,
+    99,
+    99,
+    99,
+    100
+   ]
+  },
+  {
+   "name": "contrast",
+   "values": [
+    100,
+    99,
+    100,
+    100,
+    94,
+    98
+   ]
+  }
+ ],
+ "value_axis": "Per cent of gradient energy (100 = equal)",
+ "dp": 0,
+ 
+ "note": "choosing-a-quality-metric.md, 'Step 3', rows for H-alpha and Ca K"
+}

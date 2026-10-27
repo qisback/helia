@@ -1,0 +1,2 @@
+# docs-layout-check allow-list: PAGE_GLOB KIND SELECTOR_GLOB reason
+# Empty: the Zensical site has no accepted exceptions. Add an entry only with a documented reason.

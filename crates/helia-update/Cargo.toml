@@ -1,0 +1,46 @@
+[package]
+name = "helia-update"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+keywords.workspace = true
+categories.workspace = true
+authors.workspace = true
+description = "Signed update manifests: verify, check, download and roll back. Shared by Helia, Valerian and Annora"
+publish = false
+
+[lints]
+workspace = true
+
+[features]
+default = ["client"]
+# The HTTP client (ureq with rustls). Without it the crate is parsing, verification and policy only.
+client = ["dep:ureq"]
+# Signing, key generation and the helia-manifest tool. Release pipelines and tests only; the apps do not enable it.
+sign = ["dep:ed25519-dalek", "dep:blake2", "dep:getrandom", "dep:clap"]
+
+[[bin]]
+name = "helia-manifest"
+path = "src/bin/helia-manifest.rs"
+required-features = ["sign"]
+
+[dependencies]
+minisign-verify = "0.3.0"
+semver = "1.0.28"
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.154"
+sha2 = "0.11.1"
+thiserror = "2.0.21"
+ureq = { version = "3.4.2", default-features = false, features = ["rustls"], optional = true }
+ed25519-dalek = { version = "3.0.0", optional = true }
+blake2 = { version = "0.11.0", optional = true }
+getrandom = { version = "0.4.3", optional = true }
+clap = { version = "4.6.7", features = ["derive"], optional = true }
+
+[dev-dependencies]
+# Tests sign with throwaway keys: enable the sign feature for them.
+helia-update = { path = ".", features = ["sign"] }

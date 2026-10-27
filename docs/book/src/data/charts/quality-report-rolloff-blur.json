@@ -1,0 +1,29 @@
+{
+ "id": "quality-report-rolloff-blur",
+ "page": "user-guide/quality-report.md",
+ "kind": "lines",
+ "title": "Roll-off against blur",
+ "caption": "Roll-off frequency of synthetic granulation blurred by known Gaussians, from the known-answer tests above.",
+ "alt": "Line chart: roll-off falls as blur grows, 0.113 cycles per pixel at 0.6 px, 0.108 at 1.0, 0.096 at 1.6 and 0.071 at 2.4 px.",
+ "series": [
+  {
+   "name": "Roll-off",
+   "x": [
+    0.6,
+    1.0,
+    1.6,
+    2.4
+   ],
+   "values": [
+    0.113,
+    0.108,
+    0.096,
+    0.071
+   ]
+  }
+ ],
+ "xlabel": "Gaussian blur, px",
+ "ylabel": "Roll-off, cycles per pixel (higher is sharper)",
+ "dp": 3,
+ "note": "quality-report.md, 'How well it tells good from poor', first table, roll-off row"
+}

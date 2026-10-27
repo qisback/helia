@@ -1,0 +1,27 @@
+{
+ "id": "how-stacking-limb-confidence",
+ "page": "user-guide/how-stacking-works.md",
+ "kind": "bars",
+ "title": "Limb confidence of the reference",
+ "caption": "Limb-fit confidence of the reference frame on four real captures, from the table above; auto uses the limb only above 0.5.",
+ "alt": "Reference limb confidence: 15_32_09 0.89, 15_20_57 0.42, Sun_Test 0.71, 14_42_57 0.01.",
+ "categories": [
+  "15_32_09.avi",
+  "15_20_57.ser",
+  "Sun_Test.ser",
+  "14_42_57.avi"
+ ],
+ "series": [
+  {
+   "name": "Confidence",
+   "values": [
+    0.89,
+    0.42,
+    0.71,
+    0.01
+   ]
+  }
+ ],
+ "value_axis": "Limb confidence, 0 to 1",
+ "note": "how-stacking-works.md, How accurate is it, real frames table"
+}

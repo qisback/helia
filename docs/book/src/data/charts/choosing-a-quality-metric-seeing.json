@@ -1,0 +1,45 @@
+{
+ "id": "choosing-a-quality-metric-seeing",
+ "page": "user-guide/choosing-a-quality-metric.md",
+ "kind": "scatter",
+ "title": "Motion index against D/r0",
+ "caption": "Motion index and D/r0 of the captures at hand (pixel scale assumed), from the table above; 15_44_48 has no fitted D/r0.",
+ "alt": "Scatter of D/r0 against motion index: 15_32_09 at 0.16 px and 14, 15_37_19 at 0.17 and 11, 15_20_57 at 0.19 and 4.0, Sun_Test at 0.27 and 7.3, 15_36_42 at 0.27 and 13, 14_42_57 at 0.50 and 7.8.",
+ "points": [
+  {
+   "x": 0.19,
+   "y": 4.0,
+   "label": "15_20_57"
+  },
+  {
+   "x": 0.27,
+   "y": 7.3,
+   "label": "Sun_Test"
+  },
+  {
+   "x": 0.5,
+   "y": 7.8,
+   "label": "14_42_57"
+  },
+  {
+   "x": 0.27,
+   "y": 13,
+   "label": "15_36_42"
+  },
+  {
+   "x": 0.16,
+   "y": 14,
+   "label": "15_32_09"
+  },
+  {
+   "x": 0.17,
+   "y": 11,
+   "label": "15_37_19"
+  }
+ ],
+ "xlabel": "Motion index, px (lower is steadier)",
+ "ylabel": "D/r0 (lower is better seeing)",
+ "dp": 1,
+ "note": "choosing-a-quality-metric.md, 'Does the seeing decide it?'",
+ "series": []
+}

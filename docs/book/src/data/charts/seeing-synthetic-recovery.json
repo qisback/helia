@@ -1,0 +1,44 @@
+{
+ "id": "seeing-synthetic-recovery",
+ "page": "user-guide/seeing.md",
+ "kind": "scatter",
+ "title": "Recovered against true D/r0",
+ "caption": "D/r0 recovered from Kolmogorov phase screens of known D/r0 (160 frames, 4 tiles), from the validation table above.",
+ "alt": "Scatter of recovered against true D/r0: true 3 gives 2.84, 5 gives 4.94, 8 gives 7.25 and 12 gives 9.71, below the line of equality that is plotted as true against true.",
+ "series": [
+  {
+   "name": "Recovered",
+   "x": [
+    3,
+    5,
+    8,
+    12
+   ],
+   "values": [
+    2.84,
+    4.94,
+    7.25,
+    9.71
+   ]
+  },
+  {
+   "name": "Equal to truth",
+   "x": [
+    3,
+    5,
+    8,
+    12
+   ],
+   "values": [
+    3,
+    5,
+    8,
+    12
+   ]
+  }
+ ],
+ "xlabel": "True D/r0",
+ "ylabel": "Recovered D/r0",
+ "dp": 2,
+ "note": "seeing.md, 'Validation on synthetic data', first row"
+}

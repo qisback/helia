@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="186" viewBox="0 0 480 186" role="img" aria-labelledby="t d">
+<title id="t">Bands before and after the wavelets</title><desc id="d">Dumbbells of contrast, before then after sharpening: 1 to 4 px detail 0.96 then 2.17 per cent of the mean; pixel scale 0.30 then 0.62.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="185" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">Bands before and after the wavelets</text>
+<rect x="16" y="38" width="12" height="12" rx="2" fill="#0072B2"/>
+<text x="34.0" y="49.0" class="ink" text-anchor="start">Before</text>
+<rect x="94.0" y="38" width="12" height="12" rx="2" fill="#D55E00"/>
+<text x="112.0" y="49.0" class="ink" text-anchor="start">After</text>
+<text x="158.0" y="89.0" class="ink" text-anchor="end">Detail (1 to 4 px)</text>
+<line x1="278.9" x2="421.2" y1="85.0" y2="85.0" stroke="#999999" stroke-width="3"/>
+<circle cx="278.9" cy="85.0" r="6" fill="#0072B2"/>
+<rect x="415.2" y="79.0" width="12" height="12" fill="#D55E00"/>
+<text x="431.2" y="89.0" class="sub" text-anchor="start" style="font-size:11px">2.17</text>
+<text x="268.9" y="89.0" class="sub" text-anchor="end" style="font-size:11px">0.96</text>
+<text x="158.0" y="119.0" class="ink" text-anchor="end">Noise (pixel scale)</text>
+<line x1="201.3" x2="238.9" y1="115.0" y2="115.0" stroke="#999999" stroke-width="3"/>
+<circle cx="201.3" cy="115.0" r="6" fill="#0072B2"/>
+<rect x="232.9" y="109.0" width="12" height="12" fill="#D55E00"/>
+<text x="248.9" y="119.0" class="sub" text-anchor="start" style="font-size:11px">0.62</text>
+<text x="191.3" y="119.0" class="sub" text-anchor="end" style="font-size:11px">0.30</text>
+<line class="grid" x1="166.0" x2="166.0" y1="68" y2="130"/>
+<text x="166.0" y="146.0" class="sub" text-anchor="middle" style="font-size:11px">0</text>
+<line class="grid" x1="224.8" x2="224.8" y1="68" y2="130"/>
+<text x="224.8" y="146.0" class="sub" text-anchor="middle" style="font-size:11px">0.5</text>
+<line class="grid" x1="283.6" x2="283.6" y1="68" y2="130"/>
+<text x="283.6" y="146.0" class="sub" text-anchor="middle" style="font-size:11px">1</text>
+<line class="grid" x1="342.4" x2="342.4" y1="68" y2="130"/>
+<text x="342.4" y="146.0" class="sub" text-anchor="middle" style="font-size:11px">1.5</text>
+<line class="grid" x1="401.2" x2="401.2" y1="68" y2="130"/>
+<text x="401.2" y="146.0" class="sub" text-anchor="middle" style="font-size:11px">2</text>
+<line class="grid" x1="460.0" x2="460.0" y1="68" y2="130"/>
+<text x="460.0" y="146.0" class="sub" text-anchor="middle" style="font-size:11px">2.5</text>
+<text x="313.0" y="164.0" class="sub" text-anchor="middle">Band-pass contrast, per cent of the mean</text>
+</svg>

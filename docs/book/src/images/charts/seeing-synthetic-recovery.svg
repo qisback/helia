@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="362" viewBox="0 0 480 362" role="img" aria-labelledby="t d">
+<title id="t">Recovered against true D/r0</title><desc id="d">Scatter of recovered against true D/r0: true 3 gives 2.84, 5 gives 4.94, 8 gives 7.25 and 12 gives 9.71, below the line of equality that is plotted as true against true.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="361" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">Recovered against true D/r0</text>
+<rect x="16" y="38" width="12" height="12" rx="2" fill="#0072B2"/>
+<text x="34.0" y="49.0" class="ink" text-anchor="start">Recovered</text>
+<rect x="115.0" y="38" width="12" height="12" rx="2" fill="#D55E00"/>
+<text x="133.0" y="49.0" class="ink" text-anchor="start">Equal to truth</text>
+<line class="grid" x1="58" x2="462" y1="288.0" y2="288.0"/>
+<text x="52.0" y="292.0" class="sub" text-anchor="end" style="font-size:11px">0</text>
+<line class="grid" x1="58" x2="462" y1="253.0" y2="253.0"/>
+<text x="52.0" y="257.0" class="sub" text-anchor="end" style="font-size:11px">2</text>
+<line class="grid" x1="58" x2="462" y1="218.0" y2="218.0"/>
+<text x="52.0" y="222.0" class="sub" text-anchor="end" style="font-size:11px">4</text>
+<line class="grid" x1="58" x2="462" y1="183.0" y2="183.0"/>
+<text x="52.0" y="187.0" class="sub" text-anchor="end" style="font-size:11px">6</text>
+<line class="grid" x1="58" x2="462" y1="148.0" y2="148.0"/>
+<text x="52.0" y="152.0" class="sub" text-anchor="end" style="font-size:11px">8</text>
+<line class="grid" x1="58" x2="462" y1="113.0" y2="113.0"/>
+<text x="52.0" y="117.0" class="sub" text-anchor="end" style="font-size:11px">10</text>
+<line class="grid" x1="58" x2="462" y1="78.0" y2="78.0"/>
+<text x="52.0" y="82.0" class="sub" text-anchor="end" style="font-size:11px">12</text>
+<line class="grid" x1="58.0" x2="58.0" y1="78" y2="288"/>
+<text x="58.0" y="304.0" class="sub" text-anchor="middle" style="font-size:11px">2</text>
+<line class="grid" x1="138.8" x2="138.8" y1="78" y2="288"/>
+<text x="138.8" y="304.0" class="sub" text-anchor="middle" style="font-size:11px">4</text>
+<line class="grid" x1="219.6" x2="219.6" y1="78" y2="288"/>
+<text x="219.6" y="304.0" class="sub" text-anchor="middle" style="font-size:11px">6</text>
+<line class="grid" x1="300.4" x2="300.4" y1="78" y2="288"/>
+<text x="300.4" y="304.0" class="sub" text-anchor="middle" style="font-size:11px">8</text>
+<line class="grid" x1="381.2" x2="381.2" y1="78" y2="288"/>
+<text x="381.2" y="304.0" class="sub" text-anchor="middle" style="font-size:11px">10</text>
+<line class="grid" x1="462.0" x2="462.0" y1="78" y2="288"/>
+<text x="462.0" y="304.0" class="sub" text-anchor="middle" style="font-size:11px">12</text>
+<line class="axis" x1="58" x2="462" y1="288" y2="288"/>
+<line class="axis" x1="58" x2="58" y1="78" y2="288"/>
+<circle cx="98.4" cy="238.3" r="4.5" fill="#0072B2"/>
+<circle cx="179.2" cy="201.6" r="4.5" fill="#0072B2"/>
+<circle cx="300.4" cy="161.1" r="4.5" fill="#0072B2"/>
+<circle cx="462.0" cy="118.1" r="4.5" fill="#0072B2"/>
+<rect x="93.9" y="231.0" width="9.0" height="9.0" fill="#D55E00"/>
+<rect x="174.7" y="196.0" width="9.0" height="9.0" fill="#D55E00"/>
+<rect x="295.9" y="143.5" width="9.0" height="9.0" fill="#D55E00"/>
+<rect x="457.5" y="73.5" width="9.0" height="9.0" fill="#D55E00"/>
+<text x="260.0" y="324.0" class="sub" text-anchor="middle">True D/r0</text>
+<text x="260.0" y="340.0" class="sub" text-anchor="middle">Vertical: Recovered D/r0</text>
+</svg>

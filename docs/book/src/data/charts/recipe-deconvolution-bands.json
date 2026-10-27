@@ -1,0 +1,12 @@
+{
+ "id": "recipe-deconvolution-bands",
+ "page": "recipes/deconvolution.md",
+ "kind": "bars",
+ "title": "Band-pass contrast of the disc centre",
+ "caption": "Contrast of the disc centre in two bands for the stack and two deconvolutions, from `helia measure`.",
+ "alt": "Grouped bars: noise band 0.30, 0.49 and 0.62; detail band 0.96, 0.93 and 1.96 per cent of the mean, for the stack, Richardson-Lucy with the image-scale PSF and with the limb PSF.",
+ "categories": ["Stack", "RL, image-scale PSF", "RL, limb PSF"],
+ "series": [{"name": "Noise (pixel scale)", "values": [0.30, 0.49, 0.62]}, {"name": "Detail (1 to 4 px)", "values": [0.96, 0.93, 1.96]}],
+ "value_axis": "Band-pass contrast, per cent of the mean",
+ "note": "recipes/deconvolution.md, 'What you should see'"
+}

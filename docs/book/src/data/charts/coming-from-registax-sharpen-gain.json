@@ -1,0 +1,54 @@
+{
+ "id": "coming-from-registax-sharpen-gain",
+ "page": "user-guide/coming-from-registax.md",
+ "kind": "lines",
+ "title": "Sharpen value to gain",
+ "caption": "Gain of a layer at amounts of 100 and 200 per cent for each sharpen value, from the table above.",
+ "alt": "Lines on log axes of gain against sharpen. At 100 per cent: 1.25 at 0.05, 2.0 at 0.10, 3.0 at 0.14, 7.3 at 0.25, 26 at 0.50, 101 at 1.00. At 200 per cent: 1.5, 3.0, 4.9, 13.5, 51 and 201.",
+ "series": [
+  {
+   "name": "Amount 100%",
+   "values": [
+    1.25,
+    2.0,
+    3.0,
+    7.3,
+    26,
+    101
+   ],
+   "x": [
+    0.05,
+    0.1,
+    0.14,
+    0.25,
+    0.5,
+    1.0
+   ]
+  },
+  {
+   "name": "Amount 200%",
+   "values": [
+    1.5,
+    3.0,
+    4.9,
+    13.5,
+    51,
+    201
+   ],
+   "x": [
+    0.05,
+    0.1,
+    0.14,
+    0.25,
+    0.5,
+    1.0
+   ]
+  }
+ ],
+ "xlabel": "Sharpen value",
+ "ylabel": "Gain (times)",
+ "log": true,
+ "dp": 1,
+ "note": "user-guide/coming-from-registax.md, sharpen scale table",
+ "logx": true
+}

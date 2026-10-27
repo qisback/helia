@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="406" viewBox="0 0 480 406" role="img" aria-labelledby="t d">
+<title id="t">Frame store: resident memory</title><desc id="d">Horizontal grouped bars of peak resident set in megabytes before and after: 674 to 652, 332 to 326, 641 to 626, 665 to 633, 718 to 679, 777 to 771 and 437 to 439, from the 5.6 GB to the 0.4 GB capture.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="405" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">Frame store: resident memory</text>
+<rect x="16" y="38" width="12" height="12" rx="2" fill="#0072B2"/>
+<text x="34.0" y="49.0" class="ink" text-anchor="start">Before</text>
+<rect x="94.0" y="38" width="12" height="12" rx="2" fill="#D55E00"/>
+<text x="112.0" y="49.0" class="ink" text-anchor="start">After</text>
+<text x="158.0" y="94.0" class="ink" text-anchor="end">5.6 GB Bayer AVI</text>
+<rect x="166.0" y="75.0" width="220.7" height="14" fill="#0072B2"/>
+<text x="390.7" y="87.0" class="sub" text-anchor="start" style="font-size:11px">674</text>
+<rect x="166.0" y="91.0" width="213.5" height="14" fill="#D55E00"/>
+<text x="383.5" y="103.0" class="sub" text-anchor="start" style="font-size:11px">652</text>
+<text x="158.0" y="134.0" class="ink" text-anchor="end">3.1 GB 640x480 AVI</text>
+<rect x="166.0" y="115.0" width="108.7" height="14" fill="#0072B2"/>
+<text x="278.7" y="127.0" class="sub" text-anchor="start" style="font-size:11px">332</text>
+<rect x="166.0" y="131.0" width="106.8" height="14" fill="#D55E00"/>
+<text x="276.8" y="143.0" class="sub" text-anchor="start" style="font-size:11px">326</text>
+<text x="158.0" y="174.0" class="ink" text-anchor="end">1.3 GB Bayer AVI</text>
+<rect x="166.0" y="155.0" width="209.9" height="14" fill="#0072B2"/>
+<text x="379.9" y="167.0" class="sub" text-anchor="start" style="font-size:11px">641</text>
+<rect x="166.0" y="171.0" width="205.0" height="14" fill="#D55E00"/>
+<text x="375.0" y="183.0" class="sub" text-anchor="start" style="font-size:11px">626</text>
+<text x="158.0" y="214.0" class="ink" text-anchor="end">1.3 GB SER</text>
+<rect x="166.0" y="195.0" width="217.8" height="14" fill="#0072B2"/>
+<text x="387.8" y="207.0" class="sub" text-anchor="start" style="font-size:11px">665</text>
+<rect x="166.0" y="211.0" width="207.3" height="14" fill="#D55E00"/>
+<text x="377.3" y="223.0" class="sub" text-anchor="start" style="font-size:11px">633</text>
+<text x="158.0" y="254.0" class="ink" text-anchor="end">1.0 GB mono AVI</text>
+<rect x="166.0" y="235.0" width="235.1" height="14" fill="#0072B2"/>
+<text x="405.1" y="247.0" class="sub" text-anchor="start" style="font-size:11px">718</text>
+<rect x="166.0" y="251.0" width="222.4" height="14" fill="#D55E00"/>
+<text x="392.4" y="263.0" class="sub" text-anchor="start" style="font-size:11px">679</text>
+<text x="158.0" y="294.0" class="ink" text-anchor="end">0.4 GB 16-bit SER</text>
+<rect x="166.0" y="275.0" width="254.5" height="14" fill="#0072B2"/>
+<text x="424.5" y="287.0" class="sub" text-anchor="start" style="font-size:11px">777</text>
+<rect x="166.0" y="291.0" width="252.5" height="14" fill="#D55E00"/>
+<text x="422.5" y="303.0" class="sub" text-anchor="start" style="font-size:11px">771</text>
+<text x="158.0" y="334.0" class="ink" text-anchor="end">0.4 GB 720x540 AVI</text>
+<rect x="166.0" y="315.0" width="143.1" height="14" fill="#0072B2"/>
+<text x="313.1" y="327.0" class="sub" text-anchor="start" style="font-size:11px">437</text>
+<rect x="166.0" y="331.0" width="143.8" height="14" fill="#D55E00"/>
+<text x="313.8" y="343.0" class="sub" text-anchor="start" style="font-size:11px">439</text>
+<line class="grid" x1="166.0" x2="166.0" y1="68" y2="350"/>
+<text x="166.0" y="366.0" class="sub" text-anchor="middle" style="font-size:11px">0</text>
+<line class="grid" x1="231.5" x2="231.5" y1="68" y2="350"/>
+<text x="231.5" y="366.0" class="sub" text-anchor="middle" style="font-size:11px">200</text>
+<line class="grid" x1="297.0" x2="297.0" y1="68" y2="350"/>
+<text x="297.0" y="366.0" class="sub" text-anchor="middle" style="font-size:11px">400</text>
+<line class="grid" x1="362.5" x2="362.5" y1="68" y2="350"/>
+<text x="362.5" y="366.0" class="sub" text-anchor="middle" style="font-size:11px">600</text>
+<line class="grid" x1="428.0" x2="428.0" y1="68" y2="350"/>
+<text x="428.0" y="366.0" class="sub" text-anchor="middle" style="font-size:11px">800</text>
+<line class="axis" x1="166" x2="166" y1="68" y2="350"/>
+<text x="297.0" y="384.0" class="sub" text-anchor="middle">Peak resident memory, MB</text>
+</svg>

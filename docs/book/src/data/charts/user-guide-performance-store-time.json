@@ -1,0 +1,46 @@
+{
+ "id": "user-guide-performance-store-time",
+ "page": "user-guide/performance.md",
+ "kind": "hbars",
+ "title": "Frame store: wall time",
+ "caption": "Wall seconds before and after keeping frames on the device, best of three, from the table above (lower is better).",
+ "alt": "Horizontal grouped bars of wall seconds before and after: 11.37 to 11.06, 5.61 to 5.82, 2.94 to 3.00, 3.48 to 3.43, 3.34 to 3.21, 1.74 to 1.75 and 1.92 to 1.99, from the 5.6 GB to the 0.4 GB capture.",
+ "categories": [
+  "5.6 GB Bayer AVI",
+  "3.1 GB 640x480 AVI",
+  "1.3 GB Bayer AVI",
+  "1.3 GB SER",
+  "1.0 GB mono AVI",
+  "0.4 GB 16-bit SER",
+  "0.4 GB 720x540 AVI"
+ ],
+ "series": [
+  {
+   "name": "Before",
+   "values": [
+    11.37,
+    5.61,
+    2.94,
+    3.48,
+    3.34,
+    1.74,
+    1.92
+   ]
+  },
+  {
+   "name": "After",
+   "values": [
+    11.06,
+    5.82,
+    3.0,
+    3.43,
+    3.21,
+    1.75,
+    1.99
+   ]
+  }
+ ],
+ "value_axis": "Wall-clock time, seconds (best of three)",
+ "dp": 2,
+ "note": "'Measured effect' table, A100"
+}

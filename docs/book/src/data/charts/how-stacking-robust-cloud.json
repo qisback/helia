@@ -1,0 +1,56 @@
+{
+ "id": "how-stacking-robust-cloud",
+ "page": "user-guide/how-stacking-works.md",
+ "kind": "hbars",
+ "title": "Robust stacking error: cloud",
+ "caption": "RMSE against the truth, times 1000, for cloud at each share of samples, from the table above; lower is better.",
+ "alt": "RMSE times 1000 for cloud. mean: 1.52, 2.17, 3.82, 17.39. sigma: 1.57, 1.5, 1.49, 1.52. huber: 1.53, 1.49, 1.56, 5.69. winsor: 1.52, 1.49, 1.61, 8.39.",
+ "categories": [
+  "Clean",
+  "0.5% of samples",
+  "1%",
+  "5%"
+ ],
+ "series": [
+  {
+   "name": "mean",
+   "values": [
+    1.52,
+    2.17,
+    3.82,
+    17.39
+   ]
+  },
+  {
+   "name": "sigma",
+   "values": [
+    1.57,
+    1.5,
+    1.49,
+    1.52
+   ]
+  },
+  {
+   "name": "huber",
+   "values": [
+    1.53,
+    1.49,
+    1.56,
+    5.69
+   ]
+  },
+  {
+   "name": "winsor",
+   "values": [
+    1.52,
+    1.49,
+    1.61,
+    8.39
+   ]
+  }
+ ],
+ "value_axis": "RMSE times 1000 (lower is better)",
+ "log": true,
+ "dp": 2,
+ "note": "how-stacking-works.md, robust stacking comparison table, Cloud (frames at 40%)"
+}

@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="309" viewBox="0 0 480 309" role="img" aria-labelledby="t d">
+<title id="t">Mosaic check, four pixel positions</title><desc id="d">Bars of share of full scale at the four cell positions: 79.6, 77.6, 77.4 and 0.3 per cent; the last is the empty blue pixel.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="308" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">Mosaic check, four pixel positions</text>
+<line class="grid" x1="58" x2="468" y1="246.0" y2="246.0"/>
+<text x="52.0" y="250.0" class="sub" text-anchor="end" style="font-size:11px">0</text>
+<line class="grid" x1="58" x2="468" y1="198.5" y2="198.5"/>
+<text x="52.0" y="202.5" class="sub" text-anchor="end" style="font-size:11px">20</text>
+<line class="grid" x1="58" x2="468" y1="151.0" y2="151.0"/>
+<text x="52.0" y="155.0" class="sub" text-anchor="end" style="font-size:11px">40</text>
+<line class="grid" x1="58" x2="468" y1="103.5" y2="103.5"/>
+<text x="52.0" y="107.5" class="sub" text-anchor="end" style="font-size:11px">60</text>
+<line class="grid" x1="58" x2="468" y1="56.0" y2="56.0"/>
+<text x="52.0" y="60.0" class="sub" text-anchor="end" style="font-size:11px">80</text>
+<rect x="92.2" y="57.0" width="33.0" height="189.0" fill="#0072B2"/>
+<text x="108.8" y="54.0" class="sub" text-anchor="middle" style="font-size:11px">79.6</text>
+<text x="109.2" y="262.0" class="ink" text-anchor="middle">Position 1</text>
+<rect x="194.8" y="61.7" width="33.0" height="184.3" fill="#0072B2"/>
+<text x="211.2" y="58.7" class="sub" text-anchor="middle" style="font-size:11px">77.6</text>
+<text x="211.8" y="262.0" class="ink" text-anchor="middle">Position 2</text>
+<rect x="297.2" y="62.2" width="33.0" height="183.8" fill="#0072B2"/>
+<text x="313.8" y="59.2" class="sub" text-anchor="middle" style="font-size:11px">77.4</text>
+<text x="314.2" y="262.0" class="ink" text-anchor="middle">Position 3</text>
+<rect x="399.8" y="245.3" width="33.0" height="1.0" fill="#0072B2"/>
+<text x="416.2" y="242.3" class="sub" text-anchor="middle" style="font-size:11px">0.3</text>
+<text x="416.8" y="262.0" class="ink" text-anchor="middle">Position 4</text>
+<line class="axis" x1="58" x2="468" y1="246.0" y2="246.0"/>
+<line class="axis" x1="58" x2="58" y1="56" y2="246"/>
+<text x="240.0" y="287.0" class="sub" text-anchor="middle">Share of full scale, per cent</text>
+</svg>

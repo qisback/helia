@@ -1,0 +1,37 @@
+{
+ "id": "tutorial-robust-line",
+ "page": "tutorials/robust-stacking.md",
+ "kind": "bars",
+ "title": "Line left by damaged frames",
+ "caption": "Stack of damaged frames minus the clean stack at the worst column of the line, with alignment points and without, from the table above.",
+ "alt": "Residual line level (full scale 1). None: -0.112 with alignment points and -0.094 without. Sigma: 0.000 and 0.000. Huber: -0.048 and -0.038. Winsor: -0.057 and -0.048.",
+ "categories": [
+  "none",
+  "sigma",
+  "huber",
+  "winsor"
+ ],
+ "series": [
+  {
+   "name": "Alignment points",
+   "values": [
+    -0.112,
+    0.0,
+    -0.048,
+    -0.057
+   ]
+  },
+  {
+   "name": "No multipoint",
+   "values": [
+    -0.094,
+    0.0,
+    -0.038,
+    -0.048
+   ]
+  }
+ ],
+ "value_axis": "Difference from the clean stack (full scale 1)",
+ "dp": 3,
+ "note": "tutorials/robust-stacking.md, residual line level table"
+}

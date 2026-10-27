@@ -1,0 +1,28 @@
+{
+ "id": "recipe-ca-k-channel-ratio",
+ "page": "recipes/ca-k.md",
+ "kind": "bars",
+ "title": "Granulation to fine band ratio by plane",
+ "caption": "Ratio of the granulation band to the fine band for each plane of the colour Ca K capture, measured on the real capture.",
+ "alt": "Bars of the granulation-band to fine-band ratio: blue 3.5, luminance 3.2, red 3.3, green 3.0.",
+ "categories": [
+  "Blue",
+  "Luminance",
+  "Red",
+  "Green"
+ ],
+ "series": [
+  {
+   "name": "Ratio",
+   "values": [
+    3.5,
+    3.2,
+    3.3,
+    3.0
+   ]
+  }
+ ],
+ "value_axis": "Band ratio (higher is cleaner)",
+ "note": "recipes/ca-k.md, 'Settings'",
+ "dp": 1
+}

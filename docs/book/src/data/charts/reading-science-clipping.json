@@ -1,0 +1,28 @@
+{
+ "id": "reading-science-clipping",
+ "page": "tutorials/reading-the-image-science-plots.md",
+ "kind": "hbars",
+ "title": "Pixels at the top and bottom level",
+ "caption": "Share of pixels at a limit in the raw red and green planes and in the written image, from the histogram panels.",
+ "alt": "Horizontal bars of per cent of pixels at a limit: raw red plane 92.4 at the sensor limit, raw green 1.6, written image 8.5 at zero and 1.3 at the top.",
+ "categories": [
+  "Raw red, at limit",
+  "Raw green, at limit",
+  "Written, at zero",
+  "Written, at top"
+ ],
+ "series": [
+  {
+   "name": "Share",
+   "values": [
+    92.4,
+    1.6,
+    8.5,
+    1.3
+   ]
+  }
+ ],
+ "value_axis": "Share of pixels, per cent",
+ "note": "tutorials/reading-the-image-science-plots.md, section 6",
+ "dp": 1
+}

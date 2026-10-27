@@ -1,0 +1,26 @@
+{
+ "id": "seeing-motion-index-height",
+ "page": "user-guide/seeing.md",
+ "kind": "bars",
+ "title": "Motion index by turbulence height",
+ "caption": "Motion index of synthetic phase screens at D/r0 6, by where the turbulence is, from the table above.",
+ "alt": "Bars: index 0.0000 with all turbulence at the ground, 0.0486 with half at height and 0.0667 with all at height.",
+ "categories": [
+  "All at ground",
+  "Half and half",
+  "All at height"
+ ],
+ "series": [
+  {
+   "name": "Index",
+   "values": [
+    0.0,
+    0.0486,
+    0.0667
+   ]
+  }
+ ],
+ "value_axis": "Motion index (relative, pupil pixels)",
+ "dp": 4,
+ "note": "seeing.md, 'Differential image motion', table"
+}

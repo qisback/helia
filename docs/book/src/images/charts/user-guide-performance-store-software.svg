@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="246" viewBox="0 0 480 246" role="img" aria-labelledby="t d">
+<title id="t">Frame store on the software adapter</title><desc id="d">Horizontal grouped bars of wall seconds before and after: 17.5 to 17.2 for the 0.4 GB AVI, 12.7 to 13.2 for the 0.4 GB SER and 65.7 to 67.0 for the 1.0 GB capture.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="245" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">Frame store on the software adapter</text>
+<rect x="16" y="38" width="12" height="12" rx="2" fill="#0072B2"/>
+<text x="34.0" y="49.0" class="ink" text-anchor="start">Before</text>
+<rect x="94.0" y="38" width="12" height="12" rx="2" fill="#D55E00"/>
+<text x="112.0" y="49.0" class="ink" text-anchor="start">After</text>
+<text x="158.0" y="94.0" class="ink" text-anchor="end">0.4 GB AVI</text>
+<rect x="166.0" y="75.0" width="57.3" height="14" fill="#0072B2"/>
+<text x="227.3" y="87.0" class="sub" text-anchor="start" style="font-size:11px">17.5</text>
+<rect x="166.0" y="91.0" width="56.3" height="14" fill="#D55E00"/>
+<text x="226.3" y="103.0" class="sub" text-anchor="start" style="font-size:11px">17.2</text>
+<text x="158.0" y="134.0" class="ink" text-anchor="end">0.4 GB SER</text>
+<rect x="166.0" y="115.0" width="41.6" height="14" fill="#0072B2"/>
+<text x="211.6" y="127.0" class="sub" text-anchor="start" style="font-size:11px">12.7</text>
+<rect x="166.0" y="131.0" width="43.2" height="14" fill="#D55E00"/>
+<text x="213.2" y="143.0" class="sub" text-anchor="start" style="font-size:11px">13.2</text>
+<text x="158.0" y="174.0" class="ink" text-anchor="end">1.0 GB capture</text>
+<rect x="166.0" y="155.0" width="215.2" height="14" fill="#0072B2"/>
+<text x="385.2" y="167.0" class="sub" text-anchor="start" style="font-size:11px">65.7</text>
+<rect x="166.0" y="171.0" width="219.4" height="14" fill="#D55E00"/>
+<text x="389.4" y="183.0" class="sub" text-anchor="start" style="font-size:11px">67.0</text>
+<line class="grid" x1="166.0" x2="166.0" y1="68" y2="190"/>
+<text x="166.0" y="206.0" class="sub" text-anchor="middle" style="font-size:11px">0</text>
+<line class="grid" x1="231.5" x2="231.5" y1="68" y2="190"/>
+<text x="231.5" y="206.0" class="sub" text-anchor="middle" style="font-size:11px">20</text>
+<line class="grid" x1="297.0" x2="297.0" y1="68" y2="190"/>
+<text x="297.0" y="206.0" class="sub" text-anchor="middle" style="font-size:11px">40</text>
+<line class="grid" x1="362.5" x2="362.5" y1="68" y2="190"/>
+<text x="362.5" y="206.0" class="sub" text-anchor="middle" style="font-size:11px">60</text>
+<line class="grid" x1="428.0" x2="428.0" y1="68" y2="190"/>
+<text x="428.0" y="206.0" class="sub" text-anchor="middle" style="font-size:11px">80</text>
+<line class="axis" x1="166" x2="166" y1="68" y2="190"/>
+<text x="297.0" y="224.0" class="sub" text-anchor="middle">Wall-clock time, seconds (best of three)</text>
+</svg>

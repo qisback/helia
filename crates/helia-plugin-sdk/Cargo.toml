@@ -1,0 +1,27 @@
+[package]
+name = "helia-plugin-sdk"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+# Permissive on purpose: plugins that use this crate may have any licence, including a closed one.
+# It must never depend on a Helia (GPL) crate; deny.toml in this folder enforces that.
+license = "MIT OR Apache-2.0"
+repository.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+keywords = ["astronomy", "plugin", "json-rpc", "helia"]
+categories = ["science", "multimedia::images"]
+authors.workspace = true
+description = "SDK for writing Helia plugins: the plugin protocol (JSON-RPC over stdio), pixel buffers and a run loop"
+readme = "README.md"
+publish = false
+
+[lints]
+workspace = true
+
+[dependencies]
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.154"
+
+[dev-dependencies]
+tempfile = "3.27.0"

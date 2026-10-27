@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="350" viewBox="0 0 480 350" role="img" aria-labelledby="t d">
+<title id="t">Resolved period per stack</title><desc id="d">Grouped bars for four captures and three stacks. 15_20_57.ser: Best 12%, points 3.0, All frames 3.1, Best 12%, global 3.0; Sun_Test.ser: Best 12%, points 3.4, All frames 4.3, Best 12%, global 3.4; 15_32_09.avi: Best 12%, points 6.3, All frames 6.5, Best 12%, global 6.5; 14_42_57.avi: Best 12%, points 26.7, All frames 21.8, Best 12%, global 12.0.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="349" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">Resolved period per stack</text>
+<rect x="16" y="38" width="12" height="12" rx="2" fill="#0072B2"/>
+<text x="34.0" y="49.0" class="ink" text-anchor="start">Best 12%, points</text>
+<rect x="164.0" y="38" width="12" height="12" rx="2" fill="#D55E00"/>
+<text x="182.0" y="49.0" class="ink" text-anchor="start">All frames</text>
+<rect x="270.0" y="38" width="12" height="12" rx="2" fill="#009E73"/>
+<text x="288.0" y="49.0" class="ink" text-anchor="start">Best 12%, global</text>
+<text x="158.0" y="102.0" class="ink" text-anchor="end">15_20_57.ser</text>
+<rect x="166.0" y="75.0" width="26.2" height="14" fill="#0072B2"/>
+<text x="196.2" y="87.0" class="sub" text-anchor="start" style="font-size:11px">3.0</text>
+<rect x="166.0" y="91.0" width="27.1" height="14" fill="#D55E00"/>
+<text x="197.1" y="103.0" class="sub" text-anchor="start" style="font-size:11px">3.1</text>
+<rect x="166.0" y="107.0" width="26.2" height="14" fill="#009E73"/>
+<text x="196.2" y="119.0" class="sub" text-anchor="start" style="font-size:11px">3.0</text>
+<text x="158.0" y="158.0" class="ink" text-anchor="end">Sun_Test.ser</text>
+<rect x="166.0" y="131.0" width="29.7" height="14" fill="#0072B2"/>
+<text x="199.7" y="143.0" class="sub" text-anchor="start" style="font-size:11px">3.4</text>
+<rect x="166.0" y="147.0" width="37.6" height="14" fill="#D55E00"/>
+<text x="207.6" y="159.0" class="sub" text-anchor="start" style="font-size:11px">4.3</text>
+<rect x="166.0" y="163.0" width="29.7" height="14" fill="#009E73"/>
+<text x="199.7" y="175.0" class="sub" text-anchor="start" style="font-size:11px">3.4</text>
+<text x="158.0" y="214.0" class="ink" text-anchor="end">15_32_09.avi</text>
+<rect x="166.0" y="187.0" width="55.0" height="14" fill="#0072B2"/>
+<text x="225.0" y="199.0" class="sub" text-anchor="start" style="font-size:11px">6.3</text>
+<rect x="166.0" y="203.0" width="56.8" height="14" fill="#D55E00"/>
+<text x="226.8" y="215.0" class="sub" text-anchor="start" style="font-size:11px">6.5</text>
+<rect x="166.0" y="219.0" width="56.8" height="14" fill="#009E73"/>
+<text x="226.8" y="231.0" class="sub" text-anchor="start" style="font-size:11px">6.5</text>
+<text x="158.0" y="270.0" class="ink" text-anchor="end">14_42_57.avi</text>
+<rect x="166.0" y="243.0" width="233.2" height="14" fill="#0072B2"/>
+<text x="403.2" y="255.0" class="sub" text-anchor="start" style="font-size:11px">26.7</text>
+<rect x="166.0" y="259.0" width="190.4" height="14" fill="#D55E00"/>
+<text x="360.4" y="271.0" class="sub" text-anchor="start" style="font-size:11px">21.8</text>
+<rect x="166.0" y="275.0" width="104.8" height="14" fill="#009E73"/>
+<text x="274.8" y="287.0" class="sub" text-anchor="start" style="font-size:11px">12.0</text>
+<line class="grid" x1="166.0" x2="166.0" y1="68" y2="294"/>
+<text x="166.0" y="310.0" class="sub" text-anchor="middle" style="font-size:11px">0</text>
+<line class="grid" x1="209.7" x2="209.7" y1="68" y2="294"/>
+<text x="209.7" y="310.0" class="sub" text-anchor="middle" style="font-size:11px">5</text>
+<line class="grid" x1="253.3" x2="253.3" y1="68" y2="294"/>
+<text x="253.3" y="310.0" class="sub" text-anchor="middle" style="font-size:11px">10</text>
+<line class="grid" x1="297.0" x2="297.0" y1="68" y2="294"/>
+<text x="297.0" y="310.0" class="sub" text-anchor="middle" style="font-size:11px">15</text>
+<line class="grid" x1="340.7" x2="340.7" y1="68" y2="294"/>
+<text x="340.7" y="310.0" class="sub" text-anchor="middle" style="font-size:11px">20</text>
+<line class="grid" x1="384.3" x2="384.3" y1="68" y2="294"/>
+<text x="384.3" y="310.0" class="sub" text-anchor="middle" style="font-size:11px">25</text>
+<line class="grid" x1="428.0" x2="428.0" y1="68" y2="294"/>
+<text x="428.0" y="310.0" class="sub" text-anchor="middle" style="font-size:11px">30</text>
+<line class="axis" x1="166" x2="166" y1="68" y2="294"/>
+<text x="297.0" y="328.0" class="sub" text-anchor="middle">Resolved period, px (lower is sharper)</text>
+</svg>

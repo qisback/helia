@@ -1,0 +1,22 @@
+# Python example, standard library only. Run it without installing anything:
+#   helia plugins list --plugin examples/plugins/invert-py
+name = "invert-py"
+version = "0.1.0"
+api_version = 1
+title = "Invert (Python)"
+description = "Inverts the brightness of an image, written in plain Python with no SDK."
+author = "Laurence Horrocks-Barlow"
+licence = "MIT OR Apache-2.0"
+capabilities = ["image-op"]
+executable = "invert.py"
+interpreter = "python3"
+
+[resources]
+gpu = false
+memory_mb = 256
+
+[[steps]]
+id = "invert"
+capability = "image-op"
+title = "Invert"
+description = "Replaces each value v by (max + min) - v."

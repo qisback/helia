@@ -1,0 +1,22 @@
+# Manifest of the Rust example. Build it, copy the program next to this file, then
+#   helia plugins enable invert --plugin examples/plugins/invert
+# See docs/book/src/tutorials/writing-plugins.md.
+name = "invert"
+version = "0.1.0"
+api_version = 1
+title = "Invert"
+description = "Inverts the brightness of an image: each value v becomes max + min - v."
+author = "Laurence Horrocks-Barlow"
+licence = "MIT OR Apache-2.0"
+capabilities = ["image-op"]
+executable = "invert"
+
+[resources]
+gpu = false
+memory_mb = 64
+
+[[steps]]
+id = "invert"
+capability = "image-op"
+title = "Invert"
+description = "Replaces each value v by (max + min) - v."

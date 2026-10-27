@@ -1,0 +1,26 @@
+{
+ "id": "measure-and-seeing-contrast",
+ "page": "tutorials/measure-and-seeing.md",
+ "kind": "bars",
+ "title": "RMS contrast, three settings",
+ "caption": "RMS contrast of 14_42_57.avi stacked three ways with `--preset white`, from the table above.",
+ "alt": "Bars: best 12 per cent with alignment points 1.085 per cent, all frames 0.544, best 12 per cent with whole-frame alignment only 0.503.",
+ "categories": [
+  "Best 12%, points",
+  "All frames",
+  "Best 12%, whole frame"
+ ],
+ "series": [
+  {
+   "name": "RMS contrast",
+   "values": [
+    1.085,
+    0.544,
+    0.503
+   ]
+  }
+ ],
+ "value_axis": "RMS contrast, per cent (higher is better)",
+ "dp": 3,
+ "note": "measure-and-seeing.md, section 5"
+}

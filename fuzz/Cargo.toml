@@ -1,0 +1,80 @@
+[package]
+name = "helia-fuzz"
+version = "0.0.0"
+edition = "2024"
+publish = false
+license = "GPL-3.0-or-later"
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+libfuzzer-sys = "0.4.13"
+
+[dependencies.helia-core]
+path = "../crates/helia-core"
+
+[dependencies.helia-plugin]
+path = "../crates/helia-plugin"
+
+[dependencies.helia-plugin-sdk]
+path = "../crates/helia-plugin-sdk"
+
+[dependencies.serde_json]
+version = "1.0.154"
+
+[[bin]]
+name = "ser_reader"
+path = "fuzz_targets/ser_reader.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "fits_reader"
+path = "fuzz_targets/fits_reader.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "fits_sequence"
+path = "fuzz_targets/fits_sequence.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "avi_reader"
+path = "fuzz_targets/avi_reader.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "video_probe"
+path = "fuzz_targets/video_probe.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "plugin_protocol"
+path = "fuzz_targets/plugin_protocol.rs"
+test = false
+doc = false
+bench = false
+
+[dependencies.helia-update]
+path = "../crates/helia-update"
+default-features = false
+
+[[bin]]
+name = "update_manifest"
+path = "fuzz_targets/update_manifest.rs"
+test = false
+doc = false
+bench = false
+
+# Keep the fuzz crate out of the main workspace.
+[workspace]

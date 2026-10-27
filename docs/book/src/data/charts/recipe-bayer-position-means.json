@@ -1,0 +1,28 @@
+{
+ "id": "recipe-bayer-position-means",
+ "page": "recipes/fixing-a-bayer-grid.md",
+ "kind": "bars",
+ "title": "Mosaic check, four pixel positions",
+ "caption": "Average brightness at the four positions of a 2 x 2 cell, from the mosaic check of the example output.",
+ "alt": "Bars of share of full scale at the four cell positions: 79.6, 77.6, 77.4 and 0.3 per cent; the last is the empty blue pixel.",
+ "categories": [
+  "Position 1",
+  "Position 2",
+  "Position 3",
+  "Position 4"
+ ],
+ "series": [
+  {
+   "name": "Mean",
+   "values": [
+    79.6,
+    77.6,
+    77.4,
+    0.3
+   ]
+  }
+ ],
+ "value_axis": "Share of full scale, per cent",
+ "note": "recipes/fixing-a-bayer-grid.md, the Mosaic check lines",
+ "dp": 1
+}

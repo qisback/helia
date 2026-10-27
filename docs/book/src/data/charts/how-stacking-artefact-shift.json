@@ -1,0 +1,35 @@
+{
+ "id": "how-stacking-artefact-shift",
+ "page": "user-guide/how-stacking-works.md",
+ "kind": "bars",
+ "title": "Shift caused by damaged frames, before and after the fix",
+ "caption": "Offset of the reference and of the stack made with damaged frames from those made without the damage, in pixels, without and with the fix, with alignment points off and on (#172).",
+ "alt": "Bars of offset in pixels against the undamaged result. Reference: 0.14 without the fix, 0.012 with it. Stack without alignment points: 0.14 and 0.013. Stack with alignment points: 0.14 and 0.011.",
+ "categories": [
+  "Reference",
+  "Stack, alignment points off",
+  "Stack, alignment points on"
+ ],
+ "series": [
+  {
+   "name": "Without the fix",
+   "values": [
+    0.14,
+    0.14,
+    0.14
+   ]
+  },
+  {
+   "name": "With the fix",
+   "values": [
+    0.012,
+    0.013,
+    0.011
+   ]
+  }
+ ],
+ "value_axis": "Offset from the undamaged result, pixels (lower is better)",
+ "dp": 3,
+ "log": true,
+ "note": "Without the fix: PR #177 and the CHANGELOG for #172 (0.14 px). With the fix: report_reference_and_stack_shift_with_damage (--ignored) re-run on a 24-core build server with an NVIDIA A100 against main 1aa4f2c: points false reference 0.012 stack 0.013, points true reference 0.012 stack 0.011. Offset as defined by crates/helia-gpu/tests/robust_real.rs (phase correlation against the undamaged result, sigma clip kappa 2.5, whole-frame ranking, CPU)."
+}

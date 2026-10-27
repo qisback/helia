@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+SPDX-FileCopyrightText: 2026 Laurence Horrocks-Barlow
+SPDX-License-Identifier: GPL-3.0-or-later
+See ADDITIONAL-TERMS.md for terms added under GPLv3 section 7.
+
+Teaches the desktop what a SER file is. The other types Helia opens (AVI, FITS)
+are already known to shared-mime-info.
+-->
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="video/x-astro-ser">
+    <comment>SER astronomy video</comment>
+    <magic priority="60">
+      <match type="string" value="LUCAM-RECORDER" offset="0"/>
+    </magic>
+    <glob pattern="*.ser"/>
+    <generic-icon name="video-x-generic"/>
+  </mime-type>
+</mime-info>

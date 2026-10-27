@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="326" viewBox="0 0 480 326" role="img" aria-labelledby="t d">
+<title id="t">Error against the truth stack</title><desc id="d">Grouped bars on a log axis, RMS error and largest error (x1000): no calibration 14.43 and 869.1; dark only 16.31 and 880.0; flat only 3.78 and 376.2; dark and flat 2.10 and 348.6; dark, flat and bad pixels 1.96 and 42.6.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="325" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">Error against the truth stack</text>
+<rect x="16" y="38" width="12" height="12" rx="2" fill="#0072B2"/>
+<text x="34.0" y="49.0" class="ink" text-anchor="start">RMS error</text>
+<rect x="115.0" y="38" width="12" height="12" rx="2" fill="#D55E00"/>
+<text x="133.0" y="49.0" class="ink" text-anchor="start">Largest error</text>
+<text x="158.0" y="94.0" class="ink" text-anchor="end">No calibration</text>
+<rect x="166.0" y="75.0" width="101.2" height="14" fill="#0072B2"/>
+<text x="271.2" y="87.0" class="sub" text-anchor="start" style="font-size:11px">14.43</text>
+<rect x="166.0" y="91.0" width="256.7" height="14" fill="#D55E00"/>
+<text x="426.7" y="103.0" class="sub" text-anchor="start" style="font-size:11px">869.10</text>
+<text x="158.0" y="134.0" class="ink" text-anchor="end">Dark only</text>
+<rect x="166.0" y="115.0" width="105.9" height="14" fill="#0072B2"/>
+<text x="275.9" y="127.0" class="sub" text-anchor="start" style="font-size:11px">16.31</text>
+<rect x="166.0" y="131.0" width="257.2" height="14" fill="#D55E00"/>
+<text x="427.2" y="143.0" class="sub" text-anchor="start" style="font-size:11px">880.00</text>
+<text x="158.0" y="174.0" class="ink" text-anchor="end">Flat only</text>
+<rect x="166.0" y="155.0" width="50.4" height="14" fill="#0072B2"/>
+<text x="220.4" y="167.0" class="sub" text-anchor="start" style="font-size:11px">3.78</text>
+<rect x="166.0" y="171.0" width="224.9" height="14" fill="#D55E00"/>
+<text x="394.9" y="183.0" class="sub" text-anchor="start" style="font-size:11px">376.20</text>
+<text x="158.0" y="214.0" class="ink" text-anchor="end">Dark and flat</text>
+<rect x="166.0" y="195.0" width="28.1" height="14" fill="#0072B2"/>
+<text x="198.1" y="207.0" class="sub" text-anchor="start" style="font-size:11px">2.10</text>
+<rect x="166.0" y="211.0" width="222.0" height="14" fill="#D55E00"/>
+<text x="392.0" y="223.0" class="sub" text-anchor="start" style="font-size:11px">348.60</text>
+<text x="158.0" y="246.5" class="ink" text-anchor="end">Dark, flat, bad</text>
+<text x="158.0" y="261.5" class="ink" text-anchor="end">pixels</text>
+<rect x="166.0" y="235.0" width="25.5" height="14" fill="#0072B2"/>
+<text x="195.5" y="247.0" class="sub" text-anchor="start" style="font-size:11px">1.96</text>
+<rect x="166.0" y="251.0" width="142.3" height="14" fill="#D55E00"/>
+<text x="312.3" y="263.0" class="sub" text-anchor="start" style="font-size:11px">42.60</text>
+<line class="grid" x1="166.0" x2="166.0" y1="68" y2="270"/>
+<text x="166.0" y="286.0" class="sub" text-anchor="middle" style="font-size:11px">1</text>
+<line class="grid" x1="253.3" x2="253.3" y1="68" y2="270"/>
+<text x="253.3" y="286.0" class="sub" text-anchor="middle" style="font-size:11px">10</text>
+<line class="grid" x1="340.7" x2="340.7" y1="68" y2="270"/>
+<text x="340.7" y="286.0" class="sub" text-anchor="middle" style="font-size:11px">100</text>
+<line class="grid" x1="428.0" x2="428.0" y1="68" y2="270"/>
+<text x="428.0" y="286.0" class="sub" text-anchor="middle" style="font-size:11px">1000</text>
+<line class="axis" x1="166" x2="166" y1="68" y2="270"/>
+<text x="297.0" y="304.0" class="sub" text-anchor="middle">Error, x1000 of full scale (lower is better), log scale</text>
+</svg>

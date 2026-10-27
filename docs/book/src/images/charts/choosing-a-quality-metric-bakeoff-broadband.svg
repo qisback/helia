@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="354" viewBox="0 0 480 354" role="img" aria-labelledby="t d">
+<title id="t">Broad band 14_42_57 against gradient</title><desc id="d">Grouped bars for two bands: in the 4 to 12 px band helmli reads 148 and mfgs 163 per cent of gradient energy while dct is 88, fourier 81 and contrast 73.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="353" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">Broad band 14_42_57 against gradient</text>
+<rect x="16" y="38" width="12" height="12" rx="2" fill="#0072B2"/>
+<text x="34.0" y="49.0" class="ink" text-anchor="start">laplacian</text>
+<rect x="115.0" y="38" width="12" height="12" rx="2" fill="#D55E00"/>
+<text x="133.0" y="49.0" class="ink" text-anchor="start">helmli</text>
+<rect x="193.0" y="38" width="12" height="12" rx="2" fill="#009E73"/>
+<text x="211.0" y="49.0" class="ink" text-anchor="start">mfgs</text>
+<rect x="257.0" y="38" width="12" height="12" rx="2" fill="#CC79A7"/>
+<text x="275.0" y="49.0" class="ink" text-anchor="start">dct</text>
+<rect x="314.0" y="38" width="12" height="12" rx="2" fill="#E69F00"/>
+<text x="332.0" y="49.0" class="ink" text-anchor="start">fourier</text>
+<rect x="16" y="58" width="12" height="12" rx="2" fill="#56B4E9"/>
+<text x="34.0" y="69.0" class="ink" text-anchor="start">contrast</text>
+<text x="158.0" y="146.0" class="ink" text-anchor="end">1-4 px band</text>
+<rect x="166.0" y="95.0" width="129.7" height="14" fill="#0072B2"/>
+<text x="299.7" y="107.0" class="sub" text-anchor="start" style="font-size:11px">99</text>
+<rect x="166.0" y="111.0" width="166.4" height="14" fill="#D55E00"/>
+<text x="336.4" y="123.0" class="sub" text-anchor="start" style="font-size:11px">127</text>
+<rect x="166.0" y="127.0" width="176.9" height="14" fill="#009E73"/>
+<text x="346.9" y="139.0" class="sub" text-anchor="start" style="font-size:11px">135</text>
+<rect x="166.0" y="143.0" width="128.4" height="14" fill="#CC79A7"/>
+<text x="298.4" y="155.0" class="sub" text-anchor="start" style="font-size:11px">98</text>
+<rect x="166.0" y="159.0" width="127.1" height="14" fill="#E69F00"/>
+<text x="297.1" y="171.0" class="sub" text-anchor="start" style="font-size:11px">97</text>
+<rect x="166.0" y="175.0" width="121.8" height="14" fill="#56B4E9"/>
+<text x="291.8" y="187.0" class="sub" text-anchor="start" style="font-size:11px">93</text>
+<text x="158.0" y="250.0" class="ink" text-anchor="end">4-12 px band</text>
+<rect x="166.0" y="199.0" width="116.6" height="14" fill="#0072B2"/>
+<text x="286.6" y="211.0" class="sub" text-anchor="start" style="font-size:11px">89</text>
+<rect x="166.0" y="215.0" width="193.9" height="14" fill="#D55E00"/>
+<text x="363.9" y="227.0" class="sub" text-anchor="start" style="font-size:11px">148</text>
+<rect x="166.0" y="231.0" width="213.5" height="14" fill="#009E73"/>
+<text x="383.5" y="243.0" class="sub" text-anchor="start" style="font-size:11px">163</text>
+<rect x="166.0" y="247.0" width="115.3" height="14" fill="#CC79A7"/>
+<text x="285.3" y="259.0" class="sub" text-anchor="start" style="font-size:11px">88</text>
+<rect x="166.0" y="263.0" width="106.1" height="14" fill="#E69F00"/>
+<text x="276.1" y="275.0" class="sub" text-anchor="start" style="font-size:11px">81</text>
+<rect x="166.0" y="279.0" width="95.6" height="14" fill="#56B4E9"/>
+<text x="265.6" y="291.0" class="sub" text-anchor="start" style="font-size:11px">73</text>
+<line class="grid" x1="166.0" x2="166.0" y1="88" y2="298"/>
+<text x="166.0" y="314.0" class="sub" text-anchor="middle" style="font-size:11px">0</text>
+<line class="grid" x1="231.5" x2="231.5" y1="88" y2="298"/>
+<text x="231.5" y="314.0" class="sub" text-anchor="middle" style="font-size:11px">50</text>
+<line class="grid" x1="297.0" x2="297.0" y1="88" y2="298"/>
+<text x="297.0" y="314.0" class="sub" text-anchor="middle" style="font-size:11px">100</text>
+<line class="grid" x1="362.5" x2="362.5" y1="88" y2="298"/>
+<text x="362.5" y="314.0" class="sub" text-anchor="middle" style="font-size:11px">150</text>
+<line class="grid" x1="428.0" x2="428.0" y1="88" y2="298"/>
+<text x="428.0" y="314.0" class="sub" text-anchor="middle" style="font-size:11px">200</text>
+<line class="axis" x1="166" x2="166" y1="88" y2="298"/>
+<text x="297.0" y="332.0" class="sub" text-anchor="middle">Per cent of gradient energy (100 = equal)</text>
+</svg>

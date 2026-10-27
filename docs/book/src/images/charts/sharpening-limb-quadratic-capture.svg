@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="331" viewBox="0 0 480 331" role="img" aria-labelledby="t d">
+<title id="t">Quadratic limb darkening, H-alpha</title><desc id="d">Grouped bars: u1 is 0.545, 0.472 and 0.501; u2 is -0.014, 0.046 and 0.089 for Sun_Test, 15_20_57 and 15_32_09.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="330" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">Quadratic limb darkening, H-alpha</text>
+<rect x="16" y="38" width="12" height="12" rx="2" fill="#0072B2"/>
+<text x="34.0" y="49.0" class="ink" text-anchor="start">u1</text>
+<rect x="66.0" y="38" width="12" height="12" rx="2" fill="#D55E00"/>
+<text x="84.0" y="49.0" class="ink" text-anchor="start">u2</text>
+<line class="grid" x1="58" x2="468" y1="268.0" y2="268.0"/>
+<text x="52.0" y="272.0" class="sub" text-anchor="end" style="font-size:11px">-0.1</text>
+<line class="grid" x1="58" x2="468" y1="240.9" y2="240.9"/>
+<text x="52.0" y="244.9" class="sub" text-anchor="end" style="font-size:11px">0</text>
+<line class="grid" x1="58" x2="468" y1="213.7" y2="213.7"/>
+<text x="52.0" y="217.7" class="sub" text-anchor="end" style="font-size:11px">0.1</text>
+<line class="grid" x1="58" x2="468" y1="186.6" y2="186.6"/>
+<text x="52.0" y="190.6" class="sub" text-anchor="end" style="font-size:11px">0.2</text>
+<line class="grid" x1="58" x2="468" y1="159.4" y2="159.4"/>
+<text x="52.0" y="163.4" class="sub" text-anchor="end" style="font-size:11px">0.3</text>
+<line class="grid" x1="58" x2="468" y1="132.3" y2="132.3"/>
+<text x="52.0" y="136.3" class="sub" text-anchor="end" style="font-size:11px">0.4</text>
+<line class="grid" x1="58" x2="468" y1="105.1" y2="105.1"/>
+<text x="52.0" y="109.1" class="sub" text-anchor="end" style="font-size:11px">0.5</text>
+<line class="grid" x1="58" x2="468" y1="78.0" y2="78.0"/>
+<text x="52.0" y="82.0" class="sub" text-anchor="end" style="font-size:11px">0.6</text>
+<rect x="92.3" y="92.9" width="33.0" height="147.9" fill="#0072B2"/>
+<text x="108.8" y="89.9" class="sub" text-anchor="middle" style="font-size:11px">0.545</text>
+<rect x="126.3" y="240.9" width="33.0" height="3.8" fill="#D55E00"/>
+<text x="142.8" y="255.7" class="sub" text-anchor="middle" style="font-size:11px">-0.014</text>
+<text x="126.3" y="284.0" class="ink" text-anchor="middle">Sun_Test.ser</text>
+<rect x="229.0" y="112.7" width="33.0" height="128.1" fill="#0072B2"/>
+<text x="245.5" y="109.7" class="sub" text-anchor="middle" style="font-size:11px">0.472</text>
+<rect x="263.0" y="228.4" width="33.0" height="12.5" fill="#D55E00"/>
+<text x="279.5" y="225.4" class="sub" text-anchor="middle" style="font-size:11px">0.046</text>
+<text x="263.0" y="284.0" class="ink" text-anchor="middle">15_20_57.ser</text>
+<rect x="365.7" y="104.9" width="33.0" height="136.0" fill="#0072B2"/>
+<text x="382.2" y="101.9" class="sub" text-anchor="middle" style="font-size:11px">0.501</text>
+<rect x="399.7" y="216.7" width="33.0" height="24.2" fill="#D55E00"/>
+<text x="416.2" y="213.7" class="sub" text-anchor="middle" style="font-size:11px">0.089</text>
+<text x="399.7" y="284.0" class="ink" text-anchor="middle">15_32_09.avi</text>
+<line class="axis" x1="58" x2="468" y1="240.9" y2="240.9"/>
+<line class="axis" x1="58" x2="58" y1="78" y2="268"/>
+<text x="240.0" y="309.0" class="sub" text-anchor="middle">Quadratic coefficient</text>
+</svg>

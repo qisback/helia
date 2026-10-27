@@ -1,0 +1,38 @@
+{
+ "id": "user-guide-derotation-motion",
+ "page": "user-guide/derotation.md",
+ "kind": "bars",
+ "title": "Surface motion between pictures",
+ "caption": "Motion on a disc 220 pixels in radius, from the table above: the equator at the disc centre and the mid-latitude lag behind it.",
+ "alt": "Grouped bars on a log axis, in pixels. Equator at the disc centre: 0.2 px at 5 minutes, 2.1 at 1 hour, 10.7 at 5 hours, 51 at 24 hours. Mid-latitude lag behind the equator: 0.02, 0.2, 1 and 5 px.",
+ "categories": [
+  "5 minutes",
+  "1 hour",
+  "5 hours",
+  "24 hours"
+ ],
+ "series": [
+  {
+   "name": "Equator at the disc centre",
+   "values": [
+    0.2,
+    2.1,
+    10.7,
+    51
+   ]
+  },
+  {
+   "name": "Mid-latitude lag",
+   "values": [
+    0.02,
+    0.2,
+    1,
+    5
+   ]
+  }
+ ],
+ "value_axis": "Motion of the surface, pixels",
+ "log": true,
+ "dp": 2,
+ "note": "'Why it matters' table"
+}

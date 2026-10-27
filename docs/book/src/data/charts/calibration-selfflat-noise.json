@@ -1,0 +1,27 @@
+{
+ "id": "calibration-selfflat-noise",
+ "page": "user-guide/calibration.md",
+ "kind": "lines",
+ "title": "Self-flat error against pixel noise",
+ "caption": "RMS error of the recovered flat with 25 frames on a disc of 0.5 to 1, by pixel noise, from the validation table above.",
+ "alt": "Line chart: error 0.20 per cent at noise 0.005, 0.75 at 0.02 and 1.9 at 0.05.",
+ "series": [
+  {
+   "name": "Error",
+   "x": [
+    0.005,
+    0.02,
+    0.05
+   ],
+   "values": [
+    0.2,
+    0.75,
+    1.9
+   ]
+  }
+ ],
+ "xlabel": "Pixel noise, fraction of the mean",
+ "ylabel": "RMS error of the gain, per cent (lower is better)",
+ "dp": 2,
+ "note": "calibration.md, 'How well it works', pixel noise row"
+}

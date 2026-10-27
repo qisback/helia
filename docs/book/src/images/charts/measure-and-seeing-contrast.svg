@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="324" viewBox="0 0 480 324" role="img" aria-labelledby="t d">
+<title id="t">RMS contrast, three settings</title><desc id="d">Bars: best 12 per cent with alignment points 1.085 per cent, all frames 0.544, best 12 per cent with whole-frame alignment only 0.503.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="323" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">RMS contrast, three settings</text>
+<line class="grid" x1="58" x2="468" y1="246.0" y2="246.0"/>
+<text x="52.0" y="250.0" class="sub" text-anchor="end" style="font-size:11px">0</text>
+<line class="grid" x1="58" x2="468" y1="214.3" y2="214.3"/>
+<text x="52.0" y="218.3" class="sub" text-anchor="end" style="font-size:11px">0.2</text>
+<line class="grid" x1="58" x2="468" y1="182.7" y2="182.7"/>
+<text x="52.0" y="186.7" class="sub" text-anchor="end" style="font-size:11px">0.4</text>
+<line class="grid" x1="58" x2="468" y1="151.0" y2="151.0"/>
+<text x="52.0" y="155.0" class="sub" text-anchor="end" style="font-size:11px">0.6</text>
+<line class="grid" x1="58" x2="468" y1="119.3" y2="119.3"/>
+<text x="52.0" y="123.3" class="sub" text-anchor="end" style="font-size:11px">0.8</text>
+<line class="grid" x1="58" x2="468" y1="87.7" y2="87.7"/>
+<text x="52.0" y="91.7" class="sub" text-anchor="end" style="font-size:11px">1</text>
+<line class="grid" x1="58" x2="468" y1="56.0" y2="56.0"/>
+<text x="52.0" y="60.0" class="sub" text-anchor="end" style="font-size:11px">1.2</text>
+<rect x="109.3" y="74.2" width="33.0" height="171.8" fill="#0072B2"/>
+<text x="125.8" y="71.2" class="sub" text-anchor="middle" style="font-size:11px">1.085</text>
+<text x="126.3" y="262.0" class="ink" text-anchor="middle">Best 12%, points</text>
+<rect x="246.0" y="159.9" width="33.0" height="86.1" fill="#0072B2"/>
+<text x="262.5" y="156.9" class="sub" text-anchor="middle" style="font-size:11px">0.544</text>
+<text x="263.0" y="262.0" class="ink" text-anchor="middle">All frames</text>
+<rect x="382.7" y="166.4" width="33.0" height="79.6" fill="#0072B2"/>
+<text x="399.2" y="163.4" class="sub" text-anchor="middle" style="font-size:11px">0.503</text>
+<text x="399.7" y="262.0" class="ink" text-anchor="middle">Best 12%, whole</text>
+<text x="399.7" y="277.0" class="ink" text-anchor="middle">frame</text>
+<line class="axis" x1="58" x2="468" y1="246.0" y2="246.0"/>
+<line class="axis" x1="58" x2="58" y1="56" y2="246"/>
+<text x="240.0" y="302.0" class="sub" text-anchor="middle">RMS contrast, per cent (higher is better)</text>
+</svg>

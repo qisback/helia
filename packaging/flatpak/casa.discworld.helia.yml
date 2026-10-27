@@ -1,0 +1,47 @@
+# SPDX-FileCopyrightText: 2026 Laurence Horrocks-Barlow
+# SPDX-License-Identifier: GPL-3.0-or-later
+# See ADDITIONAL-TERMS.md for terms added under GPLv3 section 7.
+#
+# Flatpak manifest for Helia. UNTESTED: no Flatpak builder is available on the CI runners, and the
+# app is not published to Flathub. It repackages the released Linux archive, so nothing is compiled
+# here. The sources block is written by packaging/package_managers.py from the latest GitHub
+# release (URL and SHA-256 per architecture); do not edit it by hand.
+# Try it locally:
+#   flatpak-builder --user --install --force-clean build packaging/flatpak/casa.discworld.helia.yml
+# Before sending it to Flathub see packaging/SUBMITTING.md: Flathub wants an app id on a domain the
+# project owns (io.github.qisback.Helia, not casa.discworld.helia) and prefers a build from source.
+# The desktop file and icon are renamed to the app id, which Flatpak requires.
+app-id: casa.discworld.helia
+runtime: org.freedesktop.Platform
+runtime-version: "24.08"
+sdk: org.freedesktop.Sdk
+command: helia-gui
+finish-args:
+  - --share=ipc
+  - --socket=x11
+  - --socket=wayland
+  - --device=dri
+  # Captures live anywhere in the home folder and stacks are written beside them.
+  - --filesystem=home
+  # The feedback button talks to the project's relay; nothing else uses the network.
+  - --share=network
+modules:
+  - name: helia
+    buildsystem: simple
+    build-commands:
+      - install -Dm755 helia helia-gui -t /app/bin
+      - install -Dm644 share/applications/helia.desktop /app/share/applications/casa.discworld.helia.desktop
+      - sed -i 's/^Icon=helia$/Icon=casa.discworld.helia/' /app/share/applications/casa.discworld.helia.desktop
+      - for s in 16 24 32 48 64 128 256 512; do install -Dm644 share/icons/hicolor/${s}x${s}/apps/helia.png /app/share/icons/hicolor/${s}x${s}/apps/casa.discworld.helia.png; done
+      - install -Dm644 LICENSE ADDITIONAL-TERMS.md LOGO-LICENCE.md THIRD-PARTY-LICENSES.txt -t /app/share/doc/helia
+    # BEGIN sources (written by packaging/package_managers.py)
+    sources:
+      - type: archive
+        only-arches: [x86_64]
+        url: https://github.com/qisback/helia/releases/download/v0.7.1/helia-0.7.1-x86_64-unknown-linux-gnu.tar.gz
+        sha256: "1dc30fce31004135e41f298014145ebf239a645f55a1bdfa47d999ef071618ba"
+      - type: archive
+        only-arches: [aarch64]
+        url: https://github.com/qisback/helia/releases/download/v0.7.1/helia-0.7.1-aarch64-unknown-linux-gnu.tar.gz
+        sha256: "0d3580507af880dba7d25207cedfb6600441ebc9489023c3f4e1b577603522ad"
+    # END sources

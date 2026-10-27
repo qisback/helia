@@ -1,0 +1,205 @@
+# SPDX-FileCopyrightText: 2026 Laurence Horrocks-Barlow
+# SPDX-License-Identifier: GPL-3.0-or-later
+# See ADDITIONAL-TERMS.md for terms added under GPLv3 section 7.
+
+# Zensical (zensical.org) builds the documentation site from docs/book/src.
+# Build: `zensical build --clean` (version pinned in docs/requirements.txt).
+# The navigation below replaces the old mdBook SUMMARY.md. Every page under
+# docs/book/src must be in `nav` or in `exclude_docs`: `cargo xtask coverage` checks it.
+[project]
+site_name = "Helia"
+site_description = "Helia is a fast, free, GPU-accelerated solar lucky-imaging stacker and sharpener for Windows, macOS and Linux: rank frames, align, stack, sharpen and colour H-alpha, calcium K and white-light captures."
+site_author = "Laurence Horrocks-Barlow"
+site_url = "https://qisback.github.io/helia/"
+docs_dir = "docs/book/src"
+site_dir = "site"
+use_directory_urls = true
+repo_url = "https://github.com/qisback/helia"
+repo_name = "qisback/helia"
+copyright = "Copyright (C) 2026 Laurence Horrocks-Barlow. Helia is free software under the GPL-3.0-or-later licence, with the additional terms in ADDITIONAL-TERMS.md. Made by <a href=\"https://12hobbies.studio/\">12hobbies.studio</a>."
+extra_css = ["stylesheets/extra.css", "stylesheets/download-widget.css"]
+extra_javascript = ["javascripts/download-widget.js"]
+exclude_docs = """
+reference/openapi.json
+"""
+
+nav = [
+  { "Introduction" = "index.md" },
+  { "Why I made Helia" = "why-i-made-helia.md" },
+  { "Getting started" = [
+    { "Get Helia" = "getting-started/download.md" },
+    { "Build from source" = "getting-started/build-from-source.md" },
+    { "Download and verify" = "getting-started/download-and-verify.md" },
+    { "Installation" = "user-guide/installation.md" },
+    { "First launch" = "getting-started/first-launch.md" },
+    { "Quick start" = "user-guide/quick-start.md" },
+  ] },
+  { "Step by step" = [
+    { "Overview and the captures used" = [
+      { "Overview and the captures used" = "walkthrough/index.md" },
+      { "1. Open a capture" = "walkthrough/01-open.md" },
+      { "2. Quick stack" = "walkthrough/02-quick-stack.md" },
+      { "Calibrate (optional)" = "walkthrough/calibrate.md" },
+      { "3. Analyse" = "walkthrough/03-analyse.md" },
+      { "4. Align" = "walkthrough/04-align.md" },
+      { "5. Stack" = "walkthrough/05-stack.md" },
+      { "6. Sharpen" = "walkthrough/06-sharpen.md" },
+      { "7. Adjust" = "walkthrough/07-adjust.md" },
+      { "8. Colour" = "walkthrough/08-colour.md" },
+      { "9. Export" = "walkthrough/09-export.md" },
+      { "10. About" = "walkthrough/10-about.md" },
+      { "11. Send feedback" = "walkthrough/feedback.md" },
+    ] },
+  ] },
+  { "Tutorials" = [
+    { "Flatten the limb darkening" = "tutorials/limb-darkening.md" },
+    { "Crop the stack to the disc" = "tutorials/autocrop.md" },
+    { "True colour from a raw colour camera" = "tutorials/true-colour.md" },
+    { "Calibrate: darks, flats and bad pixels" = "tutorials/calibrate.md" },
+    { "Stack FITS frames: Seestar subs and cubes" = "tutorials/stack-fits-frames.md" },
+    { "Measure a stack: granulation and seeing" = "tutorials/measure-and-seeing.md" },
+    { "Drive Helia from your own code with the API" = "tutorials/api-server.md" },
+    { "Using plugins" = "tutorials/plugins.md" },
+    { "Writing a plugin" = "tutorials/writing-plugins.md" },
+    { "Robust stacking against satellites, hot pixels and clouds" = "tutorials/robust-stacking.md" },
+    { "Reading the frame quality graph" = "tutorials/reading-the-frame-quality-graph.md" },
+    { "Reading the alignment point plots" = "tutorials/reading-the-alignment-point-plots.md" },
+    { "Reading the image science plots" = "tutorials/reading-the-image-science-plots.md" },
+    { "Reading the solar plots" = "tutorials/reading-the-solar-plots.md" },
+  ] },
+  { "How-to recipes" = [
+    { "Sharpening like RegiStax" = "recipes/sharpening-like-registax.md" },
+    { "Deconvolution" = "recipes/deconvolution.md" },
+    { "Colour grading your band" = "recipes/colour-grading.md" },
+    { "H-alpha, full disc" = "recipes/h-alpha-full-disc.md" },
+    { "White-light granulation" = "recipes/white-light-granulation.md" },
+    { "Calcium K" = "recipes/ca-k.md" },
+    { "MP4 from a phone or DSLR" = "recipes/mp4-from-a-phone.md" },
+    { "Fixing a Bayer grid" = "recipes/fixing-a-bayer-grid.md" },
+    { "Batch processing" = "recipes/batch-processing.md" },
+    { "Scripting with the API" = "recipes/scripting-with-the-api.md" },
+  ] },
+  { "User guide" = [
+    { "Capturing for Helia" = "user-guide/capturing.md" },
+    { "Calibration: darks, flats and bad pixels" = "user-guide/calibration.md" },
+    { "Using the desktop app" = "user-guide/gui.md" },
+    { "Plugins" = "user-guide/plugins.md" },
+    { "Sharpening and adjustments" = "user-guide/sharpening.md" },
+    { "Coming from RegiStax" = "user-guide/coming-from-registax.md" },
+    { "Colourising" = "user-guide/colourising.md" },
+    { "Prominences and the disc together" = "user-guide/prominences.md" },
+    { "Tutorial: bringing out prominences" = "tutorials/prominences.md" },
+    { "The command line" = "user-guide/cli.md" },
+    { "The API" = "user-guide/api.md" },
+    { "How stacking works" = "user-guide/how-stacking-works.md" },
+    { "The granulation and seeing report" = "user-guide/quality-report.md" },
+    { "Seeing estimation" = "user-guide/seeing.md" },
+    { "Science outputs" = "user-guide/science-outputs.md" },
+    { "Sunspots, groups and the Wolf number" = "user-guide/sunspots.md" },
+    { "Tutorial: counting sunspots" = "tutorials/sunspots.md" },
+    { "Time-lapse" = "user-guide/timelapse.md" },
+    { "Tutorial: a time-lapse of two H-alpha captures" = "tutorials/timelapse.md" },
+    { "Solar derotation" = "user-guide/derotation.md" },
+    { "Tutorial: derotating H-alpha stacks to one time" = "tutorials/derotation.md" },
+    { "Field rotation (altazimuth mounts)" = "user-guide/field-rotation.md" },
+    { "Tutorial: correcting field rotation" = "tutorials/field-rotation.md" },
+    { "Mosaics" = "user-guide/mosaic.md" },
+    { "Tutorial: joining panels into a full-disc mosaic" = "tutorials/mosaic.md" },
+    { "GPU acceleration" = "user-guide/gpu.md" },
+    { "Performance guide" = "user-guide/performance.md" },
+    { "Performance and benchmarks" = "user-guide/benchmarks.md" },
+    { "Choosing a quality metric" = "user-guide/choosing-a-quality-metric.md" },
+    { "Sending feedback" = "user-guide/sending-feedback.md" },
+    { "Updates" = "user-guide/updates.md" },
+    { "Troubleshooting and FAQ" = "user-guide/troubleshooting.md" },
+    { "Frequently asked questions" = "user-guide/faq.md" },
+  ] },
+  { "Reference" = [
+    { "CLI reference" = "reference/cli.md" },
+    { "API reference" = "reference/api.md" },
+    { "Output formats" = "reference/output-formats.md" },
+    { "Colour presets" = "reference/presets-table.md" },
+    { "Configuration options" = "reference/configuration.md" },
+    { "Feedback protocol" = "reference/feedback-protocol.md" },
+    { "Plugins reference" = "reference/plugins.md" },
+    { "Keyboard shortcuts" = "reference/keyboard-shortcuts.md" },
+    { "Glossary" = "reference/glossary.md" },
+    { "Documentation coverage" = "reference/documentation-coverage.md" },
+    { "References" = "reference/references.md" },
+    { "Credits, licences and trademarks" = "reference/credits-and-trademarks.md" },
+  ] },
+  { "Developer guide" = [
+    { "Architecture" = "developer/architecture.md" },
+    { "The GPU parity rule" = "developer/gpu-parity.md" },
+    { "Plugins: design and protocol" = "developer/plugins.md" },
+    { "Automatic updates: design" = "developer/updates.md" },
+    { "Research" = [
+      { "Research" = "developer/research.md" },
+      { "Imaging methods" = "developer/research/imaging-methods.md" },
+      { "State of the art, October 2026" = "developer/research/state-of-the-art-2026.md" },
+    ] },
+  ] },
+  { "Roadmap" = [
+    { "Milestones" = "roadmap.md" },
+  ] },
+  { "Licence and terms" = "legal.md" },
+  { "Releases on GitHub" = "https://github.com/qisback/helia/releases" },
+  { "12hobbies.studio" = "https://12hobbies.studio/" },
+]
+
+[project.theme]
+language = "en"
+logo = "images/favicon-header.png"
+custom_dir = "docs/overrides"
+favicon = "images/favicon.png"
+features = [
+  "content.code.copy",
+  "navigation.footer",
+  "navigation.indexes",
+  "navigation.instant",
+  "navigation.path",
+  "navigation.sections",
+  "navigation.top",
+  "navigation.tracking",
+  "search.highlight",
+  "toc.follow",
+]
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: light)"
+scheme = "default"
+toggle.icon = "lucide/sun"
+toggle.name = "Switch to dark mode"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: dark)"
+scheme = "slate"
+toggle.icon = "lucide/moon"
+toggle.name = "Switch to light mode"
+
+[[project.extra.social]]
+icon = "fontawesome/brands/github"
+link = "https://github.com/qisback/helia"
+name = "Helia on GitHub"
+
+[project.markdown_extensions]
+abbr = {}
+admonition = {}
+attr_list = {}
+def_list = {}
+footnotes = {}
+md_in_html = {}
+tables = {}
+toc.permalink = true
+pymdownx.betterem = {}
+pymdownx.details = {}
+pymdownx.highlight.anchor_linenums = true
+pymdownx.inlinehilite = {}
+pymdownx.snippets.base_path = ["."]
+pymdownx.snippets.check_paths = true
+pymdownx.superfences = {}
+pymdownx.tasklist.custom_checkbox = true
+
+# Old page paths that moved: /introduction/ was the home page before it became index.md.
+[project.plugins.redirects.redirect_maps]
+"introduction.md" = "index.md"

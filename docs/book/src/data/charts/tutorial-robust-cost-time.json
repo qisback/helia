@@ -1,0 +1,28 @@
+{
+ "id": "tutorial-robust-cost-time",
+ "page": "tutorials/robust-stacking.md",
+ "kind": "bars",
+ "title": "Time of the stacking step",
+ "caption": "Time of the stacking step for 100 frames with each guard, on an A100 with Vulkan, from the table above.",
+ "alt": "Stacking time in seconds: none 0.46, sigma 0.89, huber 0.82, winsor 0.98.",
+ "categories": [
+  "none",
+  "sigma",
+  "huber",
+  "winsor"
+ ],
+ "series": [
+  {
+   "name": "Time",
+   "values": [
+    0.46,
+    0.89,
+    0.82,
+    0.98
+   ]
+  }
+ ],
+ "value_axis": "Time, seconds (lower is better)",
+ "dp": 2,
+ "note": "tutorials/robust-stacking.md, section 5 table"
+}

@@ -1,0 +1,29 @@
+{
+ "id": "calibration-residual-rms",
+ "page": "user-guide/calibration.md",
+ "kind": "hbars",
+ "title": "Residual pattern by calibration",
+ "caption": "RMS of the stack against the stack from a perfect sensor, for each calibration, from the table above.",
+ "alt": "Bars on a log axis: no calibration 0.01476, dark only 0.00706, flat only 0.01623, dark, flat and bad pixels 0.00021.",
+ "categories": [
+  "None",
+  "Dark only",
+  "Flat only",
+  "Dark, flat, bad pixels"
+ ],
+ "series": [
+  {
+   "name": "Residual (rms)",
+   "values": [
+    0.01476,
+    0.00706,
+    0.01623,
+    0.00021
+   ]
+  }
+ ],
+ "value_axis": "Residual pattern, rms (lower is better)",
+ "log": true,
+ "dp": 5,
+ "note": "calibration.md, residual pattern table"
+}

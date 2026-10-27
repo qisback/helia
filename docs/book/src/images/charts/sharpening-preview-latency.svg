@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="326" viewBox="0 0 480 326" role="img" aria-labelledby="t d">
+<title id="t">Preview render time</title><desc id="d">CPU then GPU in ms: wavelets 25 and 20; unsharp mask 6 and 7; denoise and levels 21 and 16; deconvolution Gaussian 433 and 74; deconvolution Airy 1549 and 112.</desc>
+<style>
+.bg{fill:#ffffff;stroke:#d0d7de}
+.ink{fill:#1f2328}.sub{fill:#59636e}
+.grid{stroke:#d8dee4;stroke-width:1}.axis{stroke:#59636e;stroke-width:1}
+.ln{fill:none}
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13px}
+.t{font-size:14px;font-weight:600}
+@media (prefers-color-scheme:dark){.bg{fill:#161b22;stroke:#30363d}.ink{fill:#e6edf3}.sub{fill:#9da7b3}
+.grid{stroke:#30363d}.axis{stroke:#9da7b3}}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="479" height="325" rx="8"/>
+<text x="16.0" y="24.0" class="ink t" text-anchor="start">Preview render time</text>
+<rect x="16" y="38" width="12" height="12" rx="2" fill="#0072B2"/>
+<text x="34.0" y="49.0" class="ink" text-anchor="start">CPU</text>
+<rect x="73.0" y="38" width="12" height="12" rx="2" fill="#D55E00"/>
+<text x="91.0" y="49.0" class="ink" text-anchor="start">GPU</text>
+<text x="158.0" y="94.0" class="ink" text-anchor="end">Wavelets, 6 layers</text>
+<rect x="166.0" y="75.0" width="91.6" height="14" fill="#0072B2"/>
+<text x="261.6" y="87.0" class="sub" text-anchor="start" style="font-size:11px">25</text>
+<rect x="166.0" y="91.0" width="85.2" height="14" fill="#D55E00"/>
+<text x="255.2" y="103.0" class="sub" text-anchor="start" style="font-size:11px">20</text>
+<text x="158.0" y="134.0" class="ink" text-anchor="end">Unsharp mask</text>
+<rect x="166.0" y="115.0" width="51.0" height="14" fill="#0072B2"/>
+<text x="221.0" y="127.0" class="sub" text-anchor="start" style="font-size:11px">6</text>
+<rect x="166.0" y="131.0" width="55.4" height="14" fill="#D55E00"/>
+<text x="225.4" y="143.0" class="sub" text-anchor="start" style="font-size:11px">7</text>
+<text x="158.0" y="174.0" class="ink" text-anchor="end">Denoise and levels</text>
+<rect x="166.0" y="155.0" width="86.6" height="14" fill="#0072B2"/>
+<text x="256.6" y="167.0" class="sub" text-anchor="start" style="font-size:11px">21</text>
+<rect x="166.0" y="171.0" width="78.9" height="14" fill="#D55E00"/>
+<text x="248.9" y="183.0" class="sub" text-anchor="start" style="font-size:11px">16</text>
+<text x="158.0" y="214.0" class="ink" text-anchor="end">Deconv., Gaussian</text>
+<rect x="166.0" y="195.0" width="172.7" height="14" fill="#0072B2"/>
+<text x="342.7" y="207.0" class="sub" text-anchor="start" style="font-size:11px">433</text>
+<rect x="166.0" y="211.0" width="122.4" height="14" fill="#D55E00"/>
+<text x="292.4" y="223.0" class="sub" text-anchor="start" style="font-size:11px">74</text>
+<text x="158.0" y="254.0" class="ink" text-anchor="end">Deconv., Airy</text>
+<rect x="166.0" y="235.0" width="208.9" height="14" fill="#0072B2"/>
+<text x="378.9" y="247.0" class="sub" text-anchor="start" style="font-size:11px">1549</text>
+<rect x="166.0" y="251.0" width="134.2" height="14" fill="#D55E00"/>
+<text x="304.2" y="263.0" class="sub" text-anchor="start" style="font-size:11px">112</text>
+<line class="grid" x1="166.0" x2="166.0" y1="68" y2="270"/>
+<text x="166.0" y="286.0" class="sub" text-anchor="middle" style="font-size:11px">1</text>
+<line class="grid" x1="231.5" x2="231.5" y1="68" y2="270"/>
+<text x="231.5" y="286.0" class="sub" text-anchor="middle" style="font-size:11px">10</text>
+<line class="grid" x1="297.0" x2="297.0" y1="68" y2="270"/>
+<text x="297.0" y="286.0" class="sub" text-anchor="middle" style="font-size:11px">100</text>
+<line class="grid" x1="362.5" x2="362.5" y1="68" y2="270"/>
+<text x="362.5" y="286.0" class="sub" text-anchor="middle" style="font-size:11px">1000</text>
+<line class="grid" x1="428.0" x2="428.0" y1="68" y2="270"/>
+<text x="428.0" y="286.0" class="sub" text-anchor="middle" style="font-size:11px">10000</text>
+<line class="axis" x1="166" x2="166" y1="68" y2="270"/>
+<text x="297.0" y="304.0" class="sub" text-anchor="middle">Time, milliseconds (lower is better), log scale</text>
+</svg>

@@ -1,0 +1,41 @@
+{
+ "id": "sharpening-preview-latency",
+ "page": "user-guide/sharpening.md",
+ "kind": "hbars",
+ "title": "Preview render time",
+ "caption": "Best of five preview times at 1280 x 960 on the CPU and the A100 GPU, from the table above; lower is better.",
+ "alt": "CPU then GPU in ms: wavelets 25 and 20; unsharp mask 6 and 7; denoise and levels 21 and 16; deconvolution Gaussian 433 and 74; deconvolution Airy 1549 and 112.",
+ "categories": [
+  "Wavelets, 6 layers",
+  "Unsharp mask",
+  "Denoise and levels",
+  "Deconv., Gaussian",
+  "Deconv., Airy"
+ ],
+ "series": [
+  {
+   "name": "CPU",
+   "values": [
+    25,
+    6,
+    21,
+    433,
+    1549
+   ]
+  },
+  {
+   "name": "GPU",
+   "values": [
+    20,
+    7,
+    16,
+    74,
+    112
+   ]
+  }
+ ],
+ "value_axis": "Time, milliseconds (lower is better)",
+ "log": true,
+ "dp": 0,
+ "note": "user-guide/sharpening.md, How fast"
+}

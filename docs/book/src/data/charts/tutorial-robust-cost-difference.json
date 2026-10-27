@@ -1,0 +1,35 @@
+{
+ "id": "tutorial-robust-cost-difference",
+ "page": "tutorials/robust-stacking.md",
+ "kind": "hbars",
+ "title": "Change to a clean stack",
+ "caption": "Difference of each guard from the plain mean on 100 clean frames of 15_20_57.ser (times 1000), from the table above.",
+ "alt": "RMS difference from the mean, times 1000: sigma 0.45, huber 0.46, winsor 0.18. Largest difference: sigma 8.09, huber 6.00, winsor 2.98.",
+ "categories": [
+  "sigma",
+  "huber",
+  "winsor"
+ ],
+ "series": [
+  {
+   "name": "RMS difference",
+   "values": [
+    0.45,
+    0.46,
+    0.18
+   ]
+  },
+  {
+   "name": "Largest difference",
+   "values": [
+    8.09,
+    6.0,
+    2.98
+   ]
+  }
+ ],
+ "value_axis": "Difference from the mean, times 1000 (lower is better)",
+ "log": true,
+ "dp": 2,
+ "note": "tutorials/robust-stacking.md, section 5 table"
+}

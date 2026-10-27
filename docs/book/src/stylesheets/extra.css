@@ -1,0 +1,109 @@
+/* SPDX-FileCopyrightText: 2026 Laurence Horrocks-Barlow */
+/* SPDX-License-Identifier: GPL-3.0-or-later */
+
+/* Nothing may overflow or be cut off at any width: tables and code scroll, images fit,
+   long words and URLs wrap. */
+.md-typeset img,
+.md-typeset video,
+.md-typeset svg {
+  max-width: 100%;
+  height: auto;
+}
+/* Zensical wraps each table in a scroll container that bleeds out of the column; keep it inside. */
+.md-typeset .md-typeset__scrollwrap {
+  margin-left: 0;
+  margin-right: 0;
+  max-width: 100%;
+  overflow-x: auto;
+}
+.md-typeset .md-typeset__table {
+  display: block;
+  padding: 0;
+  max-width: 100%;
+}
+.md-typeset pre,
+.md-typeset .highlight {
+  max-width: 100%;
+  overflow-x: auto;
+}
+.md-typeset pre > code {
+  overflow-x: auto;
+}
+.md-typeset :not(pre) > code,
+.md-typeset p,
+.md-typeset li,
+.md-typeset td,
+.md-typeset th,
+.md-typeset h1,
+.md-typeset h2,
+.md-typeset h3,
+.md-typeset h4 {
+  overflow-wrap: anywhere;
+}
+.md-typeset td,
+.md-typeset th {
+  min-width: 6rem;
+}
+.md-content {
+  min-width: 0;
+}
+
+/* Header: the page title is already the h1; on a phone only the site name fits. */
+@media screen and (max-width: 60em) {
+  .md-header__topic + .md-header__topic {
+    display: none;
+  }
+}
+.md-header__source,
+.md-source__repository {
+  white-space: nowrap;
+  max-width: none;
+}
+/* Previous and next links stack on a phone so their titles are not squeezed. */
+@media screen and (max-width: 44.984375em) {
+  .md-footer__inner {
+    flex-direction: column;
+  }
+  .md-footer__link {
+    width: 100%;
+    max-width: 100%;
+  }
+  .md-typeset h1 {
+    font-size: 1.7em;
+  }
+}
+
+/* Below the desktop width the contents drawers are off-screen until opened: hide them from
+   layout and assistive tech while closed so they cannot sit over the page. */
+@media screen and (max-width: 76.234375em) {
+  .md-sidebar {
+    visibility: hidden;
+  }
+  [data-md-toggle="drawer"]:checked ~ .md-container .md-sidebar--primary {
+    visibility: visible;
+  }
+}
+
+/* Previous and next titles in the page footer wrap instead of being cut with an ellipsis. */
+.md-footer__title,
+.md-footer__title .md-ellipsis {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+/* The breadcrumb path wraps instead of running past the column on a phone. */
+.md-path__list {
+  flex-wrap: wrap;
+}
+
+/* Download widget (download-widget.css) in the Helia theme colours. */
+.md-typeset .dl {
+  --dl-accent: var(--md-primary-fg-color, #c1653f);
+  --dl-accent-text: var(--md-primary-bg-color, #fff);
+  --dl-menu-bg: var(--md-default-bg-color, #fff);
+  --dl-menu-text: var(--md-default-fg-color, #222);
+}
+.md-typeset .dl .dl-btn:hover,
+.md-typeset .dl .dl-btn:focus-visible { color: var(--dl-accent-text); }
+.md-typeset .dl ul { list-style: disc; }
